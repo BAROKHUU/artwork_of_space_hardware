@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
+import { useEffect, useMemo, useRef, useState, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent, type RefObject } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useTranslation } from 'react-i18next';
 import * as THREE from 'three';
@@ -7,27 +7,39 @@ import { emptyContact, resolveCollisions, scatterRocks, solidRocks, type Obstacl
 import { makeTerrain, type Terrain } from '../sim/terrain';
 import { dustLevel, stepBattery, sunlight } from '../sim/rover';
 import { Echo } from '../three/Echo';
+import { Tracks, WheelDust } from '../three/RoverFx';
 import { GameCanvas } from '../three/GameCanvas';
 import { HardwareModel } from '../three/models';
 import { Lights, Rocks, SHADOW_TEXEL, SUN_OFFSET, Sky, TerrainMesh } from '../three/Scenery';
 import { play } from '../audio/sfx';
 import { useGame } from '../state/store';
-import { Gauge, HoldButton, useKeys, type HudChannel, type MissionProps } from './common';
+import { Gauge, HoldButton, Readout, useKeys, type HudChannel, type MissionProps } from './common';
 
 const WORLD_LIMIT = 118;
 const SCAN_SECONDS = 0.9;
 const WAKE_LEVEL = 12;
-const ROVER_RADIUS = 0.9;
+
+export type LabVehicle = 'echo' | 'sojourner' | 'mer' | 'curiosity' | 'lrv';
+export type LabCamera = 'chase' | 'high' | 'cockpit';
+const VEHICLES: Record<LabVehicle, { radius: number; track: number; camera: number; eye: number }> = {
+  echo: { radius: 0.9, track: 0.62, camera: 1, eye: 1.9 },
+  sojourner: { radius: 1, track: 0.78, camera: 0.85, eye: 1.5 },
+  mer: { radius: 1.5, track: 0.95, camera: 1.15, eye: 2.5 },
+  curiosity: { radius: 1.8, track: 1.27, camera: 1.35, eye: 3.4 },
+  lrv: { radius: 1.6, track: 0.95, camera: 1.2, eye: 1.9 },
+};
 const BEACON_ROCK_RADIUS = 1;
 const PROP_RADIUS = 2.4;
 
 // Frame-rate independent smoothing: the same feel at 30 fps and at 144 fps.
 const damp = (rate: number, dt: number) => 1 - Math.exp(-rate * dt);
 
-// The sun's axes, used to move the shadow map in whole texels so shadow edges don't shimmer.
-const SUN_DIR = SUN_OFFSET.clone().normalize();
-const SUN_RIGHT = new THREE.Vector3(0, 1, 0).cross(SUN_DIR).normalize();
-const SUN_UP = SUN_DIR.clone().cross(SUN_RIGHT);
+/** The sun's axes, used to move the shadow map in whole texels so shadow edges don't shimmer. */
+function sunAxes(sun: THREE.Vector3) {
+  const dir = sun.clone().normalize();
+  const right = new THREE.Vector3(0, 1, 0).cross(dir).normalize();
+  return { dir, right, up: dir.clone().cross(right) };
+}
 
 interface Hud {
   index: number;
@@ -38,6 +50,9 @@ interface Hud {
   scan: number;
   tethered: boolean;
   asleep: boolean;
+  speed: number;
+  odometer: number;
+  slope: number;
 }
 
 type Pad = { forward: boolean; back: boolean; left: boolean; right: boolean };
@@ -73,11 +88,28 @@ interface RoverProps {
   hud: HudChannel<Hud>;
   onFinish: (r: 'win' | 'storm') => void;
   frozen: boolean;
+  vehicle: LabVehicle;
+  sun: THREE.Vector3;
+  cameraMode: LabCamera;
+  look: RefObject<LookOffset>;
 }
 
-function Rover({ config, terrain, obstacles, keys, pad, light, arrow, hud, onFinish, frozen }: RoverProps) {
+interface LookOffset {
+  yaw: number;
+  pitch: number;
+  active: boolean;
+}
+
+const LOOK_SENSITIVITY = 0.006;
+const CHASE_ELEVATION = Math.atan2(5.2, 11);
+const CHASE_DISTANCE = Math.hypot(5.2, 11);
+
+function Rover({ config, terrain, obstacles, keys, pad, light, arrow, hud, onFinish, frozen, vehicle, sun, cameraMode, look: lookOffset }: RoverProps) {
+  const specs = VEHICLES[vehicle];
+  const axes = useMemo(() => sunAxes(sun), [sun]);
+  const wheelAngle = useRef(0);
   const ref = useRef<THREE.Group>(null);
-  const sim = useRef({ x: config.start.x, z: config.start.z, heading: 0, speed: 0, index: 0, scan: 0, battery: 100, t: 0, asleep: false, hudAt: 0, done: false, tethered: false });
+  const sim = useRef({ x: config.start.x, z: config.start.z, heading: 0, speed: 0, index: 0, scan: 0, battery: 100, t: 0, asleep: false, hudAt: 0, done: false, tethered: false, odometer: 0 });
   const camPos = useRef(new THREE.Vector3(config.start.x, 8, config.start.z + 14));
   const camLook = useRef(new THREE.Vector3(config.start.x, 1, config.start.z - 4));
   const scratch = useRef({ wanted: new THREE.Vector3(), look: new THREE.Vector3(), contact: emptyContact() });
@@ -108,11 +140,13 @@ function Rover({ config, terrain, obstacles, keys, pad, light, arrow, hud, onFin
 
       const drive = s.asleep ? 0 : forward ? 1 : back ? -0.55 : 0;
       s.speed += (drive * 11 - s.speed) * damp(2.6, dt);
+      wheelAngle.current += (s.speed * dt) / 0.34;
+      s.odometer += Math.abs(s.speed) * dt;
       if (!s.asleep) s.heading += ((left ? 1 : 0) - (right ? 1 : 0)) * dt * (1.9 - Math.min(0.7, Math.abs(s.speed) * 0.05));
 
       const dirX = -Math.sin(s.heading);
       const dirZ = -Math.cos(s.heading);
-      const contact = resolveCollisions(s.x + dirX * s.speed * dt, s.z + dirZ * s.speed * dt, ROVER_RADIUS, obstacles, scratch.current.contact);
+      const contact = resolveCollisions(s.x + dirX * s.speed * dt, s.z + dirZ * s.speed * dt, specs.radius, obstacles, scratch.current.contact);
       if (contact.hit) {
         // Lose only the part of the speed aimed at the rock, so a glancing hit keeps sliding.
         const sign = Math.sign(s.speed);
@@ -156,28 +190,52 @@ function Rover({ config, terrain, obstacles, keys, pad, light, arrow, hud, onFin
     const pitch = Math.atan2(terrain.heightAt(s.x - Math.sin(s.heading) * e, s.z - Math.cos(s.heading) * e) - y, e);
     const roll = Math.atan2(terrain.heightAt(s.x + Math.cos(s.heading) * e, s.z - Math.sin(s.heading) * e) - y, e);
     if (ref.current) {
+      ref.current.visible = cameraMode !== 'cockpit';
       ref.current.position.set(s.x, y, s.z);
       ref.current.rotation.set(pitch, s.heading, -roll, 'YXZ');
     }
     if (light.current) {
-      const u = Math.round((s.x * SUN_RIGHT.x + s.z * SUN_RIGHT.z) / SHADOW_TEXEL) * SHADOW_TEXEL;
-      const v = Math.round((s.x * SUN_UP.x + s.z * SUN_UP.z) / SHADOW_TEXEL) * SHADOW_TEXEL;
-      const w = s.x * SUN_DIR.x + s.z * SUN_DIR.z;
-      const ax = SUN_RIGHT.x * u + SUN_UP.x * v + SUN_DIR.x * w;
-      const ay = SUN_RIGHT.y * u + SUN_UP.y * v + SUN_DIR.y * w;
-      const az = SUN_RIGHT.z * u + SUN_UP.z * v + SUN_DIR.z * w;
+      const { dir, right, up } = axes;
+      const u = Math.round((s.x * right.x + s.z * right.z) / SHADOW_TEXEL) * SHADOW_TEXEL;
+      const v = Math.round((s.x * up.x + s.z * up.z) / SHADOW_TEXEL) * SHADOW_TEXEL;
+      const w = s.x * dir.x + s.z * dir.z;
+      const ax = right.x * u + up.x * v + dir.x * w;
+      const ay = right.y * u + up.y * v + dir.y * w;
+      const az = right.z * u + up.z * v + dir.z * w;
       light.current.target.position.set(ax, ay, az);
       light.current.target.updateMatrixWorld();
-      light.current.position.set(ax + SUN_OFFSET.x, ay + SUN_OFFSET.y, az + SUN_OFFSET.z);
+      light.current.position.set(ax + sun.x, ay + sun.y, az + sun.z);
     }
 
     const fx = -Math.sin(s.heading);
     const fz = -Math.cos(s.heading);
     const { wanted, look } = scratch.current;
-    wanted.set(s.x - fx * 11, 0, s.z - fz * 11);
-    wanted.y = Math.max(y + 5.2, terrain.heightAt(wanted.x, wanted.z) + 2.5);
-    camPos.current.lerp(wanted, damp(4, dt));
-    camLook.current.lerp(look.set(s.x + fx * 7, y + 1.4, s.z + fz * 7), damp(6, dt));
+    const { yaw, pitch: tilt, active } = lookOffset.current;
+    const follow = active ? 16 : 4;
+    const yawX = -Math.sin(s.heading + yaw);
+    const yawZ = -Math.cos(s.heading + yaw);
+    if (cameraMode === 'cockpit') {
+      wanted.set(s.x + fx * (specs.radius * 0.7), y + specs.eye, s.z + fz * (specs.radius * 0.7));
+      camPos.current.lerp(wanted, damp(14, dt));
+      camLook.current.lerp(look.set(s.x + yawX * 26, y + specs.eye - 1.2 + pitch * 18 - tilt * 26, s.z + yawZ * 26), damp(active ? 24 : 14, dt));
+    } else if (cameraMode === 'high') {
+      const c = Math.cos(yaw);
+      const n = Math.sin(yaw);
+      const lift = Math.max(10, 34 + tilt * 30);
+      wanted.set(s.x + 8 * c + 16 * n, y + lift, s.z - 8 * n + 16 * c);
+      camPos.current.lerp(wanted, damp(follow, dt));
+      camLook.current.lerp(look.set(s.x, y, s.z), damp(6, dt));
+    } else {
+      const elevation = Math.max(0.1, Math.min(1.4, CHASE_ELEVATION + tilt));
+      const reach = CHASE_DISTANCE * specs.camera;
+      const flat = Math.cos(elevation) * reach;
+      wanted.set(s.x - yawX * flat, 0, s.z - yawZ * flat);
+      wanted.y = Math.max(y + Math.sin(elevation) * reach, terrain.heightAt(wanted.x, wanted.z) + 2.5);
+      camPos.current.lerp(wanted, damp(follow, dt));
+      // Looking ahead only makes sense from behind; when orbiting, keep the rover centred.
+      const lead = 7 * Math.max(0, 1 - Math.abs(yaw) / 0.9);
+      camLook.current.lerp(look.set(s.x + fx * lead, y + 1.4, s.z + fz * lead), damp(active ? 16 : 6, dt));
+    }
     state.camera.position.copy(camPos.current);
     state.camera.lookAt(camLook.current);
 
@@ -199,13 +257,24 @@ function Rover({ config, terrain, obstacles, keys, pad, light, arrow, hud, onFin
         scan: s.scan / SCAN_SECONDS,
         tethered: s.tethered,
         asleep: s.asleep,
+        speed: Math.abs(s.speed),
+        odometer: s.odometer,
+        slope: (Math.max(Math.abs(pitch), Math.abs(roll)) * 180) / Math.PI,
       });
     }
   });
 
   return (
     <>
-      <Echo ref={ref} />
+      {vehicle === 'echo' ? (
+        <Echo ref={ref} wheelAngle={wheelAngle} />
+      ) : (
+        <group ref={ref}>
+          <HardwareModel id={vehicle} />
+        </group>
+      )}
+      <Tracks motion={sim} terrain={terrain} halfWidth={specs.track} world={config.world} />
+      <WheelDust motion={sim} terrain={terrain} halfWidth={specs.track} world={config.world} />
       {config.targets.map((t, i) => (
         <Beacon key={i} x={t.x} z={t.z} y={terrain.heightAt(t.x, t.z)} state={i < progress ? 'done' : i === progress ? 'next' : 'later'} />
       ))}
@@ -248,6 +317,13 @@ function DriveHud({ id, config, lab, channel, arrow }: { id: string; config: Dri
           )}
         </div>
       )}
+      {hud && lab && (
+        <div className="hud-side">
+          <Readout label={t('hud.speed')} value={hud.speed.toFixed(1)} unit="m/s" />
+          <Readout label={t('hud.odometer')} value={hud.odometer.toFixed(0)} unit="m" />
+          <Readout label={t('hud.slope')} value={hud.slope.toFixed(0)} unit="°" />
+        </div>
+      )}
       {hud && hud.scan > 0 && <div className="scanbar"><span>{t('hud.scanning')}</span><i style={{ width: `${hud.scan * 100}%` }} /></div>}
       {lastFound && <div className="toast" key={hud?.index} role="status">{lastFound.found}</div>}
       {hud?.tethered && config.tether && <div className="alert" role="alert">{t(`missions:${id}.tether`)}</div>}
@@ -256,15 +332,42 @@ function DriveHud({ id, config, lab, channel, arrow }: { id: string; config: Dri
   );
 }
 
-export function DriveMission({ id, config, onResult, lab }: MissionProps<DriveConfig>) {
+export function DriveMission({ id, config, onResult, lab, vehicle = 'echo', sun = SUN_OFFSET, cameraMode = 'chase' }: MissionProps<DriveConfig> & { vehicle?: LabVehicle; sun?: THREE.Vector3; cameraMode?: LabCamera }) {
   const { t } = useTranslation();
   const quality = useGame((s) => s.quality);
   const keys = useKeys();
   const pad = useRef<Pad>({ forward: false, back: false, left: false, right: false });
   const channel = useRef<((h: Hud) => void) | null>(null);
+  const lookOffset = useRef<LookOffset>({ yaw: 0, pitch: 0, active: false });
+  const lastPointer = useRef({ x: 0, y: 0 });
+  useEffect(() => {
+    lookOffset.current.yaw = 0;
+    lookOffset.current.pitch = 0;
+  }, [cameraMode]);
+  const lookHandlers = lab
+    ? {
+        onContextMenu: (e: ReactMouseEvent) => e.preventDefault(),
+        onPointerDown: (e: ReactPointerEvent<HTMLDivElement>) => {
+          if (e.button !== 2) return;
+          e.currentTarget.setPointerCapture(e.pointerId);
+          lookOffset.current.active = true;
+          lastPointer.current = { x: e.clientX, y: e.clientY };
+        },
+        onPointerMove: (e: ReactPointerEvent<HTMLDivElement>) => {
+          if (!lookOffset.current.active) return;
+          lookOffset.current.yaw -= (e.clientX - lastPointer.current.x) * LOOK_SENSITIVITY;
+          lookOffset.current.pitch = Math.max(-0.6, Math.min(1, lookOffset.current.pitch + (e.clientY - lastPointer.current.y) * LOOK_SENSITIVITY));
+          lastPointer.current = { x: e.clientX, y: e.clientY };
+        },
+        onPointerUp: (e: ReactPointerEvent<HTMLDivElement>) => {
+          if (e.button === 2) lookOffset.current.active = false;
+        },
+      }
+    : {};
   const arrow = useRef<HTMLSpanElement>(null);
   const [finished, setFinished] = useState(false);
-  const sun = useRef<THREE.DirectionalLight>(null);
+  const sunLight = useRef<THREE.DirectionalLight>(null);
+  const sunVector = sun;
   const clear = useMemo(() => [{ x: config.start.x, z: config.start.z, r: 5 }, ...config.targets.map((p) => ({ x: p.x, z: p.z, r: 6 })), ...(config.prop ? [{ x: config.prop.x, z: config.prop.z, r: 5 }] : [])], [config]);
   const terrain = useMemo(() => makeTerrain({ seed: config.seed, size: 260, amplitude: config.world === 'moon' ? 5.5 : 8, craterCount: config.world === 'moon' ? 58 : 14, flat: clear }), [config, clear]);
   const rocks = useMemo(() => scatterRocks(terrain, quality === 'low' ? 60 : 180, config.seed + 3, clear), [terrain, quality, config.seed, clear]);
@@ -285,10 +388,10 @@ export function DriveMission({ id, config, onResult, lab }: MissionProps<DriveCo
   );
 
   return (
-    <div className="stage">
+    <div className="stage" {...lookHandlers}>
       <GameCanvas camera={{ position: [0, 8, 14], fov: 55, far: 520 }}>
-        <Sky world={config.world} />
-        <Lights world={config.world} sunRef={sun} />
+        <Sky world={config.world} sun={sunVector} />
+        <Lights world={config.world} sunRef={sunLight} sun={sunVector} />
         <TerrainMesh terrain={terrain} world={config.world} />
         <Rocks rocks={rocks} world={config.world} />
         {config.prop && (
@@ -296,12 +399,12 @@ export function DriveMission({ id, config, onResult, lab }: MissionProps<DriveCo
             <HardwareModel id={config.prop.model} />
           </group>
         )}
-        <Rover config={config} terrain={terrain} obstacles={obstacles} keys={keys} pad={pad} light={sun} arrow={arrow} hud={channel} onFinish={finish} frozen={finished} />
+        <Rover config={config} terrain={terrain} obstacles={obstacles} keys={keys} pad={pad} light={sunLight} arrow={arrow} hud={channel} onFinish={finish} frozen={finished} vehicle={vehicle} sun={sunVector} cameraMode={cameraMode} look={lookOffset} />
       </GameCanvas>
 
       <DriveHud id={id} config={config} lab={lab} channel={channel} arrow={arrow} />
 
-      <p className="keys-hint">{t('hud.keys')}</p>
+      <p className="keys-hint">{t('hud.keys')}{lab ? ` · ${t('hud.lookKeys')}` : ''}</p>
       <div className="dpad">
         {hold('left', t('hud.left'), '◀')}
         <div className="dpad-mid">

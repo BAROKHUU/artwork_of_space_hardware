@@ -8,7 +8,6 @@ import { distanceAU, type ProbeId } from '../sim/ephemeris';
 import { GameCanvas, prefersReducedMotion } from '../three/GameCanvas';
 import { FateBadge } from '../components/HardwareInfo';
 import { HardwareDialog } from './Logbook';
-
 const RADIUS = 2.4;
 const FATE_COLOR: Record<string, string> = { operating: '#37e6c0', silent: '#ffb25a', retired: '#f4ead7', drifting: '#a78bfa' };
 

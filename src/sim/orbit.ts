@@ -4,6 +4,7 @@ const JUPITER_MASS_RATIO = 9.546e-4;
 export const JUPITER_ORBIT_AU = 5.204;
 const JUPITER_RATE = (2 * Math.PI) / 11.862;
 const JUPITER_RADIUS_AU = 0.000478;
+const WELL_RADIUS_AU = 0.06;
 export const KMS_PER_AU_YR = 4.7404;
 const RAD = Math.PI / 180;
 
@@ -11,6 +12,13 @@ const RAD = Math.PI / 180;
 export const BOOST_GAIN_KMS = 1;
 
 export type SlingshotOutcome = 'boosted' | 'short' | 'missed' | 'bound' | 'hit';
+
+/** A fixed extra mass the player drops into the system, in units of Jupiter's mass. */
+export interface Well {
+  x: number;
+  y: number;
+  mass: number;
+}
 
 export interface SlingshotInput {
   /** Where Jupiter sits, in degrees ahead of Earth, on launch day. */
@@ -20,9 +28,11 @@ export interface SlingshotInput {
   /** 1 is the real Jupiter, 0 removes it. */
   jupiterMass?: number;
   maxYears?: number;
+  wells?: Well[];
 }
 
 export interface SlingshotResult {
+  /** x, y in AU, t in years. */
   path: [number, number, number][];
   outcome: SlingshotOutcome;
   closestAU: number;
@@ -40,20 +50,29 @@ export function jupiterAt(startDeg: number, t: number): [number, number] {
 
 type V = [number, number, number, number];
 
-function deriv(t: number, s: V, startDeg: number, gmJ: number): V {
+function deriv(t: number, s: V, startDeg: number, gmJ: number, wells: Well[]): V {
   const [x, y, vx, vy] = s;
   const r3 = Math.hypot(x, y) ** 3;
   const [jx, jy] = jupiterAt(startDeg, t);
   const dx = jx - x;
   const dy = jy - y;
   const d3 = Math.max(Math.hypot(dx, dy), 1e-5) ** 3;
-  return [vx, vy, (-GM_SUN * x) / r3 + (gmJ * dx) / d3, (-GM_SUN * y) / r3 + (gmJ * dy) / d3];
+  let ax = (-GM_SUN * x) / r3 + (gmJ * dx) / d3;
+  let ay = (-GM_SUN * y) / r3 + (gmJ * dy) / d3;
+  for (const w of wells) {
+    const wx = w.x - x;
+    const wy = w.y - y;
+    const q = (GM_SUN * JUPITER_MASS_RATIO * w.mass) / Math.max(Math.hypot(wx, wy), 1e-3) ** 3;
+    ax += q * wx;
+    ay += q * wy;
+  }
+  return [vx, vy, ax, ay];
 }
 
 const add = (s: V, k: V, h: number): V => [s[0] + k[0] * h, s[1] + k[1] * h, s[2] + k[2] * h, s[3] + k[3] * h];
 
 export function simulateSlingshot(input: SlingshotInput): SlingshotResult {
-  const { jupiterStartDeg, speedKms, jupiterMass = 1, maxYears = 14 } = input;
+  const { jupiterStartDeg, speedKms, jupiterMass = 1, maxYears = 14, wells = [] } = input;
   const gmJ = GM_SUN * JUPITER_MASS_RATIO * jupiterMass;
   let s: V = [1, 0, 0, speedKms / KMS_PER_AU_YR];
   let t = 0;
@@ -87,18 +106,20 @@ export function simulateSlingshot(input: SlingshotInput): SlingshotResult {
       path.push([s[0], s[1], t]);
       lastSample = t;
     }
-    if (jupiterMass > 0 && rJ < JUPITER_RADIUS_AU) {
+    if ((jupiterMass > 0 && rJ < JUPITER_RADIUS_AU) || wells.some((w) => Math.hypot(w.x - s[0], w.y - s[1]) < WELL_RADIUS_AU)) {
       hit = true;
       break;
     }
     if (r > 45) break;
 
-    const h = Math.min(0.01, 0.02 * Math.min(r ** 1.5, jupiterMass > 0 ? rJ ** 1.5 / Math.sqrt(JUPITER_MASS_RATIO * jupiterMass) : Infinity));
+    let nearest = jupiterMass > 0 ? rJ ** 1.5 / Math.sqrt(JUPITER_MASS_RATIO * jupiterMass) : Infinity;
+    for (const w of wells) nearest = Math.min(nearest, Math.hypot(w.x - s[0], w.y - s[1]) ** 1.5 / Math.sqrt(JUPITER_MASS_RATIO * w.mass));
+    const h = Math.min(0.01, 0.02 * Math.min(r ** 1.5, nearest));
     const dt = Math.max(h, 2e-6);
-    const k1 = deriv(t, s, jupiterStartDeg, gmJ);
-    const k2 = deriv(t + dt / 2, add(s, k1, dt / 2), jupiterStartDeg, gmJ);
-    const k3 = deriv(t + dt / 2, add(s, k2, dt / 2), jupiterStartDeg, gmJ);
-    const k4 = deriv(t + dt, add(s, k3, dt), jupiterStartDeg, gmJ);
+    const k1 = deriv(t, s, jupiterStartDeg, gmJ, wells);
+    const k2 = deriv(t + dt / 2, add(s, k1, dt / 2), jupiterStartDeg, gmJ, wells);
+    const k3 = deriv(t + dt / 2, add(s, k2, dt / 2), jupiterStartDeg, gmJ, wells);
+    const k4 = deriv(t + dt, add(s, k3, dt), jupiterStartDeg, gmJ, wells);
     s = [
       s[0] + (dt / 6) * (k1[0] + 2 * k2[0] + 2 * k3[0] + k4[0]),
       s[1] + (dt / 6) * (k1[1] + 2 * k2[1] + 2 * k3[1] + k4[1]),
@@ -134,4 +155,11 @@ export function simulateSlingshot(input: SlingshotInput): SlingshotResult {
     durationYears: t,
     jupiterStartDeg,
   };
+}
+
+export const flybyGain = (r: SlingshotResult) => r.speedAfterKms - r.speedBeforeKms;
+
+/** Launches `count` probes on launch days spread evenly around the input. */
+export function simulateFleet(input: SlingshotInput, count: number, spreadDeg: number): SlingshotResult[] {
+  return Array.from({ length: count }, (_, i) => simulateSlingshot({ ...input, jupiterStartDeg: input.jupiterStartDeg + (i / (count - 1) - 0.5) * 2 * spreadDeg }));
 }

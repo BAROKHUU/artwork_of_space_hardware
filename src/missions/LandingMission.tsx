@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
+import { Environment, Lightformer } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import { useTranslation } from 'react-i18next';
 import * as THREE from 'three';
@@ -8,7 +9,8 @@ import { scatterRocks } from '../sim/obstacles';
 import { makeTerrain } from '../sim/terrain';
 import { GameCanvas } from '../three/GameCanvas';
 import { HardwareModel } from '../three/models';
-import { Lights, Rocks, Sky, TerrainMesh } from '../three/Scenery';
+import { Engines, GroundDust } from '../three/Plume';
+import { EarthScenery, Lights, Rocks, Sky, TerrainMesh } from '../three/Scenery';
 import { play } from '../audio/sfx';
 import { Gauge, HoldButton, Readout, useKeys, type HudChannel, type MissionProps } from './common';
 
@@ -27,7 +29,8 @@ interface Hud {
 function Flight({ config, input, keys, channel, onEnd }: { config: LandingConfig; input: RefObject<{ throttle: boolean; chute: boolean }>; keys: ReturnType<typeof useKeys>; channel: HudChannel<Hud>; onEnd: (s: LanderState, heldEnough: boolean) => void }) {
   const hover = config.objective === 'hover';
   const craft = useRef<THREE.Group>(null);
-  const plume = useRef<THREE.Mesh>(null);
+  const fire = useRef(0);
+  const height = useRef(visualAlt(config.alt, hover));
   const rotor = useRef<THREE.Group>(null);
   const canopy = useRef<THREE.Group>(null);
   const streaks = useRef<THREE.Group>(null);
@@ -68,13 +71,12 @@ function Flight({ config, input, keys, channel, onEnd }: { config: LandingConfig
     // Physics runs in fixed steps; blend the last two so motion stays even at any frame rate.
     const shownAlt = c.over ? s.alt : c.prevAlt + (s.alt - c.prevAlt) * (c.acc / STEP);
     const y = visualAlt(shownAlt, hover);
+    height.current = y;
+    // Engines ramp up and cut off fast, but never pop.
+    fire.current += ((firing && !hover ? 1 : 0) - fire.current) * (1 - Math.exp(-dt * 20));
     if (craft.current) {
-      craft.current.position.y = y;
+      craft.current.position.set(Math.sin(state.clock.elapsedTime * 73) * 0.012 * fire.current, y, Math.cos(state.clock.elapsedTime * 59) * 0.012 * fire.current);
       craft.current.rotation.z += (c.tilt - craft.current.rotation.z) * Math.min(1, dt * 7);
-    }
-    if (plume.current) {
-      plume.current.visible = firing && !hover;
-      plume.current.scale.y = 0.8 + Math.random() * 0.5;
     }
     if (rotor.current) rotor.current.rotation.y += dt * (firing ? 60 : 8);
     if (canopy.current) canopy.current.visible = chute && s.alt > 0.5;
@@ -82,9 +84,9 @@ function Flight({ config, input, keys, channel, onEnd }: { config: LandingConfig
       streaks.current.position.y = ((shownAlt * (hover ? 1.15 : 0.5)) % 12) + y - 6;
       streaks.current.visible = !hover && s.alt > 6;
     }
-    const camY = hover ? 4.5 : Math.max(y + 5.5, 4);
-    state.camera.position.set(hover ? 5 : 8, camY, hover ? 12 : 17);
-    state.camera.lookAt(0, hover ? 3.4 : Math.max(y - 2, 1), 0);
+    const camY = hover ? 4.5 : Math.max(y + 3.4, 3.2);
+    state.camera.position.set(hover ? 5 : 5.6, camY, hover ? 12 : 10.5);
+    state.camera.lookAt(0, hover ? 3.4 : Math.max(y - 0.4, 1.1), 0);
 
     c.hudAt += dt;
     if (c.hudAt > 0.1) {
@@ -100,17 +102,14 @@ function Flight({ config, input, keys, channel, onEnd }: { config: LandingConfig
       <group ref={craft} position={[0, visualAlt(config.alt, hover), 0]}>
         <HardwareModel id={config.vehicle} />
         {config.vehicle === 'ingenuity' && (
-          <group ref={rotor} position={[0, 1.65, 0]}>
+          <group ref={rotor} position={[0, 1.02, 0]}>
             <mesh>
-              <cylinderGeometry args={[1.5, 1.5, 0.01, 24]} />
+              <cylinderGeometry args={[1.58, 1.58, 0.01, 32]} />
               <meshBasicMaterial color="#f4ead7" transparent opacity={0.2} depthWrite={false} />
             </mesh>
           </group>
         )}
-        <mesh ref={plume} position={[0, 0.05, 0]} rotation={[Math.PI, 0, 0]} visible={false}>
-          <coneGeometry args={[0.55, 2.6, 12, 1, true]} />
-          <meshBasicMaterial color="#ffb25a" transparent opacity={0.75} depthWrite={false} toneMapped={false} />
-        </mesh>
+        {config.vehicle !== 'ingenuity' && <Engines vehicle={config.vehicle} fire={fire} height={height} />}
         {config.hasChute && (
           <group ref={canopy} visible={false} position={[0, 9, 0]}>
             <mesh>
@@ -126,6 +125,7 @@ function Flight({ config, input, keys, channel, onEnd }: { config: LandingConfig
           </group>
         )}
       </group>
+      <GroundDust world={config.world} fire={fire} height={height} />
       <group ref={streaks}>
         {streakPositions.map((p, i) => (
           <mesh key={i} position={p as unknown as [number, number, number]}>
@@ -201,8 +201,8 @@ export function LandingMission({ config, onResult, lab }: MissionProps<LandingCo
   }, [config.hasChute]);
 
   const clear = useMemo(() => [{ x: 0, z: 0, r: 8 }], []);
-  const terrain = useMemo(() => makeTerrain({ seed: 31, size: 260, amplitude: config.world === 'moon' ? 4 : 6, craterCount: config.world === 'moon' ? 45 : 10, flat: clear }), [config.world, clear]);
-  const rocks = useMemo(() => scatterRocks(terrain, 110, 8, clear), [terrain, clear]);
+  const terrain = useMemo(() => makeTerrain({ seed: 31, size: 260, amplitude: config.world === 'moon' ? 4 : config.world === 'mars' ? 6 : 3.5, craterCount: config.world === 'moon' ? 45 : config.world === 'mars' ? 10 : 0, flat: clear }), [config.world, clear]);
+  const rocks = useMemo(() => scatterRocks(terrain, config.world === 'earth' ? 26 : 110, 8, clear), [terrain, clear, config.world]);
 
   const end = (s: LanderState, heldEnough: boolean) => {
     const speed = Math.abs(s.vel);
@@ -220,6 +220,12 @@ export function LandingMission({ config, onResult, lab }: MissionProps<LandingCo
         <Lights world={config.world} />
         <TerrainMesh terrain={terrain} world={config.world} />
         <Rocks rocks={rocks} world={config.world} />
+        {config.world === 'earth' && <EarthScenery terrain={terrain} keepClear={13} />}
+        <Environment frames={1} resolution={64} environmentIntensity={0.32}>
+          <Lightformer form="rect" intensity={3.5} position={[6, 7, 4]} scale={[9, 9, 1]} color="#fff6e6" />
+          <Lightformer form="rect" intensity={1.1} position={[-7, 2, -3]} scale={[6, 5, 1]} color="#8fa8d8" />
+          <Lightformer form="rect" intensity={0.7} position={[0, -5, 0]} rotation={[Math.PI / 2, 0, 0]} scale={[12, 12, 1]} color={config.world === 'mars' ? '#b06b42' : config.world === 'earth' ? '#6d8a55' : '#8a8a8a'} />
+        </Environment>
         <Flight config={config} input={input} keys={keys} channel={channel} onEnd={end} />
       </GameCanvas>
       <LandingHud config={config} channel={channel} input={input} lab={lab} />

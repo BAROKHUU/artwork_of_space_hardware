@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
 import { Stars, useTexture } from '@react-three/drei';
 import { useFrame, type ThreeEvent } from '@react-three/fiber';
 import { useTranslation } from 'react-i18next';
@@ -11,17 +11,17 @@ import { GameCanvas } from '../three/GameCanvas';
 import { play } from '../audio/sfx';
 import { Readout, type MissionProps } from './common';
 
-const MOON_R = 3;
+export const MOON_R = 3;
 const STATION = new THREE.Vector3(0, -6.2, 6.6);
 
-interface Pulse {
+export interface Pulse {
   to: THREE.Vector3;
   duration: number;
   hit: boolean;
   start: number;
 }
 
-function Moon({ onShoot, marker, pulse, onPulseEnd }: { onShoot: (p: THREE.Vector3) => void; marker: [number, number, number] | null; pulse: Pulse | null; onPulseEnd: () => void }) {
+export function Moon({ onShoot, marker, pulse, onPulseEnd, children }: { onShoot: (p: THREE.Vector3) => void; marker: [number, number, number] | null; pulse: Pulse | null; onPulseEnd: () => void; children?: ReactNode }) {
   const map = useTexture(textureUrl('moon'));
   const dot = useRef<THREE.Mesh>(null);
   const beam = useRef<THREE.Mesh>(null);
@@ -65,6 +65,7 @@ function Moon({ onShoot, marker, pulse, onPulseEnd }: { onShoot: (p: THREE.Vecto
         <sphereGeometry args={[MOON_R, 96, 64]} />
         <meshStandardMaterial map={map} roughness={1} />
       </mesh>
+      {children}
       {marker && (
         <mesh position={marker}>
           <sphereGeometry args={[0.07, 12, 12]} />

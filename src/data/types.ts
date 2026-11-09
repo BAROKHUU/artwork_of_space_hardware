@@ -2,8 +2,10 @@ import type { LanderParams } from '../sim/lander';
 import type { BatteryParams } from '../sim/rover';
 
 export type World = 'moon' | 'mars' | 'deep';
+/** The ground a scene can be set on. */
+export type Surface = 'moon' | 'mars' | 'earth';
 export type Fate = 'operating' | 'silent' | 'retired' | 'drifting';
-export type ModelId = 'ranger' | 'surveyor' | 'descent' | 'lrrr' | 'lrv' | 'pioneer' | 'voyager' | 'viking' | 'sojourner' | 'mer' | 'curiosity' | 'ingenuity' | 'newhorizons';
+export type ModelId = 'ranger' | 'surveyor' | 'descent' | 'lrrr' | 'lrv' | 'pioneer' | 'voyager' | 'viking' | 'sojourner' | 'mer' | 'curiosity' | 'perseverance' | 'ingenuity' | 'newhorizons';
 
 export interface Hardware {
   id: string;
@@ -31,7 +33,7 @@ export interface DriveConfig {
 }
 
 export interface LandingConfig {
-  world: 'moon' | 'mars';
+  world: Surface;
   vehicle: 'surveyor' | 'viking' | 'ingenuity';
   objective: 'touchdown' | 'hover';
   alt: number;

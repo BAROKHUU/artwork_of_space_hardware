@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import trajectories from '../data/generated/trajectories.json';
-import { MS_PER_YEAR, TIME_MAX, TIME_MIN, heliocentric, orbitPoints, orbitalPeriodYears, orbitalSpeedKms, probePosition, sliderFromSpeed, speedFromSlider, toScene, type PlanetId, type Vec3 } from './solar';
+import { MS_PER_YEAR, PLANET_IDS, bodyReach, sceneRadius, sizeFactor, TIME_MAX, TIME_MIN, heliocentric, orbitPoints, orbitalPeriodYears, orbitalSpeedKms, probePosition, sliderFromSpeed, speedFromSlider, toScene, type PlanetId, type Vec3 } from './solar';
 
 const DAY = Date.UTC(2026, 10, 9);
 const dist = (a: Vec3, b: Vec3) => Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
@@ -55,6 +55,27 @@ describe('planet positions', () => {
   });
 });
 
+describe('planets never touch on screen', () => {
+  it.each(['compressed', 'true'] as const)('keeps every orbit clear of its neighbours in the %s view', (scale) => {
+    const steps = 12000;
+    const p: Vec3 = [0, 0, 0];
+    const band = PLANET_IDS.map((id) => {
+      let min = Infinity;
+      let max = 0;
+      for (let i = 0; i <= steps; i++) {
+        const au = r(heliocentric(id, TIME_MIN + ((TIME_MAX - TIME_MIN) * i) / steps + i * 86400000 * 0.37, p));
+        min = Math.min(min, au);
+        max = Math.max(max, au);
+      }
+      return { id, min: sceneRadius(min, scale), max: sceneRadius(max, scale), reach: bodyReach(id) * sizeFactor(scale) };
+    });
+    for (let i = 0; i + 1 < band.length; i++) {
+      const gap = band[i + 1].min - band[i].max;
+      expect(gap, `${band[i].id} to ${band[i + 1].id}`).toBeGreaterThan(band[i].reach + band[i + 1].reach);
+    }
+  });
+});
+
 describe('view helpers', () => {
   it('speed slider spans one day to one century per second, both ways', () => {
     expect(speedFromSlider(0)).toBeCloseTo(1, 6);
@@ -78,6 +99,15 @@ describe('view helpers', () => {
 describe('probe tracks', () => {
   const { voyager1, voyager2 } = trajectories.probes;
   const p: Vec3 = [0, 0, 0];
+
+  it('keeps a probe coasting outward past the end of its table', () => {
+    const later = (y: number) => {
+      probePosition(voyager1, trajectories.stepDays, Date.UTC(y, 0, 1), p);
+      return r(p);
+    };
+    expect(later(2100)).toBeGreaterThan(later(2049));
+    expect(later(2900)).toBeGreaterThan(later(2100));
+  });
 
   it('hides a probe before launch', () => {
     expect(probePosition(voyager1, trajectories.stepDays, Date.UTC(1970, 0, 1), p)).toBe(false);

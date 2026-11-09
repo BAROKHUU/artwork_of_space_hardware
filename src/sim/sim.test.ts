@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { angularDistanceDeg, latLonToVec3, vec3ToLatLon } from './geo';
 import { distanceFromEcho, moonDriftMeters, roundTripSeconds } from './laser';
 import { initialLander, isDown, isSoftTouchdown, stepLander, type LanderParams } from './lander';
-import { simulateSlingshot } from './orbit';
+import { simulateFleet, simulateSlingshot } from './orbit';
 import { distanceAU, lightHours } from './ephemeris';
 import { makeTerrain } from './terrain';
 
@@ -53,6 +53,20 @@ describe('slingshot', () => {
   });
   it('reports a short trajectory when launched too slowly', () => {
     expect(simulateSlingshot({ jupiterStartDeg: 90, speedKms: 37.8 }).outcome).toBe('short');
+  });
+});
+
+describe('slingshot lab', () => {
+  const base = { jupiterStartDeg: 69, speedKms: 38.9 };
+  it('bends the path when a gravity well is dropped nearby', () => {
+    const plain = simulateSlingshot({ ...base, jupiterMass: 0 });
+    const pulled = simulateSlingshot({ ...base, jupiterMass: 0, wells: [{ x: -2, y: 2.5, mass: 30 }] });
+    const end = (r: typeof plain) => r.path.at(-1)!;
+    expect(Math.hypot(end(plain)[0] - end(pulled)[0], end(plain)[1] - end(pulled)[1])).toBeGreaterThan(0.5);
+  });
+  it('spreads a fleet evenly around the launch day', () => {
+    const fleet = simulateFleet(base, 5, 4);
+    expect(fleet.map((r) => r.jupiterStartDeg)).toEqual([65, 67, 69, 71, 73]);
   });
 });
 
