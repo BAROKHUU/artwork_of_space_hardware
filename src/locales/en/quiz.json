@@ -1,0 +1,30 @@
+{
+  "ch1": [
+    { "q": "Why did Ranger 7 keep taking pictures while crashing?", "options": ["Its brakes had failed", "Each picture was closer and showed more detail", "It was looking for astronauts"], "why": "Ranger had no way to land. The closer it got, the sharper its pictures of the surface became." },
+    { "q": "What did Surveyor 3's scoop help prove?", "options": ["The Moon has oceans", "The Moon is hollow", "The ground could hold up a landing craft"], "why": "Testing the soil showed that the surface was firm enough for Apollo." }
+  ],
+  "ch2": [
+    { "q": "Why does the Apollo 11 laser reflector still work today?", "options": ["Astronauts recharge it", "It has a nuclear battery", "It needs no power at all"], "why": "It just reflects light straight back, so there is nothing to run out." },
+    { "q": "Which way is the Moon slowly moving?", "options": ["Away from Earth", "Toward Earth", "It never moves"], "why": "Laser timing shows that the Moon drifts about 3.8 centimeters farther away each year." }
+  ],
+  "ch3": [
+    { "q": "What does a gravity assist do?", "options": ["Uses a planet's motion to change a spacecraft's speed", "Refills the fuel tank", "Slows a planet down so it can be studied"], "why": "A spacecraft can borrow a tiny amount of a planet's orbital motion and leave with more speed." },
+    { "q": "Which planets has only Voyager 2 ever visited?", "options": ["Mars and Venus", "Uranus and Neptune", "Jupiter and Saturn"], "why": "No other spacecraft has flown past Uranus or Neptune." }
+  ],
+  "ch4": [
+    { "q": "What did Viking 1 need to land on Mars?", "options": ["Only a parachute", "A parachute and rocket engines", "Only wings"], "why": "The thin air slows you down, but not enough. Rockets did the rest." },
+    { "q": "What did Viking's biology tests conclude?", "options": ["Strange chemistry, but no clear evidence of life", "Mars is full of microbes", "The experiments never ran"], "why": "The soil reacted in surprising ways, but no clear sign of living things was found." }
+  ],
+  "ch5": [
+    { "q": "How long was Opportunity's mission planned to last?", "options": ["15 years", "One Martian year", "About 90 Martian days"], "why": "It was planned for about 90 sols and worked for more than 14 years." },
+    { "q": "What ended Opportunity's mission?", "options": ["A broken wheel", "A planet-wide dust storm blocked the sun", "It ran out of road"], "why": "Solar panels need sunlight. The 2018 storm blocked it." }
+  ],
+  "ch6": [
+    { "q": "How many flights was Ingenuity planned to make?", "options": ["Up to 5", "72", "1,000"], "why": "Up to five was the plan. It flew 72 times." },
+    { "q": "What record did Perseverance set in October 2026?", "options": ["Highest flight on Mars", "First rover on Mars", "Longest distance driven on another world"], "why": "It passed Opportunity's record on 11 October 2026." }
+  ],
+  "ch7": [
+    { "q": "What makes Voyager 1 special?", "options": ["It is the fastest ever rover", "It is the farthest human-made object", "It has landed on Pluto"], "why": "Nothing we have built has ever gone farther." },
+    { "q": "Why was the Golden Record made?", "options": ["To tell anyone who finds it about life on Earth", "To play music for astronauts", "To help steer the spacecraft"], "why": "It's a message from Earth, with sounds, music, greetings, and pictures." }
+  ]
+}

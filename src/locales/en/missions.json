@@ -1,0 +1,62 @@
+{
+  "ch0_boot": {
+    "title": "Wheel Check", "goal": "Drive to all three test beacons.", "hint": "Follow the orange light in the distance. The arrow on your screen points to the next beacon.", "success": "All systems go. Echo is ready to roll.",
+    "targets": [ { "name": "Beacon 1", "found": "Steering works." }, { "name": "Beacon 2", "found": "Suspension works." }, { "name": "Beacon 3", "found": "Antenna is picking up a signal." } ]
+  },
+  "ch1_sites": {
+    "title": "Pick a Landing Site", "goal": "Scout photos of three areas. Choose the safest place to land in each one.", "hint": "Big craters are dangerous, and so are boulders. Choose the patch with the fewest of each.", "success": "Good choices. This is the same kind of work that scientists did with Ranger and Surveyor images.",
+    "question": "Round {{n}} of {{total}}: which site is safest?", "site": "Site {{letter}}", "right": "Safest choice: this site has the fewest hazards.", "wrong": "Risky! Site {{letter}} has fewer hazards.", "next": "Next area", "note": "Practice images, generated for this game."
+  },
+  "ch1_landing": {
+    "title": "Soft Landing", "goal": "Touch down at less than {{safe}} m/s. Hold the thruster to slow your fall.", "hint": "Wait for it, then burn. Fire too early and you'll run out of fuel high above the ground.", "success": "Touchdown! Much smoother than Surveyor's real two bounces.",
+    "fail_crash": "Crash at {{speed}} m/s. Start your burn a little sooner.", "fail_fuel": "Out of fuel. Wait longer before you start the burn."
+  },
+  "ch2_laser": {
+    "title": "Catch the Light", "goal": "Find the Sea of Tranquility near the middle of the Moon and fire the laser at the reflector {{shots}} times.", "hint": "Look for the large dark patch just right of the center. The target is close to the equator.", "success": "You just measured the distance to the Moon with light.",
+    "instruction": "Click or tap the Moon to fire the laser.", "fire": "Pulse fired", "hit": "Echo received after {{t}} s", "miss": "No echo. The pulse didn't hit the reflector.", "distance": "Distance", "shots": "Echoes", "drift": "Since 1969, the Moon has drifted about {{m}} m farther away."
+  },
+  "ch2_lrv": {
+    "title": "Follow the Rover Tracks", "goal": "Visit three geology stops. Stay within walking distance of the lander.", "hint": "The red ring on the radar shows your limit. Apollo crews had the same rule: they had to be able to walk back.", "success": "Three stops, zero stranded rovers.",
+    "tether": "Walk-back limit! Turn around.",
+    "targets": [ { "name": "Elbow Crater", "found": "Stop 1: rocks thrown out when an impact formed the crater." }, { "name": "Mountain Base", "found": "Stop 2: ancient rock from the Moon's mountains." }, { "name": "Hadley Rille", "found": "Stop 3: a long channel that was probably carved by lava." } ]
+  },
+  "ch3_slingshot": {
+    "title": "Borrow a Planet", "goal": "Pick the launch day and speed so Jupiter gives your probe at least 1 km/s extra.", "hint": "Your probe must arrive just after Jupiter passes, behind the planet.", "success": "Jupiter just threw your probe toward the outer planets, with no fuel needed.",
+    "launchDay": "Jupiter's position at launch", "speed": "Launch speed", "launch": "Launch", "relaunch": "Launch again", "suggest": "Ask Mission Control", "suggested": "Mission Control set a good window.", "resultGain": "Speed gained at Jupiter: {{gain}} km/s", "closest": "Closest approach: {{km}} million km", "years": "Year {{y}}", "withoutJupiter": "Without Jupiter", "earth": "Earth", "jupiter": "Jupiter", "saturnOrbit": "Saturn's orbit", "yearLabel": "Years since launch", "closestLabel": "Closest to Jupiter", "diagram": "Orbit diagram with the Sun, Earth, Jupiter, and your probe's path",
+    "fail_short": "Not enough speed. The probe never got as far as Jupiter. Launch faster.", "fail_missed": "Too far from Jupiter when you got there. Change Jupiter's starting position.", "fail_bound": "Close, but the flyby added too little speed. Adjust by a few degrees to pass just behind Jupiter.", "fail_hit": "Right into Jupiter! A little farther away, please."
+  },
+  "ch4_landing": {
+    "title": "Down Through Thin Air", "goal": "Open the parachute, then fire your engines. Land at less than {{safe}} m/s.", "hint": "Open the parachute right away. Start burning when you are a few hundred meters up.", "success": "On the ground! The first successful US landing on Mars happened on 20 July 1976.",
+    "fail_crash": "Crash at {{speed}} m/s. Did you open the parachute before burning?", "fail_fuel": "Out of fuel. Let the parachute do more work first."
+  },
+  "ch4_lr": {
+    "title": "Is Anyone Home?", "goal": "Read Viking's soil experiments and decide what they mean.", "hint": "Scientists don't jump to conclusions. Look at all three results together.", "success": "That's the real answer: strange chemistry and no clear evidence of life.",
+    "note": "Charts show the general shape of the results, not the raw data.", "next": "Next test", "axisX": "Days", "axisY": "Gas released", "none": "organic molecules detected", "noneLabel": "A flat instrument trace with no peaks",
+    "rounds": [
+      { "chart": "fresh", "title": "Test 1: Fresh soil + nutrients", "q": "What happened after the nutrients were added?", "options": ["The soil gave off a burst of gas", "Nothing happened"], "explain": "Radioactive gas came out quickly. That could mean something was eating the nutrients." },
+      { "chart": "heated", "title": "Test 2: Soil baked first", "q": "The heated soil stayed quiet. Why does this matter?", "options": ["It proves the oven broke", "Heat stopped the reaction, which is what you'd expect from life or from some chemicals"], "explain": "Baking changed the result. Living things could explain that, but so could chemicals broken down by heat." },
+      { "chart": "organics", "title": "Test 3: Looking for organic molecules", "q": "No organic molecules were detected. So what's the best conclusion?", "options": ["Mars is definitely full of microbes", "Strange chemistry, no clear evidence of life", "All the instruments were broken"], "explain": "Viking found surprising chemistry, but no clear evidence of life. Scientists are still studying what it means." }
+    ]
+  },
+  "ch5_opportunity": {
+    "title": "Follow the Water", "goal": "Scan all four rock outcrops before the dust storm blots out the sun.", "hint": "You charge in sunlight and use power when you drive. When the battery is low, stop and wait for the sun.", "success": "You found the signs of water, just as Opportunity did.",
+    "fail_storm": "The dust storm has blocked the sun. That's exactly what happened to Opportunity in June 2018.", "low": "Battery empty. Waiting for the sun.",
+    "targets": [ { "name": "Blueberry Field", "found": "These small spheres contain hematite, a mineral that usually forms with water." }, { "name": "Layered Outcrop", "found": "Layers like these can be laid down by water." }, { "name": "Eagle Crater Rim", "found": "Impacts expose older rock from below." }, { "name": "Endurance Crater", "found": "Evidence that this place was wet long ago." } ]
+  },
+  "ch6_ingenuity": {
+    "title": "Thin Air", "goal": "Tap the rotors to hover inside the green band for {{hold}} seconds, then land gently.", "hint": "Don't hold the button down. Short taps keep you steady.", "success": "Powered flight on Mars! Ingenuity did this 72 times.",
+    "fail_crash": "Hard landing at {{speed}} m/s. Tap the rotors to slow down near the ground.", "fail_fuel": "Battery is flat. Use shorter taps."
+  },
+  "ch7_golden": {
+    "title": "Pack the Golden Record", "goal": "Which of these are really on the Golden Record? Sort each one.", "hint": "It was made in 1977 as a phonograph record, which holds sound and picture data.", "success": "You know what we chose to say about ourselves.",
+    "on": "On the record", "off": "Not on it", "note": "The record holds 115 images, greetings in 55 languages, natural sounds, and music from many cultures.", "next": "Next item",
+    "items": {
+      "whales": { "name": "The songs of whales", "why": "Yes. Natural sounds include surf, wind, thunder, birds, and whales." },
+      "video": { "name": "A video of a rocket launch", "why": "No. The record carries sounds and images, not video." },
+      "greetings": { "name": "Hello in 55 languages", "why": "Yes. They run from ancient Akkadian to Wu, a modern Chinese dialect." },
+      "thunder": { "name": "The sound of thunder", "why": "Yes. Earth's weather made it onto the record." },
+      "map": { "name": "A street map of every city", "why": "No. It does show where Earth is, but it has no city maps." },
+      "music": { "name": "Music from many cultures", "why": "Yes. Musical selections come from different cultures and eras." }
+    }
+  }
+}

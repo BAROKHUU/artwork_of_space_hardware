@@ -1,0 +1,122 @@
+{
+  "ranger7": {
+    "name": "Ranger 7",
+    "where": "Mare Cognitum, Moon",
+    "young": "Ranger 7 was built to crash! It took pictures all the way down, then hit the Moon on purpose.",
+    "older": "Ranger 7 had no landing gear. Its six cameras returned more than 4,300 images in the final minutes before it impacted the Moon on purpose.",
+    "learned": "The first close-up pictures of the Moon taken by a US spacecraft showed that even small areas were covered in craters.",
+    "now": "Broken pieces at the bottom of a small crater it made itself. Its job ended the moment it arrived."
+  },
+  "surveyor3": {
+    "name": "Surveyor 3",
+    "where": "Ocean of Storms, Moon",
+    "young": "Surveyor 3 landed gently and dug in the dirt with a tiny scoop. Later, astronauts came and visited it!",
+    "older": "Surveyor 3 bounced twice on landing, then used a scoop to test whether the ground could hold up a heavy spacecraft. Apollo 12 landed within walking distance about two and a half years later.",
+    "learned": "Lunar soil could support a landing craft. The parts astronauts brought home also showed how metal and cameras age on the Moon.",
+    "now": "Still standing where it landed, missing its camera and scoop. The camera is on display at the Smithsonian."
+  },
+  "apollo11_descent": {
+    "name": "Apollo 11 Descent Stage",
+    "where": "Sea of Tranquility, Moon",
+    "young": "This is the bottom half of the Eagle lander. When the astronauts left, it stayed behind and acted as their launch pad.",
+    "older": "The Lunar Module came in two parts. The descent stage landed the crew on 20 July 1969, then served as the launch platform for the ascent stage that carried them home.",
+    "learned": "It proved people could land on another world and leave again.",
+    "now": "Still on the Moon with a plaque on its leg that reads: 'We came in peace for all mankind.'"
+  },
+  "lrrr": {
+    "name": "Apollo 11 Laser Reflector",
+    "where": "Sea of Tranquility, Moon",
+    "young": "A panel of 100 special mirrors. Shine a laser at it and the light comes straight back. It needs no power, so it still works!",
+    "older": "Observatories fire laser pulses at its 100 corner-cube prisms and time the return trip, measuring the Earth-Moon distance to within centimeters. It uses no electricity.",
+    "learned": "The Moon is drifting away from Earth by about 3.8 centimeters every year. The data also tests Einstein's theory of gravity.",
+    "now": "Still in use more than 55 years later. Astronauts left it behind, but scientists never stopped using it."
+  },
+  "lrv": {
+    "name": "Apollo 15 Lunar Rover",
+    "where": "Hadley-Apennine, Moon",
+    "young": "A real electric car on the Moon! Astronauts drove it to explore much farther than they could walk.",
+    "older": "Apollo 15's battery-powered rover covered 27.8 km in about three hours of driving, letting the crew reach far more geology sites than earlier missions on foot.",
+    "learned": "Driving let astronauts sample many different places, which helped scientists read the Moon's history.",
+    "now": "Parked on the Moon where the crew left it, its batteries long dead."
+  },
+  "pioneer10": {
+    "name": "Pioneer 10",
+    "where": "Heading toward the constellation Taurus",
+    "young": "Pioneer 10 was the first probe to fly past Jupiter. It carries a metal picture message, in case anyone ever finds it.",
+    "older": "Designed for 21 months, Pioneer 10 kept working for more than 30 years. It crossed the asteroid belt, flew past Jupiter, and carries a plaque showing where and when it came from.",
+    "learned": "The asteroid belt could be crossed safely, and we got the first close look at Jupiter and its intense radiation.",
+    "now": "Silent since January 2003, when its power ran too low to send a signal. It keeps coasting outward."
+  },
+  "voyager2": {
+    "name": "Voyager 2",
+    "where": "Interstellar space",
+    "young": "The only spacecraft that has visited Uranus and Neptune. It left our Sun's bubble in 2018 and is still sending messages.",
+    "older": "Voyager 2 used a rare planetary alignment, swinging past Jupiter, Saturn, Uranus, and Neptune. It entered interstellar space in 2018 and three of its science instruments were still running in 2026.",
+    "learned": "Our only close-up views of Uranus and Neptune, plus direct measurements of the boundary of the Sun's influence.",
+    "now": "Still working, but losing about 4 watts of power a year. In 2026 engineers swapped in lower-power devices to keep its science going."
+  },
+  "viking1": {
+    "name": "Viking 1 Lander",
+    "where": "Chryse Planitia, Mars",
+    "young": "The first US spacecraft to land safely on Mars. It took the first pictures from the ground and tested the soil for signs of life.",
+    "older": "Viking 1 landed on 20 July 1976 and worked for more than six years. Its biology experiments found unexpected chemical activity in the soil, but no clear evidence of living things.",
+    "learned": "Mars has iron-rich soil with a strongly reactive chemistry. The puzzling results shaped how we search for life today.",
+    "now": "Silent since November 1982. Controllers tried for months to reach it again."
+  },
+  "sojourner": {
+    "name": "Sojourner",
+    "where": "Ares Vallis, Mars",
+    "young": "The first rover ever on Mars. It was about the size of a microwave oven and was meant to last just one week.",
+    "older": "Sojourner rolled off the Pathfinder lander in July 1997 and became the first wheeled vehicle on another planet. Planned for about seven days, it worked for 83.",
+    "learned": "Small, low-cost rovers really worked on Mars, opening the way for every rover since.",
+    "now": "Silent since 27 September 1997, when contact with its lander ended. It rests near the lander."
+  },
+  "opportunity": {
+    "name": "Opportunity",
+    "where": "Perseverance Valley, Mars",
+    "young": "Built to last 90 Martian days, Opportunity kept going for almost 15 years and drove farther than a marathon!",
+    "older": "Designed for about 90 sols, Opportunity worked from 2004 to 2018 and drove over 45 km. A planet-wide dust storm blocked the sunlight its solar panels needed.",
+    "learned": "It found hematite, a mineral that usually forms with water, showing that this part of Mars was once wet.",
+    "now": "Silent since 10 June 2018. Its off-world driving record stood until Perseverance passed it in October 2026."
+  },
+  "curiosity": {
+    "name": "Curiosity",
+    "where": "Mount Sharp, Gale Crater, Mars",
+    "young": "A rover as big as a car with a laser and a drill. It has been climbing a mountain on Mars for years.",
+    "older": "Nuclear-powered Curiosity has driven more than 38 km since 2012. In August 2026 it reached a climb of one kilometer up Mount Sharp, reading layers of rock like pages in a history book.",
+    "learned": "Ancient Gale Crater held conditions that could have supported tiny life long ago.",
+    "now": "Still driving and still doing science."
+  },
+  "perseverance": {
+    "name": "Perseverance",
+    "where": "Jezero Crater rim, Mars",
+    "young": "This rover is searching for signs of ancient life and packing rock samples in tubes. It is now the farthest-driving vehicle on another world!",
+    "older": "Exploring an ancient river delta and crater rim since 2021, Perseverance collects sealed rock samples. On 11 October 2026 it passed Opportunity's distance record at 45.22 km.",
+    "learned": "Jezero was once a lake fed by a river, one of the best places on Mars to look for signs of past life.",
+    "now": "Working on an extended mission planned to run through about 2028."
+  },
+  "ingenuity": {
+    "name": "Ingenuity",
+    "where": "Neretva Vallis, Mars",
+    "young": "A tiny helicopter that hitched a ride on Perseverance. It was supposed to fly 5 times. It flew 72 times!",
+    "older": "Ingenuity was a technology test planned for up to five flights over 30 days. Instead, the first aircraft on another world flew 72 times in almost three years, until its rotor blades broke in January 2024.",
+    "learned": "Powered flight works in Mars's thin air, opening the door to future aircraft on other worlds.",
+    "now": "Grounded for good. NASA studied its final flight in the first aircraft accident investigation on another world."
+  },
+  "voyager1": {
+    "name": "Voyager 1",
+    "where": "Interstellar space",
+    "young": "The farthest human-made object ever. It carries a Golden Record of sounds and pictures from Earth.",
+    "older": "After flying past Jupiter and Saturn, Voyager 1 became the first spacecraft in interstellar space in 2012. NASA says it reaches one light-day from Earth on 18 November 2026.",
+    "learned": "Discovered active volcanoes on Jupiter's moon Io and measured the space between the stars for the very first time.",
+    "now": "Still talking to us, with two science instruments left running after NASA shut one off in April 2026 to save power."
+  },
+  "new_horizons": {
+    "name": "New Horizons",
+    "where": "The Kuiper Belt",
+    "young": "The first spacecraft to visit Pluto. It found a giant heart-shaped plain of ice!",
+    "older": "New Horizons flew past Pluto in 2015 and the distant object Arrokoth in 2019. In June 2026 it woke up healthy from its longest hibernation, about 9.5 billion km from Earth.",
+    "learned": "Pluto is a surprisingly active world with mountains of ice and glaciers of frozen nitrogen.",
+    "now": "Still working and heading out through the Kuiper Belt. This photo is Pluto, as New Horizons saw it."
+  }
+}
