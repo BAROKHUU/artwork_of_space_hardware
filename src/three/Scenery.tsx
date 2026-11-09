@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useMemo, useRef, type ReactNode, type RefOb
 import { OrbitControls, Stars } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import { makeRng } from '../sim/rng';
+import { scatterRocks, type Rock } from '../sim/obstacles';
 import { makeTerrain, type Terrain } from '../sim/terrain';
 import { useGame } from '../state/store';
 import type { ModelId, World } from '../data/types';
@@ -11,6 +11,9 @@ import { HardwareModel } from './models';
 import { prefersReducedMotion } from './GameCanvas';
 
 export const SUN_OFFSET = new THREE.Vector3(38, 46, 22);
+const SHADOW_MAP_SIZE = 1024;
+const SHADOW_HALF_SPAN = 38;
+export const SHADOW_TEXEL = (SHADOW_HALF_SPAN * 2) / SHADOW_MAP_SIZE;
 
 const PALETTE = {
   moon: { low: new THREE.Color('#4f4f55'), high: new THREE.Color('#a8a7a8'), rock: '#77767b', sky: '#04050a', sun: '#fff6e8', ambient: 0.12, sunIntensity: 3.1 },
@@ -56,11 +59,11 @@ export function Lights({ world, sunRef }: { world: 'moon' | 'mars'; sunRef?: Ref
         intensity={p.sunIntensity}
         color={p.sun}
         castShadow
-        shadow-mapSize={[1024, 1024]}
-        shadow-camera-left={-38}
-        shadow-camera-right={38}
-        shadow-camera-top={38}
-        shadow-camera-bottom={-38}
+        shadow-mapSize={[SHADOW_MAP_SIZE, SHADOW_MAP_SIZE]}
+        shadow-camera-left={-SHADOW_HALF_SPAN}
+        shadow-camera-right={SHADOW_HALF_SPAN}
+        shadow-camera-top={SHADOW_HALF_SPAN}
+        shadow-camera-bottom={-SHADOW_HALF_SPAN}
         shadow-camera-far={160}
         shadow-bias={-0.0006}
       />
@@ -96,32 +99,24 @@ export function TerrainMesh({ terrain, world }: { terrain: Terrain; world: 'moon
   );
 }
 
-export function Rocks({ terrain, world, count, seed, clear = [] }: { terrain: Terrain; world: 'moon' | 'mars'; count: number; seed: number; clear?: { x: number; z: number; r: number }[] }) {
+export function Rocks({ rocks, world }: { rocks: Rock[]; world: 'moon' | 'mars' }) {
   const ref = useRef<THREE.InstancedMesh>(null);
   useLayoutEffect(() => {
     const mesh = ref.current;
     if (!mesh) return;
-    const rng = makeRng(seed);
     const o = new THREE.Object3D();
-    for (let i = 0; i < count; i++) {
-      let x = 0;
-      let z = 0;
-      let s = 0;
-      do {
-        x = (rng() - 0.5) * terrain.size * 0.95;
-        z = (rng() - 0.5) * terrain.size * 0.95;
-        s = 0.12 + rng() ** 3 * 1.5;
-      } while (clear.some((f) => Math.hypot(f.x - x, f.z - z) < f.r + s));
-      o.position.set(x, terrain.heightAt(x, z) + s * 0.1, z);
-      o.rotation.set(rng() * 6, rng() * 6, rng() * 6);
-      o.scale.set(s, s * (0.55 + rng() * 0.5), s * (0.7 + rng() * 0.5));
+    rocks.forEach((r, i) => {
+      o.position.set(r.x, r.y, r.z);
+      o.rotation.set(...r.rotation);
+      o.scale.set(...r.scale);
       o.updateMatrix();
       mesh.setMatrixAt(i, o.matrix);
-    }
+    });
     mesh.instanceMatrix.needsUpdate = true;
-  }, [terrain, count, seed, clear]);
+    mesh.computeBoundingSphere();
+  }, [rocks]);
   return (
-    <instancedMesh ref={ref} args={[undefined, undefined, count]} castShadow receiveShadow>
+    <instancedMesh key={rocks.length} ref={ref} args={[undefined, undefined, rocks.length]} castShadow receiveShadow>
       <dodecahedronGeometry args={[1, 0]} />
       <meshStandardMaterial color={PALETTE[world].rock} roughness={1} flatShading />
     </instancedMesh>
@@ -160,6 +155,7 @@ export function DeepSpace() {
 /** A slowly orbiting scene behind dialogue: the machine in focus, with Echo beside it. */
 export function Diorama({ world, model, showEcho = true }: { world: World; model: ModelId | null; showEcho?: boolean }) {
   const terrain = useMemo(() => (world === 'deep' ? null : makeTerrain({ seed: 77, size: 110, amplitude: world === 'moon' ? 3 : 4.5, craterCount: world === 'moon' ? 22 : 6, flat: [{ x: 0, z: 0, r: 9 }] })), [world]);
+  const rocks = useMemo(() => (terrain ? scatterRocks(terrain, 60, 5, [{ x: 0, z: 0, r: 7 }]) : []), [terrain]);
   if (world === 'deep') {
     return (
       <>
@@ -174,7 +170,7 @@ export function Diorama({ world, model, showEcho = true }: { world: World; model
       <Sky world={world} />
       <Lights world={world} />
       <TerrainMesh terrain={terrain!} world={world} />
-      <Rocks terrain={terrain!} world={world} count={60} seed={5} clear={[{ x: 0, z: 0, r: 7 }]} />
+      <Rocks rocks={rocks} world={world} />
       <SlowOrbit radius={model ? 10.5 : 6.5} height={model ? 3.2 : 2.6} target={model ? 0.3 : 0.5} />
       {model && <HardwareModel id={model} />}
       {showEcho && <Echo position={model ? [-3.9, 0, 3.2] : [0, 0, 0]} rotation={[0, model ? -2.2 : 0.6, 0]} />}

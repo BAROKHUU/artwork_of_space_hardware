@@ -1,8 +1,9 @@
-import { Suspense, lazy, useEffect } from 'react';
+import { Suspense, lazy, useEffect, type CSSProperties } from 'react';
 import { NavLink, Route, Routes, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { setLanguage } from './i18n';
 import { useGame } from './state/store';
+import { backdropUrl, backdrops, chapterById } from './data';
 import { Settings } from './components/Settings';
 import { Title } from './screens/Title';
 import { MapScreen } from './screens/MapScreen';
@@ -12,6 +13,18 @@ const Chapter = lazy(() => import('./screens/Chapter').then((m) => ({ default: m
 const Logbook = lazy(() => import('./screens/Logbook').then((m) => ({ default: m.Logbook })));
 const Atlas = lazy(() => import('./screens/Atlas').then((m) => ({ default: m.Atlas })));
 const Lab = lazy(() => import('./screens/Lab').then((m) => ({ default: m.Lab })));
+
+/** The title screen has its own 3D scene; chapters take their backdrop from the world they visit. */
+function backdropFor(pathname: string): string | null {
+  const chapter = /^\/chapter\/([^/]+)/.exec(pathname);
+  if (chapter) return chapterById[chapter[1]]?.world ?? null;
+  const page = pathname.slice(1);
+  return backdrops[page] ? page : null;
+}
+
+function PageBackdrop({ name }: { name: string }) {
+  return <div className="page-bg" style={{ backgroundImage: `url(${backdropUrl(name)})`, '--scrim': backdrops[name].scrim } as CSSProperties} aria-hidden="true" />;
+}
 
 function TopBar() {
   const { t } = useTranslation();
@@ -35,6 +48,7 @@ export function App() {
   const language = useGame((s) => s.language);
   const { pathname } = useLocation();
   const immersive = pathname.startsWith('/chapter') || pathname === '/';
+  const backdrop = backdropFor(pathname);
 
   useEffect(() => {
     void setLanguage(language);
@@ -46,6 +60,7 @@ export function App() {
 
   return (
     <>
+      {backdrop && <PageBackdrop key={backdrop} name={backdrop} />}
       {!immersive && <TopBar />}
       <Suspense fallback={<div className="loading" role="status">{t('common.loading')}</div>}>
         <Routes>

@@ -1,0 +1,10 @@
+{
+  "map": {"nasaId": "art002e021278", "credit": "NASA", "scrim": 0.45},
+  "logbook": {"nasaId": "PIA03653", "credit": "NASA/JPL-Caltech", "scrim": 0.62},
+  "atlas": {"nasaId": "GSFC_20171208_Archive_e000496", "credit": "NASA/GSFC", "scrim": 0.62},
+  "lab": {"nasaId": "carina_nebula", "credit": "NASA, ESA, CSA, STScI", "scrim": 0.62},
+  "sources": {"nasaId": "PIA13277", "credit": "NASA/JPL-Caltech", "scrim": 0.66},
+  "moon": {"nasaId": "GSFC_20171208_Archive_e001282", "credit": "NASA/GSFC", "scrim": 0.45},
+  "mars": {"nasaId": "PIA19803", "credit": "NASA/JPL-Caltech/MSSS", "scrim": 0.75},
+  "deep": {"nasaId": "GSFC_20171208_Archive_e001061", "credit": "NASA/GSFC", "scrim": 0.49}
+}

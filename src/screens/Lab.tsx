@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { Suspense, lazy, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { chapterById } from '../data';
 import type { DriveConfig, LandingConfig, LaserConfig, SlingshotConfig } from '../data/types';
@@ -9,7 +9,9 @@ import { LaserMission } from '../missions/LaserMission';
 import { SlingshotMission } from '../missions/SlingshotMission';
 import type { MissionResult } from '../missions/common';
 
-type Tab = 'landing' | 'slingshot' | 'laser' | 'drive';
+const SolarLab = lazy(() => import('./SolarLab'));
+
+type Tab = 'landing' | 'slingshot' | 'solar' | 'laser' | 'drive';
 
 function Slider({ label, value, min, max, step, unit, onChange }: { label: string; value: number; min: number; max: number; step: number; unit: string; onChange: (v: number) => void }) {
   return (
@@ -70,7 +72,7 @@ function SlingshotLab() {
   return (
     <div className="lab-grid">
       <div className="lab-stage">
-        <SlingshotMission key={mass} id="lab" lab jupiterMass={mass} config={{ ...(slingshotConfig as { config: SlingshotConfig }).config, degMin: 0, degMax: 180, speedMin: 37, speedMax: 42 }} onResult={NO_OP} />
+        <SlingshotMission id="lab" lab jupiterMass={mass} config={{ ...(slingshotConfig as { config: SlingshotConfig }).config, degMin: 0, degMax: 180, speedMin: 37, speedMax: 42 }} onResult={NO_OP} />
       </div>
       <aside className="lab-controls">
         <Slider label={t('lab.jupiterMass')} value={mass} min={0} max={10} step={0.5} unit="×" onChange={setMass} />
@@ -116,7 +118,7 @@ function DriveLab() {
 export function Lab() {
   const { t } = useTranslation();
   const [tab, setTab] = useState<Tab>('landing');
-  const tabs: Tab[] = ['landing', 'slingshot', 'laser', 'drive'];
+  const tabs: Tab[] = ['landing', 'slingshot', 'solar', 'laser', 'drive'];
   return (
     <main className="page lab">
       <header className="page-head">
@@ -133,6 +135,7 @@ export function Lab() {
       </div>
       {tab === 'landing' && <LandingLab />}
       {tab === 'slingshot' && <SlingshotLab />}
+      {tab === 'solar' && <Suspense fallback={<div className="loading" role="status">{t('common.loading')}</div>}><SolarLab /></Suspense>}
       {tab === 'laser' && <LaserLab />}
       {tab === 'drive' && <DriveLab />}
       <p className="lab-note">{t('lab.simNote')}</p>

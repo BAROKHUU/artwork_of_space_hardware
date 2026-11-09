@@ -33,6 +33,14 @@ export function SlingshotMission({ config, onResult, lab, jupiterMass = 1 }: Mis
   const timeRef = useRef(0);
   const [year, setYear] = useState(0);
 
+  // A new Jupiter makes the old flight meaningless. Clear it without rebuilding the component.
+  useEffect(() => {
+    setRun(null);
+    setFinished(false);
+    setYear(0);
+    setNote('');
+  }, [jupiterMass]);
+
   const ghost = useMemo(() => (run ? simulateSlingshot({ jupiterStartDeg: run.jupiterStartDeg, speedKms: speed, jupiterMass: 0 }) : null), [run, speed]);
 
   useEffect(() => {
@@ -94,12 +102,18 @@ export function SlingshotMission({ config, onResult, lab, jupiterMass = 1 }: Mis
         ctx.beginPath();
         const end = indexAt(run.path, time);
         for (let i = 0; i <= end; i++) ctx.lineTo(X(run.path[i][0]), Y(run.path[i][1]));
+        // Blend between stored samples so the probe glides instead of stepping.
+        const p = run.path[end];
+        const q = run.path[Math.min(end + 1, run.path.length - 1)];
+        const blend = q[2] > p[2] ? Math.min(1, (time - p[2]) / (q[2] - p[2])) : 0;
+        const px = p[0] + (q[0] - p[0]) * blend;
+        const py = p[1] + (q[1] - p[1]) * blend;
+        ctx.lineTo(X(px), Y(py));
         ctx.stroke();
         ctx.lineWidth = 1;
-        const p = run.path[end];
         ctx.fillStyle = '#f4ead7';
         ctx.beginPath();
-        ctx.arc(X(p[0]), Y(p[1]), 3.5, 0, Math.PI * 2);
+        ctx.arc(X(px), Y(py), 3.5, 0, Math.PI * 2);
         ctx.fill();
       }
 
@@ -139,10 +153,18 @@ export function SlingshotMission({ config, onResult, lab, jupiterMass = 1 }: Mis
           setFinished(true);
         }
       }
-      frame = requestAnimationFrame(draw);
+      // Nothing moves before launch or after arrival, so stop drawing until something changes.
+      frame = run && time < run.durationYears ? requestAnimationFrame(draw) : 0;
     };
     frame = requestAnimationFrame(draw);
-    return () => cancelAnimationFrame(frame);
+    const redraw = new ResizeObserver(() => {
+      if (frame === 0) frame = requestAnimationFrame(draw);
+    });
+    redraw.observe(canvas);
+    return () => {
+      cancelAnimationFrame(frame);
+      redraw.disconnect();
+    };
   }, [run, deg, ghost, t]);
 
   useEffect(() => {

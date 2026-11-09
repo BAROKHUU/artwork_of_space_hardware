@@ -5,6 +5,7 @@ import { z } from 'zod';
 import chapters from './chapters.json';
 import hardware from './hardware.json';
 import sources from './sources.json';
+import backdrops from './backdrops.json';
 
 const LOCALES = path.resolve(__dirname, '../locales');
 const read = (lang: string, ns: string) => JSON.parse(fs.readFileSync(path.join(LOCALES, lang, `${ns}.json`), 'utf8'));
@@ -29,6 +30,15 @@ describe('content', () => {
       for (const s of h.sources) expect(sources, `${h.id} -> ${s}`).toHaveProperty(s);
       if (h.world !== 'deep') expect(h.lat, h.id).toBeTypeOf('number');
       for (const key of ['name', 'where', 'young', 'older', 'learned', 'now']) expect(en.hardware[h.id]?.[key], `${h.id}.${key}`).toBeTruthy();
+    }
+  });
+
+  it('every page background has a file, a title, and a safe scrim', () => {
+    const titles = read('en', 'ui').sources.backdrop;
+    for (const [key, b] of Object.entries(backdrops)) {
+      expect(fs.existsSync(path.resolve(__dirname, `../../public/assets/backdrops/${key}.webp`)), key).toBe(true);
+      expect(titles[key], key).toBeTruthy();
+      expect(b.scrim).toBeGreaterThanOrEqual(0.3); // Each value was computed from its image for at least 4.5:1 text contrast.
     }
   });
 

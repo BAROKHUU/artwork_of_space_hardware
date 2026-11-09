@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "test": "vitest run",
     "data:ephemeris": "node scripts/fetch-ephemeris.mjs",
+    "data:solar": "node scripts/fetch-solar.mjs",
     "data:links": "node scripts/check-links.mjs"
   },
   "devDependencies": {

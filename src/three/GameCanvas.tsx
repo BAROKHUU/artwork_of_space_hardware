@@ -1,4 +1,5 @@
-import { Component, Suspense, type ReactNode } from 'react';
+import { Component, Suspense, useState, type ReactNode } from 'react';
+import { PerformanceMonitor } from '@react-three/drei';
 import { Canvas, type CanvasProps } from '@react-three/fiber';
 import { useTranslation } from 'react-i18next';
 import { useGame } from '../state/store';
@@ -36,11 +37,20 @@ interface Props extends Omit<CanvasProps, 'children'> {
 export function GameCanvas({ children, fallback, ...rest }: Props) {
   const { t } = useTranslation();
   const quality = useGame((s) => s.quality);
+  // Lowers render resolution when the measured frame rate drops, and restores it when there is headroom.
+  const [scale, setScale] = useState(1);
+  const baseDpr = quality === 'high' ? Math.min(window.devicePixelRatio, 1.5) : 1;
   const failure = fallback ?? <div className="no3d">{t('mission.no3d')}</div>;
   if (!use3DStatic(quality)) return <>{failure}</>;
   return (
     <CanvasBoundary fallback={failure}>
-      <Canvas shadows={quality === 'high' ? 'percentage' : false} dpr={quality === 'high' ? [1, 1.75] : 1} gl={{ antialias: quality === 'high' }} {...rest}>
+      <Canvas shadows={quality === 'high' ? 'percentage' : false} dpr={Math.max(0.6, baseDpr * scale)} gl={{ antialias: quality === 'high' }} {...rest}>
+        <PerformanceMonitor
+          flipflops={3}
+          onDecline={() => setScale((s) => Math.max(0.6, s - 0.15))}
+          onIncline={() => setScale((s) => Math.min(1, s + 0.1))}
+          onFallback={() => setScale(0.7)}
+        />
         <Suspense fallback={null}>{children}</Suspense>
       </Canvas>
     </CanvasBoundary>

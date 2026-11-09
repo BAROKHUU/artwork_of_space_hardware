@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { hardware, sources } from '../data';
+import { backdrops, hardware, sources } from '../data';
 
 export function Sources() {
   const { t } = useTranslation();
@@ -29,6 +29,14 @@ export function Sources() {
         {hardware.map((h) => (
           <li key={h.id}>
             <a href={`https://images.nasa.gov/details/${h.nasaId}`} target="_blank" rel="noreferrer">{t(`hardware:${h.id}.name`)}</a> <small>{h.credit} · {h.nasaId}</small>
+          </li>
+        ))}
+      </ul>
+      <h2>{t('sources.backgrounds')}</h2>
+      <ul className="source-list wide">
+        {Object.entries(backdrops).map(([key, b]) => (
+          <li key={key}>
+            <a href={`https://images.nasa.gov/details/${b.nasaId}`} target="_blank" rel="noreferrer">{t(`sources.backdrop.${key}`)}</a> <small>{b.credit} · {b.nasaId}</small>
           </li>
         ))}
       </ul>

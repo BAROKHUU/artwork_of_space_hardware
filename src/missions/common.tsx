@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactNode } from 'react';
+import { useEffect, useRef, type ReactNode, type RefObject } from 'react';
 
 export interface MissionResult {
   win: boolean;
@@ -15,6 +15,9 @@ export interface MissionProps<C> {
   /** In the Lab there is no briefing, and goals are optional. */
   lab?: boolean;
 }
+
+/** Lets the 3D loop push readouts to a HUD component without re-rendering the scene around it. */
+export type HudChannel<T> = RefObject<((value: T) => void) | null>;
 
 const GAME_KEYS = new Set(['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'KeyW', 'KeyA', 'KeyS', 'KeyD', 'KeyP']);
 

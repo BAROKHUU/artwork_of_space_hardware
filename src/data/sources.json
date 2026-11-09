@@ -28,6 +28,7 @@
   "ingenuity_accident": { "org": "NASA JPL", "title": "NASA Performs First Aircraft Accident Investigation on Another World", "url": "https://www.jpl.nasa.gov/news/nasa-performs-first-aircraft-accident-investigation-on-another-world/" },
   "new_horizons": { "org": "NASA Science", "title": "New Horizons", "url": "https://science.nasa.gov/mission/new-horizons/" },
   "new_horizons_wake": { "org": "NASA Science", "title": "NASA's New Horizons Spacecraft Wakes from Hibernation in Good Health (July 2026)", "url": "https://science.nasa.gov/missions/new-horizons/nasas-new-horizons-spacecraft-wakes-from-hibernation-in-good-health/" },
+  "planet_elements": { "org": "NASA JPL", "title": "Approximate Positions of the Planets (Keplerian elements)", "url": "https://ssd.jpl.nasa.gov/planets/approx_pos.html" },
   "horizons": { "org": "NASA JPL", "title": "Horizons System (probe distances)", "url": "https://ssd.jpl.nasa.gov/horizons/" },
   "images": { "org": "NASA", "title": "NASA Image and Video Library", "url": "https://images.nasa.gov/" },
   "moon_map": { "org": "NASA SVS", "title": "CGI Moon Kit (LRO color map)", "url": "https://svs.gsfc.nasa.gov/4720" },

@@ -44,7 +44,7 @@
     "targets": [ { "name": "Blueberry Field", "found": "These small spheres contain hematite, a mineral that usually forms with water." }, { "name": "Layered Outcrop", "found": "Layers like these can be laid down by water." }, { "name": "Eagle Crater Rim", "found": "Impacts expose older rock from below." }, { "name": "Endurance Crater", "found": "Evidence that this place was wet long ago." } ]
   },
   "ch6_ingenuity": {
-    "title": "Thin Air", "goal": "Tap the rotors to hover inside the green band for {{hold}} seconds, then land gently.", "hint": "Don't hold the button down. Short taps keep you steady.", "success": "Powered flight on Mars! Ingenuity did this 72 times.",
+    "title": "Thin Air", "goal": "Tap the rotors to hover inside the green band for {{hold}} seconds, then land gently.", "hint": "Don't hold it down. Short taps keep you steady.", "success": "Powered flight on Mars! Ingenuity did this 72 times.",
     "fail_crash": "Hard landing at {{speed}} m/s. Tap the rotors to slow down near the ground.", "fail_fuel": "Battery is flat. Use shorter taps."
   },
   "ch7_golden": {
