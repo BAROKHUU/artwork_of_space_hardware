@@ -1,87 +1,26 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { GameplayStory } from '../book/GameplayStory';
+import { getStorySections } from '../book/content';
+import type { StorySection } from '../book/types';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { chapterById, chapters, hardwareById, photoUrl } from '../data';
-import type { Beat, Chapter as ChapterData, Hardware, World } from '../data/types';
+import { chapterById, chapters, hardwareById } from '../data';
+import type { Beat, Chapter as ChapterData } from '../data/types';
 import { useGame } from '../state/store';
 import { MissionShell } from '../missions/MissionShell';
-import { GameCanvas } from '../three/GameCanvas';
-import { Diorama } from '../three/Scenery';
 import { Facts, FateBadge, Photo } from '../components/HardwareInfo';
 import { distanceAU, lightHours, type ProbeId } from '../sim/ephemeris';
 import { play } from '../audio/sfx';
 
 gsap.registerPlugin(useGSAP);
 
-function Backdrop({ world, focus }: { world: World; focus: Hardware | null }) {
-  const fallback = focus ? <img className="backdrop-photo" src={photoUrl(focus.photo)} alt="" /> : <div className="backdrop-plain" />;
-  return (
-    <div className="backdrop">
-      <GameCanvas camera={{ position: [8, 3, 8], fov: 45, far: 500 }} fallback={fallback}>
-        <Diorama world={world} model={focus?.model ?? null} />
-      </GameCanvas>
-    </div>
-  );
+function Dialogue({ chapter, beat, sections, onDone }: { chapter: ChapterData; beat: Extract<Beat, { kind: 'dialogue' }>; sections: StorySection[]; onDone: () => void }) {
+  const section = sections.find((item) => item.key === beat.key);
+  if (!section) return null;
+  return <GameplayStory chapter={chapter} section={section} onContinue={onDone} />;
 }
-
-interface Line {
-  who: 'echo' | 'control';
-  text: string;
-}
-
-function Dialogue({ chapter, beat, onDone }: { chapter: ChapterData; beat: Extract<Beat, { kind: 'dialogue' }>; onDone: () => void }) {
-  const { t } = useTranslation();
-  const lines = t(`story:${chapter.id}.${beat.key}`, { returnObjects: true }) as unknown as Line[];
-  const [i, setI] = useState(0);
-  const box = useRef<HTMLDivElement>(null);
-  const focus = beat.focus === 'echo' ? null : hardwareById[beat.focus];
-  const world = focus?.world ?? chapter.world;
-
-  useGSAP(
-    () => {
-      gsap.matchMedia().add('(prefers-reduced-motion: no-preference)', () => {
-        gsap.from('.line-text', { y: 10, autoAlpha: 0, duration: 0.35, ease: 'power2.out' });
-      });
-    },
-    { scope: box, dependencies: [i], revertOnUpdate: true },
-  );
-
-  const advance = () => {
-    play('blip');
-    if (i + 1 >= lines.length) onDone();
-    else setI(i + 1);
-  };
-
-  useEffect(() => {
-    const key = (e: KeyboardEvent) => {
-      if (e.code === 'Enter' || e.code === 'Space') {
-        e.preventDefault();
-        advance();
-      }
-    };
-    window.addEventListener('keydown', key);
-    return () => window.removeEventListener('keydown', key);
-  });
-
-  const line = lines[i];
-  return (
-    <div className="scene">
-      <Backdrop world={world} focus={focus} />
-      <div className={`dialogue who-${line.who}`} ref={box}>
-        <p className="speaker">{t(`story:speakers.${line.who}`)}</p>
-        <p className="line-text" aria-live="polite">{line.text}</p>
-        <div className="row end">
-          <button type="button" className="btn ghost" onClick={onDone}>{t('dialogue.skip')}</button>
-          {i > 0 && <button type="button" className="btn ghost" onClick={() => setI(i - 1)}>{t('dialogue.back')}</button>}
-          <button type="button" className="btn primary" onClick={advance}>{t('dialogue.next')}</button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function Memory({ id, onDone }: { id: string; onDone: () => void }) {
   const { t } = useTranslation();
   const unlock = useGame((s) => s.unlock);
@@ -205,16 +144,20 @@ export function Chapter() {
   const saved = useGame((s) => s.beat[id] ?? 0);
   const setBeat = useGame((s) => s.setBeat);
   const completeChapter = useGame((s) => s.completeChapter);
+  const sections = useMemo(() => getStorySections(id), [id]);
   const [index, setIndex] = useState(saved);
+  const activeChapterId = useRef(id);
   const [finished, setFinished] = useState(false);
   const fade = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setIndex(useGame.getState().beat[id] ?? 0);
     setFinished(false);
+    activeChapterId.current = id;
   }, [id]);
 
-  const beat = chapter?.beats[Math.min(index, chapter.beats.length - 1)];
+  const activeIndex = activeChapterId.current === id ? index : saved;
+  const beat = chapter?.beats[Math.min(activeIndex, chapter.beats.length - 1)];
 
   useGSAP(
     () => {
@@ -222,19 +165,19 @@ export function Chapter() {
         gsap.from(fade.current, { autoAlpha: 0, duration: 0.45, ease: 'power1.out' });
       });
     },
-    { dependencies: [index, id, finished], revertOnUpdate: true },
+    { dependencies: [activeIndex, id, finished], revertOnUpdate: true },
   );
 
   const pips = useMemo(() => chapter?.beats.map((_, i) => i) ?? [], [chapter]);
   if (!chapter || !beat) return <main className="page"><h1>{t('common.notFound')}</h1><Link className="btn primary" to="/map">{t('common.backToMap')}</Link></main>;
 
   const next = () => {
-    if (index + 1 >= chapter.beats.length) {
+    if (activeIndex + 1 >= chapter.beats.length) {
       completeChapter(chapter.id);
       setFinished(true);
     } else {
-      setBeat(chapter.id, index + 1);
-      setIndex(index + 1);
+      setBeat(chapter.id, activeIndex + 1);
+      setIndex(activeIndex + 1);
     }
   };
 
@@ -244,12 +187,12 @@ export function Chapter() {
       <div className="chapter-bar">
         <Link to="/map" className="exit">← {t('nav.map')}</Link>
         <span className="chapter-name">{chapter.era} · {t(`story:${chapter.id}.title`)}</span>
-        <div className="pips" aria-hidden="true">{pips.map((p) => <i key={p} className={p < index || finished ? 'on' : p === index ? 'next' : ''} />)}</div>
+        <div className="pips" aria-hidden="true">{pips.map((p) => <i key={p} className={p < activeIndex || finished ? 'on' : p === activeIndex ? 'next' : ''} />)}</div>
       </div>
-      <div className="chapter-body" ref={fade} key={`${id}-${index}-${finished}`}>
+      <div className="chapter-body" ref={fade} key={`${id}-${activeIndex}-${finished}`}>
         {finished ? <ChapterDone chapter={chapter} /> : (
           <>
-            {beat.kind === 'dialogue' && <Dialogue chapter={chapter} beat={beat} onDone={next} />}
+            {beat.kind === 'dialogue' && <Dialogue chapter={chapter} beat={beat} sections={sections} onDone={next} />}
             {beat.kind === 'memory' && <Memory id={beat.hardware} onDone={next} />}
             {beat.kind === 'mission' && <MissionShell beat={beat} onDone={next} />}
             {beat.kind === 'quiz' && <Quiz beat={beat} onDone={next} />}

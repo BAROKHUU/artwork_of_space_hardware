@@ -20,6 +20,7 @@ const SOUNDS: Record<string, [number, number, number, OscillatorType, number][]>
   ping: [[1320, 0, 0.12, 'sine', 0.08], [1760, 0.1, 0.25, 'sine', 0.06]],
   win: [[523, 0, 0.14, 'triangle', 0.08], [659, 0.12, 0.14, 'triangle', 0.08], [784, 0.24, 0.3, 'triangle', 0.08]],
   fail: [[196, 0, 0.3, 'sawtooth', 0.05], [147, 0.18, 0.4, 'sawtooth', 0.05]],
+  page: [[380, 0, 0.08, 'triangle', 0.025], [240, 0.035, 0.1, 'sine', 0.018]],
 };
 
 export function play(name: keyof typeof SOUNDS) {
