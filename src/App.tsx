@@ -13,6 +13,7 @@ const Chapter = lazy(() => import('./screens/Chapter').then((m) => ({ default: m
 const Logbook = lazy(() => import('./screens/Logbook').then((m) => ({ default: m.Logbook })));
 const Atlas = lazy(() => import('./screens/Atlas').then((m) => ({ default: m.Atlas })));
 const Lab = lazy(() => import('./screens/Lab').then((m) => ({ default: m.Lab })));
+const Book = lazy(() => import('./screens/Book').then((m) => ({ default: m.Book })));
 
 /** The title screen has its own 3D scene; chapters take their backdrop from the world they visit. */
 function backdropFor(pathname: string): string | null {
@@ -29,7 +30,7 @@ function PageBackdrop({ name }: { name: string }) {
 function TopBar() {
   const { t } = useTranslation();
   const update = useGame((s) => s.update);
-  const links = [['/map', 'nav.map'], ['/logbook', 'nav.logbook'], ['/atlas', 'nav.atlas'], ['/lab', 'nav.lab'], ['/sources', 'nav.sources']] as const;
+  const links = [['/map', 'nav.map'], ['/book', 'nav.book'], ['/logbook', 'nav.logbook'], ['/atlas', 'nav.atlas'], ['/lab', 'nav.lab'], ['/sources', 'nav.sources']] as const;
   return (
     <header className="topbar">
       <NavLink to="/" className="brand" aria-label={t('nav.home')}>
@@ -66,6 +67,7 @@ export function App() {
         <Routes>
           <Route path="/" element={<Title />} />
           <Route path="/map" element={<MapScreen />} />
+          <Route path="/book" element={<Book />} />
           <Route path="/chapter/:id" element={<Chapter />} />
           <Route path="/logbook" element={<Logbook />} />
           <Route path="/atlas" element={<Atlas />} />

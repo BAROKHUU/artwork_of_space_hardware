@@ -45,6 +45,7 @@ export function Title() {
           <Link className="btn ghost big" to="/map">{t('nav.map')}</Link>
         </div>
         <nav className="title-links reveal" aria-label="More">
+          <Link to="/book">{t('nav.book')}</Link>
           <Link to="/logbook">{t('nav.logbook')}</Link>
           <Link to="/atlas">{t('nav.atlas')}</Link>
           <Link to="/lab">{t('nav.lab')}</Link>
