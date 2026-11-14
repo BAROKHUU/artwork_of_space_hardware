@@ -37,7 +37,7 @@ function TopBar() {
       <NavLink to="/" className="brand" aria-label={t('nav.home')}>
         <i aria-hidden="true" /> ECHO
       </NavLink>
-      <nav aria-label="Main">
+      <nav aria-label={t('nav.main')}>
         {links.map(([to, key]) => <NavLink key={to} to={to}>{t(key)}</NavLink>)}
       </nav>
       <button type="button" className="gear" onClick={() => update({ settingsOpen: true })}>{t('nav.settings')}</button>
@@ -55,6 +55,10 @@ export function App() {
   useEffect(() => {
     void setLanguage(language);
   }, [language]);
+
+  useEffect(() => {
+    document.title = `${t('app.title')} — ${t('app.subtitle')}`;
+  }, [language, t]);
 
   useEffect(() => {
     window.scrollTo(0, 0);

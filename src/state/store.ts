@@ -5,7 +5,7 @@ import { chapters } from '../data';
 import { storySectionById } from '../book/content';
 import { emptyBookProgress, normalizeBookProgress, setBookBookmark, type BookProgress } from '../book/progress';
 export type Quality = 'high' | 'low' | 'off';
-export type Reading = 'young' | 'older';
+export type Reading = 'young';
 
 interface GameState {
   completed: Record<string, boolean>;
@@ -140,6 +140,7 @@ export const useGame = create<GameState>()(
           stars: old.stars ?? {},
           unlocked: old.unlocked ?? {},
           beat,
+          reading: 'young',
           book,
         };
       },
@@ -149,6 +150,7 @@ export const useGame = create<GameState>()(
         return {
           ...current,
           ...saved,
+          reading: 'young',
           book: normalizeBookProgress(saved.book, chapters.map((chapter) => chapter.id), false),
         };
       },
