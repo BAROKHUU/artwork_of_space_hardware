@@ -33,6 +33,8 @@ The endpoint runs in Vite dev/preview, as `api/chat.ts` on Vercel, or as a stand
 
    The script creates a 512-dimensional Cosine collection if it does not exist and safely upserts all chunks. When the knowledge or embeddings change, run `npm run knowledge:index` followed by `npm run qdrant:upload` again.
 3. Push the repository to GitHub. In Render, choose **New > Blueprint**, connect the repository, and apply `render.yaml`. Enter `GROQ_API_KEY`, optional `GROQ_API_KEY_2`, `COHERE_API_KEY`, `QDRANT_URL`, `QDRANT_API_KEY`, and initially set `CORS_ORIGIN=*`. After deployment, verify `https://YOUR-SERVICE.onrender.com/health` and copy the service URL.
+
+   If creating a Render **Web Service** manually instead of a Blueprint, use `npm ci` as the Build Command and `npm start` as the Start Command.
 4. Import the same repository into Vercel. Keep the detected Vite settings (`npm run build`, output `dist`) and add only this frontend variable:
 
    ```dotenv
