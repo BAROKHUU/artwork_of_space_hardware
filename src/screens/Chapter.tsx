@@ -6,13 +6,16 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { chapterById, chapters, hardwareById } from '../data';
+import { chapterById, hardwareById, nextChapterInArc } from '../data';
 import type { Beat, Chapter as ChapterData } from '../data/types';
 import { useGame } from '../state/store';
 import { MissionShell } from '../missions/MissionShell';
 import { Facts, FateBadge, Photo } from '../components/HardwareInfo';
 import { distanceAU, lightHours, type ProbeId } from '../sim/ephemeris';
 import { play } from '../audio/sfx';
+import { scoreLocally, validateReflectionReview } from '../assessment';
+
+type QuizBeat = Extract<Beat, { kind: 'quiz' | 'apply' | 'precheck' | 'postcheck' }>;
 
 gsap.registerPlugin(useGSAP);
 
@@ -53,32 +56,100 @@ function Memory({ id, onDone }: { id: string; onDone: () => void }) {
   );
 }
 
-function Quiz({ beat, onDone }: { beat: Extract<Beat, { kind: 'quiz' }>; onDone: () => void }) {
+function Quiz({ beat, onDone }: { beat: QuizBeat; onDone: () => void }) {
   const { t } = useTranslation();
+  const saveQuiz = useGame((s) => s.saveQuiz);
+  const savePrecheck = useGame((s) => s.savePrecheck);
+  const savePostcheck = useGame((s) => s.savePostcheck);
   const items = t(`quiz:${beat.key}`, { returnObjects: true }) as unknown as { q: string; options: string[]; why: string }[];
   const [i, setI] = useState(0);
   const [picked, setPicked] = useState<number | null>(null);
+  const [answers, setAnswers] = useState<number[]>([]);
   const q = items[i];
   const answer = beat.answers[i];
+  const ungraded = beat.kind === 'precheck' || beat.kind === 'postcheck';
+  const finish = () => {
+    const finalAnswers = [...answers, picked!];
+    if (beat.kind === 'precheck') savePrecheck(finalAnswers);
+    else if (beat.kind === 'postcheck') savePostcheck(finalAnswers);
+    else saveQuiz(beat.key, finalAnswers, beat.answers);
+    onDone();
+  };
+  const advance = () => {
+    if (i + 1 >= items.length) finish();
+    else { setAnswers((current) => [...current, picked!]); setI(i + 1); setPicked(null); }
+  };
   return (
     <section className="panel brief quiz">
-      <p className="eyebrow">{t('quiz.heading')} · {i + 1}/{items.length}</p>
+      <p className="eyebrow">{ungraded ? t('learn.precheck.heading') : t('quiz.heading')} · {i + 1}/{items.length}</p>
       <h1>{q.q}</h1>
       <div className="options">
         {q.options.map((o, n) => (
-          <button type="button" key={n} disabled={picked !== null} className={`option${picked !== null && n === answer ? ' right' : ''}${picked === n && n !== answer ? ' wrong' : ''}`} onClick={() => { setPicked(n); play(n === answer ? 'ping' : 'fail'); }}>{o}</button>
+          <button type="button" key={n} aria-pressed={picked === n} disabled={picked !== null && !ungraded} className={`option${!ungraded && picked !== null && n === answer ? ' right' : ''}${!ungraded && picked === n && n !== answer ? ' wrong' : ''}${ungraded && picked === n ? ' right' : ''}`} onClick={() => { setPicked(n); if (!ungraded) play(n === answer ? 'ping' : 'fail'); }}>{o}</button>
         ))}
       </div>
-      {picked !== null && (
+      {picked !== null && !ungraded && (
         <>
           <p className="lede" role="status"><b>{picked === answer ? t('quiz.correct') : t('quiz.incorrect')}</b> {q.why}</p>
-          <button type="button" autoFocus className="btn primary" onClick={() => { if (i + 1 >= items.length) onDone(); else { setI(i + 1); setPicked(null); } }}>
+          <button type="button" autoFocus className="btn primary" onClick={advance}>
             {i + 1 >= items.length ? t('quiz.finish') : t('quiz.next')}
           </button>
         </>
       )}
+      {ungraded && <div className="row"><button type="button" className="btn primary" disabled={picked === null} onClick={advance}>{i + 1 >= items.length ? t('quiz.finish') : t('quiz.next')}</button>{beat.kind === 'precheck' && <button type="button" className="btn ghost" onClick={onDone}>{t('learn.precheck.skip')}</button>}</div>}
     </section>
   );
+}
+
+function Reflection({ beat, onDone }: { beat: Extract<Beat, { kind: 'reflect' }>; onDone: () => void }) {
+  const { t } = useTranslation();
+  const reading = useGame((s) => s.reading);
+  const save = useGame((s) => s.saveReflection);
+  const [text, setText] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [review, setReview] = useState<ReturnType<typeof scoreLocally> | null>(null);
+  const prompt = `learn.reflect.prompts.${beat.key}`;
+  const submit = async () => {
+    if (!text.trim()) return;
+    setBusy(true);
+    let result = scoreLocally(beat.key, text);
+    try {
+      const response = await fetch('/api/assess', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ questionId: beat.key, answer: text, language: document.documentElement.lang }) });
+      if (!response.ok) throw new Error('assessment_unavailable');
+      const validated = validateReflectionReview(await response.json());
+      if (validated) result = validated;
+    } catch { /* local rubric is the offline-safe assessment */ }
+    save(beat.key, text.trim(), result);
+    setReview(result);
+    setBusy(false);
+  };
+  const skip = () => { save(beat.key, '', null, true); onDone(); };
+  return <section className="panel brief reflection">
+    <p className="eyebrow">{t('learn.reflect.heading')}</p>
+    <h1>{t(`${prompt}.question`)}</h1><p className="lede">{t(`${prompt}.context`)}</p>
+    {review ? <>
+      <p className="hint" role="status"><b>{t(review.source === 'gemini' ? 'learn.reflect.ai' : 'learn.reflect.fallback')}</b> {t('learn.reflect.score', { score: review.score, max: review.max })}</p>
+      <button type="button" className="btn primary" onClick={onDone}>{t('learn.reflect.continue')}</button>
+    </> : <>
+      {reading === 'young' && <div className="reflection-support"><p>{t('learn.reflect.wordBank')}: {((t(`${prompt}.words`, { returnObjects: true }) as string[])).join(' · ')}</p><div className="row">{(t(`${prompt}.starters`, { returnObjects: true }) as string[]).map((starter) => <button key={starter} type="button" className="btn ghost" onClick={() => setText((value) => `${value}${value ? ' ' : ''}${starter} `)}>{starter}</button>)}</div></div>}
+      <textarea aria-label={t(`${prompt}.question`)} placeholder={t(`${prompt}.placeholder`)} value={text} maxLength={1200} onChange={(event) => setText(event.target.value)} />
+      <p className="small-note">{t('learn.reflect.minLength')}</p>
+      <div className="row"><button type="button" className="btn primary" disabled={!text.trim() || busy} onClick={() => void submit()}>{t(busy ? 'learn.reflect.thinking' : 'learn.reflect.submit')}</button><button type="button" className="btn ghost" disabled={busy} onClick={skip}>{t('learn.reflect.skip')}</button></div>
+    </>}
+  </section>;
+}
+
+function MemoryArchive({ onDone }: { onDone: () => void }) {
+  const { t } = useTranslation();
+  const [index, setIndex] = useState(-1);
+  const cards = t('learn.archive.cards', { returnObjects: true }) as unknown as { title: string; body: string }[];
+  const leafStage = index === cards.length;
+  return <section className={`panel brief memory-archive${leafStage ? ' leaf-stage' : ''}`}>
+    <p className="eyebrow">{t('learn.archive.kicker')}</p><h1>{t(index < 0 ? 'learn.archive.title' : leafStage ? 'learn.archive.finish' : `learn.archive.cards.${index}.title`)}</h1>
+    <p className="lede">{t(index < 0 ? 'learn.archive.intro' : leafStage ? 'learn.archive.disclaimer' : `learn.archive.cards.${index}.body`)}</p>
+    <p className="small-note">{t('learn.archive.source')}</p>
+    <button type="button" className="btn primary" onClick={() => index < cards.length ? setIndex(index + 1) : onDone()}>{t(index >= cards.length ? 'learn.archive.finish' : 'learn.archive.next')}</button>
+  </section>;
 }
 
 const PROBES: ProbeId[] = ['voyager1', 'voyager2', 'pioneer10', 'new_horizons'];
@@ -118,8 +189,7 @@ export function SignalBoard({ onDone }: { onDone?: () => void }) {
 function ChapterDone({ chapter }: { chapter: ChapterData }) {
   const { t } = useTranslation();
   const stars = useGame((s) => s.stars);
-  const index = chapters.indexOf(chapter);
-  const next = chapters[index + 1];
+  const next = nextChapterInArc(chapter);
   const missions = chapter.beats.filter((b) => b.kind === 'mission');
   const earned = missions.reduce((sum, b) => sum + (b.kind === 'mission' ? (stars[b.id] ?? 0) : 0), 0);
   useEffect(() => play('win'), []);
@@ -189,13 +259,16 @@ export function Chapter() {
         <span className="chapter-name">{chapter.era} · {t(`story:${chapter.id}.title`)}</span>
         <div className="pips" aria-hidden="true">{pips.map((p) => <i key={p} className={p < activeIndex || finished ? 'on' : p === activeIndex ? 'next' : ''} />)}</div>
       </div>
+      {chapter.arc === 'moon' && <div className="truth-note"><span>{t('learn.truth.real')}</span><span>{t('learn.truth.story')}</span></div>}
       <div className="chapter-body" ref={fade} key={`${id}-${activeIndex}-${finished}`}>
         {finished ? <ChapterDone chapter={chapter} /> : (
           <>
             {beat.kind === 'dialogue' && <Dialogue chapter={chapter} beat={beat} sections={sections} onDone={next} />}
             {beat.kind === 'memory' && <Memory id={beat.hardware} onDone={next} />}
             {beat.kind === 'mission' && <MissionShell beat={beat} onDone={next} />}
-            {beat.kind === 'quiz' && <Quiz beat={beat} onDone={next} />}
+            {(beat.kind === 'quiz' || beat.kind === 'apply' || beat.kind === 'precheck' || beat.kind === 'postcheck') && <Quiz beat={beat} onDone={next} />}
+            {beat.kind === 'reflect' && <Reflection beat={beat} onDone={next} />}
+            {beat.kind === 'archive' && <MemoryArchive onDone={next} />}
             {beat.kind === 'signal' && <SignalBoard onDone={next} />}
           </>
         )}

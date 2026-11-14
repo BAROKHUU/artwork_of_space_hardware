@@ -53,7 +53,7 @@ describe('content', () => {
       for (const b of c.beats) {
         if (b.kind === 'dialogue') {
           expect(en.story[c.id][b.key as string], `${c.id}.${b.key}`).toBeInstanceOf(Array);
-          if (b.focus !== 'echo') expect(hwIds.has(b.focus as string), b.focus as string).toBe(true);
+          if (!['echo', 'control', 'cuoi', 'rabbit', 'lrv'].includes(b.focus)) expect(hwIds.has(b.focus as string), b.focus as string).toBe(true);
         }
         if (b.kind === 'mission') for (const key of ['title', 'goal', 'hint', 'success']) expect(en.missions[b.id as string]?.[key], `${b.id}.${key}`).toBeTruthy();
         if (b.kind === 'quiz') {

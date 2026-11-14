@@ -1,21 +1,147 @@
 [
-  { "chapterId": "ch0", "key": "intro", "focus": "echo" },
-  { "chapterId": "ch0", "key": "outro", "focus": "echo" },
-  { "chapterId": "ch1", "key": "intro", "focus": "ranger7" },
-  { "chapterId": "ch1", "key": "middle", "focus": "surveyor3" },
-  { "chapterId": "ch1", "key": "outro", "focus": "surveyor3" },
-  { "chapterId": "ch2", "key": "intro", "focus": "apollo11_descent" },
-  { "chapterId": "ch2", "key": "middle", "focus": "lrv" },
-  { "chapterId": "ch2", "key": "outro", "focus": "lrrr" },
-  { "chapterId": "ch3", "key": "intro", "focus": "pioneer10" },
-  { "chapterId": "ch3", "key": "outro", "focus": "voyager2" },
-  { "chapterId": "ch4", "key": "intro", "focus": "viking1" },
-  { "chapterId": "ch4", "key": "outro", "focus": "viking1" },
-  { "chapterId": "ch5", "key": "intro", "focus": "sojourner" },
-  { "chapterId": "ch5", "key": "middle", "focus": "opportunity" },
-  { "chapterId": "ch5", "key": "outro", "focus": "opportunity" },
-  { "chapterId": "ch6", "key": "intro", "focus": "curiosity" },
-  { "chapterId": "ch6", "key": "outro", "focus": "perseverance" },
-  { "chapterId": "ch7", "key": "intro", "focus": "voyager1" },
-  { "chapterId": "ch7", "key": "outro", "focus": "voyager1" }
+  {
+    "chapterId": "ch0",
+    "key": "intro",
+    "focus": "echo"
+  },
+  {
+    "chapterId": "ch0",
+    "key": "outro",
+    "focus": "echo"
+  },
+  {
+    "chapterId": "ch1",
+    "key": "intro",
+    "focus": "ranger7"
+  },
+  {
+    "chapterId": "ch1",
+    "key": "middle",
+    "focus": "surveyor3"
+  },
+  {
+    "chapterId": "ch1",
+    "key": "outro",
+    "focus": "surveyor3"
+  },
+  {
+    "chapterId": "ch2",
+    "key": "intro",
+    "focus": "apollo11_descent"
+  },
+  {
+    "chapterId": "ch2",
+    "key": "middle",
+    "focus": "lrv"
+  },
+  {
+    "chapterId": "ch2",
+    "key": "outro",
+    "focus": "lrrr"
+  },
+  {
+    "chapterId": "ch3",
+    "key": "intro",
+    "focus": "pioneer10"
+  },
+  {
+    "chapterId": "ch3",
+    "key": "outro",
+    "focus": "voyager2"
+  },
+  {
+    "chapterId": "ch4",
+    "key": "intro",
+    "focus": "viking1"
+  },
+  {
+    "chapterId": "ch4",
+    "key": "outro",
+    "focus": "viking1"
+  },
+  {
+    "chapterId": "ch5",
+    "key": "intro",
+    "focus": "sojourner"
+  },
+  {
+    "chapterId": "ch5",
+    "key": "middle",
+    "focus": "opportunity"
+  },
+  {
+    "chapterId": "ch5",
+    "key": "outro",
+    "focus": "opportunity"
+  },
+  {
+    "chapterId": "ch6",
+    "key": "intro",
+    "focus": "curiosity"
+  },
+  {
+    "chapterId": "ch6",
+    "key": "outro",
+    "focus": "perseverance"
+  },
+  {
+    "chapterId": "ch7",
+    "key": "intro",
+    "focus": "voyager1"
+  },
+  {
+    "chapterId": "ch7",
+    "key": "outro",
+    "focus": "voyager1"
+  },
+  {
+    "chapterId": "m1",
+    "key": "intro",
+    "focus": "lrv"
+  },
+  {
+    "chapterId": "m1",
+    "key": "outro",
+    "focus": "cuoi"
+  },
+  {
+    "chapterId": "m2",
+    "key": "intro",
+    "focus": "cuoi"
+  },
+  {
+    "chapterId": "m2",
+    "key": "outro",
+    "focus": "lrv"
+  },
+  {
+    "chapterId": "m3",
+    "key": "intro",
+    "focus": "rabbit"
+  },
+  {
+    "chapterId": "m3",
+    "key": "outro",
+    "focus": "cuoi"
+  },
+  {
+    "chapterId": "m4",
+    "key": "intro",
+    "focus": "cuoi"
+  },
+  {
+    "chapterId": "m4",
+    "key": "outro",
+    "focus": "lrv"
+  },
+  {
+    "chapterId": "m5",
+    "key": "intro",
+    "focus": "rabbit"
+  },
+  {
+    "chapterId": "m5",
+    "key": "outro",
+    "focus": "cuoi"
+  }
 ]

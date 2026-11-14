@@ -3,7 +3,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { chapters } from '../data';
+import { moonChapters } from '../data';
 import { useGame } from '../state/store';
 
 gsap.registerPlugin(useGSAP);
@@ -16,8 +16,8 @@ export function Title() {
   const beat = useGame((s) => s.beat);
   const update = useGame((s) => s.update);
   const root = useRef<HTMLElement>(null);
-  const started = Object.keys(completed).length > 0 || Object.values(beat).some((b) => b > 0);
-  const nextChapter = chapters.find((c) => !completed[c.id]) ?? chapters[0];
+  const started = moonChapters.some((chapter) => completed[chapter.id] || (beat[chapter.id] ?? 0) > 0);
+  const nextChapter = moonChapters.find((chapter) => !completed[chapter.id]) ?? moonChapters[0];
 
   useGSAP(
     () => {
@@ -41,7 +41,7 @@ export function Title() {
         <p className="title-sub reveal">{t('app.subtitle')}</p>
         <p className="title-hook reveal">{t('app.hook')}</p>
         <div className="row reveal">
-          <Link className="btn primary big" to={started ? `/chapter/${nextChapter.id}` : '/chapter/ch0'}>{started ? t('app.continue') : t('app.begin')}</Link>
+          <Link className="btn primary big" to={started ? `/chapter/${nextChapter.id}` : '/chapter/m1'}>{started ? t('app.continue') : t('app.begin')}</Link>
           <Link className="btn ghost big" to="/map">{t('nav.map')}</Link>
         </div>
         <nav className="title-links reveal" aria-label={t('nav.more')}>

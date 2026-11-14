@@ -7,6 +7,10 @@ export type Surface = 'moon' | 'mars' | 'earth';
 export type Fate = 'operating' | 'silent' | 'retired' | 'drifting';
 export type ModelId = 'ranger' | 'surveyor' | 'descent' | 'lrrr' | 'lrv' | 'pioneer' | 'voyager' | 'viking' | 'sojourner' | 'mer' | 'curiosity' | 'perseverance' | 'ingenuity' | 'newhorizons';
 
+/** Which journey a chapter belongs to. Moon chapters are the main story; archive chapters are optional. */
+export type Arc = 'moon' | 'archive';
+export type DriveVehicle = 'echo' | 'lrv';
+
 export interface Hardware {
   id: string;
   world: World;
@@ -30,6 +34,8 @@ export interface DriveConfig {
   tether?: number;
   prop?: { model: ModelId; x: number; z: number };
   battery?: BatteryParams;
+  /** Which body the player drives. Defaults to Echo. */
+  vehicle?: DriveVehicle;
 }
 
 export interface LandingConfig {
@@ -62,6 +68,7 @@ export interface SlingshotConfig {
 
 export type ClassifyConfig =
   | { visual: 'craters'; rounds: number; seed: number }
+  | { visual: 'samples'; rounds: number; seed: number }
   | { visual: 'lr'; answers: number[] }
   | { visual: 'golden'; items: { id: string; on: boolean }[] };
 
@@ -76,11 +83,22 @@ export type Beat =
   | { kind: 'dialogue'; key: string; focus: string }
   | { kind: 'memory'; hardware: string }
   | { kind: 'quiz'; key: string; answers: number[] }
+  /** A scenario question scored as Knowledge Application (20% of MMLS). */
+  | { kind: 'apply'; key: string; answers: number[] }
+  /** Ungraded "what do you think?" questions asked before the chapter, for Learning Gain. */
+  | { kind: 'precheck'; key: string; answers: number[] }
+  /** Ungraded post-story questions paired with the pre-check for learning gain. */
+  | { kind: 'postcheck'; key: string; answers: number[] }
+  /** An open-ended question assessed by Gemini, with a deterministic fallback. */
+  | { kind: 'reflect'; key: string }
+  /** A fictional memory-archive sequence, used for PSEP. */
+  | { kind: 'archive'; key: string }
   | { kind: 'signal' }
   | MissionBeat;
 
 export interface Chapter {
   id: string;
+  arc?: Arc;
   world: World;
   era: string;
   beats: Beat[];

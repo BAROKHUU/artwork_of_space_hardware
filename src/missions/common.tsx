@@ -14,6 +14,8 @@ export interface MissionProps<C> {
   onResult: (r: MissionResult) => void;
   /** In the Lab there is no briefing, and goals are optional. */
   lab?: boolean;
+  /** Gentle adaptive aid after repeated unsuccessful attempts. */
+  assisted?: boolean;
 }
 
 /** Lets the 3D loop push readouts to a HUD component without re-rendering the scene around it. */

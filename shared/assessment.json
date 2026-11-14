@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "questions": {
+    "r1": {
+      "prompt": "If the lunar rover had never been there, what would have been harder for the astronauts?",
+      "reference": [
+        "The Lunar Roving Vehicle was a battery-powered vehicle driven by astronauts on Apollo 15, 16 and 17.",
+        "It let astronauts travel farther from the lunar module than they could on foot.",
+        "It carried tools, equipment and collected samples.",
+        "Apollo 15 drove about 28 km, Apollo 16 about 27 km, and Apollo 17 about 36 km."
+      ],
+      "criteria": [
+        {
+          "key": "role",
+          "label": "Identifies the rover's role",
+          "max": 2,
+          "guidance": "Award 2 if the answer names a real job of the rover: carrying astronauts, tools or samples, or travelling farther. Award 1 for a vague reference to helping.",
+          "keywords": ["rover", "vehicle", "drove", "drive", "carry", "carried", "transport", "farther", "far", "distance", "tools", "equipment", "samples", "rocks", "walk", "xe", "chay", "cho", "mang", "xa", "dung cu", "mau da", "da"]
+        },
+        {
+          "key": "cause",
+          "label": "Explains a cause and effect",
+          "max": 2,
+          "guidance": "Award 2 if the answer links the rover's job to a consequence, such as exploring more, collecting more samples, or saving time and energy. Award 1 if a benefit is named without the consequence.",
+          "keywords": ["because", "so", "therefore", "helped", "allowed", "meant", "more", "faster", "easier", "without", "would", "vi", "nen", "giup", "nhieu hon", "de hon", "nhanh hon"]
+        },
+        {
+          "key": "own_words",
+          "label": "Uses their own words",
+          "max": 1,
+          "guidance": "Award 1 when the answer is an independent sentence rather than a copied fragment. Do not penalise spelling, grammar or short length."
+        }
+      ],
+      "concepts": ["distance", "equipment", "samples"]
+    },
+    "r2": {
+      "prompt": "The seismometer stopped working in 1969. Why can it still matter today?",
+      "reference": [
+        "The Apollo 11 Passive Seismic Experiment Package (PSEP) was part of EASEP.",
+        "It measured ground motion from meteoroid impacts and movements inside the Moon.",
+        "It was activated on 21 July 1969 and returned data for about three weeks of lunar daytime. Its command link was lost in late August 1969 and the experiment was formally terminated on 27 August 1969.",
+        "The instrument is silent, but its data record is still studied.",
+        "No Apollo hardware was ever repaired or restarted by another vehicle."
+      ],
+      "criteria": [
+        {
+          "key": "data",
+          "label": "Identifies the value of the data",
+          "max": 2,
+          "guidance": "Award 2 if the answer says the recorded data or measurements still have value. Award 1 for saying only that it is remembered or important.",
+          "keywords": ["data", "record", "measure", "measurement", "information", "result", "du lieu", "ghi lai", "do duoc", "thong tin", "ket qua"]
+        },
+        {
+          "key": "continuation",
+          "label": "Explains how the value continues",
+          "max": 2,
+          "guidance": "Award 2 if the answer explains that scientists still study it or can learn something new. Award 1 if it only says people remember it.",
+          "keywords": ["study", "scientists", "learn", "learned", "understand", "research", "new", "today", "hoc", "nghien cuu", "hieu", "biet them", "hom nay", "nha khoa hoc"]
+        },
+        {
+          "key": "own_words",
+          "label": "Uses their own words",
+          "max": 1,
+          "guidance": "Award 1 when the answer is an independent sentence rather than a copied fragment. Do not penalise spelling, grammar or short length."
+        }
+      ],
+      "concepts": ["data", "legacy"]
+    }
+  }
+}

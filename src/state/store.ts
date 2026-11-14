@@ -4,6 +4,7 @@ import { DEFAULT_LANGUAGE } from '../i18n/languages';
 import { chapters } from '../data';
 import { storySectionById } from '../book/content';
 import { emptyBookProgress, normalizeBookProgress, setBookBookmark, type BookProgress } from '../book/progress';
+import { emptyAssessment, type AssessmentProgress, type ReflectionReview } from '../assessment';
 export type Quality = 'high' | 'low' | 'off';
 export type Reading = 'young';
 
@@ -19,6 +20,10 @@ interface GameState {
   explorer: boolean;
   settingsOpen: boolean;
   book: BookProgress;
+  assessment: AssessmentProgress;
+  narration: boolean;
+  missionFailures: Record<string, number>;
+  assistedMissions: Record<string, boolean>;
   setStars: (mission: string, stars: number) => void;
   unlock: (hardware: string) => void;
   setBeat: (chapter: string, beat: number) => void;
@@ -28,7 +33,13 @@ interface GameState {
   setBookPage: (mode: 'game' | 'reader', sectionId: string, pageId: string) => void;
   clearGameBookPage: (sectionId: string) => void;
   setReaderChapter: (chapterId: string) => void;
-  update: (patch: Partial<Pick<GameState, 'language' | 'quality' | 'reading' | 'sound' | 'explorer' | 'settingsOpen'>>) => void;
+  savePrecheck: (answers: number[]) => void;
+  savePostcheck: (answers: number[]) => void;
+  saveQuiz: (key: string, answers: number[], correct: number[]) => void;
+  saveReflection: (key: string, answer: string, review: ReflectionReview | null, skipped?: boolean) => void;
+  recordMissionFailure: (mission: string) => number;
+  resetMissionFailures: (mission: string) => void;
+  update: (patch: Partial<Pick<GameState, 'language' | 'quality' | 'reading' | 'sound' | 'explorer' | 'settingsOpen' | 'narration'>>) => void;
   reset: () => void;
 }
 
@@ -64,6 +75,10 @@ export const useGame = create<GameState>()(
     (set) => ({
       ...emptyProgress,
       book: emptyBookProgress(),
+      assessment: emptyAssessment(),
+      narration: false,
+      missionFailures: {},
+      assistedMissions: {},
       language: DEFAULT_LANGUAGE,
       quality: 'high',
       reading: 'young',
@@ -112,8 +127,25 @@ export const useGame = create<GameState>()(
         if (chapterId !== '' && !chapters.some((item) => item.id === chapterId)) return;
         set((s) => ({ book: { ...normalizeBookProgress(s.book), readerChapter: chapterId || null } }));
       },
+      savePrecheck: (answers) => set((s) => ({ assessment: { ...s.assessment, precheck: answers.slice(0, 3).map((answer, index) => answer === [0, 1, 1][index]) } })),
+      savePostcheck: (answers) => set((s) => ({ assessment: { ...s.assessment, postcheck: answers.slice(0, 3).map((answer, index) => answer === [0, 1, 1][index]) } })),
+      saveQuiz: (key, answers, correct) => set((s) => {
+        const isApplication = key.startsWith('a');
+        const target = isApplication ? s.assessment.applications : s.assessment.quizzes;
+        return { assessment: { ...s.assessment, [isApplication ? 'applications' : 'quizzes']: { ...target, [key]: answers.map((answer, index) => answer === correct[index]) } } };
+      }),
+      saveReflection: (key, answer, review, skipped = false) => set((s) => ({ assessment: { ...s.assessment, reflections: { ...s.assessment.reflections, [key]: { answer, review, skipped } } } })),
+      recordMissionFailure: (mission) => {
+        let failures = 0;
+        set((s) => {
+          failures = (s.missionFailures[mission] ?? 0) + 1;
+          return { missionFailures: { ...s.missionFailures, [mission]: failures }, assistedMissions: failures >= 3 ? { ...s.assistedMissions, [mission]: true } : s.assistedMissions };
+        });
+        return failures;
+      },
+      resetMissionFailures: (mission) => set((s) => ({ missionFailures: { ...s.missionFailures, [mission]: 0 } })),
       update: (patch) => set(patch),
-      reset: () => set({ ...emptyProgress, language: DEFAULT_LANGUAGE, quality: 'high', reading: 'young', sound: true, explorer: false, settingsOpen: false, book: emptyBookProgress() }),
+      reset: () => set({ ...emptyProgress, language: DEFAULT_LANGUAGE, quality: 'high', reading: 'young', sound: true, explorer: false, settingsOpen: false, narration: false, book: emptyBookProgress(), assessment: emptyAssessment(), missionFailures: {}, assistedMissions: {} }),
     }),
     {
       name: 'echo-save',
@@ -142,6 +174,10 @@ export const useGame = create<GameState>()(
           beat,
           reading: 'young',
           book,
+          assessment: old.assessment ?? emptyAssessment(),
+          narration: old.narration ?? false,
+          missionFailures: old.missionFailures ?? {},
+          assistedMissions: old.assistedMissions ?? {},
         };
       },
       merge: (persisted, current) => {
@@ -152,6 +188,7 @@ export const useGame = create<GameState>()(
           ...saved,
           reading: 'young',
           book: normalizeBookProgress(saved.book, chapters.map((chapter) => chapter.id), false),
+          assessment: { ...emptyAssessment(), ...saved.assessment, quizzes: saved.assessment?.quizzes ?? {}, applications: saved.assessment?.applications ?? {}, reflections: saved.assessment?.reflections ?? {} },
         };
       },
       partialize: ({ settingsOpen: _open, setStars: _a, unlock: _b, setBeat: _c, completeChapter: _d, enterStory: _g, markBookOpened: _h, setBookPage: _i, clearGameBookPage: _j, setReaderChapter: _k, update: _e, reset: _f, ...saved }) => saved,

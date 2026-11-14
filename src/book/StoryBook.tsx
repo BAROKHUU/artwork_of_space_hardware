@@ -18,7 +18,7 @@ interface StoryBookProps {
   onSkip?: () => void;
 }
 
-interface StoryLine { who: 'echo' | 'control'; text: string }
+interface StoryLine { who: 'echo' | 'control' | 'lrv' | 'cuoi' | 'rabbit'; text: string }
 interface BookLeaf {
   type: 'cover' | 'story' | 'back';
   section?: StorySection;

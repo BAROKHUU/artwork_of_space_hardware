@@ -1,30 +1,275 @@
 {
   "ch1": [
-    { "q": "Why did Ranger 7 keep taking pictures while crashing?", "options": ["Its brakes had failed", "Each picture was closer and showed more detail", "It was looking for astronauts"], "why": "Ranger had no way to land. The closer it got, the sharper its pictures of the surface became." },
-    { "q": "What did Surveyor 3's scoop help prove?", "options": ["The Moon has oceans", "The Moon is hollow", "The ground could hold up a landing craft"], "why": "Testing the soil showed that the surface was firm enough for Apollo." }
+    {
+      "q": "Why did Ranger 7 keep taking pictures while crashing?",
+      "options": [
+        "Its brakes had failed",
+        "Each picture was closer and showed more detail",
+        "It was looking for astronauts"
+      ],
+      "why": "Ranger had no way to land. The closer it got, the sharper its pictures of the surface became."
+    },
+    {
+      "q": "What did Surveyor 3's scoop help prove?",
+      "options": [
+        "The Moon has oceans",
+        "The Moon is hollow",
+        "The ground could hold up a landing craft"
+      ],
+      "why": "Testing the soil showed that the surface was firm enough for Apollo."
+    }
   ],
   "ch2": [
-    { "q": "Why does the Apollo 11 laser reflector still work today?", "options": ["Astronauts recharge it", "It has a nuclear battery", "It needs no power at all"], "why": "It just reflects light straight back, so there is nothing to run out." },
-    { "q": "Which way is the Moon slowly moving?", "options": ["Away from Earth", "Toward Earth", "It never moves"], "why": "Laser timing shows that the Moon drifts about 3.8 centimeters farther away each year." }
+    {
+      "q": "Why does the Apollo 11 laser reflector still work today?",
+      "options": [
+        "Astronauts recharge it",
+        "It has a nuclear battery",
+        "It needs no power at all"
+      ],
+      "why": "It just reflects light straight back, so there is nothing to run out."
+    },
+    {
+      "q": "Which way is the Moon slowly moving?",
+      "options": [
+        "Away from Earth",
+        "Toward Earth",
+        "It never moves"
+      ],
+      "why": "Laser timing shows that the Moon drifts about 3.8 centimeters farther away each year."
+    }
   ],
   "ch3": [
-    { "q": "What does a gravity assist do?", "options": ["Uses a planet's motion to change a spacecraft's speed", "Refills the fuel tank", "Slows a planet down so it can be studied"], "why": "A spacecraft can borrow a tiny amount of a planet's orbital motion and leave with more speed." },
-    { "q": "Which planets has only Voyager 2 ever visited?", "options": ["Mars and Venus", "Uranus and Neptune", "Jupiter and Saturn"], "why": "No other spacecraft has flown past Uranus or Neptune." }
+    {
+      "q": "What does a gravity assist do?",
+      "options": [
+        "Uses a planet's motion to change a spacecraft's speed",
+        "Refills the fuel tank",
+        "Slows a planet down so it can be studied"
+      ],
+      "why": "A spacecraft can borrow a tiny amount of a planet's orbital motion and leave with more speed."
+    },
+    {
+      "q": "Which planets has only Voyager 2 ever visited?",
+      "options": [
+        "Mars and Venus",
+        "Uranus and Neptune",
+        "Jupiter and Saturn"
+      ],
+      "why": "No other spacecraft has flown past Uranus or Neptune."
+    }
   ],
   "ch4": [
-    { "q": "What did Viking 1 need to land on Mars?", "options": ["Only a parachute", "A parachute and rocket engines", "Only wings"], "why": "The thin air slows you down, but not enough. Rockets did the rest." },
-    { "q": "What did Viking's biology tests conclude?", "options": ["Strange chemistry, but no clear evidence of life", "Mars is full of microbes", "The experiments never ran"], "why": "The soil reacted in surprising ways, but no clear sign of living things was found." }
+    {
+      "q": "What did Viking 1 need to land on Mars?",
+      "options": [
+        "Only a parachute",
+        "A parachute and rocket engines",
+        "Only wings"
+      ],
+      "why": "The thin air slows you down, but not enough. Rockets did the rest."
+    },
+    {
+      "q": "What did Viking's biology tests conclude?",
+      "options": [
+        "Strange chemistry, but no clear evidence of life",
+        "Mars is full of microbes",
+        "The experiments never ran"
+      ],
+      "why": "The soil reacted in surprising ways, but no clear sign of living things was found."
+    }
   ],
   "ch5": [
-    { "q": "How long was Opportunity's mission planned to last?", "options": ["15 years", "One Martian year", "About 90 Martian days"], "why": "It was planned for about 90 sols and worked for more than 14 years." },
-    { "q": "What ended Opportunity's mission?", "options": ["A broken wheel", "A planet-wide dust storm blocked the sun", "It ran out of road"], "why": "Solar panels need sunlight. The 2018 storm blocked it." }
+    {
+      "q": "How long was Opportunity's mission planned to last?",
+      "options": [
+        "15 years",
+        "One Martian year",
+        "About 90 Martian days"
+      ],
+      "why": "It was planned for about 90 sols and worked for more than 14 years."
+    },
+    {
+      "q": "What ended Opportunity's mission?",
+      "options": [
+        "A broken wheel",
+        "A planet-wide dust storm blocked the sun",
+        "It ran out of road"
+      ],
+      "why": "Solar panels need sunlight. The 2018 storm blocked it."
+    }
   ],
   "ch6": [
-    { "q": "How many flights was Ingenuity planned to make?", "options": ["Up to 5", "72", "1,000"], "why": "Up to five was the plan. It flew 72 times." },
-    { "q": "What record did Perseverance set in October 2026?", "options": ["Highest flight on Mars", "First rover on Mars", "Longest distance driven on another world"], "why": "It passed Opportunity's record on 11 October 2026." }
+    {
+      "q": "How many flights was Ingenuity planned to make?",
+      "options": [
+        "Up to 5",
+        "72",
+        "1,000"
+      ],
+      "why": "Up to five was the plan. It flew 72 times."
+    },
+    {
+      "q": "What record did Perseverance set in October 2026?",
+      "options": [
+        "Highest flight on Mars",
+        "First rover on Mars",
+        "Longest distance driven on another world"
+      ],
+      "why": "It passed Opportunity's record on 11 October 2026."
+    }
   ],
   "ch7": [
-    { "q": "What makes Voyager 1 special?", "options": ["It is the fastest ever rover", "It is the farthest human-made object", "It has landed on Pluto"], "why": "Nothing we have built has ever gone farther." },
-    { "q": "Why was the Golden Record made?", "options": ["To tell anyone who finds it about life on Earth", "To play music for astronauts", "To help steer the spacecraft"], "why": "It's a message from Earth, with sounds, music, greetings, and pictures." }
+    {
+      "q": "What makes Voyager 1 special?",
+      "options": [
+        "It is the fastest ever rover",
+        "It is the farthest human-made object",
+        "It has landed on Pluto"
+      ],
+      "why": "Nothing we have built has ever gone farther."
+    },
+    {
+      "q": "Why was the Golden Record made?",
+      "options": [
+        "To tell anyone who finds it about life on Earth",
+        "To play music for astronauts",
+        "To help steer the spacecraft"
+      ],
+      "why": "It's a message from Earth, with sounds, music, greetings, and pictures."
+    }
+  ],
+  "m2": [
+    {
+      "q": "What did the lunar rover let the astronauts do?",
+      "options": [
+        "Fly over the craters",
+        "Travel farther from the lander",
+        "Sleep through the lunar night"
+      ],
+      "why": "The rover carried astronauts, tools, and samples across several kilometres in a single drive."
+    },
+    {
+      "q": "Who drove the lunar rover?",
+      "options": [
+        "A robot controlled from Earth",
+        "The astronauts",
+        "Cuội"
+      ],
+      "why": "The real rover was not autonomous. Astronauts sat in it and drove it."
+    }
+  ],
+  "m3": [
+    {
+      "q": "Why are craters useful to scientists?",
+      "options": [
+        "They are holes full of water",
+        "They show what hit the Moon and roughly when",
+        "They move across the surface"
+      ],
+      "why": "A crater is evidence of an impact. Older surfaces carry more craters and softer edges."
+    },
+    {
+      "q": "Why do scientists compare many Moon rocks?",
+      "options": [
+        "To find the prettiest one",
+        "To learn the Moon's history",
+        "To measure its colour"
+      ],
+      "why": "Different rocks formed in different ways, so comparing them reveals how the Moon changed."
+    }
+  ],
+  "m5": [
+    {
+      "q": "What did the Apollo 11 seismometer listen for?",
+      "options": [
+        "Wind",
+        "Radio from Earth",
+        "Moonquakes and impacts"
+      ],
+      "why": "It measured ground motion from meteoroid impacts and movements inside the Moon."
+    },
+    {
+      "q": "The seismometer stopped sending in 1969. Why does its data still matter?",
+      "options": [
+        "It is still sending today",
+        "It was never used",
+        "Scientists still study the record it made"
+      ],
+      "why": "The instrument is silent, but the record it made is still used to understand the Moon."
+    }
+  ],
+  "a2": [
+    {
+      "q": "Astronauts need to carry tools and rocks far from the lander. What should they take?",
+      "options": [
+        "The lunar rover",
+        "A parachute",
+        "A larger flag"
+      ],
+      "why": "The rover was built to carry two astronauts, their tools, and their samples."
+    }
+  ],
+  "a3": [
+    {
+      "q": "You find a rock made of broken pieces pressed together. Which type is it?",
+      "options": [
+        "Breccia",
+        "Basalt",
+        "Anorthosite"
+      ],
+      "why": "Breccia forms when fragments are welded together by heat and pressure from impacts."
+    }
+  ],
+  "a4": [
+    {
+      "q": "A machine stops working. Which part can still help science?",
+      "options": [
+        "Its paint",
+        "The data it already sent",
+        "Its parking spot"
+      ],
+      "why": "The measurements can outlive the machine that made them."
+    }
+  ],
+  "a5": [
+    {
+      "q": "Which sentence best explains why a stopped instrument still matters?",
+      "options": [
+        "It will turn itself back on",
+        "It is only useful as a sculpture",
+        "Its data is still studied and can teach us new things"
+      ],
+      "why": "The value lives in the record and what people learn from it, not in continued operation."
+    }
+  ],
+  "moon": [
+    {
+      "q": "Before we start: why might scientists want a rock from the Moon?",
+      "options": [
+        "To study the Moon's history",
+        "To build houses there",
+        "To sell it"
+      ],
+      "why": "Moon rocks carry a record of how the Moon formed and changed."
+    },
+    {
+      "q": "Who drove the Apollo lunar rover?",
+      "options": [
+        "A robot",
+        "The astronauts",
+        "Nobody"
+      ],
+      "why": "The astronauts drove it. This story imagines the rover remembering, but that part is fiction."
+    },
+    {
+      "q": "If a machine stops working, can its data still be useful?",
+      "options": [
+        "No, never",
+        "Yes, if people keep studying it",
+        "Only if it is repaired"
+      ],
+      "why": "Data can keep teaching long after the machine goes quiet."
+    }
   ]
 }

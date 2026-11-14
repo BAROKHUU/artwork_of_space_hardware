@@ -1,29 +1,538 @@
 {
-  "app": {"title": "Echo", "subtitle": "Abandoned but Not Forgotten", "hook": "We left machines on the Moon, on Mars, and beyond the planets. Some of them are still talking.", "begin": "Begin the mission", "continue": "Continue", "challenge": "A NASA Space Apps Challenge project"},
-  "nav": {"map": "Missions", "logbook": "Logbook", "atlas": "Atlas", "lab": "Lab", "sources": "Sources", "settings": "Settings", "home": "Home"},
-  "cuoiPreview": {"link": "Meet Cuoi (draft)", "title": "Cuoi · character draft", "description": "Drag to rotate and scroll or pinch to zoom. This is an early stylized character study.", "face": "Face", "full": "Full body"},
-  "book": {"previous": "Previous page", "next": "Next page", "continue": "Continue story", "skip": "Skip story", "cover": "Story", "open": "Open story", "close": "Close book", "pageOf": "Page {{page}} of {{total}}", "reading": "Story reader", "bookTitle": "Storybook", "noImage": "No illustration available", "fact": "Did you know?", "section": "Section", "chapters": "Available chapters", "locked": "Story not reached yet", "readerIntro": "Revisit story sections you've already encountered. New sections appear here as you discover them.", "empty": "No story sections have been discovered yet. Begin the mission to start the story."},
-  "nav": {"map": "Missions", "book": "Storybook", "logbook": "Logbook", "atlas": "Atlas", "lab": "Lab", "sources": "Sources", "settings": "Settings", "home": "Home", "main": "Main navigation", "more": "More pages"},
-  "map": {"heading": "Follow the signal", "sub": "Eight stops across six decades of NASA exploration.", "locked": "Finish the previous chapter", "play": "Play", "replay": "Replay", "resume": "Resume", "chapter": "Chapter {{n}}", "progress": "{{done}} of {{total}} chapters"},
-  "dialogue": {"next": "Next", "back": "Back", "skip": "Skip scene"},
-  "mission": {"start": "Start mission", "retry": "Try again", "skip": "Skip mission", "continue": "Continue", "objective": "Mission", "hint": "Hint", "failed": "Not this time", "complete": "Mission complete", "no3d": "This mission needs 3D graphics, which are off or unavailable on this device. You can turn them on in Settings, or skip ahead."},
-  "hud": {"altitude": "Altitude", "odometer": "Driven", "speed": "Speed", "fuel": "Fuel", "battery": "Battery", "power": "Rotor battery", "hold": "Hold", "thrust": "Thrust", "rotor": "Rotors", "chute": "Parachute", "chuteOpen": "Parachute open", "safe": "Safe under {{v}} m/s", "dust": "Dust", "sun": "Sun", "scanning": "Scanning", "keys": "Arrow keys or WASD to drive", "thrustKeys": "Space: engines", "chuteKeys": "P: parachute", "left": "Left", "right": "Right", "forward": "Forward", "backward": "Reverse", "toTarget": "{{name}}: {{d}} m", "slope": "Slope", "lookKeys": "Hold right mouse and drag to look around"},
-  "memory": {"unlocked": "Memory unlocked", "job": "What it did", "learned": "What we learned", "now": "Where it is now", "continue": "Add to logbook"},
-  "quiz": {"heading": "Field check", "correct": "Correct!", "incorrect": "Not quite.", "next": "Next", "finish": "Finish"},
-  "signal": {"heading": "Still listening", "intro": "These numbers come from JPL's tracking predictions.", "distance": "Distance from Earth", "light": "One-way signal time", "lightValue": "{{h}} hours", "billionKm": "billion km", "reached": "One light-day reached", "countdown": "{{d}} days to one light-day", "lost": "No signal since 2003", "continue": "Continue"},
-  "complete": {"heading": "Chapter complete", "stars": "{{n}} of {{max}} stars", "next": "Next chapter", "map": "Back to missions", "finale": "The Archive is complete", "finaleSub": "You followed every signal. Open the Lab to run your own experiments."},
-  "fate": {"operating": "Still working", "silent": "Fallen silent", "retired": "Retired as planned", "drifting": "Drifting away", "checked": "Status checked November 2026"},
-  "dates": {"launched": "Launched", "landed": "Arrived", "deployed": "Deployed", "interstellar": "Interstellar", "lastContact": "Last contact", "ended": "Mission ended"},
-  "world": {"moon": "Moon", "mars": "Mars", "deep": "Deep space", "all": "All worlds"},
-  "logbook": {"heading": "Logbook", "sub": "{{n}} of {{total}} memories recovered. Finish missions to collect the rest.", "lockedName": "Signal not yet traced", "allFates": "All fates", "open": "Open record", "close": "Close", "photo": "Photo", "model": "3D model", "credit": "Image: {{credit}} ({{id}})", "sources": "Sources"},
-  "atlas": {"heading": "Atlas", "sub": "Everything in this game, placed where it really is. Drag to spin. Select a marker to read more.", "deepNote": "Distance from Earth, on a compressed scale. Data from JPL Horizons.", "au": "{{v}} AU", "reading": "Selected"},
-  "solar": {"period": "One orbit of {{name}} takes {{y}} Earth years. Planets near the Sun move fastest.", "play": "Play", "pause": "Pause", "today": "Today", "timeSpeed": "Time speed", "daysPerSecond": "{{n}} days / s", "yearsPerSecond": "{{n}} years / s", "tour": "Replay Voyager 2's tour from 1977", "note": "Sizes enlarged. Orbits: JPL. Maps: USGS and NASA missions (Venus is a radar map). After 2049, probes coast in a straight line.", "follow": "Follow {{name}}", "unfollow": "Back to the Sun", "names": {"mercury": "Mercury", "venus": "Venus", "earth": "Earth", "mars": "Mars", "jupiter": "Jupiter", "saturn": "Saturn", "uranus": "Uranus", "neptune": "Neptune"}, "planet": "Planet", "distance": "AU", "speed": "km/s", "notLaunched": "not launched", "reverse": "Reverse time", "forward": "Run forward", "scale": "Distance scale", "compressed": "Fit on screen", "true": "True distances", "orbits": "Orbits", "trails": "Trails", "probes": "Probes"},
-  "slinglab": {"fleet": "Launch {{n}} probes", "position": "Jupiter's position", "dragHint": "Drag Jupiter, then launch. The dashed line shows where the probe will go.", "boosted": "Jupiter gave your probe a speed boost, with no fuel used!", "noBoost": "No boost this time. Move Jupiter a little and try again.", "fleetResult": "{{n}} of {{total}} probes got a boost. A tiny change makes a huge difference."},
-  "lab": {"vehicle": "Vehicle", "vehicles": {"echo": "Echo", "sojourner": "Sojourner", "mer": "Opportunity", "curiosity": "Curiosity", "lrv": "Lunar Rover"}, "camera": "Camera", "cameras": {"chase": "Chase", "high": "From above", "cockpit": "Driver"}, "sunHeight": "Sun height", "heading": "Lab", "sub": "No goals here. Change the rules of space and see what happens.", "landing": "Landing Lab", "landingSub": "Change gravity, engines, and air.", "slingshot": "Slingshot Lab", "slingshotSub": "Let Jupiter throw your probe.", "solar": "Solar System Lab", "solarSub": "Speed up time and watch every orbit.", "drive": "Rover Lab", "driveSub": "Free drive under different skies.", "thrust": "Engine power", "moon": "Moon", "mars": "Mars", "jupiterMass": "Jupiter's mass", "echoTime": "Echo time", "world": "World", "reset": "Restart", "landed": "Soft landing at {{v}} m/s", "crashed": "Crashed at {{v}} m/s", "simNote": "Simplified simulation for learning. Real missions are far more complex.", "gravity": "Gravity", "startAlt": "Start height", "air": "Air thickness", "chute": "Use a parachute", "preset": "Preset", "earth": "Earth", "battery": "Solar battery rules", "result": "Result", "sunDirection": "Sun direction", "laser": "Laser Lab", "laserSub": "Bounce a laser off the Moon.", "moonDistance": "Moon distance", "seismic": "Seismic Catch", "seismicSub": "Catch four signals at once."},
-  "sources": {"heading": "Sources and honesty", "sub": "Every fact in this game comes from a public source. Here's how to check it.", "real": "What is real", "realBody": "Photos, the Moon and Mars maps, dates, distances, mission facts, and hardware status are taken from NASA, JPL, and USGS.", "simplified": "What is simplified", "simplifiedBody": "Echo and Archive Control are fictional. Most 3D spacecraft are NASA's own published models; Ranger, Surveyor, the laser mirror, the Lunar Rover, and Sojourner are hand-built approximations. Landing, driving, orbit, and battery simulations use real physics ideas with shortened distances and times. Landing-site puzzles and soil charts are illustrations, not data.", "date": "Facts were checked in November 2026. Missions change, so visit NASA for the latest.", "listHeading": "References", "software": "Software licenses and notices", "flipbookNotice": "The storybook uses the GUL Labs flipbook React binding and its MPL-licensed core. License text and package attribution:", "noticeLink": "third-party notice", "mplLink": "MPL 2.0 license text", "wrapperSource": "wrapper source", "coreSource": "core source", "mplOfficial": "Official Mozilla Public License 2.0 text", "images": "Photo credits", "backgrounds": "Background images", "backdrop": {"map": "Earthset, seen from the Orion spacecraft", "logbook": "The Milky Way center, glowing with dust (Spitzer)", "atlas": "Earthrise, from the Lunar Reconnaissance Orbiter", "lab": "Cosmic Cliffs in the Carina Nebula (Webb)", "sources": "A Deep Space Network antenna at Goldstone", "moon": "Earthrise visualization, from Lunar Reconnaissance Orbiter data", "mars": "Martian geology ahead of Curiosity", "deep": "Galaxies in a colorful Hubble deep field"}, "notEndorsed": "This is an independent student project. It is not endorsed by NASA."},
-  "settings": {"heading": "Settings", "language": "Language", "languageNote": "Content is translated as soon as you change the language.", "reading": "Reading age", "young": "Ages 8 to 11", "older": "Ages 12 and up", "schoolAge": "School age (6–12 years)", "quality": "Graphics", "high": "High", "low": "Low (for older devices)", "off": "No 3D", "sound": "Sound effects", "explorer": "Explorer mode", "explorerNote": "Open every chapter right away.", "reset": "Erase my progress", "resetConfirm": "Erase all progress? This can't be undone.", "cancel": "Cancel", "erase": "Erase", "close": "Close", "on": "On", "off2": "Off", "privacy": "Your progress stays on this device. We collect no data."},
-  "common": {"loading": "Receiving signal…", "error": "Something went wrong with this scene.", "backToMap": "Back to missions", "notFound": "Signal lost. That page doesn't exist."},
-  "laserlab": {"about": "Astronauts left mirrors on the Moon. Bounce a laser off one, and the time it takes to come back tells you how far away the Moon is.", "site": "Mirror", "sites": {"a11": "Apollo 11", "a14": "Apollo 14", "a15": "Apollo 15"}, "fire": "Fire laser", "fired": "Light is on its way…", "miss": "No echo. Only the mirrors send light straight back.", "result": "Light took {{t}} seconds to go there and back, so the Moon is {{km}} km away."},
-  "chat": {"title": "RISE BOT", "eyebrow": "Your lunar companion", "close": "Close chat", "history": "Conversation", "greeting": "Hi! Ask me a question about the missions.", "input": "Type your question…", "send": "Send", "botLabel": "Open RISE BOT chat. Drag or use arrow keys to move.", "sources": "NASA sources", "keywordFallback": "Keyword search used; semantic search is unavailable.", "pending": "Thinking…", "inputLimit": "Your question is too long. Please keep it under 512 tokens.", "error": "Could not reach the chat service. Please try again."},
-  "seismic": {"recorder": "Four channel seismic recorder", "ready": "Ready", "running": "Recording", "graph": "Four seismic traces move left through fixed red markers A and B.", "direction": "← Signal flow", "eyebrow": "Lunar field experiment", "title": "Seismic Catch", "instructions": "Press Capture when all four signals oscillate across the entire window between A and B. Flat sections do not count. Press Space to capture.", "speed": "Speed", "normal": "Normal", "fast": "Fast", "start": "Start", "restart": "Restart", "capture": "Capture", "hit": "Capture successful: all four channels filled the window.", "miss": "Not yet: at least one channel had a flat section in the window.", "waiting": "Watch the signals and time your capture."}
+  "app": {
+    "title": "The Moon Remembers",
+    "subtitle": "A Lunar Journey with Cuội and the Forgotten Rover",
+    "hook": "When a mission ends, the story does not. A small rover, a woodcutter from a very old story, and a message that took fifty years to arrive.",
+    "begin": "Begin the Moon journey",
+    "continue": "Continue the journey",
+    "challenge": "A NASA Space Apps Challenge project"
+  },
+  "nav": {
+    "map": "Missions",
+    "book": "Storybook",
+    "logbook": "Logbook",
+    "atlas": "Atlas",
+    "lab": "Lab",
+    "sources": "Sources",
+    "settings": "Settings",
+    "home": "Home",
+    "main": "Main navigation",
+    "more": "More pages",
+    "progress": "Learning",
+    "archive": "Archive"
+  },
+  "cuoiPreview": {
+    "link": "Meet Cuoi (draft)",
+    "title": "Cuoi · character draft",
+    "description": "Drag to rotate and scroll or pinch to zoom. This is an early stylized character study.",
+    "face": "Face",
+    "full": "Full body"
+  },
+  "book": {
+    "previous": "Previous page",
+    "next": "Next page",
+    "continue": "Continue story",
+    "skip": "Skip story",
+    "cover": "Story",
+    "open": "Open story",
+    "close": "Close book",
+    "pageOf": "Page {{page}} of {{total}}",
+    "reading": "Story reader",
+    "bookTitle": "Storybook",
+    "noImage": "No illustration available",
+    "fact": "Did you know?",
+    "section": "Section",
+    "chapters": "Available chapters",
+    "locked": "Story not reached yet",
+    "readerIntro": "Revisit story sections you've already encountered. New sections appear here as you discover them.",
+    "empty": "No story sections have been discovered yet. Begin the mission to start the story."
+  },
+  "map": {
+    "heading": "The Moon remembers",
+    "sub": "Five chapters, one quiet mission.",
+    "locked": "Finish the previous chapter",
+    "play": "Play",
+    "replay": "Replay",
+    "resume": "Resume",
+    "chapter": "Chapter {{n}}",
+    "progress": "{{done}} of {{total}} chapters"
+  },
+  "dialogue": {
+    "next": "Next",
+    "back": "Back",
+    "skip": "Skip scene"
+  },
+  "mission": {
+    "start": "Start mission",
+    "retry": "Try again",
+    "skip": "Skip mission",
+    "continue": "Continue",
+    "objective": "Mission",
+    "hint": "Hint",
+    "failed": "Not this time",
+    "complete": "Mission complete",
+    "no3d": "This mission needs 3D graphics, which are off or unavailable on this device. You can turn them on in Settings, or skip ahead.",
+    "assist": "Cuội has added a little extra guidance for this try."
+  },
+  "hud": {
+    "altitude": "Altitude",
+    "odometer": "Driven",
+    "speed": "Speed",
+    "fuel": "Fuel",
+    "battery": "Battery",
+    "power": "Rotor battery",
+    "hold": "Hold",
+    "thrust": "Thrust",
+    "rotor": "Rotors",
+    "chute": "Parachute",
+    "chuteOpen": "Parachute open",
+    "safe": "Safe under {{v}} m/s",
+    "dust": "Dust",
+    "sun": "Sun",
+    "scanning": "Scanning",
+    "keys": "Arrow keys or WASD to drive",
+    "thrustKeys": "Space: engines",
+    "chuteKeys": "P: parachute",
+    "left": "Left",
+    "right": "Right",
+    "forward": "Forward",
+    "backward": "Reverse",
+    "toTarget": "{{name}}: {{d}} m",
+    "slope": "Slope",
+    "lookKeys": "Hold right mouse and drag to look around"
+  },
+  "memory": {
+    "unlocked": "Memory unlocked",
+    "job": "What it did",
+    "learned": "What we learned",
+    "now": "Where it is now",
+    "continue": "Add to logbook"
+  },
+  "quiz": {
+    "heading": "Field check",
+    "correct": "Correct!",
+    "incorrect": "Not quite.",
+    "next": "Next",
+    "finish": "Finish"
+  },
+  "signal": {
+    "heading": "Still listening",
+    "intro": "These numbers come from JPL's tracking predictions.",
+    "distance": "Distance from Earth",
+    "light": "One-way signal time",
+    "lightValue": "{{h}} hours",
+    "billionKm": "billion km",
+    "reached": "One light-day reached",
+    "countdown": "{{d}} days to one light-day",
+    "lost": "No signal since 2003",
+    "continue": "Continue"
+  },
+  "complete": {
+    "heading": "Chapter complete",
+    "stars": "{{n}} of {{max}} stars",
+    "next": "Next chapter",
+    "map": "Back to missions",
+    "finale": "The story continues",
+    "finaleSub": "You finished the Moon journey. Open the Learning page to see what you discovered, or revisit any chapter."
+  },
+  "fate": {
+    "operating": "Still working",
+    "silent": "Fallen silent",
+    "retired": "Retired as planned",
+    "drifting": "Drifting away",
+    "checked": "Status checked November 2026"
+  },
+  "dates": {
+    "launched": "Launched",
+    "landed": "Arrived",
+    "deployed": "Deployed",
+    "interstellar": "Interstellar",
+    "lastContact": "Last contact",
+    "ended": "Mission ended"
+  },
+  "world": {
+    "moon": "Moon",
+    "mars": "Mars",
+    "deep": "Deep space",
+    "all": "All worlds"
+  },
+  "logbook": {
+    "heading": "Logbook",
+    "sub": "{{n}} of {{total}} memories recovered. Finish missions to collect the rest.",
+    "lockedName": "Signal not yet traced",
+    "allFates": "All fates",
+    "open": "Open record",
+    "close": "Close",
+    "photo": "Photo",
+    "model": "3D model",
+    "credit": "Image: {{credit}} ({{id}})",
+    "sources": "Sources"
+  },
+  "atlas": {
+    "heading": "Atlas",
+    "sub": "Everything in this game, placed where it really is. Drag to spin. Select a marker to read more.",
+    "deepNote": "Distance from Earth, on a compressed scale. Data from JPL Horizons.",
+    "au": "{{v}} AU",
+    "reading": "Selected"
+  },
+  "solar": {
+    "period": "One orbit of {{name}} takes {{y}} Earth years. Planets near the Sun move fastest.",
+    "play": "Play",
+    "pause": "Pause",
+    "today": "Today",
+    "timeSpeed": "Time speed",
+    "daysPerSecond": "{{n}} days / s",
+    "yearsPerSecond": "{{n}} years / s",
+    "tour": "Replay Voyager 2's tour from 1977",
+    "note": "Sizes enlarged. Orbits: JPL. Maps: USGS and NASA missions (Venus is a radar map). After 2049, probes coast in a straight line.",
+    "follow": "Follow {{name}}",
+    "unfollow": "Back to the Sun",
+    "names": {
+      "mercury": "Mercury",
+      "venus": "Venus",
+      "earth": "Earth",
+      "mars": "Mars",
+      "jupiter": "Jupiter",
+      "saturn": "Saturn",
+      "uranus": "Uranus",
+      "neptune": "Neptune"
+    },
+    "planet": "Planet",
+    "distance": "AU",
+    "speed": "km/s",
+    "notLaunched": "not launched",
+    "reverse": "Reverse time",
+    "forward": "Run forward",
+    "scale": "Distance scale",
+    "compressed": "Fit on screen",
+    "true": "True distances",
+    "orbits": "Orbits",
+    "trails": "Trails",
+    "probes": "Probes"
+  },
+  "slinglab": {
+    "fleet": "Launch {{n}} probes",
+    "position": "Jupiter's position",
+    "dragHint": "Drag Jupiter, then launch. The dashed line shows where the probe will go.",
+    "boosted": "Jupiter gave your probe a speed boost, with no fuel used!",
+    "noBoost": "No boost this time. Move Jupiter a little and try again.",
+    "fleetResult": "{{n}} of {{total}} probes got a boost. A tiny change makes a huge difference."
+  },
+  "lab": {
+    "vehicle": "Vehicle",
+    "vehicles": {
+      "echo": "Echo",
+      "sojourner": "Sojourner",
+      "mer": "Opportunity",
+      "curiosity": "Curiosity",
+      "lrv": "Lunar Rover"
+    },
+    "camera": "Camera",
+    "cameras": {
+      "chase": "Chase",
+      "high": "From above",
+      "cockpit": "Driver"
+    },
+    "sunHeight": "Sun height",
+    "heading": "Lab",
+    "sub": "No goals here. Change the rules of space and see what happens.",
+    "landing": "Landing Lab",
+    "landingSub": "Change gravity, engines, and air.",
+    "slingshot": "Slingshot Lab",
+    "slingshotSub": "Let Jupiter throw your probe.",
+    "solar": "Solar System Lab",
+    "solarSub": "Speed up time and watch every orbit.",
+    "drive": "Rover Lab",
+    "driveSub": "Free drive under different skies.",
+    "thrust": "Engine power",
+    "moon": "Moon",
+    "mars": "Mars",
+    "jupiterMass": "Jupiter's mass",
+    "echoTime": "Echo time",
+    "world": "World",
+    "reset": "Restart",
+    "landed": "Soft landing at {{v}} m/s",
+    "crashed": "Crashed at {{v}} m/s",
+    "simNote": "Simplified simulation for learning. Real missions are far more complex.",
+    "gravity": "Gravity",
+    "startAlt": "Start height",
+    "air": "Air thickness",
+    "chute": "Use a parachute",
+    "preset": "Preset",
+    "earth": "Earth",
+    "battery": "Solar battery rules",
+    "result": "Result",
+    "sunDirection": "Sun direction",
+    "laser": "Laser Lab",
+    "laserSub": "Bounce a laser off the Moon.",
+    "moonDistance": "Moon distance",
+    "seismic": "Seismic Catch",
+    "seismicSub": "Catch four signals at once."
+  },
+  "sources": {
+    "heading": "Sources and honesty",
+    "sub": "Every fact in this game comes from a public source. Here's how to check it.",
+    "real": "What is real",
+    "realBody": "Photos, the Moon and Mars maps, dates, distances, mission facts, and hardware status are taken from NASA, JPL, and USGS.",
+    "simplified": "What is simplified",
+    "simplifiedBody": "Echo and Archive Control are fictional. Most 3D spacecraft are NASA's own published models; Ranger, Surveyor, the laser mirror, the Lunar Rover, and Sojourner are hand-built approximations. Landing, driving, orbit, and battery simulations use real physics ideas with shortened distances and times. Landing-site puzzles and soil charts are illustrations, not data.",
+    "date": "Facts were checked in November 2026. Missions change, so visit NASA for the latest.",
+    "listHeading": "References",
+    "software": "Software licenses and notices",
+    "flipbookNotice": "The storybook uses the GUL Labs flipbook React binding and its MPL-licensed core. License text and package attribution:",
+    "noticeLink": "third-party notice",
+    "mplLink": "MPL 2.0 license text",
+    "wrapperSource": "wrapper source",
+    "coreSource": "core source",
+    "mplOfficial": "Official Mozilla Public License 2.0 text",
+    "images": "Photo credits",
+    "backgrounds": "Background images",
+    "backdrop": {
+      "map": "Earthset, seen from the Orion spacecraft",
+      "logbook": "The Milky Way center, glowing with dust (Spitzer)",
+      "atlas": "Earthrise, from the Lunar Reconnaissance Orbiter",
+      "lab": "Cosmic Cliffs in the Carina Nebula (Webb)",
+      "sources": "A Deep Space Network antenna at Goldstone",
+      "moon": "Earthrise visualization, from Lunar Reconnaissance Orbiter data",
+      "mars": "Martian geology ahead of Curiosity",
+      "deep": "Galaxies in a colorful Hubble deep field"
+    },
+    "notEndorsed": "This is an independent student project. It is not endorsed by NASA."
+  },
+  "settings": {
+    "heading": "Settings",
+    "language": "Language",
+    "languageNote": "More languages can be added. Anything not yet translated appears in English.",
+    "reading": "Reading level",
+    "young": "Ages 8 to 11",
+    "older": "Ages 12 and up",
+    "schoolAge": "School age (6–12 years)",
+    "quality": "Graphics",
+    "high": "High",
+    "low": "Low (for older devices)",
+    "off": "No 3D",
+    "sound": "Sound effects",
+    "explorer": "Explorer mode",
+    "explorerNote": "Open every chapter right away.",
+    "reset": "Erase my progress",
+    "resetConfirm": "Erase all progress? This can't be undone.",
+    "cancel": "Cancel",
+    "erase": "Erase",
+    "close": "Close",
+    "on": "On",
+    "off2": "Off",
+    "privacy": "Your progress stays on this device. We collect no data.",
+    "narration": "Read aloud",
+    "narrationNote": "Uses your device's voice. It is off by default."
+  },
+  "common": {
+    "loading": "Receiving signal…",
+    "error": "Something went wrong with this scene.",
+    "backToMap": "Back to missions",
+    "notFound": "Signal lost. That page doesn't exist."
+  },
+  "laserlab": {
+    "about": "Astronauts left mirrors on the Moon. Bounce a laser off one, and the time it takes to come back tells you how far away the Moon is.",
+    "site": "Mirror",
+    "sites": {
+      "a11": "Apollo 11",
+      "a14": "Apollo 14",
+      "a15": "Apollo 15"
+    },
+    "fire": "Fire laser",
+    "fired": "Light is on its way…",
+    "miss": "No echo. Only the mirrors send light straight back.",
+    "result": "Light took {{t}} seconds to go there and back, so the Moon is {{km}} km away."
+  },
+  "chat": {
+    "title": "RISE BOT",
+    "eyebrow": "Your lunar companion",
+    "close": "Close chat",
+    "history": "Conversation",
+    "greeting": "Hi! Ask me a question about the missions.",
+    "input": "Type your question…",
+    "send": "Send",
+    "botLabel": "Open RISE BOT chat. Drag or use arrow keys to move.",
+    "sources": "NASA sources",
+    "keywordFallback": "Keyword search used; semantic search is unavailable.",
+    "pending": "Thinking…",
+    "inputLimit": "Your question is too long. Please keep it under 512 tokens.",
+    "error": "Could not reach the chat service. Please try again."
+  },
+  "seismic": {
+    "recorder": "Four channel seismic recorder",
+    "ready": "Ready",
+    "running": "Recording",
+    "graph": "Four seismic traces move left through fixed red markers A and B.",
+    "direction": "← Signal flow",
+    "eyebrow": "Lunar field experiment",
+    "title": "Seismic Catch",
+    "instructions": "Press Capture when all four signals oscillate across the entire window between A and B. Flat sections do not count. Press Space to capture.",
+    "speed": "Speed",
+    "normal": "Normal",
+    "fast": "Fast",
+    "start": "Start",
+    "restart": "Restart",
+    "capture": "Capture",
+    "hit": "Capture successful: all four channels filled the window.",
+    "miss": "Not yet: at least one channel had a flat section in the window.",
+    "waiting": "Watch the signals and time your capture."
+  },
+  "learn": {
+    "precheck": {
+      "heading": "Before we begin",
+      "sub": "Three quick guesses. They are not marked. They only help us see what you learn.",
+      "start": "Start",
+      "skip": "Skip the guesses",
+      "done": "Thank you. Now the story can begin."
+    },
+    "interlude": {
+      "kicker": "Cuội's story",
+      "title": "The first time I climbed the tree",
+      "line1": "When I was young, I tried to climb the banyan tree every morning. For a long time, I fell at the same branch.",
+      "line2": "I thought the tree was telling me to stop. Then my mother said: the tree is telling you where to put your hands.",
+      "line3": "The third time I fell, I looked at the branch instead of the ground. The next morning, I climbed past it.",
+      "line4": "You are not failing. You are learning where the branch is. Let us look again together.",
+      "hint": "A hint is on now. The Moon is patient, and so are we.",
+      "continue": "Let us try again"
+    },
+    "assist": "Cuội's hint is on. Take your time.",
+    "reflect": {
+      "heading": "Think about it",
+      "submit": "Send my answer",
+      "thinking": "Cuội is thinking about your answer…",
+      "skip": "Skip and keep going",
+      "continue": "Continue",
+      "ai": "Cuội read your answer.",
+      "fallback": "Cuội checked your answer on this device.",
+      "unavailable": "The thinking helper is offline, so your answer is saved for later. You can keep going.",
+      "pending": "Saved for later.",
+      "missing": "One thing to add",
+      "followUp": "Try this next",
+      "wordBank": "Words you can use",
+      "minLength": "A few words are enough. Write what you think.",
+      "score": "{{score}} of {{max}}",
+      "prompts": {
+        "r1": {
+          "question": "If the lunar rover had never been there, what would have been harder for the astronauts?",
+          "context": "Think about distance, tools, and rocks. There is no single right answer.",
+          "starters": [
+            "Without the rover, astronauts would have…",
+            "The rover helped because…",
+            "One thing that would be harder is…"
+          ],
+          "placeholder": "Write your idea in your own words…",
+          "words": [
+            "farther",
+            "carry",
+            "samples",
+            "tools",
+            "walk",
+            "explore"
+          ]
+        },
+        "r2": {
+          "question": "The seismometer stopped working in 1969. Why can it still matter today?",
+          "context": "Think about what it recorded, and who might use that record.",
+          "starters": [
+            "Even though it stopped…",
+            "Scientists can still…",
+            "Its data helps us…"
+          ],
+          "placeholder": "Write your idea in your own words…",
+          "words": [
+            "data",
+            "record",
+            "learn",
+            "moonquakes",
+            "study",
+            "remember"
+          ]
+        }
+      }
+    },
+    "progress": {
+      "heading": "Your Moon journey",
+      "sub": "This page shows what you have learned. It is not a grade, and nobody is ranked.",
+      "overall": "Moon Mission Learning Score",
+      "empty": "Play a chapter to start collecting ideas.",
+      "components": {
+        "quiz": "Moon facts",
+        "open": "Explaining ideas",
+        "apply": "Using what you know"
+      },
+      "chapters": "Chapter by chapter",
+      "concepts": "Ideas you have met",
+      "understood": "You can explain this",
+      "practice": "Worth another look",
+      "pending": "Waiting for review",
+      "grownups": "For grown-ups",
+      "bands": {
+        "starting": "Just beginning",
+        "exploring": "Exploring",
+        "steady": "Finding your way",
+        "strong": "Confident",
+        "keeper": "Keeper of the story"
+      }
+    },
+    "grownups": {
+      "heading": "Learning record",
+      "sub": "Local, anonymous, and never ranked.",
+      "mmls": "Moon Mission Learning Score",
+      "quiz": "Quiz knowledge (40%)",
+      "open": "Open-ended understanding (40%)",
+      "apply": "Knowledge application (20%)",
+      "gain": "Learning gain (post − pre)",
+      "pre": "Pre-check",
+      "post": "Post-check",
+      "responses": "Open answers and rubrics",
+      "none": "No answers yet.",
+      "score": "{{score}} / {{max}}",
+      "source": {
+        "ai": "Gemini-reviewed",
+        "fallback": "Local rubric",
+        "pending": "Pending",
+        "unavailable": "Service unavailable"
+      },
+      "weights": "Weights are configurable design parameters, not validated constants.",
+      "privacy": "No names, no accounts, no server storage. Progress stays in this browser.",
+      "reset": "Reset all progress",
+      "back": "Back to the story",
+      "missing": "Missing or unclear",
+      "understood": "Understood"
+    },
+    "archive": {
+      "kicker": "Memory archive",
+      "title": "The instrument that listened",
+      "intro": "Cuội places the banyan leaf beside the silent package. The leaf glows, and the dust begins to remember.",
+      "disclaimer": "This memory archive is imagined. The leaf is a story symbol: it did not repair or restart anything.",
+      "next": "Uncover the next memory",
+      "finish": "Carry the story forward",
+      "source": "Facts checked against NASA and LPI sources.",
+      "cards": [
+        {
+          "title": "A small package",
+          "body": "Apollo 11 left the Early Apollo Scientific Experiments Package, EASEP, in 1969. Its seismic package, PSEP, was one part of it. A laser reflector was deployed at the same site, though it was not attached to EASEP."
+        },
+        {
+          "title": "What it heard",
+          "body": "PSEP carried long-period and short-period seismometers. It listened for moonquakes, meteoroid impacts, and movements inside the Moon."
+        },
+        {
+          "title": "Three weeks of listening",
+          "body": "It was switched on by ground command on 21 July 1969. It returned data for about three weeks of lunar daytime, then lost its command link in late August 1969. It was formally terminated on 27 August 1969, before its planned support phase was over."
+        },
+        {
+          "title": "The data stayed",
+          "body": "The instrument is silent, but its record is still used. A machine can stop operating while what it measured keeps teaching."
+        }
+      ]
+    },
+    "archiveScreen": {
+      "heading": "The Archive",
+      "sub": "Optional museum chapters from the original Echo survey. They are not part of the Moon story, and some text is only in English.",
+      "play": "Open chapter",
+      "back": "Back to the Moon journey"
+    }
+  }
 }
