@@ -60,6 +60,28 @@ export async function cohere(path: string, body: object, key: string, fetcher: t
   return response.json();
 }
 
+async function queryQdrant(vector: number[], fetcher: typeof fetch): Promise<number[] | null> {
+  const url = (process.env.QDRANT_URL ?? '').replace(/\/$/, '');
+  if (!url) return null;
+  const collection = encodeURIComponent(process.env.QDRANT_COLLECTION ?? 'nasa_knowledge');
+  const key = process.env.QDRANT_API_KEY ?? '';
+  const response = await fetcher(`${url}/collections/${collection}/points/query`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...(key ? { 'api-key': key } : {}) },
+    body: JSON.stringify({ query: vector, limit: 50, with_payload: ['chunk_index'] }),
+    signal: AbortSignal.timeout(30000),
+  });
+  if (!response.ok) throw new Error(`Qdrant query failed (${response.status})`);
+  const data = await response.json() as { result?: { points?: { id?: unknown; payload?: { chunk_index?: unknown } }[] } };
+  const points = data.result?.points;
+  if (!Array.isArray(points)) throw new Error('Invalid Qdrant response');
+  const ids = points.map((point) => point.payload?.chunk_index ?? point.id);
+  if (!ids.every((id): id is number => Number.isInteger(id) && (id as number) >= 0 && (id as number) < knowledgeChunks.length)) {
+    throw new Error('Invalid Qdrant point IDs');
+  }
+  return ids;
+}
+
 export async function loadIndex(): Promise<Index> {
   const index = JSON.parse(await readFile(resolve(process.cwd(), 'knowledge/index.json'), 'utf8')) as Index;
   const chunkHash = createHash('sha256').update(JSON.stringify(knowledgeChunks.map(({ chunkId, text }) => [chunkId, text]))).digest('hex');
@@ -79,14 +101,17 @@ export async function retrieve(query: string, key: string, fetcher: typeof fetch
   const lexicalOrder = sparse.map((score, id) => ({ score, id })).filter((x) => x.score > 0).sort((a, b) => b.score - a.score).map((x) => x.id);
   const fallback = () => ({ documents: lexicalOrder.slice(0, 4).map((id) => knowledgeChunks[id]), mode: 'keyword' as const });
   if (!key) return fallback();
-  let index: Index;
-  try { index = await loadIndex(); } catch { return fallback(); }
   try {
   const embedded = await cohere('embed', { model: EMBED_MODEL, texts: [query], input_type: 'search_query', embedding_types: ['float'], output_dimension: DIMENSION }, key, fetcher) as { embeddings?: { float?: number[][] } };
   const vector = embedded.embeddings?.float?.[0];
   if (!Array.isArray(vector) || vector.length !== DIMENSION || !vector.every(Number.isFinite)) throw new Error('Invalid query embedding');
-  const dense = index.vectors.map((v) => cosine(vector, v));
-  const denseOrder = dense.map((score, id) => ({ score, id })).sort((a, b) => b.score - a.score).map((x) => x.id);
+  let denseOrder: number[] | null = null;
+  try { denseOrder = await queryQdrant(vector, fetcher); } catch { console.warn('Qdrant unavailable; using the local vector index.'); }
+  if (!denseOrder) {
+    const index = await loadIndex();
+    const dense = index.vectors.map((v) => cosine(vector, v));
+    denseOrder = dense.map((score, id) => ({ score, id })).sort((a, b) => b.score - a.score).map((x) => x.id);
+  }
   const mentioned = new Set(findMentioned(query, knowledge).map((id) => knowledge[id].id));
   const ranked = fuse(lexicalOrder, denseOrder, knowledgeChunks.length);
   const mentionedChunks = ranked.filter((id) => mentioned.has(knowledgeChunks[id].id));

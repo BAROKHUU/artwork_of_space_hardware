@@ -41,4 +41,23 @@ describe('NASA retrieval', () => {
     expect(JSON.parse(fetcher.mock.calls[0][1].body).input_type).toBe('search_query');
     expect(fetcher).toHaveBeenCalledTimes(2);
   });
+  it('uses Qdrant point rankings when the cloud collection is configured', async () => {
+    vi.stubEnv('QDRANT_URL', 'https://example.cloud.qdrant.io');
+    vi.stubEnv('QDRANT_API_KEY', 'qdrant-key');
+    vi.stubEnv('QDRANT_COLLECTION', 'nasa_knowledge');
+    const index = JSON.parse(readFileSync('knowledge/index.json', 'utf8')) as { vectors: number[][] };
+    const fetcher = vi.fn()
+      .mockResolvedValueOnce(new Response(JSON.stringify({ embeddings: { float: [index.vectors[0]] } }), { status: 200 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ result: { points: [{ id: 0, payload: { chunk_index: 0 } }] } }), { status: 200 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ results: [{ index: 0, relevance_score: 0.9 }] }), { status: 200 }));
+    try {
+      const result = await retrieve('Apollo 11 Eagle', 'test-key', fetcher);
+      expect(result.mode).toBe('hybrid');
+      expect(result.documents[0].id).toBe('apollo11_descent');
+      expect(fetcher.mock.calls[1][0]).toBe('https://example.cloud.qdrant.io/collections/nasa_knowledge/points/query');
+      expect(fetcher.mock.calls[1][1].headers['api-key']).toBe('qdrant-key');
+    } finally {
+      vi.unstubAllEnvs();
+    }
+  });
 });
