@@ -14,6 +14,12 @@ npm run preview   # serve the built site
 
 `dist/` is plain static files and runs on GitHub Pages, Netlify, Vercel, or any web server. Routes use `#/`, so no rewrite rules are needed.
 
+### Lunar Bot with Groq
+
+The chat endpoint runs in the Vite development and preview server. Create a private `.env.local` file in the project root with `GROQ_API_KEY` and a strong `GROQ_CHAT_PASSWORD`, then restart the server. Enter the chat password in the Lunar Bot panel. Never use a `VITE_` prefix for either secret or commit this file.
+
+A static `dist/` deployment has no server endpoint: deploy a separate server or serverless endpoint at `api/chat` before enabling chat there. Protect that endpoint with authentication and usage limits when making it public.
+
 ## Where things live
 
 | Path | Contents |

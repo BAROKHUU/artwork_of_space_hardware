@@ -11,6 +11,10 @@ export function ChatBot() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
+  const [password, setPassword] = useState('');
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState('');
+  const busy = useRef(false);
   const [modal, setModal] = useState<HTMLDialogElement | null>(null);
   const layer = useRef<HTMLDivElement>(null);
   const drag = useRef<{ x: number; y: number; originX: number; originY: number; moved: boolean } | null>(null);
@@ -58,11 +62,33 @@ export function ChatBot() {
     dragged.current = drag.current?.moved ?? false;
     drag.current = null;
   };
-  const send = () => {
+  const send = async () => {
     const text = input.trim();
-    if (!text) return;
-    setMessages((items) => [...items, { role: 'user', text }, { role: 'bot', text: t('chat.placeholderReply') }]);
+    if (!text || !password || busy.current) return;
+    busy.current = true;
+    const next: Message[] = [...messages, { role: 'user', text }];
+    setMessages(next);
     setInput('');
+    setError('');
+    setPending(true);
+    try {
+      const response = await fetch(`${import.meta.env.BASE_URL}api/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Chat-Password': password },
+        body: JSON.stringify({ messages: next.slice(-20).map((item) => ({ role: item.role === 'bot' ? 'assistant' : 'user', content: item.text })) }),
+      });
+      if (!response.ok) throw new Error(response.status === 401 ? 'auth' : 'request');
+      const data: unknown = await response.json();
+      if (!data || typeof data !== 'object' || !('reply' in data) || typeof data.reply !== 'string') throw new Error('request');
+      setMessages((items) => [...items, { role: 'bot', text: data.reply as string }]);
+    } catch (cause) {
+      setMessages((items) => items.slice(0, -1));
+      setInput((draft) => draft || text);
+      setError(t(cause instanceof Error && cause.message === 'auth' ? 'chat.authError' : 'chat.error'));
+    } finally {
+      busy.current = false;
+      setPending(false);
+    }
   };
   const panelWidth = Math.min(340, window.innerWidth - 16);
   const panelHeight = Math.min(400, window.innerHeight - BOT_SIZE - 24);
@@ -78,10 +104,13 @@ export function ChatBot() {
         <div ref={transcript} className="chat-messages" role="log" aria-live="polite" aria-label={t('chat.history')}>
           <p className="chat-message bot">{t('chat.greeting')}</p>
           {messages.map((message, i) => <p key={i} className={`chat-message ${message.role}`}>{message.text}</p>)}
+          {pending && <p className="chat-message bot" role="status">{t('chat.pending')}</p>}
+          {error && <p className="chat-error" role="alert">{error}</p>}
         </div>
-        <form className="chat-form" onSubmit={(event) => { event.preventDefault(); send(); }}>
+        <form className="chat-form" onSubmit={(event) => { event.preventDefault(); void send(); }}>
+          <input type="password" aria-label={t('chat.accessCode')} placeholder={t('chat.accessCode')} value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="off" />
           <input aria-label={t('chat.input')} placeholder={t('chat.input')} value={input} onChange={(event) => setInput(event.target.value)} maxLength={1000} />
-          <button className="btn primary" type="submit" disabled={!input.trim()}>{t('chat.send')}</button>
+          <button className="btn primary" type="submit" disabled={!input.trim() || !password || pending}>{t('chat.send')}</button>
         </form>
       </section>}
       <button type="button" className="chat-bot" style={{ left: position.x, top: position.y }} aria-label={t('chat.botLabel')} aria-expanded={open} onPointerDown={pointerDown} onPointerMove={pointerMove} onPointerUp={pointerUp} onPointerCancel={() => { drag.current = null; dragged.current = true; }} onClick={() => { if (!dragged.current) setOpen((value) => !value); dragged.current = false; }} onKeyDown={(event) => {
@@ -90,7 +119,7 @@ export function ChatBot() {
         const delta = direction[event.key];
         if (delta) { event.preventDefault(); move(position.x + delta[0], position.y + delta[1]); }
         if (event.key === 'Escape') setOpen(false);
-      }}><span className={`chat-bot-image ${input.trim() ? 'thinking' : open ? 'greeting' : 'idle'}`} style={{ backgroundImage: `url("${import.meta.env.BASE_URL}assets/chat_bot/Lunar%20Bot%20Sticker%20Expression%20Sheet.png")` }} aria-hidden="true" /></button>
+      }}><span className={`chat-bot-image ${pending || input.trim() ? 'thinking' : open ? 'greeting' : 'idle'}`} style={{ backgroundImage: `url("${import.meta.env.BASE_URL}assets/chat_bot/Lunar%20Bot%20Sticker%20Expression%20Sheet.png")` }} aria-hidden="true" /></button>
     </div>, modal ?? document.body
   );
 }
