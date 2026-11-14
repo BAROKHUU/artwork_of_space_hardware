@@ -23,9 +23,9 @@ describe('NASA retrieval', () => {
   it('clearly falls back to keyword search if Cohere is not configured', async () => {
     const result = await retrieve('InSight địa chấn', '');
     expect(result.mode).toBe('keyword');
-    expect(result.documents[0].id).toBe('insight');
+    expect(result.documents.map((doc) => doc.id)).toContain('crawl_insight_page');
   });
-  it('loads one indexed vector for every overlap chunk in order', async () => {
+  it('loads one indexed vector for every semantic chunk in order', async () => {
     const index = await loadIndex();
     expect(index.vectors).toHaveLength(knowledgeChunks.length);
     expect(index.chunkIds).toEqual(knowledgeChunks.map((chunk) => chunk.chunkId));

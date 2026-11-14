@@ -3,14 +3,15 @@ import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import documents from '../knowledge/nasa.json' with { type: 'json' };
 import crawled from '../knowledge/crawled.json' with { type: 'json' };
-import { buildChunks, CHUNK_WORDS, OVERLAP_WORDS, type KnowledgeDocument } from '../knowledge/chunks.ts';
+import chunkData from '../knowledge/chunks.json' with { type: 'json' };
+import { MAX_CHUNK_WORDS, OVERLAP_WORDS, SEMANTIC_THRESHOLD, type KnowledgeChunk, type KnowledgeDocument } from '../knowledge/chunks.ts';
 
 export type Document = KnowledgeDocument;
-type Index = { version: number; model: string; dimension: number; documentHash: string; chunkHash: string; chunkIds: string[]; chunking: { sizeWords: number; overlapWords: number }; vectors: number[][] };
+type Index = { version: number; model: string; dimension: number; documentHash: string; chunkHash: string; chunkIds: string[]; chunking: { maxWords: number; overlapWords: number; semanticThreshold: number }; vectors: number[][] };
 export const EMBED_MODEL = 'embed-v4.0';
 export const DIMENSION = 512;
 export const knowledge: Document[] = [...documents, ...crawled];
-export const knowledgeChunks = buildChunks(knowledge);
+export const knowledgeChunks: KnowledgeChunk[] = chunkData;
 export const documentText = (doc: Document) => `${doc.title}\n${doc.aliases.join(', ')}\n${doc.text}`;
 export const documentHash = (docs: Document[]) => createHash('sha256').update(JSON.stringify(docs)).digest('hex');
 export const tokenize = (text: string): string[] => (text.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '').replace(/đ/g, 'd').match(/[\p{L}\p{N}]+/gu) ?? []);
@@ -84,9 +85,9 @@ async function queryQdrant(vector: number[], fetcher: typeof fetch): Promise<num
 
 export async function loadIndex(): Promise<Index> {
   const index = JSON.parse(await readFile(resolve(process.cwd(), 'knowledge/index.json'), 'utf8')) as Index;
-  const chunkHash = createHash('sha256').update(JSON.stringify(knowledgeChunks.map(({ chunkId, text }) => [chunkId, text]))).digest('hex');
-  if (index.version !== 2 || index.model !== EMBED_MODEL || index.dimension !== DIMENSION || index.documentHash !== documentHash(knowledge) ||
-      index.chunkHash !== chunkHash || index.chunking?.sizeWords !== CHUNK_WORDS || index.chunking?.overlapWords !== OVERLAP_WORDS ||
+  const chunkHash = createHash('sha256').update(JSON.stringify(knowledgeChunks.map(({ chunkId, id, title, aliases, text, sources }) => [chunkId, id, title, aliases, text, sources]))).digest('hex');
+  if (index.version !== 3 || index.model !== EMBED_MODEL || index.dimension !== DIMENSION || index.documentHash !== documentHash(knowledge) ||
+      index.chunkHash !== chunkHash || index.chunking?.maxWords !== MAX_CHUNK_WORDS || index.chunking?.overlapWords !== OVERLAP_WORDS || index.chunking?.semanticThreshold !== SEMANTIC_THRESHOLD ||
       !Array.isArray(index.chunkIds) || index.chunkIds.length !== knowledgeChunks.length || !index.chunkIds.every((id, i) => id === knowledgeChunks[i].chunkId) ||
       !Array.isArray(index.vectors) || index.vectors.length !== knowledgeChunks.length ||
       !index.vectors.every((v) => Array.isArray(v) && v.length === DIMENSION && v.every(Number.isFinite))) {
