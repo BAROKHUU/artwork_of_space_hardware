@@ -14,4 +14,11 @@ describe('Groq chat', () => {
     expect(fetcher).not.toHaveBeenCalled();
     await expect(requestGroq([{ role: 'user', content: 'Hi' }], 'test-key', fetcher)).rejects.toThrow();
   });
+  it('includes only retrieved NASA context in the system instructions', async () => {
+    const fetcher = vi.fn().mockResolvedValue(new Response(JSON.stringify({ choices: [{ message: { content: 'InSight' } }] }), { status: 200 }));
+    await requestGroq([{ role: 'user', content: 'What detected marsquakes?' }], 'test-key', fetcher, [{ id: 'insight', title: 'InSight', aliases: [], text: 'InSight detected marsquakes.', sources: ['https://science.nasa.gov/mission/insight/'] }]);
+    const body = JSON.parse(fetcher.mock.calls[0][1].body);
+    expect(body.messages[0].content).toContain('InSight detected marsquakes.');
+    expect(body.messages[0].content).toContain('https://science.nasa.gov/mission/insight/');
+  });
 });
