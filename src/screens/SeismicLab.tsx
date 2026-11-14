@@ -34,6 +34,26 @@ export default function SeismicLab() {
   const [result, setResult] = useState<'hit' | 'miss' | null>(null);
   const clock = useRef(0);
   const seed = useRef(Math.random() * 100000);
+  const captureButton = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!running) return;
+    captureButton.current?.focus();
+  }, [running]);
+
+  useEffect(() => {
+    if (!running) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      const target = event.target;
+      if (event.code !== 'Space' || event.repeat || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey ||
+          (target instanceof Element && target.closest('button, a, input, select, textarea, [contenteditable]:not([contenteditable="false"])')) ||
+          document.querySelector('dialog[open]')) return;
+      event.preventDefault();
+      setResult(canCapture(time, seed.current) ? 'hit' : 'miss');
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [running, time]);
 
   useEffect(() => {
     if (!running) return;
@@ -55,6 +75,7 @@ export default function SeismicLab() {
     setTime(0);
     setResult(null);
     setRunning(true);
+    captureButton.current?.focus();
   };
 
   return (
@@ -80,7 +101,7 @@ export default function SeismicLab() {
         <span className="control-label">{t('seismic.speed')}</span>
         <div className="choice">{([1, 1.5] as const).map((value) => <button type="button" key={value} className={speed === value ? 'on' : ''} aria-pressed={speed === value} onClick={() => setSpeed(value)}>{t(value === 1 ? 'seismic.normal' : 'seismic.fast')}</button>)}</div>
         <button type="button" className="btn" onClick={start}>{t(running ? 'seismic.restart' : 'seismic.start')}</button>
-        <button type="button" className="btn primary" disabled={!running} onClick={() => setResult(canCapture(time, seed.current) ? 'hit' : 'miss')}>{t('seismic.capture')}</button>
+        <button ref={captureButton} type="button" className="btn primary" aria-keyshortcuts="Space" disabled={!running} onClick={() => setResult(canCapture(time, seed.current) ? 'hit' : 'miss')}>{t('seismic.capture')}</button>
         <p className={`seismic-result ${result ?? ''}`} role="status" aria-live="polite">{result ? t(`seismic.${result}`) : t('seismic.waiting')}</p>
       </aside>
     </div>
