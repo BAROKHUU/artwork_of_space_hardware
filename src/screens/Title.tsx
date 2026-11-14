@@ -50,6 +50,7 @@ export function Title() {
           <Link to="/atlas">{t('nav.atlas')}</Link>
           <Link to="/lab">{t('nav.lab')}</Link>
           <Link to="/sources">{t('nav.sources')}</Link>
+          <Link to="/cuoi-preview">{t('cuoiPreview.link')}</Link>
           <button type="button" onClick={() => update({ settingsOpen: true })}>{t('nav.settings')}</button>
         </nav>
       </div>

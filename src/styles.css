@@ -80,6 +80,9 @@ button:disabled { cursor: default; }
 .title-links a, .title-links button { background: none; border: 0; padding: 4px 0; color: var(--dim); text-decoration: none; font-size: 16px; }
 .title-links a:hover, .title-links button:hover { color: var(--ink); }
 
+.cuoi-preview-controls { margin-bottom: 16px; }
+.cuoi-preview-canvas { height: min(68vh, 700px); min-height: 360px; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+
 /* Pages */
 .page { max-width: 1320px; margin: 0 auto; padding: 44px clamp(16px, 4vw, 40px) 80px; }
 .page-head { margin-bottom: 28px; }

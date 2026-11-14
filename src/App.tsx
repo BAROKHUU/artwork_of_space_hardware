@@ -14,6 +14,7 @@ const Chapter = lazy(() => import('./screens/Chapter').then((m) => ({ default: m
 const Logbook = lazy(() => import('./screens/Logbook').then((m) => ({ default: m.Logbook })));
 const Atlas = lazy(() => import('./screens/Atlas').then((m) => ({ default: m.Atlas })));
 const Lab = lazy(() => import('./screens/Lab').then((m) => ({ default: m.Lab })));
+const CuoiPreview = lazy(() => import('./screens/CuoiPreview'));
 const Book = lazy(() => import('./screens/Book').then((m) => ({ default: m.Book })));
 
 /** The title screen has its own 3D scene; chapters take their backdrop from the world they visit. */
@@ -77,6 +78,7 @@ export function App() {
           <Route path="/logbook" element={<Logbook />} />
           <Route path="/atlas" element={<Atlas />} />
           <Route path="/lab" element={<Lab />} />
+          <Route path="/cuoi-preview" element={<CuoiPreview />} />
           <Route path="/sources" element={<Sources />} />
           <Route path="*" element={<main className="page"><h1>{t('common.notFound')}</h1><NavLink className="btn primary" to="/map">{t('common.backToMap')}</NavLink></main>} />
         </Routes>
