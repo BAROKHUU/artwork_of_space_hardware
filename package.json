@@ -3,7 +3,11 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
+    "start": "npm run start:api",
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
@@ -11,8 +15,9 @@
     "data:ephemeris": "node scripts/fetch-ephemeris.mjs",
     "data:solar": "node scripts/fetch-solar.mjs",
     "data:links": "node scripts/check-links.mjs",
-    "knowledge:index": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/index-knowledge.mjs",
-    "start:api": "node --experimental-strip-types server/start.ts",
+    "knowledge:index": "node --experimental-strip-types --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/index-knowledge.mjs",
+    "start:api": "node --experimental-strip-types --env-file-if-exists=.env --env-file-if-exists=.env.local server/start.ts",
+    "qdrant:upload": "node --experimental-strip-types --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/upload-qdrant.mjs",
     "knowledge:crawl": "node scripts/crawl-knowledge.mjs"
   },
   "devDependencies": {

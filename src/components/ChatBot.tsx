@@ -71,7 +71,9 @@ export function ChatBot() {
     setError('');
     setPending(true);
     try {
-      const response = await fetch(`${import.meta.env.BASE_URL}api/chat`, {
+      const configuredApi = import.meta.env.VITE_API_URL?.trim().replace(/\/$/, '');
+      const chatEndpoint = configuredApi ? `${configuredApi}/api/chat` : `${import.meta.env.BASE_URL}api/chat`;
+      const response = await fetch(chatEndpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: next.slice(-20).map((item) => ({ role: item.role === 'bot' ? 'assistant' : 'user', content: item.text })) }),
