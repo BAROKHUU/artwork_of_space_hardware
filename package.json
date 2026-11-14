@@ -10,7 +10,8 @@
     "test": "vitest run",
     "data:ephemeris": "node scripts/fetch-ephemeris.mjs",
     "data:solar": "node scripts/fetch-solar.mjs",
-    "data:links": "node scripts/check-links.mjs"
+    "data:links": "node scripts/check-links.mjs",
+    "knowledge:index": "node --env-file-if-exists=.env.local scripts/index-knowledge.mjs"
   },
   "devDependencies": {
     "@types/node": "^26.6.6",
@@ -31,6 +32,7 @@
     "@gullabs/react-flipbook": "3.2.2",
     "@react-three/drei": "^10.7.9",
     "@react-three/fiber": "^9.8.2",
+    "gpt-tokenizer": "^4.1.2",
     "gsap": "^3.15.1",
     "i18next": "^27.0.1",
     "react": "^19.3.1",

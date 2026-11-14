@@ -14,11 +14,13 @@ npm run preview   # serve the built site
 
 `dist/` is plain static files and runs on GitHub Pages, Netlify, Vercel, or any web server. Routes use `#/`, so no rewrite rules are needed.
 
-### Lunar Bot with Groq
+### RISE BOT: NASA knowledge and RAG
 
-The chat endpoint runs in the Vite development and preview server. Create a private `.env.local` file in the project root with `GROQ_API_KEY` and a strong `GROQ_CHAT_PASSWORD`, then restart the server. Enter the chat password in the Lunar Bot panel. Never use a `VITE_` prefix for either secret or commit this file.
+The bot uses Groq to answer. A small hybrid RAG pipeline searches `knowledge/nasa.json` using BM25 and Cohere multilingual embeddings, fuses the rankings, and reranks candidates with Cohere. NASA source links appear below each answer. Simple greetings bypass retrieval. The system prompt is in `knowledge/system-prompt.ts`.
 
-A static `dist/` deployment has no server endpoint: deploy a separate server or serverless endpoint at `api/chat` before enabling chat there. Protect that endpoint with authentication and usage limits when making it public.
+Set `GROQ_API_KEY` and `COHERE_API_KEY` in the ignored `.env.local` file, then restart `npm run dev`. Each question is limited to 512 tokens; the server keeps at most 2,048 tokens of recent conversation history. The system prompt and retrieved context are additional input tokens. Keep keys server-side and never prefix them with `VITE_` or commit them. After editing `knowledge/nasa.json`, run `npm run knowledge:index` and commit the resulting `knowledge/index.json`. The index contains vectors, a model identifier, and a content hash; it contains no API keys. Cohere is used both when indexing and querying, so embedding models and dimensions match.
+
+The endpoint runs in Vite dev/preview and as `api/chat.ts` on Vercel. Configure the same two API keys in Vercel project environment variables and deploy the generated index. A standalone static `dist/` host still needs a separate backend. If Cohere or the index is unavailable, the bot visibly falls back to keyword retrieval. The endpoint has no user authentication or request rate limit; input token limits do not cap the number of requests or prevent API charges. Production needs access controls, rate limits and a labeled retrieval evaluation.
 
 ## Where things live
 

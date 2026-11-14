@@ -8,7 +8,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   return {
   base: './',
-  plugins: [react(), groqPlugin(env.GROQ_API_KEY, env.GROQ_CHAT_PASSWORD)],
+  plugins: [react(), groqPlugin(env.GROQ_API_KEY, env.COHERE_API_KEY)],
   server: { allowedHosts: ['identical-rev-reduce-jesus.trycloudflare.com', 'kurt-past-automobiles-jonathan.trycloudflare.com'] },
   // three.js alone is close to 1 MB before gzip; it loads only on 3D screens.
   build: { chunkSizeWarningLimit: 1100 },
