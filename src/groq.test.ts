@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { requestGroq } from '../server/groq';
+import { chatHandler, requestGroq } from '../server/groq';
 
 describe('Groq chat', () => {
   it('sends validated conversation and returns the response', async () => {
@@ -20,5 +20,15 @@ describe('Groq chat', () => {
     const body = JSON.parse(fetcher.mock.calls[0][1].body);
     expect(body.messages[0].content).toContain('InSight detected marsquakes.');
     expect(body.messages[0].content).toContain('https://science.nasa.gov/mission/insight/');
+  });
+  it('rejects oversized questions before contacting an API', async () => {
+    const fetcher = vi.spyOn(globalThis, 'fetch');
+    const writeHead = vi.fn();
+    const end = vi.fn();
+    const request = { method: 'POST', headers: {}, body: { messages: [{ role: 'user', content: 'hello '.repeat(530) }] } };
+    await chatHandler('test-key', '')(request as never, { writeHead, end } as never);
+    expect(writeHead).toHaveBeenCalledWith(413, expect.any(Object));
+    expect(fetcher).not.toHaveBeenCalled();
+    fetcher.mockRestore();
   });
 });

@@ -490,6 +490,5 @@ dialog.settings { width: min(500px, calc(100% - 24px)); padding: 24px; }
 .chat-message.user { align-self: flex-end; border-color: var(--orange); }
 .chat-form { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px; border-top: 1px solid var(--line); }
 .chat-form input { min-width: 0; flex: 1; color: var(--ink); background: var(--bg); border: 1px solid var(--line); padding: 8px 10px; font-size: 15px; }
-.chat-form input[type="password"] { flex-basis: 100%; }
 .chat-error { color: var(--red); font-size: 14px; }
 .chat-form .btn { padding: 0 12px; font-size: 15px; }

@@ -11,7 +11,6 @@ export function ChatBot() {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState<Message[]>([]);
-  const [password, setPassword] = useState('');
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
   const busy = useRef(false);
@@ -64,7 +63,7 @@ export function ChatBot() {
   };
   const send = async () => {
     const text = input.trim();
-    if (!text || !password || busy.current) return;
+    if (!text || busy.current) return;
     busy.current = true;
     const next: Message[] = [...messages, { role: 'user', text }];
     setMessages(next);
@@ -74,10 +73,10 @@ export function ChatBot() {
     try {
       const response = await fetch(`${import.meta.env.BASE_URL}api/chat`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Chat-Password': password },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: next.slice(-20).map((item) => ({ role: item.role === 'bot' ? 'assistant' : 'user', content: item.text })) }),
       });
-      if (!response.ok) throw new Error(response.status === 401 ? 'auth' : 'request');
+      if (!response.ok) throw new Error(response.status === 413 ? 'limit' : 'request');
       const data: unknown = await response.json();
       if (!data || typeof data !== 'object' || !('reply' in data) || typeof data.reply !== 'string') throw new Error('request');
       const sources = 'sources' in data && Array.isArray(data.sources)
@@ -88,7 +87,7 @@ export function ChatBot() {
     } catch (cause) {
       setMessages((items) => items.slice(0, -1));
       setInput((draft) => draft || text);
-      setError(t(cause instanceof Error && cause.message === 'auth' ? 'chat.authError' : 'chat.error'));
+      setError(t(cause instanceof Error && cause.message === 'limit' ? 'chat.inputLimit' : 'chat.error'));
     } finally {
       busy.current = false;
       setPending(false);
@@ -112,9 +111,8 @@ export function ChatBot() {
           {error && <p className="chat-error" role="alert">{error}</p>}
         </div>
         <form className="chat-form" onSubmit={(event) => { event.preventDefault(); void send(); }}>
-          <input type="password" aria-label={t('chat.accessCode')} placeholder={t('chat.accessCode')} value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="off" />
-          <input aria-label={t('chat.input')} placeholder={t('chat.input')} value={input} onChange={(event) => setInput(event.target.value)} maxLength={1000} />
-          <button className="btn primary" type="submit" disabled={!input.trim() || !password || pending}>{t('chat.send')}</button>
+          <input aria-label={t('chat.input')} placeholder={t('chat.input')} value={input} onChange={(event) => setInput(event.target.value)} maxLength={8000} />
+          <button className="btn primary" type="submit" disabled={!input.trim() || pending}>{t('chat.send')}</button>
         </form>
       </section>}
       <button type="button" className="chat-bot" style={{ left: position.x, top: position.y }} aria-label={t('chat.botLabel')} aria-expanded={open} onPointerDown={pointerDown} onPointerMove={pointerMove} onPointerUp={pointerUp} onPointerCancel={() => { drag.current = null; dragged.current = true; }} onClick={() => { if (!dragged.current) setOpen((value) => !value); dragged.current = false; }} onKeyDown={(event) => {
