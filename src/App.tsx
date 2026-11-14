@@ -5,6 +5,7 @@ import { setLanguage } from './i18n';
 import { useGame } from './state/store';
 import { backdropUrl, backdrops, chapterById } from './data';
 import { Settings } from './components/Settings';
+import { ChatBot } from './components/ChatBot';
 import { Title } from './screens/Title';
 import { MapScreen } from './screens/MapScreen';
 import { Sources } from './screens/Sources';
@@ -77,6 +78,7 @@ export function App() {
         </Routes>
       </Suspense>
       <Settings />
+      <ChatBot />
     </>
   );
 }
