@@ -5,6 +5,7 @@ import { setLanguage } from './i18n';
 import { useGame } from './state/store';
 import { backdropUrl, backdrops, chapterById } from './data';
 import { Settings } from './components/Settings';
+import { ChatBot } from './components/ChatBot';
 import { Title } from './screens/Title';
 import { MapScreen } from './screens/MapScreen';
 import { Sources } from './screens/Sources';
@@ -14,6 +15,7 @@ const Logbook = lazy(() => import('./screens/Logbook').then((m) => ({ default: m
 const Atlas = lazy(() => import('./screens/Atlas').then((m) => ({ default: m.Atlas })));
 const Lab = lazy(() => import('./screens/Lab').then((m) => ({ default: m.Lab })));
 const CuoiPreview = lazy(() => import('./screens/CuoiPreview'));
+const Book = lazy(() => import('./screens/Book').then((m) => ({ default: m.Book })));
 
 /** The title screen has its own 3D scene; chapters take their backdrop from the world they visit. */
 function backdropFor(pathname: string): string | null {
@@ -30,13 +32,13 @@ function PageBackdrop({ name }: { name: string }) {
 function TopBar() {
   const { t } = useTranslation();
   const update = useGame((s) => s.update);
-  const links = [['/map', 'nav.map'], ['/logbook', 'nav.logbook'], ['/atlas', 'nav.atlas'], ['/lab', 'nav.lab'], ['/sources', 'nav.sources']] as const;
+  const links = [['/map', 'nav.map'], ['/book', 'nav.book'], ['/logbook', 'nav.logbook'], ['/atlas', 'nav.atlas'], ['/lab', 'nav.lab'], ['/sources', 'nav.sources']] as const;
   return (
     <header className="topbar">
       <NavLink to="/" className="brand" aria-label={t('nav.home')}>
         <i aria-hidden="true" /> ECHO
       </NavLink>
-      <nav aria-label="Main">
+      <nav aria-label={t('nav.main')}>
         {links.map(([to, key]) => <NavLink key={to} to={to}>{t(key)}</NavLink>)}
       </nav>
       <button type="button" className="gear" onClick={() => update({ settingsOpen: true })}>{t('nav.settings')}</button>
@@ -56,6 +58,10 @@ export function App() {
   }, [language]);
 
   useEffect(() => {
+    document.title = `${t('app.title')} — ${t('app.subtitle')}`;
+  }, [language, t]);
+
+  useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
@@ -67,6 +73,7 @@ export function App() {
         <Routes>
           <Route path="/" element={<Title />} />
           <Route path="/map" element={<MapScreen />} />
+          <Route path="/book" element={<Book />} />
           <Route path="/chapter/:id" element={<Chapter />} />
           <Route path="/logbook" element={<Logbook />} />
           <Route path="/atlas" element={<Atlas />} />
@@ -77,6 +84,7 @@ export function App() {
         </Routes>
       </Suspense>
       <Settings />
+      <ChatBot />
     </>
   );
 }

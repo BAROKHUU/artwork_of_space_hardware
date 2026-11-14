@@ -1,0 +1,130 @@
+{
+  "speakers": {"echo": "Echo", "control": "Trung tâm Lưu trữ"},
+  "ch0": {
+    "title": "Thức dậy nào, Echo", "tagline": "Một xe tự hành nhỏ nghe thấy điều lẽ ra không nên có.",
+    "intro": [
+      {"who": "control", "text": "Chào buổi sáng, Echo. Em là xe tự hành nhỏ nhất trong Kho lưu trữ và em có một nhiệm vụ."},
+      {"who": "echo", "text": "Bíp! Nhiệm vụ là ăn đồ ăn vặt ạ?"},
+      {"who": "control", "text": "Không. Từ thập niên 1960, con người đã để lại máy móc khắp Hệ Mặt Trời. Hầu hết bị mọi người quên lãng, trừ những kỹ sư đã chế tạo chúng."},
+      {"who": "echo", "text": "Bị quên ư? Nhưng em nghe thấy họ. Ngay lúc này có một tín hiệu rất nhỏ trong ăng-ten của em."},
+      {"who": "control", "text": "Vậy hãy xem bánh xe của em có hoạt động không. Lái đến ba đèn hiệu thử nghiệm nhé."}
+    ],
+    "outro": [
+      {"who": "echo", "text": "Bánh xe hoạt động! Ăng-ten hoạt động! Và tín hiệu vừa mạnh hơn."},
+      {"who": "control", "text": "Chúng ta đã lần ra nó. Tín hiệu dẫn về năm 1964, từ một tàu vũ trụ được chế tạo để đâm xuống."},
+      {"who": "echo", "text": "Chế tạo để đâm xuống ư?! Ai lại làm thế?"},
+      {"who": "control", "text": "Những người cần biết Mặt Trăng trông ra sao khi nhìn gần. Hãy đi gặp nó."}
+    ]
+  },
+  "ch1": {
+    "title": "Những nhà thám hiểm Mặt Trăng", "tagline": "Trước khi con người hạ cánh, rô-bốt phải đi trước.",
+    "intro": [
+      {"who": "control", "text": "Đầu thập niên 1960, chưa ai biết bề mặt Mặt Trăng thật sự thế nào. Có người lo tàu hạ cánh sẽ chìm trong lớp bụi sâu."},
+      {"who": "echo", "text": "Vì vậy họ gửi rô-bốt đi xem ạ?"},
+      {"who": "control", "text": "Họ gửi Ranger 7. Nó có máy ảnh nhưng không có càng hạ cánh. Nó chụp ảnh đến tận giây cuối cùng."}
+    ],
+    "middle": [
+      {"who": "echo", "text": "Những bức ảnh đó giúp họ chọn nơi hạ cánh an toàn, đúng không?"},
+      {"who": "control", "text": "Chính xác. Tiếp theo là Surveyor 3, phải hạ cánh nhẹ nhàng. Động cơ không tắt kịp nên nó nảy lên hai lần!"},
+      {"who": "echo", "text": "Để em thử. Em hứa sẽ nảy ít hơn."}
+    ],
+    "outro": [
+      {"who": "echo", "text": "Các phi hành gia quay lại tận nơi để thăm Surveyor 3 ư? Đó là điều dễ thương nhất em từng nghe."},
+      {"who": "control", "text": "Mặt đất đã chịu được. Có thể hạ cánh an toàn trên Mặt Trăng. Điều đó nghĩa là con người có thể đi tiếp."},
+      {"who": "echo", "text": "Con người! Khoan, em đang nhận tín hiệu mới. Nó yếu lắm, gần như ánh sáng đang nảy lại."}
+    ]
+  },
+  "ch2": {
+    "title": "Những thứ ở lại", "tagline": "Các phi hành gia về nhà, thiết bị của họ thì không.",
+    "intro": [
+      {"who": "control", "text": "Tháng 7 năm 1969. Hai người đi bộ trên Mặt Trăng khoảng hai tiếng rưỡi rồi trở về nhà."},
+      {"who": "echo", "text": "Họ để lại tất cả những thứ này sao?"},
+      {"who": "control", "text": "Mọi thứ nặng phải ở lại để tầng nhỏ phía trên cất cánh. Nhưng có một thứ được cố ý để lại và nó vẫn hoạt động."},
+      {"who": "echo", "text": "Cho em xem với!"}
+    ],
+    "middle": [
+      {"who": "echo", "text": "Không pin, không máy tính mà các nhà khoa học vẫn dùng. Đây là thứ tuyệt nhất còn lại trên Mặt Trăng."},
+      {"who": "control", "text": "Hai năm sau, Apollo 15 mang theo một chiếc xe. Cuối cùng các phi hành gia có thể đi xa tàu hạ cánh."},
+      {"who": "echo", "text": "Em lái được không?"},
+      {"who": "control", "text": "Em có thể đi theo lộ trình của nó. Có một quy tắc giống hệt họ: đừng bao giờ đi xa hơn quãng đường em có thể đi bộ trở về."}
+    ],
+    "outro": [
+      {"who": "echo", "text": "Em cứ nghĩ về tấm gương. Mọi người rời đi còn nó cứ chờ ánh sáng."},
+      {"who": "control", "text": "Nhờ nó mà chúng ta biết Mặt Trăng rời xa vài xentimét mỗi năm."},
+      {"who": "echo", "text": "Có một tín hiệu khác, xa hơn nhiều. Nó yếu đến mức gần như không nghe thấy."}
+    ]
+  },
+  "ch3": {
+    "title": "Con đường dài ra bên ngoài", "tagline": "Làm sao đến rìa Hệ Mặt Trời? Hãy mượn một hành tinh.",
+    "intro": [
+      {"who": "control", "text": "Pioneer 10 được phóng năm 1972. Nó dự kiến hoạt động 21 tháng."},
+      {"who": "echo", "text": "Thực tế nó hoạt động bao lâu?"},
+      {"who": "control", "text": "Hơn 30 năm. Đó là tàu đầu tiên đến Sao Mộc. Sau đó nhóm Voyager tìm ra cách dùng Sao Mộc như một máy phóng khổng lồ."}
+    ],
+    "outro": [
+      {"who": "echo", "text": "Vậy Sao Mộc ném mình đi mà mình không hề chạm vào nó?"},
+      {"who": "control", "text": "Đó là trọng lực. Voyager 2 làm vậy nhiều lần và đến giờ vẫn là vị khách duy nhất từng ghé Sao Thiên Vương và Sao Hải Vương."},
+      {"who": "echo", "text": "Giờ em nhận được tín hiệu trên Sao Hỏa. Nó rất yên lặng và rất cũ."}
+    ]
+  },
+  "ch4": {
+    "title": "Những bước đầu tiên trên Sao Hỏa", "tagline": "Một rô-bốt hạ cánh trên Sao Hỏa và đặt câu hỏi lớn nhất.",
+    "intro": [
+      {"who": "control", "text": "Hạ cánh trên Sao Hỏa khó hơn Mặt Trăng. Không khí mỏng nhưng vẫn tồn tại và vẫn cản đường em."},
+      {"who": "echo", "text": "Vậy không khí tốt hay xấu ạ?"},
+      {"who": "control", "text": "Cả hai. Đủ dày để dùng dù nhưng quá mỏng để dừng em lại. Viking 1 cần cả dù và tên lửa. Đến lượt em."}
+    ],
+    "outro": [
+      {"who": "echo", "text": "Vậy có sự sống hay không?"},
+      {"who": "control", "text": "Đất đã làm điều kỳ lạ, nhưng họ không tìm thấy bằng chứng rõ ràng về sự sống. Mọi người vẫn còn tranh luận."},
+      {"who": "echo", "text": "Em thích việc chưa ai biết. Nghĩa là vẫn còn nhiều điều để tìm hiểu."},
+      {"who": "control", "text": "Viking 1 hoạt động hơn sáu năm. Rồi một ngày năm 1982, nó ngừng trả lời."}
+    ]
+  },
+  "ch5": {
+    "title": "Những xe tự hành nhỏ bé phi thường", "tagline": "Được chế tạo cho vài ngày nhưng tồn tại nhiều năm.",
+    "intro": [
+      {"who": "echo", "text": "Bánh xe! Em nghe thấy bánh xe trên Sao Hỏa! Gia đình của em!"},
+      {"who": "control", "text": "Đó là cụ của em, Sojourner. Nó cỡ một lò vi sóng và là xe tự hành đầu tiên trên Sao Hỏa."}
+    ],
+    "middle": [
+      {"who": "control", "text": "Sau đó là Opportunity. Nhiệm vụ dự kiến kéo dài 90 ngày Sao Hỏa. Pin mặt trời cấp điện miễn là ánh nắng chiếu tới."},
+      {"who": "echo", "text": "Em thấy một vệt đường và những viên đá tròn nhỏ ở khắp nơi. Chúng là gì?"},
+      {"who": "control", "text": "Các nhà khoa học gọi chúng là việt quất. Hãy đi theo dấu vết, để ý pin và luôn nhìn bầu trời."}
+    ],
+    "outro": [
+      {"who": "echo", "text": "Nó dự kiến tồn tại 90 ngày nhưng lại kéo dài gần 15 năm."},
+      {"who": "control", "text": "Tháng 6 năm 2018, một trận bão bụi bao phủ toàn hành tinh. Ánh nắng mờ dần. Nhóm điều khiển tiếp tục gọi suốt tám tháng."},
+      {"who": "echo", "text": "Nó có trả lời không?"},
+      {"who": "control", "text": "Không. Nhưng tất cả những ai từng làm việc với nó vẫn nhớ. Đó là lý do em ở đây."}
+    ]
+  },
+  "ch6": {
+    "title": "Vẫn còn ngoài kia", "tagline": "Không phải cỗ máy nào cũng bị bỏ lại. Một số đang bận rộn ngay lúc này.",
+    "intro": [
+      {"who": "echo", "text": "Những tín hiệu này lớn quá! Họ đang trả lời!"},
+      {"who": "control", "text": "Đó là Curiosity. Nó hoạt động từ năm 2012 và vẫn đang leo núi."},
+      {"who": "control", "text": "Nhưng hãy nhìn xuống. Perseverance mang một người bạn rất nhỏ đến Sao Hỏa. Ban đầu nó không được giao làm nhiều việc."}
+    ],
+    "outro": [
+      {"who": "echo", "text": "Dự kiến năm chuyến mà nó bay bảy mươi hai. Sao mọi người cứ làm được như vậy?"},
+      {"who": "control", "text": "Kỹ sư giỏi chế tạo tốt hơn điều họ hứa. Và máy móc cứ tiếp tục làm họ ngạc nhiên."},
+      {"who": "echo", "text": "Còn một tín hiệu cuối. Nó xa nhất và mất nhiều giờ mới đến được chỗ em."}
+    ]
+  },
+  "ch7": {
+    "title": "Thông điệp cho người tìm thấy", "tagline": "Thứ xa nhất chúng ta từng chế tạo vẫn đang nói chuyện.",
+    "intro": [
+      {"who": "control", "text": "Đây là Voyager 1. Nó được phóng năm 1977 và chưa có thứ gì con người chế tạo đi xa hơn."},
+      {"who": "echo", "text": "Ngoài này yên lặng quá. Vật màu vàng bên hông nó là gì?"},
+      {"who": "control", "text": "Một lá thư, gửi cho bất kỳ ai có thể tìm thấy nó rất lâu sau khi chúng ta không còn nữa."}
+    ],
+    "outro": [
+      {"who": "echo", "text": "Em đã tìm thấy tất cả: những chiếc đâm xuống, những chiếc im lặng và những chiếc vẫn hoạt động."},
+      {"who": "control", "text": "Vậy hãy nói xem, chúng có bị bỏ rơi không?"},
+      {"who": "echo", "text": "Không. Mỗi chiếc đều thay đổi hiểu biết của chúng ta. Không thể quên một thứ đã dạy mình nhiều đến vậy."},
+      {"who": "control", "text": "Vậy là Kho lưu trữ đã hoàn tất, Echo. Làm tốt lắm."},
+      {"who": "echo", "text": "Khoan đã. Con người vẫn đang gửi những cỗ máy mới phải không? Sẽ cần ai đó nhớ cả chúng nữa."}
+    ]
+  }
+}

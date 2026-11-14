@@ -48,7 +48,7 @@ function Globe({ world, items, selected, onSelect }: { world: 'moon' | 'mars'; i
   );
 }
 
-const MARKS = [{ au: 1, key: 'Earth' }, { au: 5.2, key: 'Jupiter' }, { au: 9.6, key: 'Saturn' }, { au: 30, key: 'Neptune' }];
+const MARKS = [{ au: 1, id: 'earth' }, { au: 5.2, id: 'jupiter' }, { au: 9.6, id: 'saturn' }, { au: 30, id: 'neptune' }] as const;
 const PROBE_IDS: ProbeId[] = ['new_horizons', 'pioneer10', 'voyager2', 'voyager1'];
 const logX = (au: number) => (Math.log10(au) / Math.log10(220)) * 100;
 
@@ -59,7 +59,7 @@ function DeepChart({ onSelect }: { onSelect: (id: string) => void }) {
     <div className="deep">
       <div className="deep-track">
         {MARKS.map((m) => (
-          <span key={m.key} className="deep-mark" style={{ left: `${logX(m.au)}%` }}><i />{m.key}</span>
+          <span key={m.id} className="deep-mark" style={{ left: `${logX(m.au)}%` }}><i />{t(`solar.names.${m.id}`)}</span>
         ))}
         {PROBE_IDS.map((p, i) => {
           const au = distanceAU(p, now);

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { hardware, hardwareById, photoUrl, sources } from '../data';
 import type { Fate, World } from '../data/types';
@@ -6,29 +6,27 @@ import { useGame } from '../state/store';
 import { GameCanvas } from '../three/GameCanvas';
 import { Turntable } from '../three/Scenery';
 import { Facts, FateBadge, Photo } from '../components/HardwareInfo';
+import { useDismissibleDialog } from '../components/useDismissibleDialog';
 
 export function HardwareDialog({ id, onClose }: { id: string | null; onClose: () => void }) {
   const { t } = useTranslation();
   const [view, setView] = useState<'photo' | 'model'>('photo');
-  const ref = useRef<HTMLDialogElement>(null);
+  const close = useCallback(onClose, [onClose]);
+  const dialog = useDismissibleDialog(Boolean(id), close);
   useEffect(() => {
-    const d = ref.current;
-    if (!d) return;
-    if (id && !d.open) d.showModal();
-    if (!id && d.open) d.close();
     setView('photo');
   }, [id]);
   const item = id ? hardwareById[id] : null;
   return (
-    <dialog ref={ref} className="record" onClose={onClose} aria-label={item ? t(`hardware:${item.id}.name`) : undefined}>
+    <dialog {...dialog} className="record" onClose={close} aria-label={item ? t(`hardware:${item.id}.name`) : undefined}>
       {item && (
         <div className="record-grid">
           <div className="record-media">
             <div className="choice" role="tablist">
               <button type="button" role="tab" aria-selected={view === 'photo'} className={view === 'photo' ? 'on' : ''} onClick={() => setView('photo')}>{t('logbook.photo')}</button>
-              <button type="button" role="tab" aria-selected={view === 'model'} className={view === 'model' ? 'on' : ''} onClick={() => setView('model')}>{t('logbook.model')}</button>
+              {item.model && <button type="button" role="tab" aria-selected={view === 'model'} className={view === 'model' ? 'on' : ''} onClick={() => setView('model')}>{t('logbook.model')}</button>}
             </div>
-            {view === 'photo' ? <Photo item={item} /> : (
+            {view === 'photo' || !item.model ? <Photo item={item} /> : (
               <div className="turntable">
                 <GameCanvas camera={{ position: [6, 4, 8], fov: 42 }}>
                   <Turntable model={item.model} world={item.world} />
@@ -37,7 +35,7 @@ export function HardwareDialog({ id, onClose }: { id: string | null; onClose: ()
             )}
           </div>
           <div className="record-body">
-            <button type="button" className="btn ghost close" onClick={onClose}>{t('logbook.close')}</button>
+            <button type="button" className="btn ghost close" onClick={close}>{t('logbook.close')}</button>
             <h2>{t(`hardware:${item.id}.name`)}</h2>
             <p className="where">{t(`hardware:${item.id}.where`)} <FateBadge fate={item.fate} /></p>
             <Facts item={item} />
