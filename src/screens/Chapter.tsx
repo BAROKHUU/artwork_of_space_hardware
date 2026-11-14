@@ -6,7 +6,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { chapterById, chapters, hardwareById } from '../data';
+import { chapterById, hardwareById, nextChapterInArc } from '../data';
 import type { Beat, Chapter as ChapterData } from '../data/types';
 import { useGame } from '../state/store';
 import { MissionShell } from '../missions/MissionShell';
@@ -189,8 +189,7 @@ export function SignalBoard({ onDone }: { onDone?: () => void }) {
 function ChapterDone({ chapter }: { chapter: ChapterData }) {
   const { t } = useTranslation();
   const stars = useGame((s) => s.stars);
-  const index = chapters.indexOf(chapter);
-  const next = chapters[index + 1];
+  const next = nextChapterInArc(chapter);
   const missions = chapter.beats.filter((b) => b.kind === 'mission');
   const earned = missions.reduce((sum, b) => sum + (b.kind === 'mission' ? (stars[b.id] ?? 0) : 0), 0);
   useEffect(() => play('win'), []);

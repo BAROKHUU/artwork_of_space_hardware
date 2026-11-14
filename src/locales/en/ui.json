@@ -60,6 +60,7 @@
     "continue": "Continue",
     "objective": "Mission",
     "hint": "Hint",
+    "assist": "Cuội has added a little extra guidance for this try.",
     "failed": "Not this time",
     "complete": "Mission complete",
     "no3d": "This mission needs 3D graphics, which are off or unavailable on this device. You can turn them on in Settings, or skip ahead."

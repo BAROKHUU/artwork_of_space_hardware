@@ -15,6 +15,9 @@ type Phase = 'brief' | 'play' | 'fail' | 'win';
 export function MissionShell({ beat, onDone }: { beat: MissionBeat; onDone: () => void }) {
   const { t } = useTranslation();
   const setStars = useGame((s) => s.setStars);
+  const recordMissionFailure = useGame((s) => s.recordMissionFailure);
+  const resetMissionFailures = useGame((s) => s.resetMissionFailures);
+  const assisted = useGame((s) => Boolean(s.assistedMissions[beat.id]));
   const [phase, setPhase] = useState<Phase>('brief');
   const [attempt, setAttempt] = useState(1);
   const [result, setResult] = useState<MissionResult | null>(null);
@@ -29,11 +32,15 @@ export function MissionShell({ beat, onDone }: { beat: MissionBeat; onDone: () =
         const stars = Math.max(1, r.stars ?? (attempt === 1 ? 3 : attempt === 2 ? 2 : 1));
         setEarned(stars);
         setStars(beat.id, stars);
+        resetMissionFailures(beat.id);
         play('win');
         setPhase('win');
-      } else setPhase('fail');
+      } else {
+        recordMissionFailure(beat.id);
+        setPhase('fail');
+      }
     },
-    [attempt, beat.id, setStars],
+    [attempt, beat.id, recordMissionFailure, resetMissionFailures, setStars],
   );
 
   const retry = () => {
@@ -47,11 +54,11 @@ export function MissionShell({ beat, onDone }: { beat: MissionBeat; onDone: () =
     <div className="mission">
       {phase === 'play' && (
         <>
-          {beat.template === 'drive' && <DriveMission key={attempt} {...common} config={beat.config} />}
+          {beat.template === 'drive' && <DriveMission key={attempt} {...common} config={beat.config} vehicle={beat.config.vehicle} />}
           {beat.template === 'landing' && <LandingMission key={attempt} {...common} config={beat.config} />}
           {beat.template === 'laser' && <LaserMission key={attempt} {...common} config={beat.config} />}
           {beat.template === 'slingshot' && <SlingshotMission key={attempt} {...common} config={beat.config} />}
-          {beat.template === 'classify' && <ClassifyMission key={attempt} {...common} config={beat.config} />}
+          {beat.template === 'classify' && <ClassifyMission key={attempt} {...common} config={beat.config} assisted={assisted} />}
           <button type="button" className="skip-link" onClick={onDone}>{t('mission.skip')}</button>
         </>
       )}
@@ -74,7 +81,7 @@ export function MissionShell({ beat, onDone }: { beat: MissionBeat; onDone: () =
           <p className="eyebrow warn">{t('mission.failed')}</p>
           <h1>{t(`${key}.title`)}</h1>
           <p className="lede">{result?.failKey ? t(`${key}.${result.failKey}`, result.values ?? {}) : ''}</p>
-          <p className="hint"><b>{t('mission.hint')}</b> {t(`${key}.hint`)}</p>
+          <p className="hint"><b>{t('mission.hint')}</b> {t(`${key}.hint`)}{assisted && <> · {t('mission.assist')}</>}</p>
           <div className="row">
             <button type="button" autoFocus className="btn primary" onClick={retry}>{t('mission.retry')}</button>
             <button type="button" className="btn ghost" onClick={onDone}>{t('mission.skip')}</button>

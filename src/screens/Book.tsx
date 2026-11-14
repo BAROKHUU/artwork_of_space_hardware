@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { chapters } from '../data';
+import { archiveChapters, moonChapters } from '../data';
 import { allStorySections, getStorySections } from '../book/content';
 import { StoryBook } from '../book/StoryBook';
 import { useGame } from '../state/store';
@@ -13,9 +13,11 @@ export function Book() {
   const progress = useGame((state) => state.book);
   const markBookOpened = useGame((state) => state.markBookOpened);
   const setReaderChapter = useGame((state) => state.setReaderChapter);
-  const availableChapters = useMemo(() => chapters.filter((chapter, index) => (
-    index === 0 || explorer || completed[chapters[index - 1].id] || completed[chapter.id] || allStorySections.some((section) => section.chapterId === chapter.id && progress.reached[section.id])
-  )), [completed, explorer, progress.reached]);
+  const availableChapters = useMemo(() => [...moonChapters, ...archiveChapters].filter((chapter) => {
+    const arc = chapter.arc === 'moon' ? moonChapters : archiveChapters;
+    const previous = arc[arc.findIndex((item) => item.id === chapter.id) - 1];
+    return !previous || explorer || completed[previous.id] || completed[chapter.id] || allStorySections.some((section) => section.chapterId === chapter.id && progress.reached[section.id]);
+  }), [completed, explorer, progress.reached]);
   const readable = allStorySections.filter((section) => progress.reached[section.id]);
   const selectedChapter = availableChapters.find((chapter) => chapter.id === progress.readerChapter && readable.some((section) => section.chapterId === chapter.id))
     ?? [...availableChapters].reverse().find((chapter) => readable.some((section) => section.chapterId === chapter.id));
