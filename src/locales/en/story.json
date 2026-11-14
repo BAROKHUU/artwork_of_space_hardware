@@ -1,130 +1,583 @@
 {
-  "speakers": { "echo": "Echo", "control": "Archive Control" },
+  "speakers": {
+    "echo": "Echo",
+    "control": "Archive Control",
+    "lrv": "Lunar Roving Vehicle",
+    "cuoi": "Cuội",
+    "rabbit": "Moon Rabbit"
+  },
   "ch0": {
-    "title": "Wake Up, Echo", "tagline": "A small rover hears something it shouldn't.",
+    "title": "Wake Up, Echo",
+    "tagline": "A small rover hears something it shouldn't.",
     "intro": [
-      { "who": "control", "text": "Good morning, Echo. You are the smallest rover in the Archive, and you have one job." },
-      { "who": "echo", "text": "Beep! Is the job snacks?" },
-      { "who": "control", "text": "No. Since the 1960s, people have left machines all over the solar system. Most were forgotten by everyone except the engineers who built them." },
-      { "who": "echo", "text": "Forgotten? But I can hear them. There is a tiny signal in my antenna right now." },
-      { "who": "control", "text": "Then let's see if your wheels work. Drive to the three test beacons." }
+      {
+        "who": "control",
+        "text": "Good morning, Echo. You are the smallest rover in the Archive, and you have one job."
+      },
+      {
+        "who": "echo",
+        "text": "Beep! Is the job snacks?"
+      },
+      {
+        "who": "control",
+        "text": "No. Since the 1960s, people have left machines all over the solar system. Most were forgotten by everyone except the engineers who built them."
+      },
+      {
+        "who": "echo",
+        "text": "Forgotten? But I can hear them. There is a tiny signal in my antenna right now."
+      },
+      {
+        "who": "control",
+        "text": "Then let's see if your wheels work. Drive to the three test beacons."
+      }
     ],
     "outro": [
-      { "who": "echo", "text": "Wheels work! Antenna works! And that signal just got louder." },
-      { "who": "control", "text": "We traced it. It leads back to 1964, to a spacecraft that was built to crash." },
-      { "who": "echo", "text": "Built to crash?! Who does that?" },
-      { "who": "control", "text": "People who needed to know what the Moon looks like up close. Let's go meet it." }
+      {
+        "who": "echo",
+        "text": "Wheels work! Antenna works! And that signal just got louder."
+      },
+      {
+        "who": "control",
+        "text": "We traced it. It leads back to 1964, to a spacecraft that was built to crash."
+      },
+      {
+        "who": "echo",
+        "text": "Built to crash?! Who does that?"
+      },
+      {
+        "who": "control",
+        "text": "People who needed to know what the Moon looks like up close. Let's go meet it."
+      }
     ]
   },
   "ch1": {
-    "title": "Scouts of the Moon", "tagline": "Before people could land, robots had to go first.",
+    "title": "Scouts of the Moon",
+    "tagline": "Before people could land, robots had to go first.",
     "intro": [
-      { "who": "control", "text": "In the early 1960s, nobody knew what the Moon's surface was really like. Some worried a lander might sink into deep dust." },
-      { "who": "echo", "text": "So they sent a robot to look?" },
-      { "who": "control", "text": "They sent Ranger 7. It had cameras and no landing gear. It took photos until the very last second." }
+      {
+        "who": "control",
+        "text": "In the early 1960s, nobody knew what the Moon's surface was really like. Some worried a lander might sink into deep dust."
+      },
+      {
+        "who": "echo",
+        "text": "So they sent a robot to look?"
+      },
+      {
+        "who": "control",
+        "text": "They sent Ranger 7. It had cameras and no landing gear. It took photos until the very last second."
+      }
     ],
     "middle": [
-      { "who": "echo", "text": "Those photos helped them pick safe places to land, right?" },
-      { "who": "control", "text": "Exactly. Next came Surveyor 3, which had to land softly. Its engines did not cut off in time, so it bounced twice!" },
-      { "who": "echo", "text": "Let me try. I promise to bounce less." }
+      {
+        "who": "echo",
+        "text": "Those photos helped them pick safe places to land, right?"
+      },
+      {
+        "who": "control",
+        "text": "Exactly. Next came Surveyor 3, which had to land softly. Its engines did not cut off in time, so it bounced twice!"
+      },
+      {
+        "who": "echo",
+        "text": "Let me try. I promise to bounce less."
+      }
     ],
     "outro": [
-      { "who": "echo", "text": "Astronauts came all the way back to visit Surveyor 3? That is the nicest thing I have ever heard." },
-      { "who": "control", "text": "The ground held. The Moon was safe to land on. And that meant people could go next." },
-      { "who": "echo", "text": "People! Wait, I'm getting a new signal. It's so faint. It's almost like light bouncing." }
+      {
+        "who": "echo",
+        "text": "Astronauts came all the way back to visit Surveyor 3? That is the nicest thing I have ever heard."
+      },
+      {
+        "who": "control",
+        "text": "The ground held. The Moon was safe to land on. And that meant people could go next."
+      },
+      {
+        "who": "echo",
+        "text": "People! Wait, I'm getting a new signal. It's so faint. It's almost like light bouncing."
+      }
     ]
   },
   "ch2": {
-    "title": "The Ones Who Stayed", "tagline": "Astronauts went home. Their equipment did not.",
+    "title": "The Ones Who Stayed",
+    "tagline": "Astronauts went home. Their equipment did not.",
     "intro": [
-      { "who": "control", "text": "July 1969. Two people walked on the Moon for about two and a half hours, and then they went home." },
-      { "who": "echo", "text": "They left all this stuff behind?" },
-      { "who": "control", "text": "Everything heavy had to stay so the small upper stage could lift off. But one thing was left on purpose, and it's still working." },
-      { "who": "echo", "text": "Show me!" }
+      {
+        "who": "control",
+        "text": "July 1969. Two people walked on the Moon for about two and a half hours, and then they went home."
+      },
+      {
+        "who": "echo",
+        "text": "They left all this stuff behind?"
+      },
+      {
+        "who": "control",
+        "text": "Everything heavy had to stay so the small upper stage could lift off. But one thing was left on purpose, and it's still working."
+      },
+      {
+        "who": "echo",
+        "text": "Show me!"
+      }
     ],
     "middle": [
-      { "who": "echo", "text": "It has no battery and no computer, and scientists still use it. That's the coolest thing left on the Moon." },
-      { "who": "control", "text": "Two years later, Apollo 15 brought a car. Astronauts could finally travel far from their lander." },
-      { "who": "echo", "text": "Can I drive it?" },
-      { "who": "control", "text": "You can follow its route. One rule, the same rule they had: never go farther than you could walk back." }
+      {
+        "who": "echo",
+        "text": "It has no battery and no computer, and scientists still use it. That's the coolest thing left on the Moon."
+      },
+      {
+        "who": "control",
+        "text": "Two years later, Apollo 15 brought a car. Astronauts could finally travel far from their lander."
+      },
+      {
+        "who": "echo",
+        "text": "Can I drive it?"
+      },
+      {
+        "who": "control",
+        "text": "You can follow its route. One rule, the same rule they had: never go farther than you could walk back."
+      }
     ],
     "outro": [
-      { "who": "echo", "text": "I keep thinking about the mirror. Everyone left, and it just kept waiting for light." },
-      { "who": "control", "text": "It's why we know the Moon drifts away from us, a few centimeters every year." },
-      { "who": "echo", "text": "There's another signal. Much farther away. It's almost too faint to hear." }
+      {
+        "who": "echo",
+        "text": "I keep thinking about the mirror. Everyone left, and it just kept waiting for light."
+      },
+      {
+        "who": "control",
+        "text": "It's why we know the Moon drifts away from us, a few centimeters every year."
+      },
+      {
+        "who": "echo",
+        "text": "There's another signal. Much farther away. It's almost too faint to hear."
+      }
     ]
   },
   "ch3": {
-    "title": "The Long Way Out", "tagline": "How do you reach the edge of the solar system? Borrow a planet.",
+    "title": "The Long Way Out",
+    "tagline": "How do you reach the edge of the solar system? Borrow a planet.",
     "intro": [
-      { "who": "control", "text": "Pioneer 10 launched in 1972. It was meant to last 21 months." },
-      { "who": "echo", "text": "And how long did it actually last?" },
-      { "who": "control", "text": "More than 30 years. It was the first probe to reach Jupiter. Then the Voyager team worked out how to use Jupiter as a giant catapult." }
+      {
+        "who": "control",
+        "text": "Pioneer 10 launched in 1972. It was meant to last 21 months."
+      },
+      {
+        "who": "echo",
+        "text": "And how long did it actually last?"
+      },
+      {
+        "who": "control",
+        "text": "More than 30 years. It was the first probe to reach Jupiter. Then the Voyager team worked out how to use Jupiter as a giant catapult."
+      }
     ],
     "outro": [
-      { "who": "echo", "text": "So Jupiter throws you, and you never even touch it?" },
-      { "who": "control", "text": "That's gravity. Voyager 2 did this again and again, and it's still the only visitor Uranus and Neptune have ever had." },
-      { "who": "echo", "text": "Now I'm picking up something on Mars. It's very quiet, and it's very old." }
+      {
+        "who": "echo",
+        "text": "So Jupiter throws you, and you never even touch it?"
+      },
+      {
+        "who": "control",
+        "text": "That's gravity. Voyager 2 did this again and again, and it's still the only visitor Uranus and Neptune have ever had."
+      },
+      {
+        "who": "echo",
+        "text": "Now I'm picking up something on Mars. It's very quiet, and it's very old."
+      }
     ]
   },
   "ch4": {
-    "title": "First Steps on Mars", "tagline": "A robot lands on Mars and asks the biggest question of all.",
+    "title": "First Steps on Mars",
+    "tagline": "A robot lands on Mars and asks the biggest question of all.",
     "intro": [
-      { "who": "control", "text": "Landing on Mars is harder than landing on the Moon. The air is thin, but it's still there, and it's still in your way." },
-      { "who": "echo", "text": "So is the air good or bad?" },
-      { "who": "control", "text": "Both. Thick enough for a parachute, too thin to stop you. Viking 1 needed a parachute and rockets. It's your turn." }
+      {
+        "who": "control",
+        "text": "Landing on Mars is harder than landing on the Moon. The air is thin, but it's still there, and it's still in your way."
+      },
+      {
+        "who": "echo",
+        "text": "So is the air good or bad?"
+      },
+      {
+        "who": "control",
+        "text": "Both. Thick enough for a parachute, too thin to stop you. Viking 1 needed a parachute and rockets. It's your turn."
+      }
     ],
     "outro": [
-      { "who": "echo", "text": "So was there life or not?" },
-      { "who": "control", "text": "The soil did something strange, but they found no clear evidence of life. People are still arguing about it." },
-      { "who": "echo", "text": "I like that nobody knows. It means there's more to find out." },
-      { "who": "control", "text": "Viking 1 worked for more than six years. And then, one day in 1982, it stopped answering." }
+      {
+        "who": "echo",
+        "text": "So was there life or not?"
+      },
+      {
+        "who": "control",
+        "text": "The soil did something strange, but they found no clear evidence of life. People are still arguing about it."
+      },
+      {
+        "who": "echo",
+        "text": "I like that nobody knows. It means there's more to find out."
+      },
+      {
+        "who": "control",
+        "text": "Viking 1 worked for more than six years. And then, one day in 1982, it stopped answering."
+      }
     ]
   },
   "ch5": {
-    "title": "The Little Rovers That Could", "tagline": "Built to last days. They lasted years.",
+    "title": "The Little Rovers That Could",
+    "tagline": "Built to last days. They lasted years.",
     "intro": [
-      { "who": "echo", "text": "Wheels! I hear wheels on Mars! Family!" },
-      { "who": "control", "text": "That's your great-grandparent, Sojourner. It was about as big as a microwave oven, and it was the first rover on Mars." }
+      {
+        "who": "echo",
+        "text": "Wheels! I hear wheels on Mars! Family!"
+      },
+      {
+        "who": "control",
+        "text": "That's your great-grandparent, Sojourner. It was about as big as a microwave oven, and it was the first rover on Mars."
+      }
     ],
     "middle": [
-      { "who": "control", "text": "Then came Opportunity. Its planned mission was 90 Martian days. Solar panels gave it power, as long as the sun got through." },
-      { "who": "echo", "text": "I see a trail. And little round stones everywhere. What are they?" },
-      { "who": "control", "text": "Scientists called them blueberries. Follow the trail, watch your battery, and keep an eye on the sky." }
+      {
+        "who": "control",
+        "text": "Then came Opportunity. Its planned mission was 90 Martian days. Solar panels gave it power, as long as the sun got through."
+      },
+      {
+        "who": "echo",
+        "text": "I see a trail. And little round stones everywhere. What are they?"
+      },
+      {
+        "who": "control",
+        "text": "Scientists called them blueberries. Follow the trail, watch your battery, and keep an eye on the sky."
+      }
     ],
     "outro": [
-      { "who": "echo", "text": "It was supposed to last 90 days, and it lasted almost 15 years." },
-      { "who": "control", "text": "In June 2018, a dust storm covered the whole planet. The sunlight faded. The team kept calling for eight months." },
-      { "who": "echo", "text": "Did it answer?" },
-      { "who": "control", "text": "No. But everyone who ever worked on it still remembers. That's why you're here." }
+      {
+        "who": "echo",
+        "text": "It was supposed to last 90 days, and it lasted almost 15 years."
+      },
+      {
+        "who": "control",
+        "text": "In June 2018, a dust storm covered the whole planet. The sunlight faded. The team kept calling for eight months."
+      },
+      {
+        "who": "echo",
+        "text": "Did it answer?"
+      },
+      {
+        "who": "control",
+        "text": "No. But everyone who ever worked on it still remembers. That's why you're here."
+      }
     ]
   },
   "ch6": {
-    "title": "Still Out There", "tagline": "Not every machine is abandoned. Some are busy right now.",
+    "title": "Still Out There",
+    "tagline": "Not every machine is abandoned. Some are busy right now.",
     "intro": [
-      { "who": "echo", "text": "These signals are loud! They're talking back!" },
-      { "who": "control", "text": "That's Curiosity. It's been working since 2012 and it's still climbing a mountain." },
-      { "who": "control", "text": "But look down. Perseverance brought a very small friend to Mars. It was never meant to do very much." }
+      {
+        "who": "echo",
+        "text": "These signals are loud! They're talking back!"
+      },
+      {
+        "who": "control",
+        "text": "That's Curiosity. It's been working since 2012 and it's still climbing a mountain."
+      },
+      {
+        "who": "control",
+        "text": "But look down. Perseverance brought a very small friend to Mars. It was never meant to do very much."
+      }
     ],
     "outro": [
-      { "who": "echo", "text": "Five flights planned, and it flew seventy-two. Why does everyone keep doing that?" },
-      { "who": "control", "text": "Good engineers build for more than they promise. And the machines keep surprising them." },
-      { "who": "echo", "text": "There's one signal left. It's the farthest one. It's taking hours just to reach me." }
+      {
+        "who": "echo",
+        "text": "Five flights planned, and it flew seventy-two. Why does everyone keep doing that?"
+      },
+      {
+        "who": "control",
+        "text": "Good engineers build for more than they promise. And the machines keep surprising them."
+      },
+      {
+        "who": "echo",
+        "text": "There's one signal left. It's the farthest one. It's taking hours just to reach me."
+      }
     ]
   },
   "ch7": {
-    "title": "A Message for Whoever Finds It", "tagline": "The farthest thing we have ever made is still talking.",
+    "title": "A Message for Whoever Finds It",
+    "tagline": "The farthest thing we have ever made is still talking.",
     "intro": [
-      { "who": "control", "text": "This is Voyager 1. It launched in 1977, and nothing humans have built has ever gone farther." },
-      { "who": "echo", "text": "It's so quiet out here. What's that gold thing on its side?" },
-      { "who": "control", "text": "A letter. It's addressed to anyone who might find it, long after we're gone." }
+      {
+        "who": "control",
+        "text": "This is Voyager 1. It launched in 1977, and nothing humans have built has ever gone farther."
+      },
+      {
+        "who": "echo",
+        "text": "It's so quiet out here. What's that gold thing on its side?"
+      },
+      {
+        "who": "control",
+        "text": "A letter. It's addressed to anyone who might find it, long after we're gone."
+      }
     ],
     "outro": [
-      { "who": "echo", "text": "I found them all. The ones that crashed, the ones that went quiet, and the ones that are still working." },
-      { "who": "control", "text": "So tell me. Are they abandoned?" },
-      { "who": "echo", "text": "Nope. Every one of them changed what we know. You can't forget something that taught you that much." },
-      { "who": "control", "text": "Then the Archive is complete, Echo. Well done." },
-      { "who": "echo", "text": "Wait. People are still sending new machines, aren't they? Someone is going to have to remember those too." }
+      {
+        "who": "echo",
+        "text": "I found them all. The ones that crashed, the ones that went quiet, and the ones that are still working."
+      },
+      {
+        "who": "control",
+        "text": "So tell me. Are they abandoned?"
+      },
+      {
+        "who": "echo",
+        "text": "Nope. Every one of them changed what we know. You can't forget something that taught you that much."
+      },
+      {
+        "who": "control",
+        "text": "Then the Archive is complete, Echo. Well done."
+      },
+      {
+        "who": "echo",
+        "text": "Wait. People are still sending new machines, aren't they? Someone is going to have to remember those too."
+      }
+    ]
+  },
+  "m1": {
+    "title": "A Forgotten Explorer",
+    "tagline": "After the astronauts leave, a rover waits under an old banyan tree.",
+    "intro": [
+      {
+        "who": "echo",
+        "text": "Every machine in the Archive has a story. This one is told by the Moon itself."
+      },
+      {
+        "who": "lrv",
+        "text": "I am the Lunar Roving Vehicle. Apollo 15. I have been parked for a very long time."
+      },
+      {
+        "who": "lrv",
+        "text": "In real life, astronauts drove me. In this story, the Moon lets me remember."
+      },
+      {
+        "who": "lrv",
+        "text": "The astronauts left. The dust stayed. I used to count the stars, but I always get the same number."
+      },
+      {
+        "who": "cuoi",
+        "text": "Then count something new. I am Cuội. I came up here with a banyan tree, long ago."
+      },
+      {
+        "who": "rabbit",
+        "text": "And I came with him. The tree is still here. So are we."
+      },
+      {
+        "who": "lrv",
+        "text": "Are you real?"
+      },
+      {
+        "who": "cuoi",
+        "text": "The Moon has room for more than one kind of real."
+      },
+      {
+        "who": "lrv",
+        "text": "I used to drive. Astronauts sat where you are sitting. I carried their tools and their rocks."
+      },
+      {
+        "who": "cuoi",
+        "text": "Then let us go and look at what you carried. My legs are tired. Your wheels are not."
+      },
+      {
+        "who": "echo",
+        "text": "Drive to the three markers under the banyan tree."
+      }
+    ],
+    "outro": [
+      {
+        "who": "cuoi",
+        "text": "You stopped at the end of your mission. That does not mean you stopped being part of the story."
+      },
+      {
+        "who": "lrv",
+        "text": "It feels like the story ended without me."
+      },
+      {
+        "who": "cuoi",
+        "text": "Then we will find the parts that are still happening. Tomorrow, we collect samples."
+      },
+      {
+        "who": "rabbit",
+        "text": "I will carry the snacks."
+      }
+    ]
+  },
+  "m2": {
+    "title": "The First Journey",
+    "tagline": "Cuội asks for rocks. Every rock has something to say.",
+    "intro": [
+      {
+        "who": "cuoi",
+        "text": "Lunar rocks are letters. Scientists on Earth have been reading them for more than fifty years."
+      },
+      {
+        "who": "lrv",
+        "text": "I carried them. I never got to read them."
+      },
+      {
+        "who": "cuoi",
+        "text": "Today you will. Four sample sites. Drive carefully."
+      },
+      {
+        "who": "lrv",
+        "text": "What if I bring back the wrong rock?"
+      },
+      {
+        "who": "cuoi",
+        "text": "Then we look again. A wrong guess is not the end of a journey."
+      }
+    ],
+    "outro": [
+      {
+        "who": "lrv",
+        "text": "Six samples. I remember the weight of them."
+      },
+      {
+        "who": "cuoi",
+        "text": "Each one is a page of the Moon's history. Some are older than the oldest rock on Earth."
+      },
+      {
+        "who": "lrv",
+        "text": "The astronauts could only walk so far. I took them farther."
+      },
+      {
+        "who": "cuoi",
+        "text": "And because they went farther, we know more. That is not nothing."
+      }
+    ]
+  },
+  "m3": {
+    "title": "What the Moon Tells Us",
+    "tagline": "Craters are a record of everything that ever arrived.",
+    "intro": [
+      {
+        "who": "rabbit",
+        "text": "Look at the craters. They are not all the same age."
+      },
+      {
+        "who": "lrv",
+        "text": "Big ones, small ones. I drove around them for three days."
+      },
+      {
+        "who": "rabbit",
+        "text": "Which patch looks older? What would you look for?"
+      },
+      {
+        "who": "lrv",
+        "text": "More craters. Softer edges. A surface that has been hit again and again."
+      },
+      {
+        "who": "rabbit",
+        "text": "Good. Observation is science too. Point, look, and write it down."
+      }
+    ],
+    "outro": [
+      {
+        "who": "cuoi",
+        "text": "You noticed something today."
+      },
+      {
+        "who": "lrv",
+        "text": "It was only looking."
+      },
+      {
+        "who": "cuoi",
+        "text": "That is how every discovery starts. Someone looks longer than everybody else."
+      }
+    ]
+  },
+  "m4": {
+    "title": "The Last Leaf",
+    "tagline": "One more signal, from an instrument nobody came back for.",
+    "intro": [
+      {
+        "who": "cuoi",
+        "text": "Do you hear that? A signal, very faint. Older than your wheels."
+      },
+      {
+        "who": "lrv",
+        "text": "It is not a voice. It is a heartbeat of instruments."
+      },
+      {
+        "who": "cuoi",
+        "text": "Something else was left here in 1969. It listened to the Moon, and then it went quiet."
+      },
+      {
+        "who": "lrv",
+        "text": "Can we help it?"
+      },
+      {
+        "who": "cuoi",
+        "text": "Not by fixing it. Nobody can do that. But we can find out what it did."
+      },
+      {
+        "who": "rabbit",
+        "text": "Follow the signal. We will bring a leaf."
+      }
+    ],
+    "outro": [
+      {
+        "who": "lrv",
+        "text": "It stopped sending after only a few weeks. I thought a mission like that would be a failure."
+      },
+      {
+        "who": "cuoi",
+        "text": "Its data is still being studied. A short mission can leave a long lesson."
+      },
+      {
+        "who": "lrv",
+        "text": "So it is not forgotten."
+      },
+      {
+        "who": "cuoi",
+        "text": "No. It is remembered by people who were not even born when it listened."
+      }
+    ]
+  },
+  "m5": {
+    "title": "Find You in the Universe",
+    "tagline": "A message takes more than fifty years to reach a child's window.",
+    "intro": [
+      {
+        "who": "rabbit",
+        "text": "The banyan leaf is glowing."
+      },
+      {
+        "who": "lrv",
+        "text": "There is a message in it. Not for me."
+      },
+      {
+        "who": "cuoi",
+        "text": "A last burst of data, drifting for more than fifty years. Tonight it reaches a window on Earth."
+      },
+      {
+        "who": "lrv",
+        "text": "A child is drawing a rover. I think I know that feeling."
+      },
+      {
+        "who": "rabbit",
+        "text": "What would you tell them?"
+      },
+      {
+        "who": "lrv",
+        "text": "That it was worth it. Even the quiet part."
+      }
+    ],
+    "outro": [
+      {
+        "who": "echo",
+        "text": "The Moon keeps what we leave behind. The story keeps what it taught us."
+      },
+      {
+        "who": "cuoi",
+        "text": "Do not worry about the end of a mission. Worry about the end of the remembering."
+      },
+      {
+        "who": "lrv",
+        "text": "Then I will remember. To the end of the wheels."
+      }
     ]
   }
 }

@@ -8,6 +8,7 @@ import { Settings } from './components/Settings';
 import { Title } from './screens/Title';
 import { MapScreen } from './screens/MapScreen';
 import { Sources } from './screens/Sources';
+import { Learning } from './screens/Learning';
 
 const Chapter = lazy(() => import('./screens/Chapter').then((m) => ({ default: m.Chapter })));
 const Logbook = lazy(() => import('./screens/Logbook').then((m) => ({ default: m.Logbook })));
@@ -30,7 +31,7 @@ function PageBackdrop({ name }: { name: string }) {
 function TopBar() {
   const { t } = useTranslation();
   const update = useGame((s) => s.update);
-  const links = [['/map', 'nav.map'], ['/book', 'nav.book'], ['/logbook', 'nav.logbook'], ['/atlas', 'nav.atlas'], ['/lab', 'nav.lab'], ['/sources', 'nav.sources']] as const;
+  const links = [['/map', 'nav.map'], ['/book', 'nav.book'], ['/logbook', 'nav.logbook'], ['/progress', 'nav.progress'], ['/atlas', 'nav.atlas'], ['/lab', 'nav.lab'], ['/sources', 'nav.sources']] as const;
   return (
     <header className="topbar">
       <NavLink to="/" className="brand" aria-label={t('nav.home')}>
@@ -73,6 +74,8 @@ export function App() {
           <Route path="/atlas" element={<Atlas />} />
           <Route path="/lab" element={<Lab />} />
           <Route path="/sources" element={<Sources />} />
+          <Route path="/progress" element={<Learning />} />
+          <Route path="/grownups" element={<Learning />} />
           <Route path="*" element={<main className="page"><h1>{t('common.notFound')}</h1><NavLink className="btn primary" to="/map">{t('common.backToMap')}</NavLink></main>} />
         </Routes>
       </Suspense>

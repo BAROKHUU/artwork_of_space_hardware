@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import type { StoryPageSpec, StorySection } from './types';
 
 interface StoryLine {
-  who: 'echo' | 'control';
+  who: 'echo' | 'control' | 'lrv' | 'cuoi' | 'rabbit';
   text: string;
 }
 

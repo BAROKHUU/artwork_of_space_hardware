@@ -8,8 +8,20 @@ export const chapters = chaptersJson as unknown as Chapter[];
 export const hardware = hardwareJson as unknown as Hardware[];
 export const sources = sourcesJson as Record<string, Source>;
 
+/** The Moon story, in order. This is the journey the title screen starts. */
+export const moonChapters = chapters.filter((chapter) => chapter.arc === 'moon');
+/** The original Echo survey. Kept, translated where possible, and reachable from the Archive. */
+export const archiveChapters = chapters.filter((chapter) => chapter.arc !== 'moon');
+
 export const hardwareById = Object.fromEntries(hardware.map((h) => [h.id, h])) as Record<string, Hardware>;
 export const chapterById = Object.fromEntries(chapters.map((c) => [c.id, c])) as Record<string, Chapter>;
+
+/** Next chapter inside the same journey, so the archive never leads into the Moon story by accident. */
+export function nextChapterInArc(chapter: Chapter): Chapter | undefined {
+  const group = chapter.arc === 'moon' ? moonChapters : archiveChapters;
+  const index = group.findIndex((item) => item.id === chapter.id);
+  return index >= 0 ? group[index + 1] : undefined;
+}
 
 export const missionBeats = chapters.flatMap((c) => c.beats.filter((b): b is MissionBeat => b.kind === 'mission'));
 

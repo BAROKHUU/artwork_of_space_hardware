@@ -62,6 +62,12 @@ export function Settings() {
         <small>{t('settings.explorerNote')}</small>
       </div>
 
+      <div className="field">
+        <span>{t('settings.narration')}</span>
+        <Choice label={t('settings.narration')} value={g.narration ? 'on' : 'off'} onChange={(v) => g.update({ narration: v === 'on' })} options={onOff} />
+        <small>{t('settings.narrationNote')}</small>
+      </div>
+
       <p className="privacy">{t('settings.privacy')}</p>
       <button type="button" className="btn danger" onClick={() => { if (window.confirm(t('settings.resetConfirm'))) g.reset(); }}>{t('settings.reset')}</button>
     </dialog>

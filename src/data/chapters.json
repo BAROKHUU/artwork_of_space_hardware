@@ -1,95 +1,809 @@
 [
   {
-    "id": "ch0", "world": "moon", "era": "Today",
+    "id": "ch0",
+    "world": "moon",
+    "era": "Today",
     "beats": [
-      { "kind": "dialogue", "key": "intro", "focus": "echo" },
-      { "kind": "mission", "id": "ch0_boot", "template": "drive", "config": { "world": "moon", "seed": 11, "start": { "x": 0, "z": 0 }, "targets": [{ "x": 0, "z": -26 }, { "x": 24, "z": -48 }, { "x": -14, "z": -66 }], "radius": 5 } },
-      { "kind": "dialogue", "key": "outro", "focus": "echo" }
+      {
+        "kind": "dialogue",
+        "key": "intro",
+        "focus": "echo"
+      },
+      {
+        "kind": "mission",
+        "id": "ch0_boot",
+        "template": "drive",
+        "config": {
+          "world": "moon",
+          "seed": 11,
+          "start": {
+            "x": 0,
+            "z": 0
+          },
+          "targets": [
+            {
+              "x": 0,
+              "z": -26
+            },
+            {
+              "x": 24,
+              "z": -48
+            },
+            {
+              "x": -14,
+              "z": -66
+            }
+          ],
+          "radius": 5
+        }
+      },
+      {
+        "kind": "dialogue",
+        "key": "outro",
+        "focus": "echo"
+      }
+    ],
+    "arc": "archive"
+  },
+  {
+    "id": "ch1",
+    "world": "moon",
+    "era": "1964–1968",
+    "beats": [
+      {
+        "kind": "dialogue",
+        "key": "intro",
+        "focus": "ranger7"
+      },
+      {
+        "kind": "memory",
+        "hardware": "ranger7"
+      },
+      {
+        "kind": "mission",
+        "id": "ch1_sites",
+        "template": "classify",
+        "config": {
+          "visual": "craters",
+          "rounds": 3,
+          "seed": 42
+        }
+      },
+      {
+        "kind": "dialogue",
+        "key": "middle",
+        "focus": "surveyor3"
+      },
+      {
+        "kind": "mission",
+        "id": "ch1_landing",
+        "template": "landing",
+        "config": {
+          "world": "moon",
+          "vehicle": "surveyor",
+          "objective": "touchdown",
+          "alt": 260,
+          "vel": -30,
+          "fuel": 30,
+          "safe": 3,
+          "params": {
+            "g": 1.62,
+            "thrust": 4.2,
+            "burn": 1,
+            "drag": 0,
+            "chuteDrag": 0
+          }
+        }
+      },
+      {
+        "kind": "memory",
+        "hardware": "surveyor3"
+      },
+      {
+        "kind": "quiz",
+        "key": "ch1",
+        "answers": [
+          1,
+          2
+        ]
+      },
+      {
+        "kind": "dialogue",
+        "key": "outro",
+        "focus": "surveyor3"
+      }
+    ],
+    "arc": "archive"
+  },
+  {
+    "id": "ch2",
+    "world": "moon",
+    "era": "1969–1972",
+    "beats": [
+      {
+        "kind": "dialogue",
+        "key": "intro",
+        "focus": "apollo11_descent"
+      },
+      {
+        "kind": "memory",
+        "hardware": "apollo11_descent"
+      },
+      {
+        "kind": "mission",
+        "id": "ch2_laser",
+        "template": "laser",
+        "config": {
+          "target": {
+            "lat": 0.673,
+            "lon": 23.473
+          },
+          "radiusDeg": 6,
+          "shots": 3
+        }
+      },
+      {
+        "kind": "memory",
+        "hardware": "lrrr"
+      },
+      {
+        "kind": "dialogue",
+        "key": "middle",
+        "focus": "lrv"
+      },
+      {
+        "kind": "mission",
+        "id": "ch2_lrv",
+        "template": "drive",
+        "config": {
+          "world": "moon",
+          "seed": 15,
+          "start": {
+            "x": 0,
+            "z": 0
+          },
+          "targets": [
+            {
+              "x": -24,
+              "z": -30
+            },
+            {
+              "x": 20,
+              "z": -46
+            },
+            {
+              "x": 40,
+              "z": -12
+            }
+          ],
+          "radius": 5,
+          "tether": 72,
+          "prop": {
+            "model": "descent",
+            "x": 9,
+            "z": 7
+          }
+        }
+      },
+      {
+        "kind": "quiz",
+        "key": "ch2",
+        "answers": [
+          2,
+          0
+        ]
+      },
+      {
+        "kind": "dialogue",
+        "key": "outro",
+        "focus": "lrrr"
+      }
+    ],
+    "arc": "archive"
+  },
+  {
+    "id": "ch3",
+    "world": "deep",
+    "era": "1972–1989",
+    "beats": [
+      {
+        "kind": "dialogue",
+        "key": "intro",
+        "focus": "pioneer10"
+      },
+      {
+        "kind": "memory",
+        "hardware": "pioneer10"
+      },
+      {
+        "kind": "mission",
+        "id": "ch3_slingshot",
+        "template": "slingshot",
+        "config": {
+          "degMin": 40,
+          "degMax": 135,
+          "speedMin": 38.4,
+          "speedMax": 39.6,
+          "suggest": {
+            "speed": 38.9,
+            "deg": 69
+          }
+        }
+      },
+      {
+        "kind": "memory",
+        "hardware": "voyager2"
+      },
+      {
+        "kind": "quiz",
+        "key": "ch3",
+        "answers": [
+          0,
+          1
+        ]
+      },
+      {
+        "kind": "dialogue",
+        "key": "outro",
+        "focus": "voyager2"
+      }
+    ],
+    "arc": "archive"
+  },
+  {
+    "id": "ch4",
+    "world": "mars",
+    "era": "1975–1982",
+    "beats": [
+      {
+        "kind": "dialogue",
+        "key": "intro",
+        "focus": "viking1"
+      },
+      {
+        "kind": "mission",
+        "id": "ch4_landing",
+        "template": "landing",
+        "config": {
+          "world": "mars",
+          "vehicle": "viking",
+          "objective": "touchdown",
+          "alt": 2000,
+          "vel": -120,
+          "fuel": 30,
+          "safe": 3,
+          "hasChute": true,
+          "params": {
+            "g": 3.71,
+            "thrust": 7.5,
+            "burn": 1,
+            "drag": 2e-05,
+            "chuteDrag": 0.001
+          }
+        }
+      },
+      {
+        "kind": "memory",
+        "hardware": "viking1"
+      },
+      {
+        "kind": "mission",
+        "id": "ch4_lr",
+        "template": "classify",
+        "config": {
+          "visual": "lr",
+          "answers": [
+            0,
+            1,
+            1
+          ]
+        }
+      },
+      {
+        "kind": "quiz",
+        "key": "ch4",
+        "answers": [
+          1,
+          0
+        ]
+      },
+      {
+        "kind": "dialogue",
+        "key": "outro",
+        "focus": "viking1"
+      }
+    ],
+    "arc": "archive"
+  },
+  {
+    "id": "ch5",
+    "world": "mars",
+    "era": "1997–2019",
+    "beats": [
+      {
+        "kind": "dialogue",
+        "key": "intro",
+        "focus": "sojourner"
+      },
+      {
+        "kind": "memory",
+        "hardware": "sojourner"
+      },
+      {
+        "kind": "dialogue",
+        "key": "middle",
+        "focus": "opportunity"
+      },
+      {
+        "kind": "mission",
+        "id": "ch5_opportunity",
+        "template": "drive",
+        "config": {
+          "world": "mars",
+          "seed": 23,
+          "start": {
+            "x": 0,
+            "z": 0
+          },
+          "targets": [
+            {
+              "x": 22,
+              "z": -24
+            },
+            {
+              "x": -18,
+              "z": -44
+            },
+            {
+              "x": 28,
+              "z": -66
+            },
+            {
+              "x": -8,
+              "z": -92
+            }
+          ],
+          "radius": 5,
+          "battery": {
+            "drainPerSecond": 7,
+            "chargePerSecond": 5,
+            "solLength": 44,
+            "stormAt": 130
+          }
+        }
+      },
+      {
+        "kind": "memory",
+        "hardware": "opportunity"
+      },
+      {
+        "kind": "quiz",
+        "key": "ch5",
+        "answers": [
+          2,
+          1
+        ]
+      },
+      {
+        "kind": "dialogue",
+        "key": "outro",
+        "focus": "opportunity"
+      }
+    ],
+    "arc": "archive"
+  },
+  {
+    "id": "ch6",
+    "world": "mars",
+    "era": "2012–Today",
+    "beats": [
+      {
+        "kind": "dialogue",
+        "key": "intro",
+        "focus": "curiosity"
+      },
+      {
+        "kind": "memory",
+        "hardware": "curiosity"
+      },
+      {
+        "kind": "mission",
+        "id": "ch6_ingenuity",
+        "template": "landing",
+        "config": {
+          "world": "mars",
+          "vehicle": "ingenuity",
+          "objective": "hover",
+          "alt": 0,
+          "vel": 0,
+          "fuel": 100,
+          "safe": 2.2,
+          "band": [
+            3,
+            6
+          ],
+          "hold": 6,
+          "params": {
+            "g": 3.71,
+            "thrust": 5.6,
+            "burn": 1,
+            "drag": 0.02,
+            "chuteDrag": 0
+          }
+        }
+      },
+      {
+        "kind": "memory",
+        "hardware": "ingenuity"
+      },
+      {
+        "kind": "memory",
+        "hardware": "perseverance"
+      },
+      {
+        "kind": "quiz",
+        "key": "ch6",
+        "answers": [
+          0,
+          2
+        ]
+      },
+      {
+        "kind": "dialogue",
+        "key": "outro",
+        "focus": "perseverance"
+      }
+    ],
+    "arc": "archive"
+  },
+  {
+    "id": "ch7",
+    "world": "deep",
+    "era": "Beyond",
+    "beats": [
+      {
+        "kind": "dialogue",
+        "key": "intro",
+        "focus": "voyager1"
+      },
+      {
+        "kind": "memory",
+        "hardware": "voyager1"
+      },
+      {
+        "kind": "mission",
+        "id": "ch7_golden",
+        "template": "classify",
+        "config": {
+          "visual": "golden",
+          "items": [
+            {
+              "id": "whales",
+              "on": true
+            },
+            {
+              "id": "video",
+              "on": false
+            },
+            {
+              "id": "greetings",
+              "on": true
+            },
+            {
+              "id": "thunder",
+              "on": true
+            },
+            {
+              "id": "map",
+              "on": false
+            },
+            {
+              "id": "music",
+              "on": true
+            }
+          ]
+        }
+      },
+      {
+        "kind": "memory",
+        "hardware": "new_horizons"
+      },
+      {
+        "kind": "signal"
+      },
+      {
+        "kind": "quiz",
+        "key": "ch7",
+        "answers": [
+          1,
+          0
+        ]
+      },
+      {
+        "kind": "dialogue",
+        "key": "outro",
+        "focus": "voyager1"
+      }
+    ],
+    "arc": "archive"
+  },
+  {
+    "id": "m1",
+    "arc": "moon",
+    "world": "moon",
+    "era": "1971 — Today",
+    "beats": [
+      {
+        "kind": "precheck",
+        "key": "moon",
+        "answers": [
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "kind": "dialogue",
+        "key": "intro",
+        "focus": "lrv"
+      },
+      {
+        "kind": "memory",
+        "hardware": "lrv"
+      },
+      {
+        "kind": "mission",
+        "id": "m1_drive",
+        "template": "drive",
+        "config": {
+          "world": "moon",
+          "seed": 71,
+          "start": {
+            "x": 0,
+            "z": 0
+          },
+          "targets": [
+            {
+              "x": 0,
+              "z": -24
+            },
+            {
+              "x": 18,
+              "z": -44
+            },
+            {
+              "x": -4,
+              "z": -66
+            }
+          ],
+          "radius": 5.5,
+          "vehicle": "lrv"
+        }
+      },
+      {
+        "kind": "dialogue",
+        "key": "outro",
+        "focus": "cuoi"
+      }
     ]
   },
   {
-    "id": "ch1", "world": "moon", "era": "1964–1968",
+    "id": "m2",
+    "arc": "moon",
+    "world": "moon",
+    "era": "The first journey",
     "beats": [
-      { "kind": "dialogue", "key": "intro", "focus": "ranger7" },
-      { "kind": "memory", "hardware": "ranger7" },
-      { "kind": "mission", "id": "ch1_sites", "template": "classify", "config": { "visual": "craters", "rounds": 3, "seed": 42 } },
-      { "kind": "dialogue", "key": "middle", "focus": "surveyor3" },
-      { "kind": "mission", "id": "ch1_landing", "template": "landing", "config": { "world": "moon", "vehicle": "surveyor", "objective": "touchdown", "alt": 260, "vel": -30, "fuel": 30, "safe": 3, "params": { "g": 1.62, "thrust": 4.2, "burn": 1, "drag": 0, "chuteDrag": 0 } } },
-      { "kind": "memory", "hardware": "surveyor3" },
-      { "kind": "quiz", "key": "ch1", "answers": [1, 2] },
-      { "kind": "dialogue", "key": "outro", "focus": "surveyor3" }
+      {
+        "kind": "dialogue",
+        "key": "intro",
+        "focus": "cuoi"
+      },
+      {
+        "kind": "mission",
+        "id": "m2_collect",
+        "template": "drive",
+        "config": {
+          "world": "moon",
+          "seed": 22,
+          "start": {
+            "x": 0,
+            "z": 0
+          },
+          "targets": [
+            {
+              "x": -20,
+              "z": -26
+            },
+            {
+              "x": 14,
+              "z": -40
+            },
+            {
+              "x": 34,
+              "z": -18
+            },
+            {
+              "x": -6,
+              "z": -58
+            }
+          ],
+          "radius": 5.5,
+          "vehicle": "lrv"
+        }
+      },
+      {
+        "kind": "mission",
+        "id": "m2_samples",
+        "template": "classify",
+        "config": {
+          "visual": "samples",
+          "rounds": 6,
+          "seed": 202
+        }
+      },
+      {
+        "kind": "reflect",
+        "key": "r1"
+      },
+      {
+        "kind": "quiz",
+        "key": "m2",
+        "answers": [
+          1,
+          1
+        ]
+      },
+      {
+        "kind": "apply",
+        "key": "a2",
+        "answers": [
+          0
+        ]
+      },
+      {
+        "kind": "dialogue",
+        "key": "outro",
+        "focus": "lrv"
+      }
     ]
   },
   {
-    "id": "ch2", "world": "moon", "era": "1969–1972",
+    "id": "m3",
+    "arc": "moon",
+    "world": "moon",
+    "era": "What the Moon tells us",
     "beats": [
-      { "kind": "dialogue", "key": "intro", "focus": "apollo11_descent" },
-      { "kind": "memory", "hardware": "apollo11_descent" },
-      { "kind": "mission", "id": "ch2_laser", "template": "laser", "config": { "target": { "lat": 0.673, "lon": 23.473 }, "radiusDeg": 6, "shots": 3 } },
-      { "kind": "memory", "hardware": "lrrr" },
-      { "kind": "dialogue", "key": "middle", "focus": "lrv" },
-      { "kind": "mission", "id": "ch2_lrv", "template": "drive", "config": { "world": "moon", "seed": 15, "start": { "x": 0, "z": 0 }, "targets": [{ "x": -24, "z": -30 }, { "x": 20, "z": -46 }, { "x": 40, "z": -12 }], "radius": 5, "tether": 72, "prop": { "model": "descent", "x": 9, "z": 7 } } },
-      { "kind": "memory", "hardware": "lrv" },
-      { "kind": "quiz", "key": "ch2", "answers": [2, 0] },
-      { "kind": "dialogue", "key": "outro", "focus": "lrrr" }
+      {
+        "kind": "dialogue",
+        "key": "intro",
+        "focus": "rabbit"
+      },
+      {
+        "kind": "mission",
+        "id": "m3_craters",
+        "template": "classify",
+        "config": {
+          "visual": "craters",
+          "rounds": 3,
+          "seed": 33
+        }
+      },
+      {
+        "kind": "quiz",
+        "key": "m3",
+        "answers": [
+          1,
+          1
+        ]
+      },
+      {
+        "kind": "apply",
+        "key": "a3",
+        "answers": [
+          0
+        ]
+      },
+      {
+        "kind": "dialogue",
+        "key": "outro",
+        "focus": "cuoi"
+      }
     ]
   },
   {
-    "id": "ch3", "world": "deep", "era": "1972–1989",
+    "id": "m4",
+    "arc": "moon",
+    "world": "moon",
+    "era": "1969",
     "beats": [
-      { "kind": "dialogue", "key": "intro", "focus": "pioneer10" },
-      { "kind": "memory", "hardware": "pioneer10" },
-      { "kind": "mission", "id": "ch3_slingshot", "template": "slingshot", "config": { "degMin": 40, "degMax": 135, "speedMin": 38.4, "speedMax": 39.6, "suggest": { "speed": 38.9, "deg": 69 } } },
-      { "kind": "memory", "hardware": "voyager2" },
-      { "kind": "quiz", "key": "ch3", "answers": [0, 1] },
-      { "kind": "dialogue", "key": "outro", "focus": "voyager2" }
+      {
+        "kind": "dialogue",
+        "key": "intro",
+        "focus": "cuoi"
+      },
+      {
+        "kind": "mission",
+        "id": "m4_signal",
+        "template": "drive",
+        "config": {
+          "world": "moon",
+          "seed": 44,
+          "start": {
+            "x": 0,
+            "z": 0
+          },
+          "targets": [
+            {
+              "x": 26,
+              "z": -52
+            }
+          ],
+          "radius": 6,
+          "vehicle": "lrv"
+        }
+      },
+      {
+        "kind": "archive",
+        "key": "psep"
+      },
+      {
+        "kind": "reflect",
+        "key": "r2"
+      },
+      {
+        "kind": "apply",
+        "key": "a4",
+        "answers": [
+          1
+        ]
+      },
+      {
+        "kind": "dialogue",
+        "key": "outro",
+        "focus": "lrv"
+      }
     ]
   },
   {
-    "id": "ch4", "world": "mars", "era": "1975–1982",
+    "id": "m5",
+    "arc": "moon",
+    "world": "moon",
+    "era": "The message",
     "beats": [
-      { "kind": "dialogue", "key": "intro", "focus": "viking1" },
-      { "kind": "mission", "id": "ch4_landing", "template": "landing", "config": { "world": "mars", "vehicle": "viking", "objective": "touchdown", "alt": 2000, "vel": -120, "fuel": 30, "safe": 3, "hasChute": true, "params": { "g": 3.71, "thrust": 7.5, "burn": 1, "drag": 0.00002, "chuteDrag": 0.001 } } },
-      { "kind": "memory", "hardware": "viking1" },
-      { "kind": "mission", "id": "ch4_lr", "template": "classify", "config": { "visual": "lr", "answers": [0, 1, 1] } },
-      { "kind": "quiz", "key": "ch4", "answers": [1, 0] },
-      { "kind": "dialogue", "key": "outro", "focus": "viking1" }
-    ]
-  },
-  {
-    "id": "ch5", "world": "mars", "era": "1997–2019",
-    "beats": [
-      { "kind": "dialogue", "key": "intro", "focus": "sojourner" },
-      { "kind": "memory", "hardware": "sojourner" },
-      { "kind": "dialogue", "key": "middle", "focus": "opportunity" },
-      { "kind": "mission", "id": "ch5_opportunity", "template": "drive", "config": { "world": "mars", "seed": 23, "start": { "x": 0, "z": 0 }, "targets": [{ "x": 22, "z": -24 }, { "x": -18, "z": -44 }, { "x": 28, "z": -66 }, { "x": -8, "z": -92 }], "radius": 5, "battery": { "drainPerSecond": 7, "chargePerSecond": 5, "solLength": 44, "stormAt": 130 } } },
-      { "kind": "memory", "hardware": "opportunity" },
-      { "kind": "quiz", "key": "ch5", "answers": [2, 1] },
-      { "kind": "dialogue", "key": "outro", "focus": "opportunity" }
-    ]
-  },
-  {
-    "id": "ch6", "world": "mars", "era": "2012–Today",
-    "beats": [
-      { "kind": "dialogue", "key": "intro", "focus": "curiosity" },
-      { "kind": "memory", "hardware": "curiosity" },
-      { "kind": "mission", "id": "ch6_ingenuity", "template": "landing", "config": { "world": "mars", "vehicle": "ingenuity", "objective": "hover", "alt": 0, "vel": 0, "fuel": 100, "safe": 2.2, "band": [3, 6], "hold": 6, "params": { "g": 3.71, "thrust": 5.6, "burn": 1, "drag": 0.02, "chuteDrag": 0 } } },
-      { "kind": "memory", "hardware": "ingenuity" },
-      { "kind": "memory", "hardware": "perseverance" },
-      { "kind": "quiz", "key": "ch6", "answers": [0, 2] },
-      { "kind": "dialogue", "key": "outro", "focus": "perseverance" }
-    ]
-  },
-  {
-    "id": "ch7", "world": "deep", "era": "Beyond",
-    "beats": [
-      { "kind": "dialogue", "key": "intro", "focus": "voyager1" },
-      { "kind": "memory", "hardware": "voyager1" },
-      { "kind": "mission", "id": "ch7_golden", "template": "classify", "config": { "visual": "golden", "items": [{ "id": "whales", "on": true }, { "id": "video", "on": false }, { "id": "greetings", "on": true }, { "id": "thunder", "on": true }, { "id": "map", "on": false }, { "id": "music", "on": true }] } },
-      { "kind": "memory", "hardware": "new_horizons" },
-      { "kind": "signal" },
-      { "kind": "quiz", "key": "ch7", "answers": [1, 0] },
-      { "kind": "dialogue", "key": "outro", "focus": "voyager1" }
+      {
+        "kind": "dialogue",
+        "key": "intro",
+        "focus": "rabbit"
+      },
+      {
+        "kind": "quiz",
+        "key": "m5",
+        "answers": [
+          2,
+          2
+        ]
+      },
+      {
+        "kind": "apply",
+        "key": "a5",
+        "answers": [
+          2
+        ]
+      },
+      {
+        "kind": "postcheck",
+        "key": "moon",
+        "answers": [
+          0,
+          1,
+          1
+        ]
+      },
+      {
+        "kind": "dialogue",
+        "key": "outro",
+        "focus": "cuoi"
+      }
     ]
   }
 ]
