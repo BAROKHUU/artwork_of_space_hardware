@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { StoryPageSpec, StorySection } from './types';
+import { useGame } from '../state/store';
 
 interface StoryLine {
   who: 'echo' | 'control' | 'lrv' | 'cuoi' | 'rabbit';
@@ -19,6 +21,18 @@ interface StoryPageProps {
 
 export function StoryPage({ chapterId, section, page, lines, pageNumber, totalPages, cover = false, backCover = false }: StoryPageProps) {
   const { t } = useTranslation();
+  const narration = useGame((state) => state.narration);
+  const speakerName = (who: StoryLine['who']) => t(`story:speakers.${who}`);
+
+  useEffect(() => {
+    if (!narration || cover || backCover || typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(lines.map((line) => `${speakerName(line.who)}. ${line.text}`).join(' '));
+    utterance.lang = document.documentElement.lang || 'en';
+    window.speechSynthesis.speak(utterance);
+    return () => window.speechSynthesis.cancel();
+  }, [backCover, cover, lines, narration, t]);
+
   if (cover) {
     return (
       <div className="story-leaf story-cover">
@@ -38,7 +52,6 @@ export function StoryPage({ chapterId, section, page, lines, pageNumber, totalPa
   if (!section || !page) return <div className="story-leaf" aria-hidden="true" />;
 
   const image = page.image;
-  const speakerName = (who: StoryLine['who']) => t(`story:speakers.${who}`);
   const pageLabel = t('book.pageOf', { page: pageNumber, total: totalPages });
   return (
     <article className="story-leaf" aria-label={pageLabel}>
