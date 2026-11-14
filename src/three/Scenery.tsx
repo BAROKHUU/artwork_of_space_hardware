@@ -9,7 +9,7 @@ import { radialGlow } from './Plume';
 import { makeTerrain, type Terrain } from '../sim/terrain';
 import { useGame } from '../state/store';
 import type { ModelId, Surface, World } from '../data/types';
-import { Echo } from './Echo';
+import { KaraokeNhacTre } from './Echo';
 import { HardwareModel } from './models';
 import { prefersReducedMotion } from './GameCanvas';
 
@@ -402,7 +402,7 @@ export function Diorama({ world, model, showEcho = true }: { world: World; model
       <>
         <DeepSpace />
         <SlowOrbit radius={7.6} height={1.2} target={0.2} />
-        <Drift>{model ? <HardwareModel id={model} /> : <Echo position={[0, 0, 0]} />}</Drift>
+        <Drift>{model ? <HardwareModel id={model} /> : <KaraokeNhacTre position={[0, 0, 0]} />}</Drift>
       </>
     );
   }
@@ -414,7 +414,7 @@ export function Diorama({ world, model, showEcho = true }: { world: World; model
       <Rocks rocks={rocks} world={world} />
       <SlowOrbit radius={model ? 10.5 : 6.5} height={model ? 3.2 : 2.6} target={model ? 0.3 : 0.5} />
       {model && <HardwareModel id={model} />}
-      {showEcho && <Echo position={model ? [-3.9, 0, 3.2] : [0, 0, 0]} rotation={[0, model ? -2.2 : 0.6, 0]} />}
+      {showEcho && <KaraokeNhacTre position={model ? [-3.9, 0, 3.2] : [0, 0, 0]} rotation={[0, model ? -2.2 : 0.6, 0]} />}
     </>
   );
 }

@@ -1,6 +1,7 @@
 {
   "app": {"title": "Echo", "subtitle": "Abandoned but Not Forgotten", "hook": "We left machines on the Moon, on Mars, and beyond the planets. Some of them are still talking.", "begin": "Begin the mission", "continue": "Continue", "challenge": "A NASA Space Apps Challenge project"},
   "nav": {"map": "Missions", "logbook": "Logbook", "atlas": "Atlas", "lab": "Lab", "sources": "Sources", "settings": "Settings", "home": "Home"},
+  "cuoiPreview": {"link": "Meet Cuoi (draft)", "title": "Cuoi · character draft", "description": "Drag to rotate and scroll or pinch to zoom. This is an early stylized character study.", "face": "Face", "full": "Full body"},
   "map": {"heading": "Follow the signal", "sub": "Eight stops across six decades of NASA exploration.", "locked": "Finish the previous chapter", "play": "Play", "replay": "Replay", "resume": "Resume", "chapter": "Chapter {{n}}", "progress": "{{done}} of {{total}} chapters"},
   "dialogue": {"next": "Next", "back": "Back", "skip": "Skip scene"},
   "mission": {"start": "Start mission", "retry": "Try again", "skip": "Skip mission", "continue": "Continue", "objective": "Mission", "hint": "Hint", "failed": "Not this time", "complete": "Mission complete", "no3d": "This mission needs 3D graphics, which are off or unavailable on this device. You can turn them on in Settings, or skip ahead."},
