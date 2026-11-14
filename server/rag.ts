@@ -2,12 +2,15 @@ import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import documents from '../knowledge/nasa.json' with { type: 'json' };
+import crawled from '../knowledge/crawled.json' with { type: 'json' };
+import { buildChunks, CHUNK_WORDS, OVERLAP_WORDS, type KnowledgeDocument } from '../knowledge/chunks.ts';
 
-export type Document = { id: string; title: string; aliases: string[]; text: string; sources: string[] };
-type Index = { model: string; dimension: number; documentHash: string; vectors: number[][] };
+export type Document = KnowledgeDocument;
+type Index = { version: number; model: string; dimension: number; documentHash: string; chunkHash: string; chunkIds: string[]; chunking: { sizeWords: number; overlapWords: number }; vectors: number[][] };
 export const EMBED_MODEL = 'embed-v4.0';
 export const DIMENSION = 512;
-export const knowledge: Document[] = documents;
+export const knowledge: Document[] = [...documents, ...crawled];
+export const knowledgeChunks = buildChunks(knowledge);
 export const documentText = (doc: Document) => `${doc.title}\n${doc.aliases.join(', ')}\n${doc.text}`;
 export const documentHash = (docs: Document[]) => createHash('sha256').update(JSON.stringify(docs)).digest('hex');
 export const tokenize = (text: string): string[] => (text.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '').replace(/đ/g, 'd').match(/[\p{L}\p{N}]+/gu) ?? []);
@@ -24,10 +27,11 @@ export function bm25(query: string, texts: string[]): number[] {
   const docs = texts.map(tokenize);
   const words = [...new Set(tokenize(query))];
   const average = docs.reduce((n, doc) => n + doc.length, 0) / (docs.length || 1);
+  const frequencies = new Map(words.map((word) => [word, docs.filter((doc) => doc.includes(word)).length]));
   return docs.map((doc) => words.reduce((score, word) => {
     const frequency = doc.filter((token) => token === word).length;
     if (!frequency) return score;
-    const df = docs.filter((item) => item.includes(word)).length;
+    const df = frequencies.get(word) ?? 0;
     const idf = Math.log(1 + (docs.length - df + 0.5) / (df + 0.5));
     return score + idf * frequency * 2.2 / (frequency + 1.2 * (0.25 + 0.75 * doc.length / average));
   }, 0));
@@ -58,8 +62,11 @@ export async function cohere(path: string, body: object, key: string, fetcher: t
 
 export async function loadIndex(): Promise<Index> {
   const index = JSON.parse(await readFile(resolve(process.cwd(), 'knowledge/index.json'), 'utf8')) as Index;
-  if (index.model !== EMBED_MODEL || index.dimension !== DIMENSION || index.documentHash !== documentHash(knowledge) ||
-      !Array.isArray(index.vectors) || index.vectors.length !== knowledge.length ||
+  const chunkHash = createHash('sha256').update(JSON.stringify(knowledgeChunks.map(({ chunkId, text }) => [chunkId, text]))).digest('hex');
+  if (index.version !== 2 || index.model !== EMBED_MODEL || index.dimension !== DIMENSION || index.documentHash !== documentHash(knowledge) ||
+      index.chunkHash !== chunkHash || index.chunking?.sizeWords !== CHUNK_WORDS || index.chunking?.overlapWords !== OVERLAP_WORDS ||
+      !Array.isArray(index.chunkIds) || index.chunkIds.length !== knowledgeChunks.length || !index.chunkIds.every((id, i) => id === knowledgeChunks[i].chunkId) ||
+      !Array.isArray(index.vectors) || index.vectors.length !== knowledgeChunks.length ||
       !index.vectors.every((v) => Array.isArray(v) && v.length === DIMENSION && v.every(Number.isFinite))) {
     throw new Error('Knowledge index is invalid or out of date; rebuild it');
   }
@@ -67,10 +74,10 @@ export async function loadIndex(): Promise<Index> {
 }
 
 export async function retrieve(query: string, key: string, fetcher: typeof fetch = fetch): Promise<{ documents: Document[]; mode: 'hybrid' | 'keyword' }> {
-  const texts = knowledge.map(documentText);
+  const texts = knowledgeChunks.map(documentText);
   const sparse = bm25(query, texts);
   const lexicalOrder = sparse.map((score, id) => ({ score, id })).filter((x) => x.score > 0).sort((a, b) => b.score - a.score).map((x) => x.id);
-  const fallback = () => ({ documents: lexicalOrder.slice(0, 4).map((id) => knowledge[id]), mode: 'keyword' as const });
+  const fallback = () => ({ documents: lexicalOrder.slice(0, 4).map((id) => knowledgeChunks[id]), mode: 'keyword' as const });
   if (!key) return fallback();
   let index: Index;
   try { index = await loadIndex(); } catch { return fallback(); }
@@ -80,13 +87,28 @@ export async function retrieve(query: string, key: string, fetcher: typeof fetch
   if (!Array.isArray(vector) || vector.length !== DIMENSION || !vector.every(Number.isFinite)) throw new Error('Invalid query embedding');
   const dense = index.vectors.map((v) => cosine(vector, v));
   const denseOrder = dense.map((score, id) => ({ score, id })).sort((a, b) => b.score - a.score).map((x) => x.id);
-  const mentioned = findMentioned(query, knowledge);
-  const ids = [...new Set([...fuse(lexicalOrder, denseOrder, 10), ...mentioned])];
+  const mentioned = new Set(findMentioned(query, knowledge).map((id) => knowledge[id].id));
+  const ranked = fuse(lexicalOrder, denseOrder, knowledgeChunks.length);
+  const mentionedChunks = ranked.filter((id) => mentioned.has(knowledgeChunks[id].id));
+  const perDocument = new Map<string, number>();
+  const boundedMentions = mentionedChunks.filter((id) => {
+    const documentId = knowledgeChunks[id].id;
+    const count = perDocument.get(documentId) ?? 0;
+    perDocument.set(documentId, count + 1);
+    return count < 3;
+  });
+  const ids = [...new Set([...ranked.slice(0, 10), ...boundedMentions])];
   const result = await cohere('rerank', { model: 'rerank-v3.5', query, documents: ids.map((id) => texts[id]), top_n: ids.length }, key, fetcher) as { results?: { index: number; relevance_score: number }[] };
   if (!Array.isArray(result.results) || !result.results.every((item) => Number.isInteger(item.index) && item.index >= 0 && item.index < ids.length && Number.isFinite(item.relevance_score))) throw new Error('Invalid reranker response');
   // shortcut: relative score cutoff is heuristic; calibrate it against a labeled NASA question set.
   const cutoff = Math.max(0.05, (result.results[0]?.relevance_score ?? 0) * 0.5);
-  return { documents: result.results.filter((item) => item.relevance_score >= cutoff || mentioned.includes(ids[item.index])).slice(0, 6).map((item) => knowledge[ids[item.index]]), mode: 'hybrid' };
+  const selected: Document[] = [];
+  for (const item of result.results) {
+    const chunk = knowledgeChunks[ids[item.index]];
+    if ((item.relevance_score >= cutoff || mentioned.has(chunk.id)) && selected.filter((doc) => doc.id === chunk.id).length < 2) selected.push(chunk);
+    if (selected.length === 6) break;
+  }
+  return { documents: selected, mode: 'hybrid' };
   } catch {
     console.warn('Cohere retrieval unavailable; using keyword retrieval.');
     return fallback();

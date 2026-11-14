@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
-import { bm25, cosine, findMentioned, fuse, isGreeting, knowledge, retrieve, tokenize } from '../server/rag';
+import { bm25, cosine, findMentioned, fuse, isGreeting, knowledge, knowledgeChunks, loadIndex, retrieve, tokenize } from '../server/rag';
 
 describe('NASA retrieval', () => {
   it('matches Vietnamese accents and rewards relevant missions', () => {
@@ -18,12 +18,17 @@ describe('NASA retrieval', () => {
     expect(isGreeting('Xin chào, InSight là gì?')).toBe(false);
   });
   it('preserves both explicitly mentioned missions in a comparison', () => {
-    expect(findMentioned('So sánh Spirit và Opportunity', knowledge).map((id) => knowledge[id].id)).toEqual(['spirit', 'opportunity']);
+    expect(findMentioned('So sánh Spirit và Opportunity', knowledge).map((id) => knowledge[id].id)).toEqual(expect.arrayContaining(['spirit', 'opportunity', 'crawl_mer_page']));
   });
   it('clearly falls back to keyword search if Cohere is not configured', async () => {
     const result = await retrieve('InSight địa chấn', '');
     expect(result.mode).toBe('keyword');
     expect(result.documents[0].id).toBe('insight');
+  });
+  it('loads one indexed vector for every overlap chunk in order', async () => {
+    const index = await loadIndex();
+    expect(index.vectors).toHaveLength(knowledgeChunks.length);
+    expect(index.chunkIds).toEqual(knowledgeChunks.map((chunk) => chunk.chunkId));
   });
   it('embeds the query, fuses rankings and reranks NASA passages', async () => {
     const index = JSON.parse(readFileSync('knowledge/index.json', 'utf8')) as { vectors: number[][] };

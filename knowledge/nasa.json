@@ -9,7 +9,6 @@
     ],
     "text": "Apollo 11's Lunar Module Eagle landed on the Moon in July 1969. Its descent stage remained on the lunar surface and served as the launch platform for the ascent stage. NASA NSSDCA identifies the ascent stage as 1969-059C and the descent stage as 1969-059D.",
     "sources": [
-      "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-059D",
       "https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_artifact_impacts.html"
     ]
   },
@@ -22,7 +21,6 @@
     ],
     "text": "Apollo 12 landed on the Moon in November 1969. The Lunar Module descent stage stayed on the surface after the crew departed. NSSDCA lists the ascent stage as 1969-099C and the descent stage as 1969-099D.",
     "sources": [
-      "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-099D",
       "https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_artifact_impacts.html"
     ]
   },
@@ -35,7 +33,6 @@
     ],
     "text": "Apollo 15's Lunar Module landed on the Moon in July 1971. The descent stage remained on the Moon. NSSDCA identifies the ascent stage as 1971-063C and the descent stage as 1971-063E; the ascent-stage record is not a rover record.",
     "sources": [
-      "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1971-063E",
       "https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_artifact_impacts.html"
     ]
   },
@@ -111,7 +108,7 @@
       "xe tự hành Spirit",
       "robot Spirit"
     ],
-    "text": "Spirit was one of NASA's twin Mars Exploration Rovers. It explored Gusev Crater and provided evidence about Mars's past environments. Its last communication was March 22, 2010; NASA declared its mission complete May 25, 2011.",
+    "text": "Spirit was one of NASA's twin Mars Exploration Rovers. It landed on January 4, 2004, explored Gusev Crater, and provided evidence about Mars's past environments. Its final communication was March 22, 2010, over six years after landing. NASA declared the mission complete May 25, 2011.",
     "sources": [
       "https://science.nasa.gov/mission/mer-spirit/"
     ]
@@ -126,7 +123,7 @@
       "xe tự hành Opportunity",
       "robot Opportunity"
     ],
-    "text": "Opportunity was Spirit's twin Mars Exploration Rover. It investigated Martian rocks and evidence of past water for nearly 15 years. Its final communication was June 10, 2018 during a planet-wide dust storm. NASA declared the mission ended February 13, 2019; the loss of contact was in 2018, not 2019.",
+    "text": "Opportunity was Spirit's twin Mars Exploration Rover. It landed on Mars on January 24, 2004 Pacific time (January 25 UTC), 20 days after Spirit. It investigated Martian rocks and evidence of past water for nearly 15 years. Its final communication was June 10, 2018 during a planet-wide dust storm. NASA declared the mission ended February 13, 2019; contact was lost in 2018, not 2019.",
     "sources": [
       "https://science.nasa.gov/mission/mer-opportunity/"
     ]

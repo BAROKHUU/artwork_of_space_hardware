@@ -1,0 +1,208 @@
+[
+  {
+    "id": "apollo11_ascent_record",
+    "title": "Apollo 11 lunar module ascent stage — NSSDCA",
+    "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-059C",
+    "aliases": [
+      "Apollo 11",
+      "Eagle",
+      "1969-059C"
+    ]
+  },
+  {
+    "id": "apollo15_ascent_record",
+    "title": "Apollo 15 lunar module ascent stage — NSSDCA",
+    "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1971-063C",
+    "aliases": [
+      "Apollo 15",
+      "Falcon",
+      "1971-063C"
+    ]
+  },
+  {
+    "id": "apollo12_ascent_record",
+    "title": "Apollo 12 lunar module ascent stage — NSSDCA",
+    "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-099C",
+    "aliases": [
+      "Apollo 12",
+      "Intrepid",
+      "1969-099C"
+    ]
+  },
+  {
+    "id": "lunar_artifacts",
+    "title": "Lunar spacecraft and landing artifacts — NSSDCA",
+    "url": "https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_artifact_impacts.html",
+    "aliases": [
+      "Apollo descent stage",
+      "Apollo lunar module",
+      "lunar rover",
+      "tầng hạ cánh",
+      "xe Mặt Trăng"
+    ]
+  },
+  {
+    "id": "apollo15_mission_record",
+    "title": "Apollo 15 mission — NSSDCA",
+    "url": "https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo15info.html",
+    "aliases": [
+      "Apollo 15",
+      "LRV",
+      "lunar rover",
+      "xe Mặt Trăng"
+    ]
+  },
+  {
+    "id": "apollo16_mission_record",
+    "title": "Apollo 16 mission — NSSDCA",
+    "url": "https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo16info.html",
+    "aliases": [
+      "Apollo 16",
+      "LRV",
+      "lunar rover",
+      "xe Mặt Trăng"
+    ]
+  },
+  {
+    "id": "apollo17_mission_record",
+    "title": "Apollo 17 mission — NSSDCA",
+    "url": "https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo17info.html",
+    "aliases": [
+      "Apollo 17",
+      "LRV",
+      "lunar rover",
+      "xe Mặt Trăng"
+    ]
+  },
+  {
+    "id": "apollo_lunar_data",
+    "title": "Apollo lunar experiment data — NSSDCA",
+    "url": "https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_data/lunar_data.html",
+    "aliases": [
+      "ALSEP",
+      "lunar seismometer",
+      "địa chấn Mặt Trăng"
+    ]
+  },
+  {
+    "id": "surveyor3_page",
+    "title": "Surveyor 3 — NASA Science",
+    "url": "https://science.nasa.gov/mission/surveyor-3/",
+    "aliases": [
+      "Surveyor 3",
+      "Surveyor lander"
+    ]
+  },
+  {
+    "id": "pathfinder_page",
+    "title": "Mars Pathfinder and Sojourner — NASA Science",
+    "url": "https://science.nasa.gov/mission/mars-pathfinder/",
+    "aliases": [
+      "Pathfinder",
+      "Sojourner",
+      "rover đầu tiên"
+    ]
+  },
+  {
+    "id": "mer_page",
+    "title": "Mars Exploration Rovers Spirit and Opportunity — NASA Science",
+    "url": "https://science.nasa.gov/mission/mars-exploration-rovers-spirit-and-opportunity/",
+    "aliases": [
+      "Spirit",
+      "Opportunity",
+      "Mars Exploration Rover"
+    ]
+  },
+  {
+    "id": "viking1_page",
+    "title": "Viking 1 — NASA Science",
+    "url": "https://science.nasa.gov/mission/viking-1/",
+    "aliases": [
+      "Viking 1",
+      "Viking lander"
+    ]
+  },
+  {
+    "id": "viking2_page",
+    "title": "Viking 2 — NASA Science",
+    "url": "https://science.nasa.gov/mission/viking-2/",
+    "aliases": [
+      "Viking 2",
+      "Viking lander"
+    ]
+  },
+  {
+    "id": "phoenix_page",
+    "title": "Phoenix Mars Lander — NASA Science",
+    "url": "https://science.nasa.gov/mission/mars-phoenix/",
+    "aliases": [
+      "Phoenix",
+      "Mars lander"
+    ]
+  },
+  {
+    "id": "insight_page",
+    "title": "InSight Mars Lander — NASA Science",
+    "url": "https://science.nasa.gov/mission/insight/",
+    "aliases": [
+      "InSight",
+      "marsquake",
+      "địa chấn Sao Hỏa"
+    ]
+  },
+  {
+    "id": "dawn_page",
+    "title": "Dawn — NASA Science",
+    "url": "https://science.nasa.gov/mission/dawn/",
+    "aliases": [
+      "Dawn",
+      "Ceres",
+      "Vesta"
+    ]
+  },
+  {
+    "id": "near_page",
+    "title": "NEAR Shoemaker — NASA Science",
+    "url": "https://science.nasa.gov/mission/near-shoemaker/",
+    "aliases": [
+      "NEAR Shoemaker",
+      "433 Eros"
+    ]
+  },
+  {
+    "id": "pioneer10_page",
+    "title": "Pioneer 10 — NASA Science",
+    "url": "https://science.nasa.gov/mission/pioneer-10/",
+    "aliases": [
+      "Pioneer 10"
+    ]
+  },
+  {
+    "id": "pioneer11_page",
+    "title": "Pioneer 11 — NASA Science",
+    "url": "https://science.nasa.gov/mission/pioneer-11/",
+    "aliases": [
+      "Pioneer 11"
+    ]
+  },
+  {
+    "id": "ingenuity_page",
+    "title": "Ingenuity Mars Helicopter — NASA Science",
+    "url": "https://science.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/",
+    "aliases": [
+      "Ingenuity",
+      "Mars helicopter",
+      "trực thăng Sao Hỏa"
+    ]
+  },
+  {
+    "id": "kepler_page",
+    "title": "Kepler Space Telescope — NASA Science",
+    "url": "https://science.nasa.gov/mission/kepler/",
+    "aliases": [
+      "Kepler",
+      "K2",
+      "ngoại hành tinh"
+    ]
+  }
+]

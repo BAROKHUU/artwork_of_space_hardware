@@ -11,7 +11,9 @@
     "data:ephemeris": "node scripts/fetch-ephemeris.mjs",
     "data:solar": "node scripts/fetch-solar.mjs",
     "data:links": "node scripts/check-links.mjs",
-    "knowledge:index": "node --env-file-if-exists=.env.local scripts/index-knowledge.mjs"
+    "knowledge:index": "node --experimental-strip-types --env-file-if-exists=.env.local scripts/index-knowledge.mjs",
+    "start:api": "node --experimental-strip-types server/start.ts",
+    "knowledge:crawl": "node scripts/crawl-knowledge.mjs"
   },
   "devDependencies": {
     "@types/node": "^26.6.6",
@@ -19,6 +21,7 @@
     "@types/react-dom": "^19.3.0",
     "@types/three": "^0.187.0",
     "@vitejs/plugin-react": "^6.3.0",
+    "node-html-parser": "^9.0.7",
     "typescript": "^7.0.2",
     "vite": "^8.3.6",
     "vitest": "^5.1.0",
