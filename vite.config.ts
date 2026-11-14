@@ -5,6 +5,7 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   base: './',
   plugins: [react()],
+  server: { allowedHosts: ['identical-rev-reduce-jesus.trycloudflare.com', 'kurt-past-automobiles-jonathan.trycloudflare.com'] },
   // three.js alone is close to 1 MB before gzip; it loads only on 3D screens.
   build: { chunkSizeWarningLimit: 1100 },
   test: { environment: 'node', include: ['src/**/*.test.ts'] },
