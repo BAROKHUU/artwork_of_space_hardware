@@ -10,7 +10,8 @@
     "test": "vitest run",
     "data:ephemeris": "node scripts/fetch-ephemeris.mjs",
     "data:solar": "node scripts/fetch-solar.mjs",
-    "data:links": "node scripts/check-links.mjs"
+    "data:links": "node scripts/check-links.mjs",
+    "knowledge:index": "node --env-file-if-exists=.env.local scripts/index-knowledge.mjs"
   },
   "devDependencies": {
     "@types/node": "^26.6.6",
