@@ -58,5 +58,41 @@
       "map": { "name": "A street map of every city", "why": "No. It does show where Earth is, but it has no city maps." },
       "music": { "name": "Music from many cultures", "why": "Yes. Musical selections come from different cultures and eras." }
     }
+  },
+  "ch2_apollo12": {
+    "title": "Set Down on the Moon", "goal": "Control the descent and bring the lander to rest below {{safe}} m/s.", "hint": "The Moon has no air to slow you. Use short engine burns before the surface gets close.", "success": "A gentle touchdown. Apollo 12's descent stage stayed behind while its ascent stage carried the crew back to orbit.",
+    "fail_crash": "The lander hit at {{speed}} m/s. Burn earlier and use shorter taps.", "fail_fuel": "The engines ran out before touchdown. Save fuel by starting the burn later."
+  },
+  "ch2_alsep": {
+    "title": "Listen for the Moon", "goal": "Find the Apollo 12 reflector site and return three laser pulses.", "hint": "The marker appears after a few misses. The lunar experiment package also left instruments to collect data after the crew left.", "success": "The reflected pulse came home. Apollo's surface experiments sent data for years after the astronauts departed."
+  },
+  "ch2_lrv_extra": {
+    "title": "Drive the Lunar Highlands", "goal": "Reach all three geology stops before you run out of tether.", "hint": "Take wide turns around the rocks and watch your distance from the lander.", "success": "The rover made distant rock samples reachable on foot and on wheels."
+  },
+  "ch4_viking2": {
+    "title": "Land at Utopia Planitia", "goal": "Open the parachute, then fire your engines. Land below {{safe}} m/s.", "hint": "The atmosphere helps, but the rockets still have to finish the job.", "success": "Viking 2 touched down safely and returned images from the Martian north.",
+    "fail_crash": "Touchdown at {{speed}} m/s was too hard. Open the parachute early, then brake.", "fail_fuel": "The lander ran out of fuel. Let the parachute slow you first."
+  },
+  "ch5_spirit": {
+    "title": "Cross the Columbia Hills", "goal": "Drive to each rock stop while managing the rover's solar battery.", "hint": "Park when the battery is low. Sunlight recharges it, but dust can dim the sky.", "success": "Spirit reached the hills and found rocks altered by water.",
+    "fail_storm": "The storm blocked the Sun. Spirit's twin Opportunity met a planet-wide storm years later."
+  },
+  "ch5_newlanders": {
+    "title": "Touch Down in the Martian North", "goal": "Guide a lander through the thin atmosphere and settle below {{safe}} m/s.", "hint": "The parachute slows the fall; use the engines near the ground.", "success": "A soft landing leaves the instruments ready to study ice and marsquakes.",
+    "fail_crash": "The lander hit at {{speed}} m/s. Brake earlier near the surface.", "fail_fuel": "The fuel ran out before touchdown. Let the parachute do more work."
+  },
+  "ch7_dawn": {
+    "title": "Borrow a Planet", "goal": "Adjust the probe's path so a planet's gravity changes its course.", "hint": "The simulator uses Jupiter's moving gravity well to demonstrate a flyby.", "success": "A planet can bend a spacecraft's path. Dawn's real journey used ion propulsion and a Mars gravity assist; this shortened simulation teaches the shared orbital idea.",
+    "launchDay": "Jupiter's position at launch", "speed": "Launch speed", "launch": "Launch", "relaunch": "Launch again", "suggest": "Ask Mission Control", "suggested": "Mission Control set a good window.", "resultGain": "Speed gained at Jupiter: {{gain}} km/s", "closest": "Closest approach: {{km}} million km", "years": "Year {{y}}", "withoutJupiter": "Without Jupiter", "earth": "Earth", "jupiter": "Jupiter", "saturnOrbit": "Saturn's orbit", "yearLabel": "Years since launch", "closestLabel": "Closest to Jupiter", "diagram": "Orbit diagram with the Sun, Earth, Jupiter, and your probe's path",
+    "fail_short": "Not enough speed. The probe never got as far as Jupiter. Launch faster.", "fail_missed": "Too far from Jupiter when you got there. Change Jupiter's starting position.", "fail_bound": "Close, but the flyby added too little speed. Adjust by a few degrees to pass just behind Jupiter.", "fail_hit": "Right into Jupiter! A little farther away, please."
+  },
+  "ch7_near": {
+    "title": "A Gentle Asteroid Touchdown", "goal": "Use the thrusters to settle onto a low-gravity surface below {{safe}} m/s.", "hint": "This is a simplified small-body landing exercise, not a reconstruction of NEAR's actual Eros approach.", "success": "NEAR Shoemaker survived its touchdown on Eros and sent data from the surface.",
+    "fail_crash": "The touchdown at {{speed}} m/s was too hard. Start braking sooner.", "fail_fuel": "You ran out of fuel before settling. Use short pulses."
+  },
+  "ch7_kepler": {
+    "title": "Find a Planet in Starlight", "goal": "Read the brightness curve and identify the dip caused by a planet crossing its star.", "hint": "A repeating, shallow dip can reveal a planet that is too small and far away to see directly.", "success": "You found a transit. Kepler used repeated dips in starlight to discover thousands of planets.",
+    "note": "This curve is an illustration of the transit method, not raw Kepler data.", "next": "Continue", "axisX": "Time", "axisY": "Star brightness", "none": "small dip during transit", "noneLabel": "Illustrative star brightness curve with a shallow dip",
+    "rounds": [ { "chart": "transit", "title": "A planet crosses its star", "q": "Which signal is evidence that a planet passed in front of the star?", "options": ["A small, repeated dip in brightness", "A sudden permanent increase in brightness"], "explain": "A planet blocks a little starlight as it crosses its star. Repeated dips reveal its orbit." } ]
   }
 }

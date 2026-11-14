@@ -13,7 +13,7 @@ const flatten = (o: unknown, p = ''): string[] =>
   o && typeof o === 'object' ? Object.entries(o).flatMap(([k, v]) => flatten(v, p ? `${p}.${k}` : k)) : [p];
 
 const hardwareSchema = z.object({
-  id: z.string(), world: z.enum(['moon', 'mars', 'deep']), model: z.string(),
+  id: z.string(), world: z.enum(['moon', 'mars', 'deep']), model: z.string().optional(),
   fate: z.enum(['operating', 'silent', 'retired', 'drifting']),
   lat: z.number().min(-90).max(90).optional(), lon: z.number().min(-180).max(180).optional(),
   photo: z.string(), nasaId: z.string(), credit: z.string(), dates: z.record(z.string(), z.string()), sources: z.array(z.string()).min(1),

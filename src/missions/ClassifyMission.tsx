@@ -92,6 +92,7 @@ function Craters({ id, config, onResult }: MissionProps<Extract<ClassifyConfig, 
 const CURVES: Record<string, string> = {
   fresh: 'M 40 170 C 60 60, 80 50, 120 46 S 260 34, 340 30',
   heated: 'M 40 170 C 120 168, 240 166, 340 164',
+  transit: 'M 40 48 L 125 48 C 145 48, 150 132, 190 132 C 230 132, 235 48, 255 48 L 340 48',
 };
 
 function Chart({ kind, x, y, none, noneLabel }: { kind: string; x: string; y: string; none: string; noneLabel: string }) {

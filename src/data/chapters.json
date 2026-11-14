@@ -30,6 +30,14 @@
       { "kind": "dialogue", "key": "middle", "focus": "lrv" },
       { "kind": "mission", "id": "ch2_lrv", "template": "drive", "config": { "world": "moon", "seed": 15, "start": { "x": 0, "z": 0 }, "targets": [{ "x": -24, "z": -30 }, { "x": 20, "z": -46 }, { "x": 40, "z": -12 }], "radius": 5, "tether": 72, "prop": { "model": "descent", "x": 9, "z": 7 } } },
       { "kind": "memory", "hardware": "lrv" },
+      { "kind": "memory", "hardware": "apollo12_descent" },
+      { "kind": "mission", "id": "ch2_apollo12", "template": "landing", "config": { "world": "moon", "vehicle": "surveyor", "objective": "touchdown", "alt": 260, "vel": -25, "fuel": 35, "safe": 3, "params": { "g": 1.62, "thrust": 4.2, "burn": 1, "drag": 0, "chuteDrag": 0 } } },
+      { "kind": "memory", "hardware": "alsep12" },
+      { "kind": "mission", "id": "ch2_alsep", "template": "laser", "config": { "target": { "lat": -3.0128, "lon": -23.4219 }, "radiusDeg": 8, "shots": 3 } },
+      { "kind": "memory", "hardware": "apollo15_descent" },
+      { "kind": "memory", "hardware": "lrv16" },
+      { "kind": "mission", "id": "ch2_lrv_extra", "template": "drive", "config": { "world": "moon", "seed": 16, "start": { "x": 0, "z": 0 }, "targets": [{ "x": 18, "z": -28 }, { "x": -22, "z": -49 }, { "x": 34, "z": -78 }], "radius": 5, "tether": 86 } },
+      { "kind": "memory", "hardware": "lrv17" },
       { "kind": "quiz", "key": "ch2", "answers": [2, 0] },
       { "kind": "dialogue", "key": "outro", "focus": "lrrr" }
     ]
@@ -39,6 +47,7 @@
     "beats": [
       { "kind": "dialogue", "key": "intro", "focus": "pioneer10" },
       { "kind": "memory", "hardware": "pioneer10" },
+      { "kind": "memory", "hardware": "pioneer11" },
       { "kind": "mission", "id": "ch3_slingshot", "template": "slingshot", "config": { "degMin": 40, "degMax": 135, "speedMin": 38.4, "speedMax": 39.6, "suggest": { "speed": 38.9, "deg": 69 } } },
       { "kind": "memory", "hardware": "voyager2" },
       { "kind": "quiz", "key": "ch3", "answers": [0, 1] },
@@ -51,19 +60,27 @@
       { "kind": "dialogue", "key": "intro", "focus": "viking1" },
       { "kind": "mission", "id": "ch4_landing", "template": "landing", "config": { "world": "mars", "vehicle": "viking", "objective": "touchdown", "alt": 2000, "vel": -120, "fuel": 30, "safe": 3, "hasChute": true, "params": { "g": 3.71, "thrust": 7.5, "burn": 1, "drag": 0.00002, "chuteDrag": 0.001 } } },
       { "kind": "memory", "hardware": "viking1" },
+      { "kind": "memory", "hardware": "viking2" },
+      { "kind": "mission", "id": "ch4_viking2", "template": "landing", "config": { "world": "mars", "vehicle": "viking", "objective": "touchdown", "alt": 1800, "vel": -115, "fuel": 34, "safe": 3, "hasChute": true, "params": { "g": 3.71, "thrust": 7.5, "burn": 1, "drag": 0.00002, "chuteDrag": 0.001 } } },
       { "kind": "mission", "id": "ch4_lr", "template": "classify", "config": { "visual": "lr", "answers": [0, 1, 1] } },
       { "kind": "quiz", "key": "ch4", "answers": [1, 0] },
       { "kind": "dialogue", "key": "outro", "focus": "viking1" }
     ]
   },
   {
-    "id": "ch5", "world": "mars", "era": "1997–2019",
+    "id": "ch5", "world": "mars", "era": "1996–2022",
     "beats": [
       { "kind": "dialogue", "key": "intro", "focus": "sojourner" },
+      { "kind": "memory", "hardware": "pathfinder" },
       { "kind": "memory", "hardware": "sojourner" },
       { "kind": "dialogue", "key": "middle", "focus": "opportunity" },
       { "kind": "mission", "id": "ch5_opportunity", "template": "drive", "config": { "world": "mars", "seed": 23, "start": { "x": 0, "z": 0 }, "targets": [{ "x": 22, "z": -24 }, { "x": -18, "z": -44 }, { "x": 28, "z": -66 }, { "x": -8, "z": -92 }], "radius": 5, "battery": { "drainPerSecond": 7, "chargePerSecond": 5, "solLength": 44, "stormAt": 130 } } },
       { "kind": "memory", "hardware": "opportunity" },
+      { "kind": "memory", "hardware": "spirit" },
+      { "kind": "mission", "id": "ch5_spirit", "template": "drive", "config": { "world": "mars", "seed": 29, "start": { "x": 0, "z": 0 }, "targets": [{ "x": 20, "z": -22 }, { "x": -18, "z": -48 }, { "x": 26, "z": -75 }], "radius": 5, "battery": { "drainPerSecond": 6, "chargePerSecond": 5, "solLength": 48, "stormAt": 190 } } },
+      { "kind": "memory", "hardware": "phoenix" },
+      { "kind": "memory", "hardware": "insight" },
+      { "kind": "mission", "id": "ch5_newlanders", "template": "landing", "config": { "world": "mars", "vehicle": "viking", "objective": "touchdown", "alt": 1500, "vel": -95, "fuel": 34, "safe": 3, "hasChute": true, "params": { "g": 3.71, "thrust": 7.5, "burn": 1, "drag": 0.00002, "chuteDrag": 0.001 } } },
       { "kind": "quiz", "key": "ch5", "answers": [2, 1] },
       { "kind": "dialogue", "key": "outro", "focus": "opportunity" }
     ]
@@ -87,6 +104,12 @@
       { "kind": "memory", "hardware": "voyager1" },
       { "kind": "mission", "id": "ch7_golden", "template": "classify", "config": { "visual": "golden", "items": [{ "id": "whales", "on": true }, { "id": "video", "on": false }, { "id": "greetings", "on": true }, { "id": "thunder", "on": true }, { "id": "map", "on": false }, { "id": "music", "on": true }] } },
       { "kind": "memory", "hardware": "new_horizons" },
+      { "kind": "memory", "hardware": "dawn" },
+      { "kind": "mission", "id": "ch7_dawn", "template": "slingshot", "config": { "degMin": 35, "degMax": 140, "speedMin": 38.4, "speedMax": 39.6, "suggest": { "speed": 38.9, "deg": 69 } } },
+      { "kind": "memory", "hardware": "near_shoemaker" },
+      { "kind": "mission", "id": "ch7_near", "template": "landing", "config": { "world": "moon", "vehicle": "surveyor", "objective": "touchdown", "alt": 180, "vel": -18, "fuel": 34, "safe": 2, "params": { "g": 0.08, "thrust": 1.4, "burn": 1, "drag": 0, "chuteDrag": 0 } } },
+      { "kind": "memory", "hardware": "kepler" },
+      { "kind": "mission", "id": "ch7_kepler", "template": "classify", "config": { "visual": "lr", "answers": [0] } },
       { "kind": "signal" },
       { "kind": "quiz", "key": "ch7", "answers": [1, 0] },
       { "kind": "dialogue", "key": "outro", "focus": "voyager1" }
