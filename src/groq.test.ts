@@ -31,4 +31,25 @@ describe('Groq chat', () => {
     expect(fetcher).not.toHaveBeenCalled();
     fetcher.mockRestore();
   });
+  it('uses the backup key when the primary hits the rate limit', async () => {
+    const fetcher = vi.fn()
+      .mockResolvedValueOnce(new Response('', { status: 429 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ choices: [{ message: { content: 'Backup reply' } }] }), { status: 200 }));
+    expect(await requestGroq([{ role: 'user', content: 'Hi' }], 'primary', fetcher, undefined, 'backup')).toBe('Backup reply');
+    expect(fetcher.mock.calls[0][1].headers.Authorization).toBe('Bearer primary');
+    expect(fetcher.mock.calls[1][1].headers.Authorization).toBe('Bearer backup');
+  });
+  it('does not retry invalid requests or retry without a backup key', async () => {
+    const badRequest = vi.fn().mockResolvedValue(new Response('', { status: 400 }));
+    await expect(requestGroq([{ role: 'user', content: 'Hi' }], 'primary', badRequest, undefined, 'backup')).rejects.toThrow();
+    expect(badRequest).toHaveBeenCalledTimes(1);
+    const limited = vi.fn().mockResolvedValue(new Response('', { status: 429 }));
+    await expect(requestGroq([{ role: 'user', content: 'Hi' }], 'primary', limited)).rejects.toThrow();
+    expect(limited).toHaveBeenCalledTimes(1);
+  });
+  it('reports failure when both keys are exhausted', async () => {
+    const fetcher = vi.fn().mockResolvedValue(new Response('', { status: 429 }));
+    await expect(requestGroq([{ role: 'user', content: 'Hi' }], 'primary', fetcher, undefined, 'backup')).rejects.toThrow();
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
 });
