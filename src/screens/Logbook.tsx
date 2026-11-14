@@ -26,9 +26,9 @@ export function HardwareDialog({ id, onClose }: { id: string | null; onClose: ()
           <div className="record-media">
             <div className="choice" role="tablist">
               <button type="button" role="tab" aria-selected={view === 'photo'} className={view === 'photo' ? 'on' : ''} onClick={() => setView('photo')}>{t('logbook.photo')}</button>
-              <button type="button" role="tab" aria-selected={view === 'model'} className={view === 'model' ? 'on' : ''} onClick={() => setView('model')}>{t('logbook.model')}</button>
+              {item.model && <button type="button" role="tab" aria-selected={view === 'model'} className={view === 'model' ? 'on' : ''} onClick={() => setView('model')}>{t('logbook.model')}</button>}
             </div>
-            {view === 'photo' ? <Photo item={item} /> : (
+            {view === 'photo' || !item.model ? <Photo item={item} /> : (
               <div className="turntable">
                 <GameCanvas camera={{ position: [6, 4, 8], fov: 42 }}>
                   <Turntable model={item.model} world={item.world} />

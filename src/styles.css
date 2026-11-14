@@ -428,3 +428,19 @@ dialog.settings { width: min(500px, calc(100% - 24px)); padding: 24px; }
 .site-list small { color: var(--dim); font: 400 12px var(--mono); }
 
 .laser-answer { background: var(--panel-2); border-left: 4px solid var(--teal); padding: 11px 13px; font-size: 17px; line-height: 1.35; }
+
+/* Seismic recorder */
+.seismic-stage { display: flex; flex-direction: column; padding: clamp(12px, 2vw, 24px); overflow: hidden; }
+.seismic-header, .seismic-footer { display: flex; justify-content: space-between; gap: 12px; font: 600 12px/1.4 var(--mono); color: var(--dim); text-transform: uppercase; }
+.seismic-state { color: var(--teal); }
+.seismic-display { width: 100%; flex: 1; min-height: 0; margin: 12px 0; background: var(--panel); border: 1px solid var(--line); }
+.seismic-window { fill: var(--red); opacity: .07; }
+.seismic-baseline { stroke: var(--line); stroke-width: 1; }
+.seismic-wave { fill: none; stroke: var(--teal); stroke-width: 2; vector-effect: non-scaling-stroke; }
+.seismic-bar { stroke: var(--red); stroke-width: 2; vector-effect: non-scaling-stroke; }
+.seismic-label, .seismic-marker { fill: var(--dim); font: 12px var(--mono); }
+.seismic-marker { fill: var(--red); }
+.seismic-result { min-height: 3em; color: var(--dim); }
+.seismic-result.hit { color: var(--teal); }
+.seismic-result.miss { color: var(--amber); }
+@media (min-width: 701px) { .lab-tabs { grid-template-columns: repeat(6, minmax(0, 1fr)); } }

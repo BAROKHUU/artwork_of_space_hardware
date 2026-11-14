@@ -117,10 +117,16 @@ export const useGame = create<GameState>()(
     }),
     {
       name: 'echo-save',
-      version: 2,
+      version: 3,
       storage: createJSONStorage(() => safeStorage),
       migrate: (persisted, version) => {
         const old = persisted as Partial<GameState>;
+        const beat = { ...(old.beat ?? {}) };
+        if (version < 3) {
+          for (const [chapter, index, offset] of [['ch2', 7, 8], ['ch3', 2, 1], ['ch4', 3, 2], ['ch5', 5, 5], ['ch5', 1, 1], ['ch7', 4, 6]] as const) {
+            if (beat[chapter] !== undefined && beat[chapter]! >= index) beat[chapter] = beat[chapter]! + offset;
+          }
+        }
         const book = version < 2
           ? normalizeBookProgress({
               completed: old.completed,
@@ -133,7 +139,7 @@ export const useGame = create<GameState>()(
           completed: old.completed ?? {},
           stars: old.stars ?? {},
           unlocked: old.unlocked ?? {},
-          beat: old.beat ?? {},
+          beat,
           book,
         };
       },
