@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: echo-rag-api
+    runtime: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm run start:api
+    healthCheckPath: /health
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GROQ_API_KEY_2
+        sync: false
+      - key: COHERE_API_KEY
+        sync: false
+      - key: QDRANT_URL
+        sync: false
+      - key: QDRANT_API_KEY
+        sync: false
+      - key: QDRANT_COLLECTION
+        value: nasa_knowledge
+      - key: CORS_ORIGIN
+        sync: false

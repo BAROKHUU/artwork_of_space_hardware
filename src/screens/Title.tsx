@@ -44,12 +44,13 @@ export function Title() {
           <Link className="btn primary big" to={started ? `/chapter/${nextChapter.id}` : '/chapter/m1'}>{started ? t('app.continue') : t('app.begin')}</Link>
           <Link className="btn ghost big" to="/map">{t('nav.map')}</Link>
         </div>
-        <nav className="title-links reveal" aria-label="More">
+        <nav className="title-links reveal" aria-label={t('nav.more')}>
           <Link to="/book">{t('nav.book')}</Link>
           <Link to="/logbook">{t('nav.logbook')}</Link>
           <Link to="/atlas">{t('nav.atlas')}</Link>
           <Link to="/lab">{t('nav.lab')}</Link>
           <Link to="/sources">{t('nav.sources')}</Link>
+          <Link to="/cuoi-preview">{t('cuoiPreview.link')}</Link>
           <button type="button" onClick={() => update({ settingsOpen: true })}>{t('nav.settings')}</button>
         </nav>
       </div>

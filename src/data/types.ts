@@ -14,14 +14,14 @@ export type DriveVehicle = 'echo' | 'lrv';
 export interface Hardware {
   id: string;
   world: World;
-  model: ModelId;
+  model?: ModelId;
   fate: Fate;
   lat?: number;
   lon?: number;
   photo: string;
   nasaId: string;
   credit: string;
-  dates: Partial<Record<'launched' | 'landed' | 'interstellar' | 'lastContact' | 'ended', string>>;
+  dates: Partial<Record<'launched' | 'landed' | 'deployed' | 'interstellar' | 'lastContact' | 'ended', string>>;
   sources: string[];
 }
 

@@ -8,6 +8,7 @@ import hardware from '../locales/en/hardware.json';
 import quiz from '../locales/en/quiz.json';
 
 const lazyLocales = import.meta.glob(['../locales/*/*.json', '!../locales/en/*.json']);
+let latestLanguageRequest = 0;
 
 i18n.use(initReactI18next).init({
   lng: DEFAULT_LANGUAGE,
@@ -23,6 +24,7 @@ i18n.use(initReactI18next).init({
 export async function setLanguage(code: string): Promise<void> {
   const language = LANGUAGES.find((l) => l.code === code);
   if (!language) return;
+  const request = ++latestLanguageRequest;
   if (code !== DEFAULT_LANGUAGE && !i18n.hasResourceBundle(code, 'ui')) {
     await Promise.all(
       NAMESPACES.map(async (ns) => {
@@ -31,6 +33,7 @@ export async function setLanguage(code: string): Promise<void> {
       }),
     );
   }
+  if (request !== latestLanguageRequest) return;
   await i18n.changeLanguage(code);
   document.documentElement.lang = code;
   document.documentElement.dir = language.dir;

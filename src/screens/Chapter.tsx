@@ -156,7 +156,7 @@ const PROBES: ProbeId[] = ['voyager1', 'voyager2', 'pioneer10', 'new_horizons'];
 const ONE_LIGHT_DAY_MS = Date.parse('2026-11-18T10:16:00Z');
 
 export function SignalBoard({ onDone }: { onDone?: () => void }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [now, setNow] = useState(() => new Date());
   useEffect(() => {
     const id = window.setInterval(() => setNow(new Date()), 1000);
@@ -174,7 +174,7 @@ export function SignalBoard({ onDone }: { onDone?: () => void }) {
           return (
             <article key={p} className={silent ? 'silent' : ''}>
               <h2>{t(`hardware:${p}.name`)}</h2>
-              <p className="big-number">{(au * 149.5978707).toLocaleString(undefined, { maximumFractionDigits: 1, minimumFractionDigits: 1 })}<small> billion km</small></p>
+              <p className="big-number">{(au * 149.5978707).toLocaleString(i18n.language, { maximumFractionDigits: 1, minimumFractionDigits: 1 })}<small> {t('signal.billionKm')}</small></p>
               <p>{silent ? t('signal.lost') : `${t('signal.light')}: ${t('signal.lightValue', { h: lightHours(au).toFixed(2) })}`}</p>
               {p === 'voyager1' && <p className="milestone">{days > 0 ? t('signal.countdown', { d: days }) : t('signal.reached')}</p>}
             </article>

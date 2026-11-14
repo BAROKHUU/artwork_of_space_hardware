@@ -6,7 +6,7 @@ import { storySectionById } from '../book/content';
 import { emptyBookProgress, normalizeBookProgress, setBookBookmark, type BookProgress } from '../book/progress';
 import { emptyAssessment, type AssessmentProgress, type ReflectionReview } from '../assessment';
 export type Quality = 'high' | 'low' | 'off';
-export type Reading = 'young' | 'older';
+export type Reading = 'young';
 
 interface GameState {
   completed: Record<string, boolean>;
@@ -153,6 +153,12 @@ export const useGame = create<GameState>()(
       storage: createJSONStorage(() => safeStorage),
       migrate: (persisted, version) => {
         const old = persisted as Partial<GameState>;
+        const beat = { ...(old.beat ?? {}) };
+        if (version < 3) {
+          for (const [chapter, index, offset] of [['ch2', 7, 8], ['ch3', 2, 1], ['ch4', 3, 2], ['ch5', 5, 5], ['ch5', 1, 1], ['ch7', 4, 6]] as const) {
+            if (beat[chapter] !== undefined && beat[chapter]! >= index) beat[chapter] = beat[chapter]! + offset;
+          }
+        }
         const book = version < 2
           ? normalizeBookProgress({
               completed: old.completed,
@@ -165,7 +171,8 @@ export const useGame = create<GameState>()(
           completed: old.completed ?? {},
           stars: old.stars ?? {},
           unlocked: old.unlocked ?? {},
-          beat: old.beat ?? {},
+          beat,
+          reading: 'young',
           book,
           assessment: old.assessment ?? emptyAssessment(),
           narration: old.narration ?? false,
@@ -179,6 +186,7 @@ export const useGame = create<GameState>()(
         return {
           ...current,
           ...saved,
+          reading: 'young',
           book: normalizeBookProgress(saved.book, chapters.map((chapter) => chapter.id), false),
           assessment: { ...emptyAssessment(), ...saved.assessment, quizzes: saved.assessment?.quizzes ?? {}, applications: saved.assessment?.applications ?? {}, reflections: saved.assessment?.reflections ?? {} },
         };

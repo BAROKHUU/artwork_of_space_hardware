@@ -10,8 +10,9 @@ import type { MissionResult } from '../missions/common';
 const SolarLab = lazy(() => import('./SolarLab'));
 const SlingshotLab = lazy(() => import('./SlingshotLab'));
 const LaserLab = lazy(() => import('./LaserLab'));
+const SeismicLab = lazy(() => import('./SeismicLab'));
 
-type Tab = 'landing' | 'slingshot' | 'solar' | 'laser' | 'drive';
+type Tab = 'landing' | 'slingshot' | 'solar' | 'laser' | 'drive' | 'seismic';
 
 const NO_OP = () => undefined;
 
@@ -97,7 +98,7 @@ function DriveLab() {
 export function Lab() {
   const { t } = useTranslation();
   const [tab, setTab] = useState<Tab>('landing');
-  const tabs: Tab[] = ['landing', 'slingshot', 'solar', 'laser', 'drive'];
+  const tabs: Tab[] = ['landing', 'slingshot', 'solar', 'laser', 'drive', 'seismic'];
   return (
     <main className="page lab">
       <header className="page-head">
@@ -117,6 +118,7 @@ export function Lab() {
       {tab === 'solar' && <Suspense fallback={<div className="loading" role="status">{t('common.loading')}</div>}><SolarLab /></Suspense>}
       {tab === 'laser' && <Suspense fallback={<div className="loading" role="status">{t('common.loading')}</div>}><LaserLab /></Suspense>}
       {tab === 'drive' && <DriveLab />}
+      {tab === 'seismic' && <Suspense fallback={<div className="loading" role="status">{t('common.loading')}</div>}><SeismicLab /></Suspense>}
       <p className="lab-note">{t('lab.simNote')}</p>
     </main>
   );

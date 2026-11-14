@@ -7,6 +7,27 @@
     "continue": "Continue the journey",
     "challenge": "A NASA Space Apps Challenge project"
   },
+  "nav": {
+    "map": "Missions",
+    "book": "Storybook",
+    "logbook": "Logbook",
+    "atlas": "Atlas",
+    "lab": "Lab",
+    "sources": "Sources",
+    "settings": "Settings",
+    "home": "Home",
+    "main": "Main navigation",
+    "more": "More pages",
+    "progress": "Learning",
+    "archive": "Archive"
+  },
+  "cuoiPreview": {
+    "link": "Meet Cuoi (draft)",
+    "title": "Cuoi · character draft",
+    "description": "Drag to rotate and scroll or pinch to zoom. This is an early stylized character study.",
+    "face": "Face",
+    "full": "Full body"
+  },
   "book": {
     "previous": "Previous page",
     "next": "Next page",
@@ -25,18 +46,6 @@
     "locked": "Story not reached yet",
     "readerIntro": "Revisit story sections you've already encountered. New sections appear here as you discover them.",
     "empty": "No story sections have been discovered yet. Begin the mission to start the story."
-  },
-  "nav": {
-    "map": "Missions",
-    "book": "Storybook",
-    "logbook": "Logbook",
-    "atlas": "Atlas",
-    "lab": "Lab",
-    "sources": "Sources",
-    "settings": "Settings",
-    "home": "Home",
-    "progress": "Learning",
-    "archive": "Archive"
   },
   "map": {
     "heading": "The Moon remembers",
@@ -60,10 +69,10 @@
     "continue": "Continue",
     "objective": "Mission",
     "hint": "Hint",
-    "assist": "Cuội has added a little extra guidance for this try.",
     "failed": "Not this time",
     "complete": "Mission complete",
-    "no3d": "This mission needs 3D graphics, which are off or unavailable on this device. You can turn them on in Settings, or skip ahead."
+    "no3d": "This mission needs 3D graphics, which are off or unavailable on this device. You can turn them on in Settings, or skip ahead.",
+    "assist": "Cuội has added a little extra guidance for this try."
   },
   "hud": {
     "altitude": "Altitude",
@@ -112,6 +121,7 @@
     "distance": "Distance from Earth",
     "light": "One-way signal time",
     "lightValue": "{{h}} hours",
+    "billionKm": "billion km",
     "reached": "One light-day reached",
     "countdown": "{{d}} days to one light-day",
     "lost": "No signal since 2003",
@@ -135,6 +145,7 @@
   "dates": {
     "launched": "Launched",
     "landed": "Arrived",
+    "deployed": "Deployed",
     "interstellar": "Interstellar",
     "lastContact": "Last contact",
     "ended": "Mission ended"
@@ -254,7 +265,9 @@
     "sunDirection": "Sun direction",
     "laser": "Laser Lab",
     "laserSub": "Bounce a laser off the Moon.",
-    "moonDistance": "Moon distance"
+    "moonDistance": "Moon distance",
+    "seismic": "Seismic Catch",
+    "seismicSub": "Catch four signals at once."
   },
   "sources": {
     "heading": "Sources and honesty",
@@ -293,6 +306,7 @@
     "reading": "Reading level",
     "young": "Ages 8 to 11",
     "older": "Ages 12 and up",
+    "schoolAge": "School age (6–12 years)",
     "quality": "Graphics",
     "high": "High",
     "low": "Low (for older devices)",
@@ -302,6 +316,8 @@
     "explorerNote": "Open every chapter right away.",
     "reset": "Erase my progress",
     "resetConfirm": "Erase all progress? This can't be undone.",
+    "cancel": "Cancel",
+    "erase": "Erase",
     "close": "Close",
     "on": "On",
     "off2": "Off",
@@ -327,6 +343,40 @@
     "fired": "Light is on its way…",
     "miss": "No echo. Only the mirrors send light straight back.",
     "result": "Light took {{t}} seconds to go there and back, so the Moon is {{km}} km away."
+  },
+  "chat": {
+    "title": "RISE BOT",
+    "eyebrow": "Your lunar companion",
+    "close": "Close chat",
+    "history": "Conversation",
+    "greeting": "Hi! Ask me a question about the missions.",
+    "input": "Type your question…",
+    "send": "Send",
+    "botLabel": "Open RISE BOT chat. Drag or use arrow keys to move.",
+    "sources": "NASA sources",
+    "keywordFallback": "Keyword search used; semantic search is unavailable.",
+    "pending": "Thinking…",
+    "inputLimit": "Your question is too long. Please keep it under 512 tokens.",
+    "error": "Could not reach the chat service. Please try again."
+  },
+  "seismic": {
+    "recorder": "Four channel seismic recorder",
+    "ready": "Ready",
+    "running": "Recording",
+    "graph": "Four seismic traces move left through fixed red markers A and B.",
+    "direction": "← Signal flow",
+    "eyebrow": "Lunar field experiment",
+    "title": "Seismic Catch",
+    "instructions": "Press Capture when all four signals oscillate across the entire window between A and B. Flat sections do not count. Press Space to capture.",
+    "speed": "Speed",
+    "normal": "Normal",
+    "fast": "Fast",
+    "start": "Start",
+    "restart": "Restart",
+    "capture": "Capture",
+    "hit": "Capture successful: all four channels filled the window.",
+    "miss": "Not yet: at least one channel had a flat section in the window.",
+    "waiting": "Watch the signals and time your capture."
   },
   "learn": {
     "precheck": {

@@ -3,20 +3,30 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
+    "start": "npm run start:api",
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "test": "vitest run",
     "data:ephemeris": "node scripts/fetch-ephemeris.mjs",
     "data:solar": "node scripts/fetch-solar.mjs",
-    "data:links": "node scripts/check-links.mjs"
+    "data:links": "node scripts/check-links.mjs",
+    "knowledge:index": "node --experimental-strip-types --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/index-knowledge.mjs",
+    "start:api": "node --experimental-strip-types --env-file-if-exists=.env --env-file-if-exists=.env.local server/start.ts",
+    "qdrant:upload": "node --experimental-strip-types --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/upload-qdrant.mjs",
+    "knowledge:crawl": "node scripts/crawl-knowledge.mjs"
   },
   "devDependencies": {
+    "@types/node": "^26.6.6",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "@types/three": "^0.187.0",
     "@vitejs/plugin-react": "^6.3.0",
+    "node-html-parser": "^9.0.7",
     "typescript": "^7.0.2",
     "vite": "^8.3.6",
     "vitest": "^5.1.0",
@@ -30,6 +40,7 @@
     "@gullabs/react-flipbook": "3.2.2",
     "@react-three/drei": "^10.7.9",
     "@react-three/fiber": "^9.8.2",
+    "gpt-tokenizer": "^4.1.2",
     "gsap": "^3.15.1",
     "i18next": "^27.0.1",
     "react": "^19.3.1",

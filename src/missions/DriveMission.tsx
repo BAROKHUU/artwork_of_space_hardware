@@ -6,7 +6,7 @@ import type { DriveConfig } from '../data/types';
 import { emptyContact, resolveCollisions, scatterRocks, solidRocks, type Obstacle } from '../sim/obstacles';
 import { makeTerrain, type Terrain } from '../sim/terrain';
 import { dustLevel, stepBattery, sunlight } from '../sim/rover';
-import { Echo } from '../three/Echo';
+import { KaraokeNhacTre } from '../three/Echo';
 import { Tracks, WheelDust } from '../three/RoverFx';
 import { GameCanvas } from '../three/GameCanvas';
 import { HardwareModel } from '../three/models';
@@ -267,7 +267,7 @@ function Rover({ config, terrain, obstacles, keys, pad, light, arrow, hud, onFin
   return (
     <>
       {vehicle === 'echo' ? (
-        <Echo ref={ref} wheelAngle={wheelAngle} />
+        <KaraokeNhacTre ref={ref} wheelAngle={wheelAngle} />
       ) : (
         <group ref={ref}>
           <HardwareModel id={vehicle} />

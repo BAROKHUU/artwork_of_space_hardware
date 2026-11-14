@@ -5,6 +5,7 @@ import { setLanguage } from './i18n';
 import { useGame } from './state/store';
 import { backdropUrl, backdrops, chapterById } from './data';
 import { Settings } from './components/Settings';
+import { ChatBot } from './components/ChatBot';
 import { Title } from './screens/Title';
 import { MapScreen } from './screens/MapScreen';
 import { Sources } from './screens/Sources';
@@ -14,6 +15,7 @@ const Chapter = lazy(() => import('./screens/Chapter').then((m) => ({ default: m
 const Logbook = lazy(() => import('./screens/Logbook').then((m) => ({ default: m.Logbook })));
 const Atlas = lazy(() => import('./screens/Atlas').then((m) => ({ default: m.Atlas })));
 const Lab = lazy(() => import('./screens/Lab').then((m) => ({ default: m.Lab })));
+const CuoiPreview = lazy(() => import('./screens/CuoiPreview'));
 const Book = lazy(() => import('./screens/Book').then((m) => ({ default: m.Book })));
 
 /** The title screen has its own 3D scene; chapters take their backdrop from the world they visit. */
@@ -37,7 +39,7 @@ function TopBar() {
       <NavLink to="/" className="brand" aria-label={t('nav.home')}>
         <i aria-hidden="true" /> ECHO
       </NavLink>
-      <nav aria-label="Main">
+      <nav aria-label={t('nav.main')}>
         {links.map(([to, key]) => <NavLink key={to} to={to}>{t(key)}</NavLink>)}
       </nav>
       <button type="button" className="gear" onClick={() => update({ settingsOpen: true })}>{t('nav.settings')}</button>
@@ -57,6 +59,10 @@ export function App() {
   }, [language]);
 
   useEffect(() => {
+    document.title = `${t('app.title')} — ${t('app.subtitle')}`;
+  }, [language, t]);
+
+  useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
@@ -73,6 +79,7 @@ export function App() {
           <Route path="/logbook" element={<Logbook />} />
           <Route path="/atlas" element={<Atlas />} />
           <Route path="/lab" element={<Lab />} />
+          <Route path="/cuoi-preview" element={<CuoiPreview />} />
           <Route path="/sources" element={<Sources />} />
           <Route path="/progress" element={<Learning />} />
           <Route path="/grownups" element={<Learning />} />
@@ -80,6 +87,7 @@ export function App() {
         </Routes>
       </Suspense>
       <Settings />
+      <ChatBot />
     </>
   );
 }

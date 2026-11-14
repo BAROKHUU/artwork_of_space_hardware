@@ -1,0 +1,30 @@
+{
+  "ch1": [
+    {"q": "Vì sao Ranger 7 vẫn chụp ảnh khi đang lao xuống?", "options": ["Phanh của nó bị hỏng", "Mỗi ảnh được chụp gần hơn và thấy nhiều chi tiết hơn", "Nó đang tìm phi hành gia"], "why": "Ranger không thể hạ cánh. Càng đến gần, ảnh bề mặt càng sắc nét."},
+    {"q": "Chiếc xẻng của Surveyor 3 giúp chứng minh điều gì?", "options": ["Mặt Trăng có đại dương", "Mặt Trăng rỗng", "Mặt đất có thể đỡ tàu hạ cánh"], "why": "Kiểm tra đất cho thấy bề mặt đủ chắc cho Apollo."}
+  ],
+  "ch2": [
+    {"q": "Vì sao gương laser Apollo 11 vẫn hoạt động đến nay?", "options": ["Phi hành gia sạc lại", "Nó có pin hạt nhân", "Nó hoàn toàn không cần điện"], "why": "Nó chỉ phản xạ ánh sáng thẳng về nên không có nguồn năng lượng nào bị cạn."},
+    {"q": "Mặt Trăng đang từ từ di chuyển theo hướng nào?", "options": ["Ra xa Trái Đất", "Về phía Trái Đất", "Nó không bao giờ di chuyển"], "why": "Đo thời gian laser cho thấy Mặt Trăng xa thêm khoảng 3,8 xentimét mỗi năm."}
+  ],
+  "ch3": [
+    {"q": "Trợ lực hấp dẫn làm gì?", "options": ["Dùng chuyển động của hành tinh để đổi tốc độ tàu", "Đổ đầy bình nhiên liệu", "Làm chậm hành tinh để nghiên cứu"], "why": "Tàu có thể mượn một phần rất nhỏ chuyển động quỹ đạo của hành tinh và rời đi nhanh hơn."},
+    {"q": "Chỉ Voyager 2 từng ghé thăm những hành tinh nào?", "options": ["Sao Hỏa và Sao Kim", "Sao Thiên Vương và Sao Hải Vương", "Sao Mộc và Sao Thổ"], "why": "Chưa có tàu nào khác bay qua Sao Thiên Vương hoặc Sao Hải Vương."}
+  ],
+  "ch4": [
+    {"q": "Viking 1 cần gì để hạ cánh trên Sao Hỏa?", "options": ["Chỉ cần dù", "Dù và động cơ tên lửa", "Chỉ cần cánh"], "why": "Khí quyển mỏng giúp giảm tốc nhưng chưa đủ. Tên lửa làm phần còn lại."},
+    {"q": "Các thí nghiệm sinh học của Viking kết luận gì?", "options": ["Hóa học khác thường nhưng chưa có bằng chứng rõ về sự sống", "Sao Hỏa đầy vi sinh vật", "Các thí nghiệm chưa từng chạy"], "why": "Đất phản ứng theo cách bất ngờ nhưng không tìm thấy dấu hiệu rõ ràng của sinh vật sống."}
+  ],
+  "ch5": [
+    {"q": "Nhiệm vụ Opportunity dự kiến kéo dài bao lâu?", "options": ["15 năm", "Một năm Sao Hỏa", "Khoảng 90 ngày Sao Hỏa"], "why": "Nó được dự kiến cho khoảng 90 sol nhưng hoạt động hơn 14 năm."},
+    {"q": "Điều gì kết thúc nhiệm vụ Opportunity?", "options": ["Một bánh xe bị hỏng", "Bão bụi toàn hành tinh chặn ánh nắng", "Nó hết đường để đi"], "why": "Pin mặt trời cần ánh nắng. Trận bão năm 2018 đã chặn ánh sáng."}
+  ],
+  "ch6": [
+    {"q": "Ingenuity dự kiến bay bao nhiêu chuyến?", "options": ["Tối đa 5", "72", "1.000"], "why": "Kế hoạch là tối đa năm chuyến. Nó đã bay 72 chuyến."},
+    {"q": "Perseverance lập kỷ lục gì vào tháng 10 năm 2026?", "options": ["Chuyến bay cao nhất trên Sao Hỏa", "Xe tự hành đầu tiên trên Sao Hỏa", "Khoảng cách lái xa nhất trên một thế giới khác"], "why": "Nó vượt kỷ lục của Opportunity ngày 11 tháng 10 năm 2026."}
+  ],
+  "ch7": [
+    {"q": "Điều gì khiến Voyager 1 đặc biệt?", "options": ["Nó là xe tự hành nhanh nhất", "Nó là vật thể nhân tạo xa nhất", "Nó đã hạ cánh trên Sao Diêm Vương"], "why": "Không thứ gì chúng ta chế tạo từng đi xa hơn."},
+    {"q": "Vì sao Đĩa Vàng được tạo ra?", "options": ["Để kể cho bất kỳ ai tìm thấy về sự sống trên Trái Đất", "Để phát nhạc cho phi hành gia", "Để giúp điều khiển tàu"], "why": "Đó là thông điệp từ Trái Đất với âm thanh, âm nhạc, lời chào và hình ảnh."}
+  ]
+}

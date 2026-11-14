@@ -80,6 +80,9 @@ button:disabled { cursor: default; }
 .title-links a, .title-links button { background: none; border: 0; padding: 4px 0; color: var(--dim); text-decoration: none; font-size: 16px; }
 .title-links a:hover, .title-links button:hover { color: var(--ink); }
 
+.cuoi-preview-controls { margin-bottom: 16px; }
+.cuoi-preview-canvas { height: min(68vh, 700px); min-height: 360px; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+
 /* Pages */
 .page { max-width: 1320px; margin: 0 auto; padding: 44px clamp(16px, 4vw, 40px) 80px; }
 .page-head { margin-bottom: 28px; }
@@ -316,6 +319,11 @@ dialog.record { width: min(1080px, calc(100% - 24px)); }
 dialog.settings { width: min(500px, calc(100% - 24px)); padding: 24px; }
 .settings-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
 .settings-head h2 { font-size: 30px; }
+.setting-value { display: block; color: var(--teal); font-size: 17px; }
+.confirm-dialog { width: min(420px, calc(100% - 24px)); padding: 24px; }
+.confirm-dialog h2 { font-size: 26px; }
+.confirm-dialog p { margin: 12px 0 20px; color: var(--muted); }
+.confirm-actions { display: flex; justify-content: flex-end; gap: 10px; }
 .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 15px; align-items: flex-start; }
 .field > span { font-weight: 700; }
 .field small { color: var(--dim); font-size: 14px; }
@@ -445,3 +453,61 @@ dialog.settings { width: min(500px, calc(100% - 24px)); padding: 24px; }
 .learning-empty { max-width: 660px; }
 .learning-links { margin-top: 16px; }
 @media (max-width: 700px) { .learning-components { grid-template-columns: 1fr; } .learning-hero { align-items: flex-start; flex-direction: column; } .learning-gain { text-align: left; } }
+/* Seismic recorder */
+.seismic-stage { display: flex; flex-direction: column; padding: clamp(12px, 2vw, 24px); overflow: hidden; }
+.seismic-header, .seismic-footer { display: flex; justify-content: space-between; gap: 12px; font: 600 12px/1.4 var(--mono); color: var(--dim); text-transform: uppercase; }
+.seismic-state { color: var(--teal); }
+.seismic-display { width: 100%; flex: 1; min-height: 0; margin: 12px 0; background: var(--panel); border: 1px solid var(--line); }
+.seismic-window { fill: var(--red); opacity: .07; }
+.seismic-baseline { stroke: var(--line); stroke-width: 1; }
+.seismic-wave { fill: none; stroke: var(--teal); stroke-width: 2; vector-effect: non-scaling-stroke; }
+.seismic-bar { stroke: var(--red); stroke-width: 2; vector-effect: non-scaling-stroke; }
+.seismic-label, .seismic-marker { fill: var(--dim); font: 12px var(--mono); }
+.seismic-marker { fill: var(--red); }
+.seismic-result { min-height: 3em; color: var(--dim); }
+.seismic-result.hit { color: var(--teal); }
+.seismic-result.miss { color: var(--amber); }
+@media (min-width: 701px) { .lab-tabs { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+
+/* Floating lunar companion */
+.chat-layer, .chat-layer:popover-open { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: transparent; overflow: visible; pointer-events: none; z-index: 2147483647; }
+.chat-bot { position: fixed; width: 96px; height: 96px; padding: 0; border: 0; border-radius: 50%; background: transparent; cursor: grab; touch-action: none; pointer-events: auto; filter: drop-shadow(0 4px 10px rgba(0,0,0,.65)); }
+.chat-bot:active { cursor: grabbing; }
+.chat-bot-image { display: block; width: 96px; height: 96px; background-position: -48px -30px; background-size: 1064px auto; background-repeat: no-repeat; }
+.chat-bot-image.idle { animation: bot-idle 2s steps(1, end) infinite; }
+.chat-bot-image.greeting { animation: bot-greet 1.2s steps(1, end) forwards; }
+.chat-bot-image.thinking { animation: bot-think 1.8s steps(1, end) infinite; }
+@keyframes bot-idle {
+  0% { background-position: -48px -30px; }
+  25% { background-position: -164px -30px; }
+  50% { background-position: -280px -30px; }
+  75% { background-position: -396px -30px; }
+}
+@keyframes bot-greet {
+  0% { background-position: -570px -30px; }
+  25% { background-position: -686px -30px; }
+  50% { background-position: -802px -30px; }
+  75%, 100% { background-position: -918px -30px; }
+}
+@keyframes bot-think {
+  0% { background-position: -48px -162px; }
+  25% { background-position: -164px -162px; }
+  50% { background-position: -280px -162px; }
+  75% { background-position: -396px -162px; }
+}
+@media (prefers-reduced-motion: reduce) { .chat-bot-image.idle, .chat-bot-image.greeting, .chat-bot-image.thinking { animation: none; } }
+.chat-panel { position: fixed; width: min(340px, calc(100vw - 16px)); height: min(400px, calc(100dvh - 120px)); min-height: 140px; display: flex; flex-direction: column; background: var(--panel); border: 1px solid var(--line); box-shadow: 0 16px 45px rgba(0,0,0,.6); pointer-events: auto; }
+.chat-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.chat-header h2 { font-size: 22px; }
+.chat-close { color: var(--dim); background: transparent; border: 1px solid var(--line); width: 36px; height: 36px; font-size: 24px; line-height: 1; }
+.chat-messages { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.chat-message { max-width: 90%; padding: 9px 12px; font-size: 15px; line-height: 1.4; overflow-wrap: anywhere; background: var(--panel-2); border-left: 2px solid var(--teal); }
+.chat-message p { white-space: pre-wrap; }
+.chat-message small { display: block; color: var(--amber); margin-top: 8px; }
+.chat-sources { display: grid; gap: 4px; margin-top: 8px; font-size: 13px; }
+.chat-sources a { color: var(--teal); }
+.chat-message.user { align-self: flex-end; border-color: var(--orange); }
+.chat-form { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px; border-top: 1px solid var(--line); }
+.chat-form input { min-width: 0; flex: 1; color: var(--ink); background: var(--bg); border: 1px solid var(--line); padding: 8px 10px; font-size: 15px; }
+.chat-error { color: var(--red); font-size: 14px; }
+.chat-form .btn { padding: 0 12px; font-size: 15px; }

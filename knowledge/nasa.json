@@ -1,0 +1,259 @@
+[
+  {
+    "id": "apollo11_descent",
+    "title": "Apollo 11 Lunar Module descent stage",
+    "aliases": [
+      "Apollo 11 Eagle",
+      "tầng hạ cánh Apollo 11",
+      "tàu đổ bộ Mặt Trăng"
+    ],
+    "text": "Apollo 11's Lunar Module Eagle landed on the Moon in July 1969. Its descent stage remained on the lunar surface and served as the launch platform for the ascent stage. NASA NSSDCA identifies the ascent stage as 1969-059C and the descent stage as 1969-059D.",
+    "sources": [
+      "https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_artifact_impacts.html"
+    ]
+  },
+  {
+    "id": "apollo12_descent",
+    "title": "Apollo 12 Lunar Module descent stage",
+    "aliases": [
+      "Apollo 12 Intrepid",
+      "tầng hạ cánh Apollo 12"
+    ],
+    "text": "Apollo 12 landed on the Moon in November 1969. The Lunar Module descent stage stayed on the surface after the crew departed. NSSDCA lists the ascent stage as 1969-099C and the descent stage as 1969-099D.",
+    "sources": [
+      "https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_artifact_impacts.html"
+    ]
+  },
+  {
+    "id": "apollo15_descent",
+    "title": "Apollo 15 Lunar Module descent stage",
+    "aliases": [
+      "Apollo 15 Falcon",
+      "tầng hạ cánh Apollo 15"
+    ],
+    "text": "Apollo 15's Lunar Module landed on the Moon in July 1971. The descent stage remained on the Moon. NSSDCA identifies the ascent stage as 1971-063C and the descent stage as 1971-063E; the ascent-stage record is not a rover record.",
+    "sources": [
+      "https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_artifact_impacts.html"
+    ]
+  },
+  {
+    "id": "lrv",
+    "title": "Apollo Lunar Roving Vehicles",
+    "aliases": [
+      "LRV",
+      "moon buggy",
+      "lunar rover",
+      "xe tự hành Mặt Trăng",
+      "xe điện mặt trăng",
+      "xe mặt trăng"
+    ],
+    "text": "Three battery-powered Lunar Roving Vehicles carried Apollo 15, 16 and 17 astronauts and equipment across the Moon. Each rover was left at its respective landing site after the astronauts departed.",
+    "sources": [
+      "https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo15info.html",
+      "https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo16info.html",
+      "https://nssdc.gsfc.nasa.gov/planetary/lunar/apollo17info.html"
+    ]
+  },
+  {
+    "id": "alsep",
+    "title": "Apollo Lunar Surface Experiments Packages",
+    "aliases": [
+      "ALSEP",
+      "Apollo experiments",
+      "thiết bị địa chấn",
+      "thí nghiệm địa chấn",
+      "gói thí nghiệm Apollo",
+      "máy đo động đất Mặt Trăng"
+    ],
+    "text": "Apollo astronauts deployed ALSEP instrument packages on the Moon. Depending on the mission, experiments included seismometers and other instruments. Some lunar laser retroreflector arrays remain available for ranging; the powered ALSEP network stopped operating in 1977. The Apollo 12 ascent-stage record 1969-099C is not an ALSEP instrument record.",
+    "sources": [
+      "https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_data/lunar_data.html",
+      "https://nssdc.gsfc.nasa.gov/planetary/lunar/lunar_artifact_impacts.html"
+    ]
+  },
+  {
+    "id": "surveyor3",
+    "title": "Surveyor 3",
+    "aliases": [
+      "Surveyor lander",
+      "Surveyor 3",
+      "tàu khảo sát Surveyor",
+      "tàu đổ bộ robot Mặt Trăng"
+    ],
+    "text": "NASA's Surveyor program demonstrated robotic soft landings on the Moon ahead of Apollo. Surveyor 3 landed in 1967; Apollo 12 astronauts later visited its landing site. The spacecraft remains on the Moon.",
+    "sources": [
+      "https://science.nasa.gov/mission/surveyor-3/"
+    ]
+  },
+  {
+    "id": "pathfinder_sojourner",
+    "title": "Mars Pathfinder and Sojourner",
+    "aliases": [
+      "Mars Pathfinder",
+      "Sojourner",
+      "rover đầu tiên trên sao hỏa",
+      "xe tự hành sao hỏa đầu tiên"
+    ],
+    "text": "Mars Pathfinder landed on Mars on July 4, 1997, carrying Sojourner, the first rover to operate on Mars. The lander and rover are no longer operational and remain at the landing site.",
+    "sources": [
+      "https://science.nasa.gov/mission/mars-pathfinder/"
+    ]
+  },
+  {
+    "id": "spirit",
+    "title": "Mars rover Spirit",
+    "aliases": [
+      "Spirit",
+      "MER-A",
+      "xe tự hành Spirit",
+      "robot Spirit"
+    ],
+    "text": "Spirit was one of NASA's twin Mars Exploration Rovers. It landed on January 4, 2004, explored Gusev Crater, and provided evidence about Mars's past environments. Its final communication was March 22, 2010, over six years after landing. NASA declared the mission complete May 25, 2011.",
+    "sources": [
+      "https://science.nasa.gov/mission/mer-spirit/"
+    ]
+  },
+  {
+    "id": "opportunity",
+    "title": "Mars rover Opportunity",
+    "aliases": [
+      "Opportunity",
+      "MER-B",
+      "Oppy",
+      "xe tự hành Opportunity",
+      "robot Opportunity"
+    ],
+    "text": "Opportunity was Spirit's twin Mars Exploration Rover. It landed on Mars on January 24, 2004 Pacific time (January 25 UTC), 20 days after Spirit. It investigated Martian rocks and evidence of past water for nearly 15 years. Its final communication was June 10, 2018 during a planet-wide dust storm. NASA declared the mission ended February 13, 2019; contact was lost in 2018, not 2019.",
+    "sources": [
+      "https://science.nasa.gov/mission/mer-opportunity/"
+    ]
+  },
+  {
+    "id": "viking",
+    "title": "Viking 1 and Viking 2 landers",
+    "aliases": [
+      "Viking 1",
+      "Viking 2",
+      "tàu đổ bộ Viking",
+      "viking sao hỏa"
+    ],
+    "text": "Viking 1 and Viking 2 landed on Mars in 1976 and were the first U.S. spacecraft to successfully land and operate on the Martian surface. Their landers are inactive at their landing sites.",
+    "sources": [
+      "https://science.nasa.gov/mission/viking-1/",
+      "https://science.nasa.gov/mission/viking-2/"
+    ]
+  },
+  {
+    "id": "phoenix",
+    "title": "Phoenix Mars lander",
+    "aliases": [
+      "Phoenix",
+      "tàu Phoenix",
+      "nước đá sao hỏa"
+    ],
+    "text": "NASA's Phoenix lander arrived in the Martian northern polar region in 2008. Its robotic arm investigated soil and confirmed water ice below the surface. It is no longer operating on Mars.",
+    "sources": [
+      "https://science.nasa.gov/mission/mars-phoenix/"
+    ]
+  },
+  {
+    "id": "insight",
+    "title": "InSight Mars lander",
+    "aliases": [
+      "InSight",
+      "marsquakes",
+      "địa chấn sao hỏa",
+      "động đất sao hỏa",
+      "tàu InSight"
+    ],
+    "text": "InSight landed on Mars in 2018 and used a seismometer to study marsquakes and the planet's interior. Its mission ended in 2022 after dust reduced power from its solar panels. The lander remains on Mars.",
+    "sources": [
+      "https://science.nasa.gov/mission/insight/"
+    ]
+  },
+  {
+    "id": "dawn",
+    "title": "Dawn spacecraft at Ceres",
+    "aliases": [
+      "Dawn",
+      "Ceres",
+      "Vesta",
+      "tàu Dawn",
+      "quỹ đạo Ceres"
+    ],
+    "text": "Dawn studied Vesta and Ceres in the asteroid belt and became the first spacecraft to orbit two extraterrestrial destinations. It exhausted its attitude-control hydrazine in 2018 and remains unpowered in orbit around Ceres. NASA expected the orbit to avoid impact for at least 20 years and likely much longer; an eternal orbit is not guaranteed.",
+    "sources": [
+      "https://science.nasa.gov/mission/dawn/",
+      "https://science.nasa.gov/mission/dawn/toolkit/end-of-mission/"
+    ]
+  },
+  {
+    "id": "near",
+    "title": "NEAR Shoemaker at asteroid Eros",
+    "aliases": [
+      "NEAR Shoemaker",
+      "433 Eros",
+      "tiểu hành tinh Eros",
+      "tàu NEAR"
+    ],
+    "text": "NEAR Shoemaker was the first spacecraft to orbit an asteroid and the first to land on one. In February 2001 it touched down on asteroid 433 Eros, where it remains inactive.",
+    "sources": [
+      "https://science.nasa.gov/mission/near-shoemaker/"
+    ]
+  },
+  {
+    "id": "pioneer10",
+    "title": "Pioneer 10",
+    "aliases": [
+      "Pioneer 10",
+      "tàu Pioneer 10",
+      "tàu ngoài hệ mặt trời"
+    ],
+    "text": "Pioneer 10 explored Jupiter and traveled outward through the solar system. NASA received its last signal in 2003; the silent probe continues on an outward trajectory.",
+    "sources": [
+      "https://science.nasa.gov/mission/pioneer-10/"
+    ]
+  },
+  {
+    "id": "pioneer11",
+    "title": "Pioneer 11",
+    "aliases": [
+      "Pioneer 11",
+      "tàu Pioneer 11",
+      "tàu ngoài hệ mặt trời"
+    ],
+    "text": "Pioneer 11 explored Jupiter and Saturn. Its last contact was in 1995, and it continues silently on an outward trajectory away from the Sun.",
+    "sources": [
+      "https://science.nasa.gov/mission/pioneer-11/"
+    ]
+  },
+  {
+    "id": "ingenuity",
+    "title": "Ingenuity Mars Helicopter",
+    "aliases": [
+      "Ingenuity",
+      "mars helicopter",
+      "máy bay trực thăng sao hỏa",
+      "trực thăng Ingenuity"
+    ],
+    "text": "Ingenuity became the first aircraft to make powered, controlled flights on another planet. After rotor damage during its 72nd flight, its flying mission ended in January 2024; the helicopter remains on Mars.",
+    "sources": [
+      "https://science.nasa.gov/mission/mars-2020-perseverance/ingenuity-mars-helicopter/"
+    ]
+  },
+  {
+    "id": "kepler",
+    "title": "Kepler Space Telescope",
+    "aliases": [
+      "Kepler",
+      "K2",
+      "kính thiên văn Kepler",
+      "ngoại hành tinh",
+      "exoplanet transit"
+    ],
+    "text": "The Kepler space telescope found thousands of exoplanets by measuring small drops in starlight when planets crossed their stars. It ran out of fuel in 2018 and was retired in an Earth-trailing solar orbit.",
+    "sources": [
+      "https://science.nasa.gov/mission/kepler/"
+    ]
+  }
+]
