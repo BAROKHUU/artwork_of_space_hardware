@@ -7,14 +7,28 @@ import { photoUrl } from '../data';
 import { Cuoi } from '../three/Cuoi';
 import { BanyanTree, MoonRabbit } from '../three/MoonCharacters';
 
-/** On wide screens, moves Echo to the right so the title has room. */
+/** The scene is composed for a 16:9 screen; narrower screens zoom out so it still fits. */
+const WIDE_ASPECT = 16 / 9;
+const PHONE_ASPECT = 390 / 844;
+
+/** Frames the rover, the rabbit and Cuội on any screen, beside the title or above it. */
 function ShiftView() {
   const camera = useThree((s) => s.camera) as PerspectiveCamera;
   const { width, height } = useThree((s) => s.size);
   useEffect(() => {
-    if (width > 800) camera.setViewOffset(width, height, -width * 0.24, 0, width, height);
-    else camera.setViewOffset(width, height, 0, height * 0.2, width, height);
-    return () => camera.clearViewOffset();
+    const aspect = width / height;
+    const stacked = width <= 800 || aspect < 1.1;
+    // Seen beside the title, the scene only gets the right half, so it shrinks faster than the screen narrows.
+    camera.zoom = stacked
+      ? 0.55 * Math.min(1.2, aspect / PHONE_ASPECT)
+      : Math.max(0.55, Math.min(0.92, 0.92 * (aspect / WIDE_ASPECT) ** 2));
+    if (stacked) camera.setViewOffset(width, height, width * 0.2, height * 0.24, width, height);
+    else camera.setViewOffset(width, height, -width * 0.2, 0, width, height);
+    camera.updateProjectionMatrix();
+    return () => {
+      camera.zoom = 1;
+      camera.clearViewOffset();
+    };
   }, [camera, width, height]);
   return null;
 }

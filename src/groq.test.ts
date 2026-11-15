@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { chatHandler, requestGroq } from '../server/groq';
+import { chatHandler, parseGrounding, requestGroq } from '../server/groq';
 
 describe('Groq chat', () => {
   it('sends validated conversation and returns the response', async () => {
@@ -51,5 +51,15 @@ describe('Groq chat', () => {
     const fetcher = vi.fn().mockResolvedValue(new Response('', { status: 429 }));
     await expect(requestGroq([{ role: 'user', content: 'Hi' }], 'primary', fetcher, undefined, 'backup')).rejects.toThrow();
     expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+  it('strips the grounding tag and labels general-knowledge answers', () => {
+    expect(parseGrounding('[[NASA]]\nInSight landed in 2018.', true)).toEqual({ reply: 'InSight landed in 2018.', grounding: 'nasa' });
+    expect(parseGrounding('[[mixed]] Part NASA, part general.', true)).toEqual({ reply: 'Part NASA, part general.', grounding: 'mixed' });
+    expect(parseGrounding('[[GENERAL]]\nThe Sun is a star.', false)).toEqual({ reply: 'The Sun is a star.', grounding: 'general' });
+  });
+  it('never labels an answer as NASA-sourced without evidence', () => {
+    expect(parseGrounding('[[NASA]] Claimed fact.', false).grounding).toBe('general');
+    expect(parseGrounding('No tag here.', false)).toEqual({ reply: 'No tag here.', grounding: 'general' });
+    expect(parseGrounding('No tag here.', true).grounding).toBe('nasa');
   });
 });
