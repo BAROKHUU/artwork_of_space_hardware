@@ -12,6 +12,7 @@ import { HardwareModel } from '../three/models';
 import { MoonCuoi, MoonRabbit } from '../three/MoonCharacters';
 import type { StorySection } from './types';
 import './book.css';
+import { mediaUrl } from '../media';
 
 interface StoryBookProps {
   chapter: Chapter;
@@ -58,7 +59,7 @@ function CameraView({ viewpoint }: { viewpoint: Viewpoint }) {
 }
 
 function StoryStage({ viewpoint, model, chapter, imageAlt }: { viewpoint: Viewpoint; model?: ModelId; chapter: Chapter; imageAlt: string }) {
-  const moonSurface = useLoader(THREE.TextureLoader, '/intro/Image/1.jpg');
+  const moonSurface = useLoader(THREE.TextureLoader, mediaUrl('intro/Image/1.jpg'));
   moonSurface.colorSpace = THREE.SRGBColorSpace;
 
   return <Canvas camera={{ position: [0, 4.8, 10], fov: 42 }} dpr={[1, 1.5]} role="img" aria-label={imageAlt}>

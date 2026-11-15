@@ -1,6 +1,7 @@
 /* Storybook intro: paper, moonlight, and painted warmth. */
 .intro-gate, .intro-finale { min-height: 100svh; position: relative; overflow: hidden; display: grid; place-items: center; align-content: center; text-align: center; padding: 48px 24px; color: #fff8ea; background: #1a1725; }
-.intro-gate { background: #1a1725 url('/intro/Story%20Nasa/Image/8.jpg') center / cover no-repeat; }
+/* The image itself is set inline from mediaUrl() so it can come from Cloudinary. */
+.intro-gate { background-color: #1a1725; background-position: center; background-size: cover; background-repeat: no-repeat; }
 .intro-gate::before, .intro-finale::before { content: ''; position: absolute; inset: 0; opacity: .18; background: radial-gradient(circle at 50% 36%, #6b668f 0 2px, transparent 3px) 0 0/84px 84px, radial-gradient(circle at 20% 70%, #d88a7d 0 1px, transparent 3px) 0 0/126px 126px; mix-blend-mode: screen; }
 .intro-gate::after, .intro-finale::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(18, 13, 27, .54), rgba(18, 13, 27, .18) 58%, rgba(18, 13, 27, .38)), linear-gradient(0deg, rgba(18, 13, 27, .44), transparent 55%); pointer-events: none; }
 .intro-gate > *, .intro-finale > * { position: relative; z-index: 1; }
