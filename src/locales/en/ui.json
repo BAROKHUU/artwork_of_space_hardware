@@ -309,7 +309,14 @@
       "mars": "Martian geology ahead of Curiosity",
       "deep": "Galaxies in a colorful Hubble deep field"
     },
-    "notEndorsed": "This is an independent student project. It is not endorsed by NASA."
+    "notEndorsed": "This is an independent student project. It is not endorsed by NASA.",
+    "jump": "Jump to section",
+    "groups": {
+      "moon": "The Moon",
+      "mars": "Mars",
+      "deep": "Deep space, asteroids and telescopes",
+      "data": "Maps, models and data"
+    }
   },
   "settings": {
     "heading": "Settings",

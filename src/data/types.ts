@@ -106,7 +106,11 @@ export interface Chapter {
   beats: Beat[];
 }
 
+export type SourceGroup = 'moon' | 'mars' | 'deep' | 'data';
+
 export interface Source {
+  /** Where the source is listed on the Sources page. */
+  group: SourceGroup;
   org: string;
   title: string;
   url: string;
