@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { Title } from './Title';
 import { mediaUrl } from '../media';
 import { INTRO_SCENES, useGame } from '../state/store';
@@ -43,9 +45,18 @@ export function IntroExperience({ directStart = false }: { directStart?: boolean
   const [activeScene, setActiveScene] = useState(resumeScene);
   // Someone who has already read the story lands on the title screen instead of the story again.
   const [finished, setFinished] = useState(() => !directStart && savedIntro.finished);
+  const { t } = useTranslation();
+  const navigate = useNavigate();
   const finish = () => {
     finishIntro();
     setFinished(true);
+  };
+  // Leaving early counts as having seen the story, so "/" shows the main page next time too.
+  const exit = () => {
+    finishIntro();
+    window.scrollTo(0, 0);
+    if (directStart) navigate('/');
+    else setFinished(true);
   };
   const [musicEnabled, setMusicEnabled] = useState(true);
   const musicRef = useRef<HTMLAudioElement>(null);
@@ -104,7 +115,7 @@ export function IntroExperience({ directStart = false }: { directStart?: boolean
       {scenes.map((scene, index) => <video key={scene.number} className={index === activeScene ? 'is-active' : ''} src={scene.video} autoPlay muted loop playsInline />)}
       <div className="intro-fixed-scene__wash" />
     </div>
-    <header className="intro-sample-header"><span>FIND U IN THE YOUNIVERSE</span><span>{String(activeScene + 1).padStart(2, '0')} / 22</span><button className="intro-music-toggle" type="button" onClick={() => setMusicEnabled((enabled) => !enabled)} aria-label={musicEnabled ? 'Mute reading music' : 'Play reading music'}>{musicEnabled ? '♫' : '♫̸'}</button></header>
+    <header className="intro-sample-header"><span>FIND U IN THE YOUNIVERSE</span><span>{String(activeScene + 1).padStart(2, '0')} / 22</span><div className="intro-header-actions"><button className="intro-music-toggle" type="button" onClick={() => setMusicEnabled((enabled) => !enabled)} aria-label={musicEnabled ? 'Mute reading music' : 'Play reading music'}>{musicEnabled ? '♫' : '♫̸'}</button><button className="intro-exit" type="button" onClick={exit} aria-label={t('introStory.exitLabel')}>{t('introStory.exit')} <span aria-hidden="true">✕</span></button></div></header>
     <nav className="intro-filmstrip" aria-label="Story scenes">{scenes.map((scene, index) => <a href={`#story-${scene.number}`} onClick={(event) => jumpToScene(event, scene.number)} className={index === activeScene ? 'is-active' : ''} key={scene.number} aria-label={`Jump to story image ${scene.number}`}><img src={mediaUrl(`intro/Image/${index + 1}.jpg`)} alt="" /><span>{scene.number}</span></a>)}</nav>
     <div className="intro-scrollbook__steps">
       {scenes.map((scene, index) => <section className="intro-step" id={`story-${scene.number}`} data-scene={index} key={scene.number}>

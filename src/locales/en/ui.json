@@ -21,6 +21,10 @@
     "progress": "Learning",
     "archive": "Archive"
   },
+  "introStory": {
+    "exit": "Exit story",
+    "exitLabel": "Exit the story and go to the main page"
+  },
   "cuoiPreview": {
 
     "link": "Meet Cuội",
