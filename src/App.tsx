@@ -10,6 +10,7 @@ import { Title } from './screens/Title';
 import { MapScreen } from './screens/MapScreen';
 import { Sources } from './screens/Sources';
 import { Learning } from './screens/Learning';
+import { IntroExperience } from './screens/IntroExperience';
 
 const Chapter = lazy(() => import('./screens/Chapter').then((m) => ({ default: m.Chapter })));
 const Logbook = lazy(() => import('./screens/Logbook').then((m) => ({ default: m.Logbook })));
@@ -72,7 +73,9 @@ export function App() {
       {!immersive && <TopBar />}
       <Suspense fallback={<div className="loading" role="status">{t('common.loading')}</div>}>
         <Routes>
-          <Route path="/" element={<Title />} />
+          <Route path="/" element={<IntroExperience />} />
+          <Route path="/story" element={<IntroExperience directStart />} />
+          <Route path="/home" element={<Title />} />
           <Route path="/map" element={<MapScreen />} />
           <Route path="/book" element={<Book />} />
           <Route path="/chapter/:id" element={<Chapter />} />

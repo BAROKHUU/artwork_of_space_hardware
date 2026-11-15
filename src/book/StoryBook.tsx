@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useTranslation } from 'react-i18next';
 import type { Chapter, ModelId } from '../data/types';
@@ -58,17 +58,22 @@ function CameraView({ viewpoint }: { viewpoint: Viewpoint }) {
 }
 
 function StoryStage({ viewpoint, model, chapter, imageAlt }: { viewpoint: Viewpoint; model?: ModelId; chapter: Chapter; imageAlt: string }) {
+  const moonSurface = useLoader(THREE.TextureLoader, '/intro/Image/1.jpg');
+  moonSurface.colorSpace = THREE.SRGBColorSpace;
+
   return <Canvas camera={{ position: [0, 4.8, 10], fov: 42 }} dpr={[1, 1.5]} role="img" aria-label={imageAlt}>
     <CameraView viewpoint={viewpoint} />
     <ambientLight intensity={1.7} />
     <directionalLight position={[-5, 8, 5]} intensity={3} castShadow />
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.03, 0]} receiveShadow>
-      <circleGeometry args={[12, 48]} />
-      <meshStandardMaterial color="#77766e" roughness={1} />
+      <planeGeometry args={[24, 24]} />
+      <meshStandardMaterial map={chapter.world === 'moon' ? moonSurface : undefined} color={chapter.world === 'moon' ? '#ffffff' : '#77766e'} roughness={1} />
     </mesh>
-    <mesh position={[0, -0.1, -3]} rotation={[-Math.PI / 2, 0, 0]}>
-      <circleGeometry args={[4, 32]} /><meshStandardMaterial color="#5b5a55" roughness={1} />
-    </mesh>
+    {chapter.world === 'moon' && <>
+      <mesh position={[-3.8, 0.02, -2.5]} rotation={[-Math.PI / 2, 0, 0]}><circleGeometry args={[1.2, 24]} /><meshStandardMaterial color="#4c4b4d" roughness={1} /></mesh>
+      <mesh position={[3.7, 0.02, -4]} rotation={[-Math.PI / 2, 0, 0]}><circleGeometry args={[1.8, 28]} /><meshStandardMaterial color="#5b5a55" roughness={1} /></mesh>
+      <mesh position={[0, 0.01, -5.5]} rotation={[-Math.PI / 2, 0, 0]}><ringGeometry args={[1.1, 1.55, 28]} /><meshStandardMaterial color="#69686a" roughness={1} /></mesh>
+    </>}
     {model && <FaceCamera position={[-1.35, 0, 0]} rotation={Math.PI}><group scale={0.62}><HardwareModel id={model} /></group></FaceCamera>}
     {chapter.world === 'moon' && <>
       <FaceCamera position={[1.65, 0, 0.1]}><MoonCuoi scale={0.95} /></FaceCamera>
@@ -215,9 +220,6 @@ export function StoryBook({ chapter, sections, mode, activeSectionId, onContinue
     <div className="story-cinematic-scene" ref={sceneRef} style={{ backgroundImage: `linear-gradient(180deg, rgb(13 22 29 / 8%), rgb(13 22 29 / 62%)), url("${image}")` }}>
       <div className="story-cinematic-credit">{current.page.image?.credit ?? t('logbook.credit', { credit: hardware?.credit ?? backdrop.credit, id: hardware?.nasaId ?? backdrop.nasaId })}</div>
       <StoryStage viewpoint={viewpoint} model={sceneModel} chapter={chapter} imageAlt={imageAlt} />
-      <div className="story-pov-controls" role="group" aria-label={t('book.viewpoints')}>
-        {(['wide', 'cuoi', 'rover'] as const).map((view) => <button key={view} type="button" className={`btn ${viewpoint === view ? 'primary' : 'ghost'}`} aria-pressed={viewpoint === view} onClick={() => setViewpoint(view)}>{t(`book.pov.${view}`)}</button>)}
-      </div>
       {currentLine && <div className={`story-dialogue-overlay who-${currentLine.who}`} aria-live="polite" onClick={advanceDialogue}>
         <strong>{t(`story:speakers.${currentLine.who}`)}</strong>
         <p>{typed}<span className="type-caret" aria-hidden="true">▌</span></p>

@@ -1,4 +1,12 @@
 {
+  "ch0_landing": {
+    "title": "Hạ Lunar Rover xuống Mặt Trăng",
+    "goal": "Điều khiển phương tiện Mặt Trăng hạ xuống và chạm đất nhẹ hơn {{safe}} m/s.",
+    "hint": "Chờ đến khi bề mặt đến gần rồi đốt động cơ ngắn. Lần hạ cánh an toàn đầu tiên sẽ mở đầu hành trình.",
+    "success": "Đã hạ cánh! Phương tiện Mặt Trăng đã đến nơi an toàn.",
+    "fail_crash": "Phương tiện chạm đất quá nhanh ở {{speed}} m/s. Hãy đốt động cơ nhẹ hơn.",
+    "fail_fuel": "Động cơ hết nhiên liệu trước khi hạ cánh. Hãy tiết kiệm nhiên liệu và đốt muộn hơn."
+  },
   "ch0_boot": {
     "title": "Kiểm tra bánh xe",
     "goal": "Lái đến cả ba đèn hiệu thử nghiệm.",
