@@ -1,0 +1,80 @@
+{
+  "source": "C:\\D\\NASA Space App\\story",
+  "directories": [
+    "assets",
+    "assets/fonts",
+    "docs"
+  ],
+  "files": {
+    "index.html": {
+      "sha256": "e72614f24aea0821af9b8535da026c52954559f56c3af2774cf18a3bf43669ec",
+      "size": 42104,
+      "mtime_ns": 1794709070893274400
+    },
+    "motion.css": {
+      "sha256": "a57c4ec762f0cdf23be9b4b1d97e8b4fa1508b0036b2f96cbcf8da702605f933",
+      "size": 2660,
+      "mtime_ns": 1794709068082147600
+    },
+    "motion.js": {
+      "sha256": "367d8e40cc2a3555cda159ad91964e1316ddea17c742dadf4488cfedafed5450",
+      "size": 3379,
+      "mtime_ns": 1794709069072182900
+    },
+    "story-data.js": {
+      "sha256": "22f16e82cfbe69dde5a0728dc291a8db4838cd64be90904169dcafd3eff0d3da",
+      "size": 1305,
+      "mtime_ns": 1794679986596426500
+    },
+    "story-engine.js": {
+      "sha256": "d978f989d06605e05a65ee401b08ad51af4c0955a120d791d808474e098347a2",
+      "size": 13136,
+      "mtime_ns": 1794679988085049000
+    },
+    "story.css": {
+      "sha256": "4530238ccdb6fafb3272d0a4109e8271075ee52046b41ba0f90eebd5902a55b4",
+      "size": 5629,
+      "mtime_ns": 1794679987326899600
+    },
+    "typography.css": {
+      "sha256": "778f3c7ea88c1b3fbaa3f2636c7d5039668c536f041f2ca39105c3abcc07242f",
+      "size": 3768,
+      "mtime_ns": 1794709070885996600
+    },
+    "assets/fonts/fraunces-italic-variable-latin.woff2": {
+      "sha256": "04a14ea380db53a35a3ec651934b21061234685bb604d30aac82663b5d9e539b",
+      "size": 149720,
+      "mtime_ns": 1794708414309281700
+    },
+    "assets/fonts/fraunces-normal-variable-latin-ext.woff2": {
+      "sha256": "e9521563d0935c9bda4277e242cc88c75993a77878f5f7eed537989e94f976c9",
+      "size": 105244,
+      "mtime_ns": 1794708973903210800
+    },
+    "assets/fonts/fraunces-normal-variable-latin.woff2": {
+      "sha256": "7e744849028e2219e2aa1bc467dc4032980dc4487c9c3da3010081cd72d3b103",
+      "size": 121016,
+      "mtime_ns": 1794708974223467900
+    },
+    "assets/fonts/fraunces-normal-variable-vietnamese.woff2": {
+      "sha256": "5847b622f5723ecdfb7e4087cdd97be7996e6002a25646b2b50f4177af8aa88a",
+      "size": 34308,
+      "mtime_ns": 1794708973582849400
+    },
+    "assets/fonts/Fraunces-OFL.txt": {
+      "sha256": "bdf4c22802eaf804f998195871c6b8938aac2ac14b2d78a8bd66a6f1eced833b",
+      "size": 4391,
+      "mtime_ns": 1794708415008648500
+    },
+    "docs/motion-system.md": {
+      "sha256": "7e68fc1ef8cc83282220c8b48b39d7098a7a7c6848b513e21ab962a3711045db",
+      "size": 2998,
+      "mtime_ns": 1794709132343454900
+    },
+    "docs/storyboard.md": {
+      "sha256": "d296f88e7b4003a21c956b4a008fdf51521c9e1ada88cffb18518e400c3aae3f",
+      "size": 13152,
+      "mtime_ns": 1794679852225937900
+    }
+  }
+}

@@ -1,7 +1,7 @@
 {
   "app": {"title": "Echo", "subtitle": "被遗弃，但未被遗忘", "hook": "我们在月球、火星和行星之外留下了许多机器，其中一些仍在与我们通信。", "begin": "开始任务", "continue": "继续", "challenge": "NASA Space Apps Challenge 项目"},
   "book": {"previous": "上一页", "next": "下一页", "continue": "继续故事", "skip": "跳过故事", "cover": "故事", "open": "打开故事", "close": "合上书", "pageOf": "第 {{page}} 页，共 {{total}} 页", "reading": "故事阅读器", "bookTitle": "故事书", "noImage": "暂无插图", "fact": "你知道吗？", "section": "章节", "chapters": "可读章节", "locked": "尚未探索到这段故事", "readerIntro": "重温你已经遇到的故事。探索过程中会出现新的内容。", "empty": "还没有发现任何故事。开始任务来开启故事吧。"},
-  "nav": {"map": "任务", "book": "故事书", "logbook": "日志", "atlas": "星图", "lab": "实验室", "sources": "资料来源", "settings": "设置", "home": "首页", "main": "主导航", "more": "更多页面"},
+  "nav": {"map": "任务", "book": "Moon Stories Watercolor", "logbook": "日志", "atlas": "星图", "lab": "实验室", "sources": "资料来源", "settings": "设置", "home": "首页", "main": "主导航", "more": "更多页面"},
   "map": {"heading": "追踪信号", "sub": "跨越六十年 NASA 探索历程的八个站点。", "locked": "先完成上一章", "play": "开始", "replay": "重玩", "resume": "继续", "chapter": "第 {{n}} 章", "progress": "已完成 {{done}} / {{total}} 章"},
   "dialogue": {"next": "下一步", "back": "返回", "skip": "跳过场景"},
   "mission": {"start": "开始任务", "retry": "再试一次", "skip": "跳过任务", "continue": "继续", "objective": "任务", "hint": "提示", "failed": "这次还没成功", "complete": "任务完成", "no3d": "此任务需要 3D 图形，但该功能已关闭或无法在此设备上使用。你可以在设置中开启，或跳过任务。"},

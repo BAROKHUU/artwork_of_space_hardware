@@ -1,0 +1,16 @@
+{
+  "local_references": "PASS",
+  "javascript_syntax": "PASS",
+  "supplied_images_unchanged": 15,
+  "used_images": [
+    "assets/images/12.jpg",
+    "assets/images/17.jpg",
+    "assets/images/18.jpg",
+    "assets/images/22.jpg",
+    "assets/images/chucuoi.png",
+    "assets/images/rover.png",
+    "assets/images/thongoc.png"
+  ],
+  "browser_used": false,
+  "image_generation_used_in_this_integration": false
+}
