@@ -1,4 +1,4 @@
-# Find You in the Universe — MoonTales
+# Find U in the Youniverse — MoonTales
 
 Old roots hold tight; new dreams take flight.
 
