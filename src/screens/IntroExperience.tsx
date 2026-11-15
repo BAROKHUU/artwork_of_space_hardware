@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Title } from './Title';
 import { mediaUrl } from '../media';
+import { INTRO_SCENES, useGame } from '../state/store';
 
 const authoredScenes = [
   { number: '01', title: 'SCENE 1. OPENING', video: mediaUrl('intro/Video/1.mp4'), text: `In The Moon. Dark. A tiny sound.\n\nNARRATOR: Every night, Uncle Cuội sits under his banyan tree. Everyone knows two things about him: he loves telling stories, and he appears every full moon.\n\nOn the night of the Mid-Autumn Festival, the Moon shone brighter than ever.\n\nBeneath his ancient Banyan Tree, Uncle Cuội was telling the Moon Rabbit an old story.\n\nSuddenly, a tiny sound broke the silence.\n\nMOON RABBIT: Uncle! What’s that sound?\n\nUNCLE CUỘI: (whispering) Tick... tick... Rabbit, I think something is alive out there.\n\nMOON RABBIT: Is this another one of your tall tales?\n\nUNCLE CUỘI: Not this time. Come on!` },
@@ -13,7 +14,7 @@ const authoredScenes = [
 ];
 
 // The 22 visuals are beats inside the seven authored scenes, not new story scenes.
-const videoFiles = Array.from({ length: 22 }, (_, index) => mediaUrl(`intro/Video/${index + 1}.mp4`));
+const videoFiles = Array.from({ length: INTRO_SCENES }, (_, index) => mediaUrl(`intro/Video/${index + 1}.mp4`));
 const beatsPerScene = [3, 3, 3, 3, 4, 4, 2];
 const scenes = videoFiles.flatMap((video, videoIndex) => {
   let offset = 0;
@@ -32,10 +33,20 @@ const scenes = videoFiles.flatMap((video, videoIndex) => {
 });
 
 export function IntroExperience({ directStart = false }: { directStart?: boolean }) {
+  const savedIntro = useGame((s) => s.intro);
+  const setIntroScene = useGame((s) => s.setIntroScene);
+  const finishIntro = useGame((s) => s.finishIntro);
+  // `directStart` is "Read the story again": it always starts at scene 1. Otherwise resume where the reader stopped.
+  const [resumeScene] = useState(() => (directStart ? 0 : savedIntro.scene));
   const [started, setStarted] = useState(directStart);
   const [introductionOpen, setIntroductionOpen] = useState(false);
-  const [activeScene, setActiveScene] = useState(0);
-  const [finished, setFinished] = useState(false);
+  const [activeScene, setActiveScene] = useState(resumeScene);
+  // Someone who has already read the story lands on the title screen instead of the story again.
+  const [finished, setFinished] = useState(() => !directStart && savedIntro.finished);
+  const finish = () => {
+    finishIntro();
+    setFinished(true);
+  };
   const [musicEnabled, setMusicEnabled] = useState(true);
   const musicRef = useRef<HTMLAudioElement>(null);
 
@@ -54,6 +65,15 @@ export function IntroExperience({ directStart = false }: { directStart?: boolean
     music.muted = !musicEnabled;
     if (musicEnabled && started && !finished) void music.play().catch(() => undefined);
   }, [musicEnabled, started, finished]);
+
+  useEffect(() => {
+    if (!started || resumeScene === 0) return;
+    document.getElementById(`story-${scenes[resumeScene].number}`)?.scrollIntoView({ block: 'center' });
+  }, [started, resumeScene]);
+
+  useEffect(() => {
+    if (started && !finished) setIntroScene(activeScene);
+  }, [started, finished, activeScene, setIntroScene]);
 
   useEffect(() => {
     if (!started) return undefined;
@@ -75,8 +95,8 @@ export function IntroExperience({ directStart = false }: { directStart?: boolean
     document.getElementById(`story-${sceneNumber}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   };
 
-  if (!started) return <main className="intro-gate" style={{ backgroundImage: `url("${mediaUrl('intro/Image/8.jpg')}")` }}><div className="intro-gate__glow" /><p className="intro-kicker">A story of NASA’s forgotten machines</p><h1>FIND YOU<br /><em>IN THE UNIVERSE</em></h1><p className="intro-quote">“Old roots hold tight; new dreams take flight”</p><p className="intro-gate__copy">A Vietnamese-inspired journey through NASA's forgotten machines, scientific discoveries, and the dreams of tomorrow's explorers.</p><button className="btn primary big intro-start" type="button" onClick={() => setIntroductionOpen(true)}>Choose how to read <span aria-hidden="true">↓</span></button>{introductionOpen && <div className="legend-modal" role="dialog" aria-modal="true" aria-labelledby="legend-title"><button className="legend-modal__close" type="button" onClick={() => setIntroductionOpen(false)} aria-label="Close introduction">×</button><p className="intro-kicker">Before the moon story begins</p><h2 id="legend-title">The Legend of Cuội on the Moon</h2><div className="legend-modal__rule" /><p>Once upon a time, there was a woodcutter named Cuội. One day, while walking through the forest, he suddenly encountered a tiger cub charging towards him. With no time to escape, he bravely raised his axe and fought the tiger. Since the tiger cub was still young and weaker than a human, Cuội struck it with his axe, and it fell to the ground.</p><p>Just then, the mother tiger returned. Cuội quickly threw down his axe and climbed up a nearby tree. From above, he saw the mother tiger run to a bush nearby, pick some leaves, and chew them before feeding them to her cub. After a short while, the tiger cub began to move, wagged its tail, and miraculously came back to life.</p><p>After the mother tiger had carried her cub away, Cuội went to the bush, dug up the plant by its roots, and took it home.</p><p className="legend-modal__hint">A Vietnamese legend about memory, wonder, and the roots that reach all the way to the Moon.</p><div className="intro-reading-options"><button className="btn primary big" type="button" onClick={() => { setIntroductionOpen(false); setStarted(true); }}>Watch the video story <span aria-hidden="true">→</span></button><a className="btn ghost big" href="/moon-stories-watercolor/index.html">Read the watercolor story <span aria-hidden="true">→</span></a></div></div>}</main>;
   if (finished) return <Title />;
+  if (!started) return <main className="intro-gate" style={{ backgroundImage: `url("${mediaUrl('intro/Image/8.jpg')}")` }}><div className="intro-gate__glow" /><p className="intro-kicker">A story of NASA’s forgotten machines</p><h1>FIND U<br /><em>IN THE YOUNIVERSE</em></h1><button className="btn primary big intro-start" type="button" onClick={() => setIntroductionOpen(true)}>Choose how to read <span aria-hidden="true">↓</span></button><p className="intro-quote">“Old roots hold tight; new dreams take flight”</p><p className="intro-gate__copy">A Vietnamese-inspired journey through NASA's forgotten machines, scientific discoveries, and the dreams of tomorrow's explorers.</p>{introductionOpen && <div className="legend-modal" role="dialog" aria-modal="true" aria-labelledby="legend-title"><button className="legend-modal__close" type="button" onClick={() => setIntroductionOpen(false)} aria-label="Close introduction">×</button><p className="intro-kicker">Before the moon story begins</p><h2 id="legend-title">The Legend of Cuội on the Moon</h2><div className="legend-modal__rule" /><p>Once upon a time, there was a woodcutter named Cuội. One day, while walking through the forest, he suddenly encountered a tiger cub charging towards him. With no time to escape, he bravely raised his axe and fought the tiger. Since the tiger cub was still young and weaker than a human, Cuội struck it with his axe, and it fell to the ground.</p><p>Just then, the mother tiger returned. Cuội quickly threw down his axe and climbed up a nearby tree. From above, he saw the mother tiger run to a bush nearby, pick some leaves, and chew them before feeding them to her cub. After a short while, the tiger cub began to move, wagged its tail, and miraculously came back to life.</p><p>After the mother tiger had carried her cub away, Cuội went to the bush, dug up the plant by its roots, and took it home.</p><p className="legend-modal__hint">A Vietnamese legend about memory, wonder, and the roots that reach all the way to the Moon.</p><div className="intro-reading-options"><button className="btn primary big" type="button" onClick={() => { setIntroductionOpen(false); setStarted(true); }}>Watch the video story <span aria-hidden="true">→</span></button><a className="btn ghost big" href="/moon-stories-watercolor/index.html">Read the watercolor story <span aria-hidden="true">→</span></a></div></div>}</main>;
 
   return <main className="intro-scrollbook">
     <audio ref={musicRef} src={mediaUrl('intro/reading-music.mp3')} preload="auto" aria-label="Story reading music" />
@@ -91,7 +111,7 @@ export function IntroExperience({ directStart = false }: { directStart?: boolean
         <article className="intro-dialogue">
           <p className="intro-scene__number">{scene.number} / 22</p><h2>{scene.title}</h2>
           {scene.text && <div className="intro-scene__text">{scene.text.split('\n').map((line, lineIndex) => <p key={`${scene.number}-${lineIndex}`}>{line || ' '}</p>)}</div>}
-          {index === scenes.length - 1 && <button className="btn primary big" type="button" onClick={() => setFinished(true)}>Keep exploring <span aria-hidden="true">→</span></button>}
+          {index === scenes.length - 1 && <button className="btn primary big" type="button" onClick={finish}>Keep exploring <span aria-hidden="true">→</span></button>}
         </article>
       </section>)}
     </div>

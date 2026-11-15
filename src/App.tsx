@@ -77,7 +77,7 @@ export function App() {
       <Suspense fallback={<div className="loading" role="status">{t('common.loading')}</div>}>
         <Routes>
           <Route path="/" element={<IntroExperience />} />
-          <Route path="/story" element={<IntroExperience directStart />} />
+          <Route path="/story" element={<IntroExperience key="replay" directStart />} />
           <Route path="/home" element={<Title />} />
           <Route path="/map" element={<MapScreen />} />
           <Route path="/book" element={<Book />} />
