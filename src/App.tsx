@@ -6,6 +6,7 @@ import { useGame } from './state/store';
 import { backdropUrl, backdrops, chapterById } from './data';
 import { Settings } from './components/Settings';
 import { ChatBot } from './components/ChatBot';
+import { StoryMenu } from './components/StoryMenu';
 import { Title } from './screens/Title';
 import { MapScreen } from './screens/MapScreen';
 import { Sources } from './screens/Sources';
@@ -34,7 +35,7 @@ function PageBackdrop({ name }: { name: string }) {
 function TopBar() {
   const { t } = useTranslation();
   const update = useGame((s) => s.update);
-  const links = [['/map', 'nav.map'], ['/moon-stories-watercolor/index.html', 'nav.book'], ['/logbook', 'nav.logbook'], ['/progress', 'nav.progress'], ['/atlas', 'nav.atlas'], ['/lab', 'nav.lab'], ['/sources', 'nav.sources']] as const;
+  const links = [['/map', 'nav.map'], ['/logbook', 'nav.logbook'], ['/progress', 'nav.progress'], ['/atlas', 'nav.atlas'], ['/lab', 'nav.lab'], ['/sources', 'nav.sources']] as const;
   return (
     <header className="topbar">
       <NavLink to="/" className="brand" aria-label={t('nav.home')}>
@@ -42,9 +43,9 @@ function TopBar() {
         <span>Moon Stories</span>
       </NavLink>
       <nav aria-label={t('nav.main')}>
-        {links.map(([to, key]) => to.startsWith('/moon-stories-watercolor/')
-          ? <a key={to} href={to}>{t(key)}</a>
-          : <NavLink key={to} to={to}>{t(key)}</NavLink>)}
+        <NavLink to={links[0][0]}>{t(links[0][1])}</NavLink>
+        <StoryMenu />
+        {links.slice(1).map(([to, key]) => <NavLink key={to} to={to}>{t(key)}</NavLink>)}
       </nav>
       <button type="button" className="gear" onClick={() => update({ settingsOpen: true })}>{t('nav.settings')}</button>
     </header>
@@ -55,7 +56,8 @@ export function App() {
   const { t } = useTranslation();
   const language = useGame((s) => s.language);
   const { pathname } = useLocation();
-  const immersive = pathname.startsWith('/chapter') || pathname === '/';
+  // The video story fills the screen and has its own header with an Exit button, so it hides the top bar too.
+  const immersive = pathname.startsWith('/chapter') || pathname === '/' || pathname === '/story';
   const backdrop = backdropFor(pathname);
 
   useEffect(() => {

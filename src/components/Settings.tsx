@@ -44,11 +44,6 @@ export function Settings() {
         </label>
 
         <div className="field">
-          <span>{t('settings.reading')}</span>
-          <strong className="setting-value">{t('settings.schoolAge')}</strong>
-        </div>
-
-        <div className="field">
           <span>{t('settings.quality')}</span>
           <Choice<Quality> label={t('settings.quality')} value={g.quality} onChange={(quality) => g.update({ quality })} options={[{ v: 'high', text: t('settings.high') }, { v: 'low', text: t('settings.low') }, { v: 'off', text: t('settings.off') }]} />
         </div>
@@ -57,6 +52,12 @@ export function Settings() {
           <span>{t('settings.sound')}</span>
           <Choice label={t('settings.sound')} value={g.sound ? 'on' : 'off'} onChange={(v) => g.update({ sound: v === 'on' })} options={onOff} />
         </div>
+
+        <label className="field volume-field">
+          <span>{t('settings.volume')} <b>{Math.round(g.volume * 100)}%</b></span>
+          <input type="range" min={0} max={100} step={5} value={Math.round(g.volume * 100)} onChange={(e) => g.update({ volume: Number(e.target.value) / 100 })} aria-valuetext={`${Math.round(g.volume * 100)}%`} />
+          <small>{t('settings.volumeNote')}</small>
+        </label>
 
         <div className="field">
           <span>{t('settings.explorer')}</span>

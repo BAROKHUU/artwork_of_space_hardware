@@ -8,6 +8,12 @@ import { emptyAssessment, type AssessmentProgress, type ReflectionReview } from 
 export type Quality = 'high' | 'low' | 'off';
 export type Reading = 'young';
 
+/** App-wide volume from 0 (silent) to 1 (full). Saved data can be anything, so fall back to full volume. */
+export const DEFAULT_VOLUME = 1;
+export function normalizeVolume(value: unknown): number {
+  return typeof value === 'number' && Number.isFinite(value) ? Math.min(1, Math.max(0, value)) : DEFAULT_VOLUME;
+}
+
 export interface IntroProgress { scene: number; finished: boolean }
 export const INTRO_SCENES = 22;
 const emptyIntro = (): IntroProgress => ({ scene: 0, finished: false });
@@ -27,6 +33,7 @@ interface GameState {
   quality: Quality;
   reading: Reading;
   sound: boolean;
+  volume: number;
   explorer: boolean;
   settingsOpen: boolean;
   book: BookProgress;
@@ -53,7 +60,7 @@ interface GameState {
   resetMissionFailures: (mission: string) => void;
   setIntroScene: (scene: number) => void;
   finishIntro: () => void;
-  update: (patch: Partial<Pick<GameState, 'language' | 'quality' | 'reading' | 'sound' | 'explorer' | 'settingsOpen' | 'narration'>>) => void;
+  update: (patch: Partial<Pick<GameState, 'language' | 'quality' | 'reading' | 'sound' | 'volume' | 'explorer' | 'settingsOpen' | 'narration'>>) => void;
   reset: () => void;
 }
 
@@ -98,6 +105,7 @@ export const useGame = create<GameState>()(
       quality: 'high',
       reading: 'young',
       sound: true,
+      volume: DEFAULT_VOLUME,
       explorer: false,
       settingsOpen: false,
       setIntroScene: (scene) => {
@@ -165,8 +173,8 @@ export const useGame = create<GameState>()(
         return failures;
       },
       resetMissionFailures: (mission) => set((s) => ({ missionFailures: { ...s.missionFailures, [mission]: 0 } })),
-      update: (patch) => set(patch),
-      reset: () => set({ ...emptyProgress, language: DEFAULT_LANGUAGE, quality: 'high', reading: 'young', sound: true, explorer: false, settingsOpen: false, narration: false, book: emptyBookProgress(), assessment: emptyAssessment(), missionFailures: {}, assistedMissions: {}, intro: emptyIntro() }),
+      update: (patch) => set(patch.volume === undefined ? patch : { ...patch, volume: normalizeVolume(patch.volume) }),
+      reset: () => set({ ...emptyProgress, language: DEFAULT_LANGUAGE, quality: 'high', reading: 'young', sound: true, volume: DEFAULT_VOLUME, explorer: false, settingsOpen: false, narration: false, book: emptyBookProgress(), assessment: emptyAssessment(), missionFailures: {}, assistedMissions: {}, intro: emptyIntro() }),
     }),
     {
       name: 'echo-save',
@@ -208,6 +216,7 @@ export const useGame = create<GameState>()(
           ...current,
           ...saved,
           reading: 'young',
+          volume: normalizeVolume(saved.volume),
           book: normalizeBookProgress(saved.book, chapters.map((chapter) => chapter.id), false),
           intro: normalizeIntro(saved.intro),
           assessment: { ...emptyAssessment(), ...saved.assessment, quizzes: saved.assessment?.quizzes ?? {}, applications: saved.assessment?.applications ?? {}, reflections: saved.assessment?.reflections ?? {} },

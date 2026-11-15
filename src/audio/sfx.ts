@@ -25,11 +25,12 @@ const SOUNDS: Record<string, [number, number, number, OscillatorType, number][]>
 };
 
 export function play(name: keyof typeof SOUNDS) {
-  if (!useGame.getState().sound) return;
+  const { sound, volume } = useGame.getState();
+  if (!sound || volume <= 0) return;
   try {
     ctx ??= new AudioContext();
     if (ctx.state === 'suspended') void ctx.resume();
-    SOUNDS[name].forEach(([f, s, l, t, v]) => tone(f, s, l, t, v));
+    SOUNDS[name].forEach(([f, s, l, t, v]) => tone(f, s, l, t, v * volume));
   } catch {
     /* audio is optional */
   }

@@ -18,6 +18,11 @@
     previous() { this.active?.previous?.(); }
     replay() { this.active?.replay?.(); }
   }
+  // The main app saves its settings under "echo-save"; follow its volume (0-1) so one slider controls both.
+  function appVolume() {
+    try { const v=JSON.parse(localStorage.getItem('echo-save')||'{}')?.state?.volume; return typeof v==='number'&&Number.isFinite(v)?Math.min(1,Math.max(0,v)):1; }
+    catch { return 1; }
+  }
   class AudioController {
     constructor() { this.enabled=false; this.context=null; this.voices=[]; }
     async toggle() {
@@ -33,12 +38,13 @@
     tick() {
       this.stop();
       if(!this.enabled||this.context?.state!=='running') return;
+      const volume=appVolume(); if(volume<=0) return;
       for(let i=0;i<3;i++) {
         const at=this.context.currentTime+i*.48;
         const oscillator=this.context.createOscillator(), gain=this.context.createGain();
         oscillator.type='sine'; oscillator.frequency.setValueAtTime(1050,at);
         oscillator.frequency.exponentialRampToValueAtTime(440,at+.045);
-        gain.gain.setValueAtTime(0,at); gain.gain.linearRampToValueAtTime(.045,at+.003); gain.gain.exponentialRampToValueAtTime(.001,at+.065);
+        gain.gain.setValueAtTime(0,at); gain.gain.linearRampToValueAtTime(.045*volume,at+.003); gain.gain.exponentialRampToValueAtTime(.001*volume,at+.065);
         oscillator.connect(gain); gain.connect(this.context.destination);
         oscillator.onended=()=>{oscillator.disconnect();gain.disconnect();this.voices=this.voices.filter(v=>v!==oscillator);};
         this.voices.push(oscillator); oscillator.start(at); oscillator.stop(at+.08);
