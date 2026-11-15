@@ -24,9 +24,18 @@
   "cuoiPreview": {
     "link": "Meet Cuoi (draft)",
     "title": "Cuoi · character draft",
-    "description": "Drag to rotate and scroll or pinch to zoom. This is an early stylized character study.",
+    "description": "Drag to rotate. Use the buttons to switch between the face and the full body.",
     "face": "Face",
-    "full": "Full body"
+    "full": "Full body",
+    "scrollCue": "Scroll down to read the legend",
+    "legend": {
+      "eyebrow": "Vietnamese folk tale",
+      "title": "The Legend of Uncle Cuội on the Moon",
+      "p1": "Once upon a time, a kind woodcutter named Cuội found a magical banyan tree deep in the forest. He discovered its secret when he saw a mother tiger chew the tree’s leaves to heal her hurt cub! Cuội dug up the magic tree, planted it in his garden, and used its leaves to save many sick people and animals—including a kind girl who became his wife.",
+      "p2": "The magic tree had only one important rule: it could only drink clean well water. If dirty water ever touched its roots, the tree would fly straight up into the sky!",
+      "p3": "Later, Cuội’s wife had a terrible accident. Cuội saved her life using the magic leaves and a bit of clay, which worked—except it left her super forgetful. One afternoon, while Cuội was away gathering firewood, his wife completely forgot the golden rule and poured dirty water onto the tree's roots!",
+      "p4": "Whoosh! The ground shook, and the magic tree pulled its roots out of the dirt and began floating toward the clouds. Cuội ran back just in time and grabbed onto the roots to pull it down, refusing to let go. The tree was too strong, and it carried Cuội all the way up to the Moon! That is why, whenever you look up at a bright full moon, you can still see the shadowy shape of Cuội sitting beneath his magical tree."
+    }
   },
   "book": {
     "previous": "Previous page",

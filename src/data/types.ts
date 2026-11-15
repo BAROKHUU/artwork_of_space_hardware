@@ -9,7 +9,7 @@ export type ModelId = 'ranger' | 'surveyor' | 'descent' | 'lrrr' | 'lrv' | 'pion
 
 /** Which journey a chapter belongs to. Moon chapters are the main story; archive chapters are optional. */
 export type Arc = 'moon' | 'archive';
-export type DriveVehicle = 'echo' | 'lrv';
+export type DriveVehicle = 'lrv' | 'mer';
 
 export interface Hardware {
   id: string;
@@ -34,8 +34,10 @@ export interface DriveConfig {
   tether?: number;
   prop?: { model: ModelId; x: number; z: number };
   battery?: BatteryParams;
-  /** Which body the player drives. Defaults to Echo. */
+  /** Which NASA rover the player drives. Defaults to the Lunar Roving Vehicle. */
   vehicle?: DriveVehicle;
+  /** Cuội walks beside the Lunar Roving Vehicle on the Moon unless this is false. */
+  cuoi?: boolean;
 }
 
 export interface LandingConfig {

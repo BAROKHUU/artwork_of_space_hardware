@@ -6,7 +6,6 @@ import type { DriveConfig } from '../data/types';
 import { emptyContact, resolveCollisions, scatterRocks, solidRocks, type Obstacle } from '../sim/obstacles';
 import { makeTerrain, type Terrain } from '../sim/terrain';
 import { dustLevel, stepBattery, sunlight } from '../sim/rover';
-import { KaraokeNhacTre } from '../three/Echo';
 import { Tracks, WheelDust } from '../three/RoverFx';
 import { GameCanvas } from '../three/GameCanvas';
 import { HardwareModel } from '../three/models';
@@ -20,10 +19,9 @@ const WORLD_LIMIT = 118;
 const SCAN_SECONDS = 0.9;
 const WAKE_LEVEL = 12;
 
-export type LabVehicle = 'echo' | 'sojourner' | 'mer' | 'curiosity' | 'lrv';
+export type LabVehicle = 'sojourner' | 'mer' | 'curiosity' | 'lrv';
 export type LabCamera = 'chase' | 'high' | 'cockpit';
 const VEHICLES: Record<LabVehicle, { radius: number; track: number; camera: number; eye: number }> = {
-  echo: { radius: 0.9, track: 0.62, camera: 1, eye: 1.9 },
   sojourner: { radius: 1, track: 0.78, camera: 0.85, eye: 1.5 },
   mer: { radius: 1.5, track: 0.95, camera: 1.15, eye: 2.5 },
   curiosity: { radius: 1.8, track: 1.27, camera: 1.35, eye: 3.4 },
@@ -109,7 +107,6 @@ const CHASE_DISTANCE = Math.hypot(5.2, 11);
 function Rover({ missionId, config, terrain, obstacles, keys, pad, light, arrow, hud, onFinish, frozen, vehicle, sun, cameraMode, look: lookOffset }: RoverProps) {
   const specs = VEHICLES[vehicle];
   const axes = useMemo(() => sunAxes(sun), [sun]);
-  const wheelAngle = useRef(0);
   const ref = useRef<THREE.Group>(null);
   const sim = useRef({ x: config.start.x, z: config.start.z, heading: 0, speed: 0, index: 0, scan: 0, battery: 100, t: 0, asleep: false, hudAt: 0, done: false, tethered: false, odometer: 0 });
   const camPos = useRef(new THREE.Vector3(config.start.x, 8, config.start.z + 14));
@@ -119,6 +116,7 @@ function Rover({ missionId, config, terrain, obstacles, keys, pad, light, arrow,
   const cuoiWorking = useRef(false);
   const cuoiMoving = useRef(false);
   const cuoiRef = useRef<THREE.Group>(null);
+  const withCuoi = config.world === 'moon' && vehicle === 'lrv' && config.cuoi !== false;
   const cuoiPosition = useRef(new THREE.Vector3(config.start.x + specs.radius + 1.1, terrain.heightAt(config.start.x + specs.radius + 1.1, config.start.z) + 0.08, config.start.z));
   const cuoiRotation = useRef(0);
 
@@ -152,7 +150,6 @@ function Rover({ missionId, config, terrain, obstacles, keys, pad, light, arrow,
       const drive = s.asleep || atSample ? 0 : forward ? 1 : back ? -0.55 : 0;
       const maxSpeed = missionId === 'm2_collect' ? 2.2 : 11;
       s.speed += (drive * maxSpeed - s.speed) * damp(atSample ? 7 : 2.6, dt);
-      wheelAngle.current += (s.speed * dt) / 0.34;
       s.odometer += Math.abs(s.speed) * dt;
       if (!s.asleep) s.heading += ((left ? 1 : 0) - (right ? 1 : 0)) * dt * (1.9 - Math.min(0.7, Math.abs(s.speed) * 0.05));
 
@@ -294,14 +291,10 @@ function Rover({ missionId, config, terrain, obstacles, keys, pad, light, arrow,
 
   return (
     <>
-      {vehicle === 'echo' ? (
-        <KaraokeNhacTre ref={ref} wheelAngle={wheelAngle} />
-      ) : (
-        <group ref={ref}>
-          <HardwareModel id={vehicle} />
-        </group>
-      )}
-      {config.world === 'moon' && vehicle === 'lrv' && <group ref={cuoiRef}><MoonCuoi scale={0.72} workingRef={cuoiWorking} movingRef={cuoiMoving} /></group>}
+      <group ref={ref}>
+        <HardwareModel id={vehicle} />
+      </group>
+      {withCuoi && <group ref={cuoiRef}><MoonCuoi scale={0.72} workingRef={cuoiWorking} movingRef={cuoiMoving} /></group>}
       <Tracks motion={sim} terrain={terrain} halfWidth={specs.track} world={config.world} />
       <WheelDust motion={sim} terrain={terrain} halfWidth={specs.track} world={config.world} />
       {config.targets.map((t, i) => (
@@ -361,7 +354,7 @@ function DriveHud({ id, config, lab, channel, arrow }: { id: string; config: Dri
   );
 }
 
-export function DriveMission({ id, config, onResult, lab, vehicle = 'echo', sun = SUN_OFFSET, cameraMode = 'chase' }: MissionProps<DriveConfig> & { vehicle?: LabVehicle; sun?: THREE.Vector3; cameraMode?: LabCamera }) {
+export function DriveMission({ id, config, onResult, lab, vehicle = 'lrv', sun = SUN_OFFSET, cameraMode = 'chase' }: MissionProps<DriveConfig> & { vehicle?: LabVehicle; sun?: THREE.Vector3; cameraMode?: LabCamera }) {
   const { t } = useTranslation();
   const quality = useGame((s) => s.quality);
   const keys = useKeys();

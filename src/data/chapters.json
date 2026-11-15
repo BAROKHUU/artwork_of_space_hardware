@@ -34,7 +34,9 @@
               "z": -66
             }
           ],
-          "radius": 5
+          "radius": 5,
+          "vehicle": "lrv",
+          "cuoi": false
         }
       },
       {
@@ -182,7 +184,9 @@
             "model": "descent",
             "x": 9,
             "z": 7
-          }
+          },
+          "vehicle": "lrv",
+          "cuoi": false
         }
       },
       {
@@ -261,7 +265,9 @@
             }
           ],
           "radius": 5,
-          "tether": 86
+          "tether": 86,
+          "vehicle": "lrv",
+          "cuoi": false
         }
       },
       {
@@ -364,7 +370,7 @@
             "g": 3.71,
             "thrust": 7.5,
             "burn": 1,
-            "drag": 0.00002,
+            "drag": 2e-05,
             "chuteDrag": 0.001
           }
         }
@@ -394,7 +400,7 @@
             "g": 3.71,
             "thrust": 7.5,
             "burn": 1,
-            "drag": 0.00002,
+            "drag": 2e-05,
             "chuteDrag": 0.001
           }
         }
@@ -486,7 +492,8 @@
             "chargePerSecond": 5,
             "solLength": 44,
             "stormAt": 130
-          }
+          },
+          "vehicle": "mer"
         }
       },
       {
@@ -528,7 +535,8 @@
             "chargePerSecond": 5,
             "solLength": 48,
             "stormAt": 190
-          }
+          },
+          "vehicle": "mer"
         }
       },
       {
@@ -556,7 +564,7 @@
             "g": 3.71,
             "thrust": 7.5,
             "burn": 1,
-            "drag": 0.00002,
+            "drag": 2e-05,
             "chuteDrag": 0.001
           }
         }

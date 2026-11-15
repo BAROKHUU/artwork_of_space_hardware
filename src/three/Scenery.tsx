@@ -9,7 +9,6 @@ import { radialGlow } from './Plume';
 import { makeTerrain, type Terrain } from '../sim/terrain';
 import { useGame } from '../state/store';
 import type { ModelId, Surface, World } from '../data/types';
-import { KaraokeNhacTre } from './Echo';
 import { HardwareModel } from './models';
 import { prefersReducedMotion } from './GameCanvas';
 
@@ -366,8 +365,8 @@ export function Rocks({ rocks, world }: { rocks: Rock[]; world: Surface }) {
 
 function SlowOrbit({ radius, height, target }: { radius: number; height: number; target: number }) {
   useFrame((state) => {
-    // A gentle sway, not a full circle, so Echo never drifts in front of the machine.
-    const a = 0.7 + (prefersReducedMotion() ? 0 : Math.sin(state.clock.elapsedTime * 0.13) * 0.32);
+    // A gentle sway, not a full circle, so the camera never swings behind the scene.
+    const a = 0.7 + (prefersReducedMotion() ? 0 : Math.sin(state.clock.elapsedTime * 0.13) * 0.12);
     state.camera.position.set(Math.sin(a) * radius, height, Math.cos(a) * radius);
     state.camera.lookAt(0, target, 0);
   });
@@ -393,8 +392,8 @@ export function DeepSpace() {
   );
 }
 
-/** A slowly orbiting scene behind dialogue: the machine in focus, with Echo beside it. */
-export function Diorama({ world, model, showEcho = true }: { world: World; model: ModelId | null; showEcho?: boolean }) {
+/** A slowly orbiting scene: the machine in focus, or the Lunar Roving Vehicle when none is given. */
+export function Diorama({ world, model }: { world: World; model: ModelId | null }) {
   const terrain = useMemo(() => (world === 'deep' ? null : makeTerrain({ seed: 77, size: 110, amplitude: world === 'moon' ? 3 : 4.5, craterCount: world === 'moon' ? 22 : 6, flat: [{ x: 0, z: 0, r: 9 }] })), [world]);
   const rocks = useMemo(() => (terrain ? scatterRocks(terrain, 60, 5, [{ x: 0, z: 0, r: 7 }]) : []), [terrain]);
   if (world === 'deep') {
@@ -402,7 +401,7 @@ export function Diorama({ world, model, showEcho = true }: { world: World; model
       <>
         <DeepSpace />
         <SlowOrbit radius={7.6} height={1.2} target={0.2} />
-        <Drift>{model ? <HardwareModel id={model} /> : <KaraokeNhacTre position={[0, 0, 0]} />}</Drift>
+        <Drift><HardwareModel id={model ?? 'lrv'} /></Drift>
       </>
     );
   }
@@ -412,9 +411,8 @@ export function Diorama({ world, model, showEcho = true }: { world: World; model
       <Lights world={world} />
       <TerrainMesh terrain={terrain!} world={world} />
       <Rocks rocks={rocks} world={world} />
-      <SlowOrbit radius={model ? 10.5 : 6.5} height={model ? 3.2 : 2.6} target={model ? 0.3 : 0.5} />
-      {model && <HardwareModel id={model} />}
-      {showEcho && <KaraokeNhacTre position={model ? [-3.9, 0, 3.2] : [0, 0, 0]} rotation={[0, model ? -2.2 : 0.6, 0]} />}
+      <SlowOrbit radius={model ? 10.5 : 8.4} height={model ? 3.2 : 2.8} target={model ? 0.3 : 0.6} />
+      {model ? <HardwareModel id={model} /> : <group rotation={[0, 0.6, 0]}><HardwareModel id="lrv" /></group>}
     </>
   );
 }
