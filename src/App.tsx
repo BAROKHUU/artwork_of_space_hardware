@@ -1,12 +1,11 @@
 import { Suspense, lazy, useEffect, type CSSProperties } from 'react';
-import { NavLink, Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, NavLink, Route, Routes, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { setLanguage } from './i18n';
 import { useGame } from './state/store';
 import { backdropUrl, backdrops, chapterById } from './data';
 import { Settings } from './components/Settings';
 import { ChatBot } from './components/ChatBot';
-import { StoryMenu } from './components/StoryMenu';
 import { IntroExperience } from './screens/IntroExperience';
 
 const Title = lazy(() => import('./screens/Title').then((m) => ({ default: m.Title })));
@@ -18,7 +17,7 @@ const Logbook = lazy(() => import('./screens/Logbook').then((m) => ({ default: m
 const Atlas = lazy(() => import('./screens/Atlas').then((m) => ({ default: m.Atlas })));
 const Lab = lazy(() => import('./screens/Lab').then((m) => ({ default: m.Lab })));
 const CuoiPreview = lazy(() => import('./screens/CuoiPreview'));
-const Book = lazy(() => import('./screens/Book').then((m) => ({ default: m.Book })));
+const StoryScreen = lazy(() => import('./screens/StoryScreen').then((m) => ({ default: m.StoryScreen })));
 
 /** The title screen has its own 3D scene; chapters take their backdrop from the world they visit. */
 function backdropFor(pathname: string): string | null {
@@ -35,7 +34,7 @@ function PageBackdrop({ name }: { name: string }) {
 function TopBar() {
   const { t } = useTranslation();
   const update = useGame((s) => s.update);
-  const links = [['/map', 'nav.map'], ['/logbook', 'nav.logbook'], ['/progress', 'nav.progress'], ['/atlas', 'nav.atlas'], ['/lab', 'nav.lab'], ['/sources', 'nav.sources']] as const;
+  const links = [['/story', 'nav.story'], ['/map', 'nav.map'], ['/logbook', 'nav.logbook'], ['/progress', 'nav.progress'], ['/atlas', 'nav.atlas'], ['/lab', 'nav.lab'], ['/sources', 'nav.sources']] as const;
   return (
     <header className="topbar">
       <NavLink to="/" className="brand" aria-label={t('nav.home')}>
@@ -43,9 +42,7 @@ function TopBar() {
         <span>Moon Stories</span>
       </NavLink>
       <nav aria-label={t('nav.main')}>
-        <NavLink to={links[0][0]}>{t(links[0][1])}</NavLink>
-        <StoryMenu />
-        {links.slice(1).map(([to, key]) => <NavLink key={to} to={to}>{t(key)}</NavLink>)}
+        {links.map(([to, key]) => <NavLink key={to} to={to}>{t(key)}</NavLink>)}
       </nav>
       <button type="button" className="gear" onClick={() => update({ settingsOpen: true })}>{t('nav.settings')}</button>
     </header>
@@ -55,9 +52,9 @@ function TopBar() {
 export function App() {
   const { t } = useTranslation();
   const language = useGame((s) => s.language);
-  const { pathname } = useLocation();
-  // The video story fills the screen and has its own header with an Exit button, so it hides the top bar too.
-  const immersive = pathname.startsWith('/chapter') || pathname === '/' || pathname === '/story';
+  const { pathname, search } = useLocation();
+  // Once a story mode is chosen it fills the screen and has its own Exit control; the mode picker keeps the top bar.
+  const immersive = pathname.startsWith('/chapter') || pathname === '/' || (pathname === '/story' && new URLSearchParams(search).has('mode'));
   const backdrop = backdropFor(pathname);
 
   useEffect(() => {
@@ -79,10 +76,11 @@ export function App() {
       <Suspense fallback={<div className="loading" role="status">{t('common.loading')}</div>}>
         <Routes>
           <Route path="/" element={<IntroExperience />} />
-          <Route path="/story" element={<IntroExperience key="replay" directStart />} />
+          <Route path="/story" element={<StoryScreen />} />
           <Route path="/home" element={<Title />} />
           <Route path="/map" element={<MapScreen />} />
-          <Route path="/book" element={<Book />} />
+          {/* The old book page told the same story; keep old links working. */}
+          <Route path="/book" element={<Navigate to="/story" replace />} />
           <Route path="/chapter/:id" element={<Chapter />} />
           <Route path="/logbook" element={<Logbook />} />
           <Route path="/atlas" element={<Atlas />} />

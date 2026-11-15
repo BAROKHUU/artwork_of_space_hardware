@@ -35,13 +35,7 @@
   },
   "nav": {
     "story": "Câu chuyện",
-    "storyMenu": "Chọn cách xem câu chuyện",
-    "storyVideo": "Truyện video",
-    "storyVideoNote": "Cuộn qua 22 cảnh động có nhạc nền",
-    "storyWatercolor": "Sách truyện màu nước",
-    "storyWatercolorNote": "Lật từng trang sách tranh vẽ",
     "map": "Nhiệm vụ",
-    "book": "Moon Stories Watercolor",
     "logbook": "Nhật ký",
     "atlas": "Bản đồ",
     "lab": "Phòng thí nghiệm",
@@ -52,6 +46,26 @@
     "more": "Các trang khác",
     "progress": "Learning",
     "archive": "Archive"
+  },
+  "storyModes": {
+    "kicker": "Một câu chuyện, hai cách xem",
+    "title": "Chọn chế độ đọc truyện",
+    "sub": "Chú Cuội, Thỏ Ngọc và ROVER kể cùng một câu chuyện trên Mặt Trăng ở cả hai chế độ. Hãy chọn cách bạn thích.",
+    "watercolor": {
+      "tag": "Tranh vẽ · cuộn theo nhịp của bạn",
+      "name": "Sách tranh màu nước",
+      "desc": "Cuộn qua 22 trang tranh vẽ tay với phụ đề lớn, dễ đọc."
+    },
+    "lantern": {
+      "tag": "Hoạt hình · có nhạc nền",
+      "name": "Đèn kéo quân",
+      "desc": "Như chiếc đèn kéo quân đêm Trung Thu: 22 cảnh chuyển động có nhạc, đọc cùng lời thoại."
+    },
+    "start": "Bắt đầu đọc",
+    "switch": "Đổi chế độ",
+    "exit": "Thoát truyện",
+    "musicOn": "Bật nhạc nền",
+    "musicOff": "Tắt nhạc nền"
   },
   "map": {
     "heading": "Lần theo tín hiệu",
