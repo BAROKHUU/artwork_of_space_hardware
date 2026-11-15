@@ -18,7 +18,8 @@
     "knowledge:index": "node --experimental-strip-types --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/index-knowledge.mjs",
     "start:api": "node --experimental-strip-types --env-file-if-exists=.env --env-file-if-exists=.env.local server/start.ts",
     "qdrant:upload": "node --experimental-strip-types --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/upload-qdrant.mjs",
-    "knowledge:crawl": "node scripts/crawl-knowledge.mjs"
+    "knowledge:crawl": "node scripts/crawl-knowledge.mjs",
+    "media:upload": "node --env-file-if-exists=.env --env-file-if-exists=.env.local scripts/upload-cloudinary.mjs"
   },
   "devDependencies": {
     "@types/node": "^26.6.6",
