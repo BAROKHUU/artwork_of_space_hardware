@@ -37,6 +37,9 @@ const scenes = videoFiles.flatMap((video, videoIndex) => {
   return [{ number: String(videoIndex + 1).padStart(2, '0'), title: scene.title, video, text: paragraphs.slice(start, end).join('\n\n') }];
 });
 
+/** Background music sits well under narration; the Settings volume scales it. */
+const MUSIC_LEVEL = 0.34;
+
 export function IntroExperience({ directStart = false }: { directStart?: boolean }) {
   const savedIntro = useGame((s) => s.intro);
   const setIntroScene = useGame((s) => s.setIntroScene);
@@ -62,16 +65,20 @@ export function IntroExperience({ directStart = false }: { directStart?: boolean
     else setFinished(true);
   };
   const [musicEnabled, setMusicEnabled] = useState(true);
+  const volume = useGame((s) => s.volume);
   const musicRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     const music = musicRef.current;
     if (!started || finished || !music) return undefined;
-    music.volume = 0.34;
     music.loop = true;
     void music.play().catch(() => setMusicEnabled(false));
     return () => { music.pause(); music.currentTime = 0; };
   }, [started, finished]);
+
+  useEffect(() => {
+    if (musicRef.current) musicRef.current.volume = MUSIC_LEVEL * volume;
+  }, [volume, started, finished]);
 
   useEffect(() => {
     const music = musicRef.current;

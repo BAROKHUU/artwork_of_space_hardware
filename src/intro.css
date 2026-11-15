@@ -50,7 +50,7 @@
 .intro-exit:hover { transform: translateY(-2px); background: #F7EDC8; }
 .intro-exit:focus-visible { outline: 3px solid #FFF9E3; outline-offset: 3px; }
 .intro-exit span { font-size: 13px; letter-spacing: 0; }
-.intro-filmstrip { position: fixed; z-index: 11; top: 52px; left: 50%; display: flex; width: min(70vw, 860px); gap: 7px; padding: 8px; transform: translateX(-50%); overflow-x: auto; border: 1px solid rgba(255,255,255,.22); border-radius: 999px; background: rgba(20, 14, 29, .2); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); scrollbar-width: none; }
+.intro-filmstrip { position: fixed; z-index: 11; top: 70px; left: 50%; display: flex; width: min(70vw, 860px); gap: 7px; padding: 8px; transform: translateX(-50%); overflow-x: auto; border: 1px solid rgba(255,255,255,.22); border-radius: 999px; background: rgba(20, 14, 29, .2); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); scrollbar-width: none; }
 .intro-filmstrip::-webkit-scrollbar { display: none; }
 .intro-filmstrip a { position: relative; flex: 0 0 42px; height: 28px; overflow: hidden; border: 1px solid rgba(255,255,255,.25); border-radius: 5px; opacity: .62; transition: opacity .2s, transform .2s, border-color .2s; }
 .intro-filmstrip img { width: 100%; height: 100%; object-fit: cover; }
@@ -58,9 +58,10 @@
 .intro-filmstrip a:hover, .intro-filmstrip a.is-active { opacity: 1; border-color: #f0b9ac; transform: translateY(-2px); }
 .intro-scrollbook__steps { position: relative; z-index: 1; width: min(44vw, 620px); margin-left: 50vw; padding: 12vh 0 18vh; }
 .intro-step { min-height: 145vh; display: flex; align-items: flex-end; justify-content: center; padding: 8vh 5vw 20vh; }
-.intro-dialogue { width: min(100%, 540px); padding: 24px 28px 28px; background: rgba(18, 13, 27, .02); border: 1px solid rgba(255, 255, 255, .08); border-right: 0; border-left: 0; border-radius: 12px; box-shadow: 0 8px 28px rgba(7, 5, 14, .06); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); text-align: left; }
+/* A dark, blurred card keeps the story text readable over bright watercolor frames. */
+.intro-dialogue { width: min(100%, 560px); padding: 26px 30px 30px; background: rgba(18, 13, 27, .74); border: 1px solid rgba(255, 232, 205, .18); border-radius: 16px; box-shadow: 0 18px 50px rgba(7, 5, 14, .45); backdrop-filter: blur(14px) saturate(120%); -webkit-backdrop-filter: blur(14px) saturate(120%); text-align: left; }
 .intro-dialogue h2 { margin: 12px 0 24px; color: #ffd2c1; font-size: clamp(26px, 3vw, 42px); line-height: .98; text-shadow: 0 3px 14px rgba(12, 7, 18, .95); }
-.intro-dialogue .intro-scene__text { color: #fffaf5; font: 18px/1.58 Georgia, serif; text-shadow: 0 2px 10px rgba(12, 7, 18, .92), 0 0 2px rgba(12, 7, 18, .8); }
+.intro-dialogue .intro-scene__text { color: #fffaf5; font: 18px/1.62 Georgia, serif; text-shadow: 0 1px 2px rgba(12, 7, 18, .7); }
 .intro-dialogue .intro-scene__number, .intro-dialogue h2 { text-shadow: 0 3px 14px rgba(12, 7, 18, .95); }
 .intro-dialogue .intro-scene__text p { min-height: 1.2em; margin: 0 0 4px; }
 .intro-dialogue .intro-scene__text p:has(+ p:empty) { margin-bottom: 14px; }
@@ -71,7 +72,7 @@
 .intro-finale .btn { }
 @media (max-width: 760px) {
   .intro-sample-header span:first-child { max-width: 13ch; }
-  .intro-filmstrip { top: 52px; width: calc(100vw - 24px); }
+  .intro-filmstrip { top: 64px; width: calc(100vw - 24px); }
   .intro-scrollbook__steps { width: 100%; margin-left: 0; padding: 10vh 0 12vh; }
   .intro-step { min-height: 130vh; padding: 8vh 5vw 18vh; align-items: flex-end; }
   .intro-dialogue { padding: 20px; }

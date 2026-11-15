@@ -174,6 +174,8 @@ export function StoryBook({ chapter, sections, mode, activeSectionId, onContinue
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(`${t(`story:speakers.${currentLine.who}`)}. ${currentLine.text}`);
     utterance.lang = document.documentElement.lang || 'en';
+    // Read once per line, so moving the volume slider doesn't restart the sentence.
+    utterance.volume = useGame.getState().volume;
     window.speechSynthesis.speak(utterance);
     return () => window.speechSynthesis.cancel();
   }, [currentLine, narration, t]);
