@@ -5,6 +5,27 @@
     "era": "Today",
     "beats": [
       {
+        "kind": "mission",
+        "id": "ch0_landing",
+        "template": "landing",
+        "config": {
+          "world": "moon",
+          "vehicle": "surveyor",
+          "objective": "touchdown",
+          "alt": 260,
+          "vel": -30,
+          "fuel": 30,
+          "safe": 3,
+          "params": {
+            "g": 1.62,
+            "thrust": 4.2,
+            "burn": 1,
+            "drag": 0,
+            "chuteDrag": 0
+          }
+        }
+      },
+      {
         "kind": "dialogue",
         "key": "intro",
         "focus": "echo"
@@ -16,23 +37,12 @@
         "config": {
           "world": "moon",
           "seed": 11,
-          "start": {
-            "x": 0,
-            "z": 0
-          },
+          "vehicle": "lrv",
+          "start": { "x": 0, "z": 0 },
           "targets": [
-            {
-              "x": 0,
-              "z": -26
-            },
-            {
-              "x": 24,
-              "z": -48
-            },
-            {
-              "x": -14,
-              "z": -66
-            }
+            { "x": 0, "z": -26 },
+            { "x": 24, "z": -48 },
+            { "x": -14, "z": -66 }
           ],
           "radius": 5,
           "vehicle": "lrv",

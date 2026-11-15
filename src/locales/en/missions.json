@@ -1,4 +1,12 @@
 {
+  "ch0_landing": {
+    "title": "Land the Lunar Rover",
+    "goal": "Guide the lunar vehicle down and touch the Moon gently at less than {{safe}} m/s.",
+    "hint": "Wait until the surface gets close, then use short engine burns. Your first safe landing begins the journey.",
+    "success": "Touchdown! The lunar vehicle has reached the Moon safely.",
+    "fail_crash": "The vehicle landed too fast at {{speed}} m/s. Try a gentler burn.",
+    "fail_fuel": "The engines ran out before touchdown. Save fuel and burn later."
+  },
   "ch0_boot": {
     "title": "Wheel Check",
     "goal": "Drive to all three test beacons.",
@@ -29,7 +37,7 @@
     "right": "Safest choice: this site has the fewest hazards.",
     "wrong": "Risky! Site {{letter}} has fewer hazards.",
     "next": "Next area",
-    "note": "Practice images, generated for this game."
+    "note": "Study the real lunar surface images and choose the safest place to land."
   },
   "ch1_landing": {
     "title": "Soft Landing",

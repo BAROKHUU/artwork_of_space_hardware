@@ -22,9 +22,11 @@
     "archive": "Archive"
   },
   "cuoiPreview": {
-    "link": "Meet Cuoi",
-    "title": "Cuoi · character",
-    "description": "Drag to rotate. Use the buttons to switch between the face and the full body.",
+
+    "link": "Meet Cuội",
+    "title": "Uncle Cuội",
+    "description": "Drag to rotate and scroll or pinch to zoom. This is an early stylized character study.",
+
     "face": "Face",
     "full": "Full body",
     "scrollCue": "Scroll down to read the legend",

@@ -10,14 +10,16 @@ gsap.registerPlugin(useGSAP);
 
 const TitleScene = lazy(() => import('./TitleScene'));
 
-export function Title() {
+export function Title({ centered = false }: { centered?: boolean }) {
   const { t } = useTranslation();
   const completed = useGame((s) => s.completed);
   const beat = useGame((s) => s.beat);
   const update = useGame((s) => s.update);
   const root = useRef<HTMLElement>(null);
   const started = moonChapters.some((chapter) => completed[chapter.id] || (beat[chapter.id] ?? 0) > 0);
+  const openingComplete = Boolean(completed.ch0);
   const nextChapter = moonChapters.find((chapter) => !completed[chapter.id]) ?? moonChapters[0];
+  const journeyHref = openingComplete ? `/chapter/${nextChapter.id}` : '/chapter/ch0';
 
   useGSAP(
     () => {
@@ -29,7 +31,7 @@ export function Title() {
   );
 
   return (
-    <main className="title" ref={root}>
+    <main className={`title${centered ? ' title-centered' : ''}`} ref={root}>
       <div className="title-scene">
         <Suspense fallback={null}>
           <TitleScene />
@@ -44,10 +46,11 @@ export function Title() {
         <p className="title-sub reveal">{t('app.subtitle')}</p>
         <p className="title-hook reveal">{t('app.hook')}</p>
         <div className="row reveal">
-          <Link className="btn primary big" to={started ? `/chapter/${nextChapter.id}` : '/chapter/m1'}>{started ? t('app.continue') : t('app.begin')}</Link>
+          <Link className="btn primary big" to={journeyHref}>{started ? t('app.continue') : t('app.begin')}</Link>
           <Link className="btn ghost big" to="/map">{t('nav.map')}</Link>
         </div>
         <nav className="title-links reveal" aria-label={t('nav.more')}>
+          <Link to="/story" className="title-replay">Read the story again</Link>
           <Link to="/book">{t('nav.book')}</Link>
           <Link to="/logbook">{t('nav.logbook')}</Link>
           <Link to="/atlas">{t('nav.atlas')}</Link>

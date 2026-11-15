@@ -232,7 +232,7 @@ input[type='range'] { width: 100%; accent-color: var(--orange); height: 28px; }
 .board-q { font-size: 21px; }
 .site-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
 .site { padding: 0; background: var(--panel); border: 3px solid var(--line); }
-.site svg { display: block; width: 100%; }
+.site img { display: block; width: 100%; aspect-ratio: 1 / 1; object-fit: cover; }
 .site span { display: block; padding: 7px; font-family: var(--mono); font-size: 15px; }
 .site:hover:not(:disabled) { border-color: var(--ink); }
 .right { border-color: var(--teal) !important; background: rgba(55, 230, 192, .14) !important; }
@@ -457,10 +457,11 @@ dialog.settings { width: min(500px, calc(100% - 24px)); padding: 24px; }
   .topbar nav { order: 3; flex-basis: 100%; }
   .brand { flex: 1; }
   .title-scene::after { background: linear-gradient(0deg, rgba(7, 8, 13, .96) 40%, rgba(7, 8, 13, .1) 80%); }
-  .title { align-items: flex-end; }
-  .title-copy { width: 100%; padding: 24px 16px; }
-  .title h1 { font-size: clamp(36px, min(11vw, 9vh), 72px); }
+  .title-copy { width: 100%; padding: 28px 16px; }
+  .title h1 { width: min(86vw, 360px); font-size: clamp(48px, 14vw, 76px); }
   .title-hook { font-size: 16px; }
+  .title-links { gap: 10px 14px; margin-top: 2px; }
+  .title-links a, .title-links button { font-size: 13px; }
   .trail { grid-template-columns: 1fr; }
   .stop { min-height: 250px; }
   .site-grid { grid-template-columns: repeat(2, 1fr); }
