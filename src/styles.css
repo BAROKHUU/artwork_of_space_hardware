@@ -58,6 +58,7 @@ button:disabled { cursor: default; }
 /* Top bar */
 .topbar { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 28px; padding: 12px 28px; background: #07080d; border-bottom: 1px solid var(--line); }
 .brand { display: flex; align-items: center; gap: 9px; text-decoration: none; font: 800 19px var(--display); font-stretch: 125%; letter-spacing: .08em; }
+.brand-logo { width: 30px; height: 30px; object-fit: contain; border-radius: 50%; filter: drop-shadow(0 0 8px rgba(240, 185, 172, .3)); }
 .brand i { width: 16px; height: 16px; border: 3px solid var(--orange); border-radius: 50%; }
 .topbar nav { display: flex; gap: 4px; flex: 1; overflow-x: auto; }
 .topbar nav a { padding: 8px 13px; text-decoration: none; color: var(--dim); border-radius: 3px; white-space: nowrap; }

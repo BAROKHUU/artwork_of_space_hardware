@@ -1,0 +1,38 @@
+[
+  {
+    "file": "assets\\characters\\cuoi\\cuoi_stand.webp",
+    "source": "chucuoi.png",
+    "crop": [
+      0,
+      0,
+      463,
+      895
+    ],
+    "dimensions": [
+      438,
+      825
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ]
+  },
+  {
+    "file": "assets\\characters\\rabbit\\rabbit_idle.webp",
+    "source": "thongoc.png",
+    "crop": [
+      830,
+      430,
+      550,
+      490
+    ],
+    "dimensions": [
+      503,
+      445
+    ],
+    "alpha_extrema": [
+      0,
+      255
+    ]
+  }
+]
