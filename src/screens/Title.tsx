@@ -37,6 +37,9 @@ export function Title({ centered = false }: { centered?: boolean }) {
           <TitleScene />
         </Suspense>
       </div>
+      <button type="button" className="title-settings" onClick={() => update({ settingsOpen: true })}>
+        <span aria-hidden="true">⚙</span> {t('nav.settings')}
+      </button>
       <div className="title-copy">
         <p className="eyebrow reveal">{t('app.challenge')}</p>
         <h1 className="reveal">{t('app.title')}</h1>
@@ -54,7 +57,6 @@ export function Title({ centered = false }: { centered?: boolean }) {
           <Link to="/lab">{t('nav.lab')}</Link>
           <Link to="/sources">{t('nav.sources')}</Link>
           <Link to="/cuoi-preview">{t('cuoiPreview.link')}</Link>
-          <button type="button" onClick={() => update({ settingsOpen: true })}>{t('nav.settings')}</button>
         </nav>
       </div>
     </main>

@@ -58,7 +58,7 @@ function LandingLab() {
 function DriveLab() {
   const { t } = useTranslation();
   const [world, setWorld] = useState<'moon' | 'mars'>('moon');
-  const [vehicle, setVehicle] = useState<LabVehicle>('echo');
+  const [vehicle, setVehicle] = useState<LabVehicle>('lrv');
   const [camera, setCamera] = useState<LabCamera>('chase');
   const [elevation, setElevation] = useState(42);
   const [azimuth, setAzimuth] = useState(60);
@@ -68,7 +68,7 @@ function DriveLab() {
     const az = (azimuth * Math.PI) / 180;
     return new THREE.Vector3(Math.cos(el) * Math.sin(az), Math.sin(el), Math.cos(el) * Math.cos(az)).multiplyScalar(63);
   }, [elevation, azimuth]);
-  const vehicles: LabVehicle[] = ['echo', 'sojourner', 'mer', 'curiosity', 'lrv'];
+  const vehicles: LabVehicle[] = ['lrv', 'sojourner', 'mer', 'curiosity'];
   const cameras: LabCamera[] = ['chase', 'high', 'cockpit'];
   return (
     <div className="lab-grid">
