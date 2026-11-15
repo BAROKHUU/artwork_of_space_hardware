@@ -2,7 +2,7 @@
 
 Source of truth: the supplied Complete Image-Based Scrollytelling Experience brief. The 22 original JPGs are referenced directly, in numeric order. PNG reference sheets are not story frames.
 
-Main title: FIND YOU IN THE UNIVERSE
+Main title: FIND U IN THE YOUNIVERSE
 Tagline: Old roots hold tight; new dreams take flight.
 
 Each quoted line below is one authored caption beat. Long lines are divided into consecutive display units without changing words or speaker. Closing captions have no speaker label in the brief.
@@ -273,7 +273,7 @@ A wide, peaceful lunar landscape with Cuoi, ROVER, the Banyan Tree, and Earth. S
 
 48. **NARRATOR**: And every dream begins with someone who dares to imagine.
 
-49. **ALL CHARACTERS**: FIND YOU IN THE UNIVERSE!
+49. **ALL CHARACTERS**: FIND U IN THE YOUNIVERSE!
 
 Scroll / visual constraints: Gradually transition to a wide concluding shot. Give the title line greater visual prominence while using Cabin Sketch.
 

@@ -17,7 +17,7 @@
    add({type:'image',shot:index,previous:index-1,duration:slow?.95:.65});
    shot.captions.forEach((caption,captionIndex)=>{
     const parts=splitCaption(caption.text);beat++;
-    parts.forEach((text,part)=>add({type:'caption',shot:index,speaker:caption.speaker,text,beat,part,parts:parts.length,emphasis:caption.text==='FIND YOU IN THE UNIVERSE!'||caption.text==='Or maybe... YOU!',final:index===shots.length-1&&captionIndex===shot.captions.length-1&&part===parts.length-1,duration:slow?1.35:hopeful?.95:1.12}));
+    parts.forEach((text,part)=>add({type:'caption',shot:index,speaker:caption.speaker,text,beat,part,parts:parts.length,emphasis:caption.text==='FIND U IN THE YOUNIVERSE!'||caption.text==='Or maybe... YOU!',final:index===shots.length-1&&captionIndex===shot.captions.length-1&&part===parts.length-1,duration:slow?1.35:hopeful?.95:1.12}));
    });
   });
   // A quiet ending with the final words held; never auto-return to the cover.
