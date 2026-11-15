@@ -1,4 +1,5 @@
 {
+  "introStory": {"exit": "Thoát truyện", "exitLabel": "Thoát truyện và về trang chính"},
   "app": {
     "title": "Echo",
     "subtitle": "Bị bỏ lại nhưng không bị lãng quên",
