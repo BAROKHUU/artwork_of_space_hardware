@@ -90,7 +90,7 @@ Every discovery leaves a legacy. Every curious mind holds a possibility. And som
 
 ---
 
-# FIND YOU IN THE UNIVERSE
+# FIND U IN THE YOUNIVERSE
 
 The Roots of the Galaxy - A Story of Forgotten Machines and Unforgotten Dreams
 
@@ -112,7 +112,7 @@ Bunny Rabbit
 
 The Banyan Tree – An ancient, wise tree that holds stories and memories.
 
-# FIND YOU IN THE UNIVERSE
+# FIND U IN THE YOUNIVERSE
 
 ## The Roots of the Galaxy: The Iron Heart and the Immortal Banyan Tree
 

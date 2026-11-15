@@ -380,7 +380,7 @@ globalThis.MoonStoryData = [
       },
       {
         "speaker": "ALL CHARACTERS",
-        "text": "FIND YOU IN THE UNIVERSE!"
+        "text": "FIND U IN THE YOUNIVERSE!"
       }
     ],
     "direction": "Gradually transition to a wide concluding shot. Give the title line greater visual prominence while using Cabin Sketch."

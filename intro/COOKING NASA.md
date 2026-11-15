@@ -119,7 +119,7 @@ When the Banyan Tree's glowing leaf reveals the child on Earth drawing a rover, 
 
 **Every discovery leaves a legacy. Every curious mind holds a possibility. And somewhere in the universe, there is a place for YOU.**
 
-# **FIND YOU IN THE UNIVERSE**
+# **FIND U IN THE YOUNIVERSE**
 
 # *“Old roots hold tight; new dreams take flight”*
 
@@ -277,7 +277,7 @@ A faint green beam streaks up from Earth and strikes ROVER’s mirror. It flashe
 
 **ALL CHARACTERS:**
 
-**"FIND YOU IN THE UNIVERSE\!"**
+**"FIND U IN THE YOUNIVERSE\!"**
 
 *—-------------------------*
 

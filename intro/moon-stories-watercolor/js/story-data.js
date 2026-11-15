@@ -1,6 +1,6 @@
 /* Authoritative Phase 1 brief. Later scripts remain intentionally absent. */
 globalThis.MoonStoryData = Object.freeze({
-  title: 'FIND YOU IN THE UNIVERSE',
+  title: 'FIND U IN THE YOUNIVERSE',
   tagline: 'Old roots hold tight; new dreams take flight.',
   opening: {
     id: 'opening', number: 1, title: 'Opening',
