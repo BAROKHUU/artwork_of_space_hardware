@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { Title } from './Title';
+import { lazy } from 'react';
 import { mediaUrl } from '../media';
 import { INTRO_SCENES, useGame } from '../state/store';
+import { activeIntroVideo } from './introMedia';
+
+const Title = lazy(() => import('./Title').then((m) => ({ default: m.Title })));
 
 const authoredScenes = [
   { number: '01', title: 'SCENE 1. OPENING', video: mediaUrl('intro/Video/1.mp4'), text: `In The Moon. Dark. A tiny sound.\n\nNARRATOR: Every night, Uncle Cuội sits under his banyan tree. Everyone knows two things about him: he loves telling stories, and he appears every full moon.\n\nOn the night of the Mid-Autumn Festival, the Moon shone brighter than ever.\n\nBeneath his ancient Banyan Tree, Uncle Cuội was telling the Moon Rabbit an old story.\n\nSuddenly, a tiny sound broke the silence.\n\nMOON RABBIT: Uncle! What’s that sound?\n\nUNCLE CUỘI: (whispering) Tick... tick... Rabbit, I think something is alive out there.\n\nMOON RABBIT: Is this another one of your tall tales?\n\nUNCLE CUỘI: Not this time. Come on!` },
@@ -119,11 +122,11 @@ export function IntroExperience({ directStart = false }: { directStart?: boolean
   return <main className="intro-scrollbook">
     <audio ref={musicRef} src={mediaUrl('intro/reading-music.mp3')} preload="auto" aria-label="Story reading music" />
     <div className="intro-fixed-scene" aria-hidden="true">
-      {scenes.map((scene, index) => <video key={scene.number} className={index === activeScene ? 'is-active' : ''} src={scene.video} autoPlay muted loop playsInline />)}
+      <video key={activeScene} className="is-active" src={activeIntroVideo(scenes, activeScene)} autoPlay muted loop playsInline preload="none" />
       <div className="intro-fixed-scene__wash" />
     </div>
     <header className="intro-sample-header"><span>FIND U IN THE YOUNIVERSE</span><span>{String(activeScene + 1).padStart(2, '0')} / 22</span><div className="intro-header-actions"><button className="intro-music-toggle" type="button" onClick={() => setMusicEnabled((enabled) => !enabled)} aria-label={musicEnabled ? 'Mute reading music' : 'Play reading music'}>{musicEnabled ? '♫' : '♫̸'}</button><button className="intro-exit" type="button" onClick={exit} aria-label={t('introStory.exitLabel')}>{t('introStory.exit')} <span aria-hidden="true">✕</span></button></div></header>
-    <nav className="intro-filmstrip" aria-label="Story scenes">{scenes.map((scene, index) => <a href={`#story-${scene.number}`} onClick={(event) => jumpToScene(event, scene.number)} className={index === activeScene ? 'is-active' : ''} key={scene.number} aria-label={`Jump to story image ${scene.number}`}><img src={mediaUrl(`intro/Image/${index + 1}.jpg`)} alt="" /><span>{scene.number}</span></a>)}</nav>
+    <nav className="intro-filmstrip" aria-label="Story scenes">{scenes.map((scene, index) => <a href={`#story-${scene.number}`} onClick={(event) => jumpToScene(event, scene.number)} className={index === activeScene ? 'is-active' : ''} key={scene.number} aria-label={`Jump to story image ${scene.number}`}><img src={mediaUrl(`intro/Image/${index + 1}.jpg`)} alt="" loading="lazy" decoding="async" /><span>{scene.number}</span></a>)}</nav>
     <div className="intro-scrollbook__steps">
       {scenes.map((scene, index) => <section className="intro-step" id={`story-${scene.number}`} data-scene={index} key={scene.number}>
         <article className="intro-dialogue">

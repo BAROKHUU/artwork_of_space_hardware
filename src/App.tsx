@@ -7,12 +7,12 @@ import { backdropUrl, backdrops, chapterById } from './data';
 import { Settings } from './components/Settings';
 import { ChatBot } from './components/ChatBot';
 import { StoryMenu } from './components/StoryMenu';
-import { Title } from './screens/Title';
-import { MapScreen } from './screens/MapScreen';
-import { Sources } from './screens/Sources';
-import { Learning } from './screens/Learning';
 import { IntroExperience } from './screens/IntroExperience';
 
+const Title = lazy(() => import('./screens/Title').then((m) => ({ default: m.Title })));
+const MapScreen = lazy(() => import('./screens/MapScreen').then((m) => ({ default: m.MapScreen })));
+const Sources = lazy(() => import('./screens/Sources').then((m) => ({ default: m.Sources })));
+const Learning = lazy(() => import('./screens/Learning').then((m) => ({ default: m.Learning })));
 const Chapter = lazy(() => import('./screens/Chapter').then((m) => ({ default: m.Chapter })));
 const Logbook = lazy(() => import('./screens/Logbook').then((m) => ({ default: m.Logbook })));
 const Atlas = lazy(() => import('./screens/Atlas').then((m) => ({ default: m.Atlas })));

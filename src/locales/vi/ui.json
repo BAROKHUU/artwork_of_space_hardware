@@ -16,7 +16,6 @@
     "cover": "Câu chuyện",
     "open": "Mở truyện",
     "close": "Đóng sách",
-    "pageOf": "Trang {{page}} / {{total}}",
     "reading": "Đọc truyện",
     "bookTitle": "Sách truyện",
     "noImage": "Chưa có hình minh họa",
@@ -289,7 +288,6 @@
     "date": "Các dữ kiện được kiểm tra vào tháng 11 năm 2026. Sứ mệnh có thể thay đổi, vì vậy hãy xem NASA để có thông tin mới nhất.",
     "listHeading": "Tài liệu tham khảo",
     "software": "Giấy phép và thông báo phần mềm",
-    "flipbookNotice": "Sách truyện dùng liên kết React flipbook của GUL Labs và lõi có giấy phép MPL. Văn bản giấy phép và ghi nhận gói:",
     "noticeLink": "thông báo bên thứ ba",
     "mplLink": "văn bản giấy phép MPL 2.0",
     "wrapperSource": "mã nguồn lớp bọc",
@@ -307,7 +305,14 @@
       "mars": "Địa chất Sao Hỏa phía trước Curiosity",
       "deep": "Các thiên hà đầy màu sắc trong trường sâu Hubble"
     },
-    "notEndorsed": "Đây là dự án độc lập của học sinh. Dự án không được NASA bảo trợ."
+    "notEndorsed": "Đây là dự án độc lập của học sinh. Dự án không được NASA bảo trợ.",
+    "jump": "Đi đến mục",
+    "groups": {
+      "moon": "Mặt Trăng",
+      "mars": "Sao Hỏa",
+      "deep": "Không gian sâu, tiểu hành tinh và kính thiên văn",
+      "data": "Bản đồ, mô hình và dữ liệu"
+    }
   },
   "settings": {
     "heading": "Cài đặt",
@@ -365,7 +370,11 @@
     "keywordFallback": "Đang tìm theo từ khóa; tìm kiếm ngữ nghĩa không khả dụng.",
     "pending": "Đang suy nghĩ…",
     "inputLimit": "Câu hỏi quá dài. Hãy giữ dưới 512 token.",
-    "error": "Không thể kết nối dịch vụ chat. Hãy thử lại."
+    "error": "Không thể kết nối dịch vụ chat. Hãy thử lại.",
+    "expand": "Mở rộng cửa sổ chat",
+    "shrink": "Thu nhỏ cửa sổ chat",
+    "generalNote": "Câu trả lời này dựa trên kiến thức chung của AI, không dựa trên nguồn NASA trong trò chơi. Chỉ nên xem là tài liệu tham khảo và hãy kiểm chứng trước khi sử dụng.",
+    "mixedNote": "Một phần câu trả lời dựa trên kiến thức chung của AI thay vì các nguồn NASA bên dưới. Chỉ nên xem phần đó là tài liệu tham khảo."
   },
   "seismic": {
     "recorder": "Máy ghi địa chấn bốn kênh",
@@ -391,7 +400,16 @@
     "title": "Cuoi · character draft",
     "description": "Drag to rotate and scroll or pinch to zoom. This is an early stylized character study.",
     "face": "Face",
-    "full": "Full body"
+    "full": "Full body",
+    "scrollCue": "Cuộn xuống để đọc truyền thuyết",
+    "legend": {
+      "eyebrow": "Truyện dân gian Việt Nam",
+      "title": "Sự tích chú Cuội cung trăng",
+      "p1": "Ngày xửa ngày xưa, có một tiều phu tốt bụng tên Cuội tìm thấy cây đa thần trong rừng sâu. Cuội biết được điều kỳ diệu ấy khi thấy hổ mẹ nhai lá cây để chữa lành cho hổ con bị thương. Cuội đào cây về trồng trong vườn và dùng lá cứu nhiều người, nhiều con vật bị bệnh, trong đó có một cô gái hiền lành sau này trở thành vợ Cuội.",
+      "p2": "Cây thần chỉ có một điều cần nhớ: cây chỉ được tưới bằng nước giếng trong. Nếu nước bẩn chạm vào rễ, cây sẽ bay thẳng lên trời!",
+      "p3": "Sau này, vợ Cuội gặp tai nạn nghiêm trọng. Cuội cứu sống nàng bằng lá thuốc và một chút đất sét. Nàng khỏe lại nhưng trở nên rất hay quên. Một hôm Cuội đi kiếm củi, nàng quên mất điều cấm kỵ và đổ nước bẩn vào gốc cây.",
+      "p4": "Vù một cái! Mặt đất rung chuyển, cây bật rễ khỏi đất và bay lên mây. Cuội chạy về vừa kịp lúc, túm lấy rễ cây để kéo xuống nhưng cây quá khỏe, đưa Cuội lên tận Mặt Trăng. Vì thế, mỗi khi nhìn trăng rằm sáng, ta vẫn thấy bóng Cuội ngồi dưới gốc cây đa thần."
+    }
   },
   "learn": {
     "precheck": {
