@@ -34,14 +34,17 @@ function PageBackdrop({ name }: { name: string }) {
 function TopBar() {
   const { t } = useTranslation();
   const update = useGame((s) => s.update);
-  const links = [['/map', 'nav.map'], ['/book', 'nav.book'], ['/logbook', 'nav.logbook'], ['/progress', 'nav.progress'], ['/atlas', 'nav.atlas'], ['/lab', 'nav.lab'], ['/sources', 'nav.sources']] as const;
+  const links = [['/map', 'nav.map'], ['/moon-stories-watercolor/index.html', 'nav.book'], ['/logbook', 'nav.logbook'], ['/progress', 'nav.progress'], ['/atlas', 'nav.atlas'], ['/lab', 'nav.lab'], ['/sources', 'nav.sources']] as const;
   return (
     <header className="topbar">
       <NavLink to="/" className="brand" aria-label={t('nav.home')}>
-        <i aria-hidden="true" /> ECHO
+        <img className="brand-logo" src="/moon-stories-watercolor/assets/images/ask-uncle-cuoi.png" alt="" aria-hidden="true" />
+        <span>Moon Stories</span>
       </NavLink>
       <nav aria-label={t('nav.main')}>
-        {links.map(([to, key]) => <NavLink key={to} to={to}>{t(key)}</NavLink>)}
+        {links.map(([to, key]) => to.startsWith('/moon-stories-watercolor/')
+          ? <a key={to} href={to}>{t(key)}</a>
+          : <NavLink key={to} to={to}>{t(key)}</NavLink>)}
       </nav>
       <button type="button" className="gear" onClick={() => update({ settingsOpen: true })}>{t('nav.settings')}</button>
     </header>

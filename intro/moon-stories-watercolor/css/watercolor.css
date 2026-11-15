@@ -1,0 +1,44 @@
+/* All raster art belongs to this independent edition. */
+.hero{isolation:isolate}.watercolor-scene{pointer-events:none;filter:none}
+.landscape{position:absolute;inset:-70px 0 0;overflow:hidden;mask-image:linear-gradient(transparent,#000 20%,#000 90%,transparent)}
+.landscape img{width:100%;height:100%;object-fit:cover;opacity:.78}
+.hero-copy{isolation:isolate}.hero-copy:before{content:'';position:absolute;inset:20px -25px -15px -40px;background:radial-gradient(ellipse,#34476c8c,transparent 72%);z-index:-1;pointer-events:none}
+.scene .interactive{position:absolute;background:none;border:0;padding:0;pointer-events:auto;min-width:44px;min-height:44px;transform-origin:center bottom}
+.scene .interactive img{width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;filter:drop-shadow(0 8px 9px #34476c24);transition:filter .4s,transform .6s}
+.art-tree{width:43%;height:85%;right:0;bottom:8%;z-index:1}
+.art-cuoi{width:15%;height:36%;left:48%;bottom:12%;z-index:3}
+.art-rover{width:17%;height:26%;left:59%;bottom:10%;z-index:4}
+.art-rabbit{width:8%;height:19%;left:74%;bottom:10%;z-index:5}
+.scene .interactive:hover img,.scene .interactive:focus-visible img{filter:drop-shadow(0 0 13px #f9dea075);transform:translateY(-3px)}
+.scene .interactive:focus-visible{outline:2px dashed #f9dea0;outline-offset:5px;border-radius:30%}
+.scene .interactive.active img{animation:painted-greeting 850ms ease-in-out 2}
+.scene .art-tree.active img{animation:painted-glow 1300ms ease-in-out 2}
+.painted-sparks{position:absolute;left:78%;top:42%;color:#f9dea0;display:flex;gap:30px;animation:float 9s ease-in-out infinite;opacity:.6}.painted-sparks span:nth-child(2){translate:0 80px}.painted-sparks span:nth-child(3){translate:0 -40px}
+@keyframes painted-greeting{50%{transform:translateY(-6px) rotate(-2deg)}}
+@keyframes painted-glow{50%{filter:drop-shadow(0 0 22px #f9dea090)}}
+.watercolor-thumb{position:relative;isolation:isolate}.watercolor-thumb img{position:absolute;display:block;height:100%;width:100%;object-fit:cover;transition:transform .6s cubic-bezier(.22,1,.36,1)}
+.watercolor-thumb .thumb-subject{object-fit:contain;width:58%;height:95%;bottom:-4%;left:22%;filter:drop-shadow(0 5px 5px #34476c33)}
+.thumb-tree .thumb-subject{width:86%;height:135%;left:12%;bottom:-20%}.thumb-cuoi .thumb-subject{width:45%;left:30%;bottom:-6%}
+.card:hover .watercolor-thumb img{transform:scale(1.04)}
+.guide-launch{position:fixed;bottom:20px;right:24px;z-index:15;display:flex;align-items:center;gap:10px;padding:5px 20px 5px 7px;border:1px solid #e5d5b6;border-radius:40px;background:#fff3dd;color:#4a4c70;font:500 15px var(--body);box-shadow:0 6px 30px #25345133;min-height:54px;transition:translate .3s}
+.guide-launch:hover{translate:0 -3px}.guide-launch img{object-fit:contain}.guide-launch span{color:#a78044}
+#cuoi-guide{max-height:88dvh;overflow:auto;width:min(640px,92vw);padding:30px}
+.guide-heading{display:flex;gap:15px;align-items:center;padding-right:25px}.guide-heading img{object-fit:contain;flex:none}.guide-heading h2{margin:8px 0;font:700 30px var(--display)}
+.guide-topics{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0}.guide-topics button{font:500 14px var(--body);color:#495473;background:#e5e0d9;border:1px solid #b8b2b377;border-radius:22px;padding:10px 15px;min-height:44px}.guide-topics button:hover{background:#d7dfce}
+#guide-form label{display:block;font-weight:500;margin:15px 0 8px}.guide-input{display:flex;gap:8px}.guide-input input{min-width:0;flex:1;border:1px solid #8e8f9c;border-radius:12px;background:#fffaf0;color:#34476c;font:400 15px var(--body);padding:12px}.guide-input .pill{background:#545f7c;color:#fff3dd}
+#guide-answer{background:#e4e7db;border-radius:17px;padding:20px;margin:20px 0;font-size:17px;line-height:1.7;min-height:90px}
+#cuoi-guide .guide-note{font-size:12px;line-height:1.5;color:#696578}#guide-begin{background:#545f7c;color:#fff3dd}
+.footer{padding-bottom:90px}
+/* Image-based opening. The complete figures stay visible at every breakpoint. */
+.book-art{overflow:hidden}.book-landscape{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.85}
+.book-art .book-tree{position:absolute;left:7%;bottom:-7%;width:42%;height:110%;object-fit:contain;animation:none;opacity:.95}
+.book-art .book-cuoi{position:absolute;left:28%;bottom:8%;width:17%;height:45%}
+.book-art .book-rabbit{position:absolute;left:44%;bottom:8%;width:9%;height:30%}
+.book-character img{height:100%;width:100%;object-fit:contain;display:block;transform-origin:center bottom}
+.book-art .book-signal{position:absolute;left:77%;top:68%;width:55px;height:28px;border:1px solid #f9dea0;border-radius:50%;box-shadow:0 0 35px #f9dea055,inset 0 0 14px #f9dea033}
+.book-stage[data-mystery="true"] .book-rabbit-pose{rotate:-5deg;transition:rotate .7s}
+.book-stage[data-mystery="true"] .book-cuoi-pose{rotate:3deg;transition:rotate .7s}
+@media(max-width:1100px) and (min-width:821px){.watercolor-scene{width:100%;left:0}.art-cuoi{left:52%}.art-rover{left:65%}.art-rabbit{left:81%}.art-tree{right:-5%;width:45%}}
+@media(max-width:820px){.hero{height:980px}.watercolor-scene{top:450px;left:0;width:100%;height:490px}.landscape{inset:0 -20%}.landscape img{object-position:70% center}.art-tree{width:82%;height:96%;right:-12%;bottom:2%}.art-cuoi{width:28%;height:42%;left:20%;bottom:10%}.art-rover{width:32%;height:29%;left:43%;bottom:8%}.art-rabbit{width:15%;height:23%;left:74%;bottom:8%}.painted-sparks{left:70%;top:30%;gap:12px}.hero-copy:before{inset:0 -12px -12px}.bubble{top:520px}.guide-launch{right:12px;bottom:12px;font-size:13px;padding-right:15px}.guide-launch img{width:38px;height:38px}#cuoi-guide{padding:22px}.guide-heading img{width:70px;height:80px}.guide-heading h2{font-size:25px}.guide-heading .chapter-num{font-size:9px}.book-art .book-tree{left:-6%;width:67%;height:100%;bottom:0}.book-art .book-cuoi{left:21%;width:25%;height:47%;bottom:7%}.book-art .book-rabbit{left:46%;width:15%;height:34%;bottom:7%}.book-art .book-signal{left:82%;width:30px;height:20px}.book-listen{font-size:10px;padding:8px;right:2%;bottom:28%}}
+@media(max-width:380px){.hero{height:1040px}.watercolor-scene{top:510px}.guide-input{flex-wrap:wrap}.guide-input input{flex-basis:100%}}
+@media(prefers-reduced-motion:reduce){.painted-sparks,.scene .interactive.active img{animation:none}.book-character img{transition:none!important}.guide-launch:hover{translate:none}}

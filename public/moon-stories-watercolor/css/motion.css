@@ -1,0 +1,24 @@
+/* Reveal utilities use individual translate/scale so illustration transforms survive. */
+:root{--reveal-ease:cubic-bezier(.22,1,.36,1);--reveal-duration:900ms;--stagger-step:90ms}
+.reveal{--reveal-distance:32px;--reveal-blur:8px;--reveal-scale:1}
+.reveal-soft{--reveal-distance:12px;--reveal-blur:4px}
+.reveal-illustration{--reveal-distance:18px;--reveal-blur:3px;--reveal-scale:.992;transform-box:fill-box;transform-origin:center bottom}
+.reveal-ready .reveal{opacity:0;translate:0 var(--reveal-distance);scale:var(--reveal-scale);filter:blur(var(--reveal-blur));transition:opacity var(--reveal-duration) var(--reveal-ease) var(--reveal-delay,0ms),translate var(--reveal-duration) var(--reveal-ease) var(--reveal-delay,0ms),scale var(--reveal-duration) var(--reveal-ease) var(--reveal-delay,0ms),filter var(--reveal-duration) var(--reveal-ease) var(--reveal-delay,0ms)}
+.reveal-ready .reveal.is-visible{opacity:1;translate:0 0;scale:1;filter:blur(0)}
+.reveal-ready .reveal:focus-visible,.reveal-ready .reveal:focus-within{opacity:1;translate:0 0;scale:1;filter:none;transition:none}
+/* Settled elements release their filter to preserve character focus glow and hover lift. */
+.reveal-ready .reveal.is-settled{filter:none;transition:none}
+.reveal-ready .card.is-settled{transition:transform .45s var(--reveal-ease),box-shadow .45s var(--reveal-ease)}
+.reveal-ready .interactive.is-settled:focus-visible{filter:drop-shadow(0 0 7px #ffdc8d)}
+.depth-layer{translate:0 var(--depth-y,0px)}
+.chapter-seam{position:absolute;width:112.4%;left:-6.2%;height:66px;top:-38px;pointer-events:none;z-index:-1;overflow:visible}
+.chapters{isolation:isolate;padding-top:38px}
+.chapter-seam .seam-wash{fill:#8c86b8;opacity:.1}
+.chapter-seam .seam-line{fill:none;stroke:#fff3dd;stroke-width:1;opacity:.13}
+.chapter-seam .seam-leaf{fill:#f4c978;opacity:.38}
+.footer{border-top:0}
+.footer:before{content:'';position:absolute;top:0;left:8%;width:84%;height:1px;background:linear-gradient(90deg,transparent,#fff3dd26,transparent);border-radius:50%}
+@media(max-width:820px){.reveal{--reveal-distance:18px;--reveal-blur:4px}.reveal-illustration{--reveal-distance:10px;--reveal-blur:2px}.depth-layer{translate:0 0!important}.chapter-seam{height:44px;top:-20px}}
+.no-motion .reveal,.no-motion .depth-layer{opacity:1!important;translate:0 0!important;scale:1!important;filter:none!important;transition:none!important}
+@media(prefers-reduced-motion:reduce){.reveal-ready .reveal,.depth-layer{opacity:1!important;translate:0 0!important;scale:1!important;filter:none!important;transition:none!important}}
+@media print{.reveal-ready .reveal{opacity:1;translate:none;scale:none;filter:none}}

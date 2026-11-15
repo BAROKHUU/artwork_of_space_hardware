@@ -26,6 +26,8 @@
 .legend-modal p:not(.intro-kicker):not(.legend-modal__hint) { color: #f0e3df; font: 17px/1.6 Georgia, serif; }
 .legend-modal__hint { margin: 24px 0 0; color: #e7b76e; font: italic 18px/1.4 Georgia, serif; }
 .legend-modal .btn { margin-top: 28px; }
+.intro-reading-options { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; margin-top: 0.25rem; }
+.intro-reading-options .btn { flex: 1 1 220px; text-align: center; }
 .intro-gate:has(.legend-modal)::after { content: ''; position: fixed; z-index: 20; inset: 0; background: rgba(9, 6, 16, .66); backdrop-filter: blur(5px); }
 .intro-scrollbook { position: relative; background: #171522; color: #fff8ea; }
 .intro-fixed-scene { position: fixed; inset: 0; z-index: 0; overflow: hidden; background: #171522; }

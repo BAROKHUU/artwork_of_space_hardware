@@ -1,4 +1,4 @@
-# **FIND YOU IN THE UNIVERSE**
+# **FIND U IN THE YOUNIVERSE**
 
 # *“Old roots hold tight; new dreams take flight”*
 
@@ -154,7 +154,7 @@ A faint green beam streaks up from Earth and strikes ROVER’s mirror. It flashe
 
 **ALL CHARACTERS:**
 
-**"FIND YOU IN THE UNIVERSE\!"**
+**"FIND U IN THE YOUNIVERSE\!"**
 
 *—-------------------------*
 
