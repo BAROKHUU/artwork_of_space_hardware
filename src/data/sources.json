@@ -3,6 +3,7 @@
   "surveyor3": { "org": "NASA Science", "title": "Surveyor 3", "url": "https://science.nasa.gov/mission/surveyor-3/" },
   "surveyor3_nssdc": { "org": "NASA NSSDCA", "title": "Surveyor 3 spacecraft record", "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1967-035A" },
   "apollo11_lm": { "org": "NASA NSSDCA", "title": "Apollo 11 LM descent stage record", "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-059D" },
+  "apollo11_psep": { "org": "NASA Image Library", "title": "Apollo 11 Passive Seismic Experiment Package deployment (AS11-40-5951)", "url": "https://images-assets.nasa.gov/image/as11-40-5951/collection.json" },
   "llr_running": { "org": "NASA GSFC", "title": "Lunar Laser Ranging", "url": "https://science.gsfc.nasa.gov/solarsystem/p3g/projects/605/" },
   "llr_recession": { "org": "NASA GSFC", "title": "Accuracy of Eclipse Predictions and Apollo laser ranging", "url": "https://eclipse.gsfc.nasa.gov/SEhelp/ApolloLaser.html" },
   "llr_ilrs": { "org": "NASA ILRS", "title": "Apollo 11 retroreflector array", "url": "https://ilrs.gsfc.nasa.gov/missions/satellite_missions/current_missions/ap11_general.html" },

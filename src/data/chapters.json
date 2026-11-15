@@ -187,10 +187,6 @@
       },
       {
         "kind": "memory",
-        "hardware": "lrv"
-      },
-      {
-        "kind": "memory",
         "hardware": "apollo12_descent"
       },
       {

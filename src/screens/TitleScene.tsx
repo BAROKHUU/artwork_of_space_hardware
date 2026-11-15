@@ -5,6 +5,7 @@ import { GameCanvas } from '../three/GameCanvas';
 import { Diorama } from '../three/Scenery';
 import { photoUrl } from '../data';
 import { Cuoi } from '../three/Cuoi';
+import { BanyanTree, MoonRabbit } from '../three/MoonCharacters';
 
 /** On wide screens, moves Echo to the right so the title has room. */
 function ShiftView() {
@@ -23,7 +24,9 @@ export default function TitleScene() {
     <GameCanvas camera={{ position: [4, 2.6, 5], fov: 48, far: 500 }} fallback={<img className="title-photo" src={photoUrl('lrv')} alt="" />}>
       <ShiftView />
       <Diorama world="moon" model={null} />
+      <BanyanTree position={[-1.45, 0, -2.4]} scale={1.05} />
       <Cuoi position={[1.15, 0, -0.9]} rotation={[0, 0.7, 0]} />
+      <MoonRabbit position={[-1.45, 0, 0.7]} rotation={[0, -0.45, 0]} scale={0.9} />
     </GameCanvas>
   );
 }

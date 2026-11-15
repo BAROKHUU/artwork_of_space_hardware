@@ -81,17 +81,11 @@ export default async function assess(request: Request) {
 
     const payload = await response.json() as { candidates?: { content?: { parts?: { text?: string }[] } }[] };
     const parsed = JSON.parse(payload.candidates?.[0]?.content?.parts?.[0]?.text || '{}') as Partial<Review>;
-    if (
-      typeof parsed.score !== "number" ||
-      !Number.isInteger(parsed.score) ||
-      parsed.score < 0 ||
-      parsed.score > 5 ||
-      !Array.isArray(parsed.criteria) ||
-      !Array.isArray(parsed.concepts)
-    ) return fallback();
-    
+    const score = parsed.score;
+    if (typeof score !== 'number' || !Number.isInteger(score) || score < 0 || score > 5 || !Array.isArray(parsed.criteria) || !Array.isArray(parsed.concepts)) return fallback();
+
     return json({
-      score: parsed.score,
+      score,
       max: 5,
       source: 'gemini',
       criteria: parsed.criteria,

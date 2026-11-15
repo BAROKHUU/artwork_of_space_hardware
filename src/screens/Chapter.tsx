@@ -6,7 +6,7 @@ import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { chapterById, hardwareById, nextChapterInArc } from '../data';
+import { chapterById, hardwareById, nextChapterInArc, photoUrl, sources } from '../data';
 import type { Beat, Chapter as ChapterData } from '../data/types';
 import { useGame } from '../state/store';
 import { MissionShell } from '../missions/MissionShell';
@@ -16,6 +16,29 @@ import { play } from '../audio/sfx';
 import { scoreLocally, validateReflectionReview } from '../assessment';
 
 type QuizBeat = Extract<Beat, { kind: 'quiz' | 'apply' | 'precheck' | 'postcheck' }>;
+type QuizImage = { id: string; photo: string; nasaId: string; credit: string; sources: string[] };
+
+const quizImageAssets: Record<string, QuizImage> = {
+  apollo11_psep: { id: 'apollo11_psep', photo: 'apollo11_psep.jpg', nasaId: 'as11-40-5951', credit: 'NASA', sources: ['apollo11_psep'] },
+};
+
+const quizEvidence: Record<string, string[]> = {
+  ch1: ['ranger7', 'surveyor3'],
+  ch2: ['lrrr', 'lrrr'],
+  ch3: ['voyager2', 'voyager2'],
+  ch4: ['viking1', 'viking1'],
+  ch5: ['opportunity', 'opportunity'],
+  ch6: ['ingenuity', 'perseverance'],
+  ch7: ['voyager1', 'voyager1'],
+  m2: ['lrv', 'lrv'],
+  m3: ['ranger7', 'apollo12_descent'],
+  m5: ['apollo11_psep', 'apollo11_psep'],
+  moon: ['lrv', 'apollo11_descent', 'alsep12'],
+  a2: ['lrv'],
+  a3: ['ranger7'],
+  a4: ['lrrr'],
+  a5: ['alsep12'],
+};
 
 gsap.registerPlugin(useGSAP);
 
@@ -67,6 +90,10 @@ function Quiz({ beat, onDone }: { beat: QuizBeat; onDone: () => void }) {
   const [answers, setAnswers] = useState<number[]>([]);
   const q = items[i];
   const answer = beat.answers[i];
+  const evidenceId = quizEvidence[beat.key]?.[i] ?? '';
+  const evidence = quizImageAssets[evidenceId] ?? hardwareById[evidenceId];
+  const evidenceSource = evidence ? sources[evidence.sources[0]] : undefined;
+  const evidenceName = evidence?.id === 'apollo11_psep' ? t('quiz.psepName') : evidence ? t(`hardware:${evidence.id}.name`) : '';
   const ungraded = beat.kind === 'precheck' || beat.kind === 'postcheck';
   const finish = () => {
     const finalAnswers = [...answers, picked!];
@@ -83,6 +110,13 @@ function Quiz({ beat, onDone }: { beat: QuizBeat; onDone: () => void }) {
     <section className="panel brief quiz">
       <p className="eyebrow">{ungraded ? t('learn.precheck.heading') : t('quiz.heading')} · {i + 1}/{items.length}</p>
       <h1>{q.q}</h1>
+      {evidence && evidenceSource && <figure className="quiz-evidence">
+        <img src={photoUrl(evidence.photo)} alt={evidenceName} loading="lazy" />
+        <figcaption>
+          <span>{t('quiz.nasaPhoto', { name: evidenceName, credit: evidence.credit, id: evidence.nasaId })}</span>
+          <a href={evidenceSource.url} target="_blank" rel="noreferrer">{t('quiz.nasaSource', { source: evidenceSource.org })}</a>
+        </figcaption>
+      </figure>}
       <div className="options">
         {q.options.map((o, n) => (
           <button type="button" key={n} aria-pressed={picked === n} disabled={picked !== null && !ungraded} className={`option${!ungraded && picked !== null && n === answer ? ' right' : ''}${!ungraded && picked === n && n !== answer ? ' wrong' : ''}${ungraded && picked === n ? ' right' : ''}`} onClick={() => { setPicked(n); if (!ungraded) play(n === answer ? 'ping' : 'fail'); }}>{o}</button>
@@ -259,7 +293,6 @@ export function Chapter() {
         <span className="chapter-name">{chapter.era} · {t(`story:${chapter.id}.title`)}</span>
         <div className="pips" aria-hidden="true">{pips.map((p) => <i key={p} className={p < activeIndex || finished ? 'on' : p === activeIndex ? 'next' : ''} />)}</div>
       </div>
-      {chapter.arc === 'moon' && <div className="truth-note"><span>{t('learn.truth.real')}</span><span>{t('learn.truth.story')}</span></div>}
       <div className="chapter-body" ref={fade} key={`${id}-${activeIndex}-${finished}`}>
         {finished ? <ChapterDone chapter={chapter} /> : (
           <>
