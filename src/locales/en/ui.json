@@ -357,7 +357,11 @@
     "keywordFallback": "Keyword search used; semantic search is unavailable.",
     "pending": "Thinking…",
     "inputLimit": "Your question is too long. Please keep it under 512 tokens.",
-    "error": "Could not reach the chat service. Please try again."
+    "error": "Could not reach the chat service. Please try again.",
+    "expand": "Expand chat",
+    "shrink": "Shrink chat",
+    "generalNote": "This answer comes from the AI's general knowledge, not from the game's NASA sources. Treat it as a reference only and check it before relying on it.",
+    "mixedNote": "Part of this answer comes from the AI's general knowledge rather than the NASA sources below. Treat that part as a reference only."
   },
   "seismic": {
     "recorder": "Four channel seismic recorder",

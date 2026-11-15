@@ -1,18 +1,88 @@
-import { useEffect, useRef, useState, type PointerEvent } from 'react';
+import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
-import { BOT_SIZE, clampPosition } from './chatPosition';
+import { clampPosition, panelLayout } from './chatPosition';
 
-type Message = { role: 'user' | 'bot'; text: string; sources?: { title: string; url: string }[]; retrieval?: 'hybrid' | 'keyword' | 'none' };
+type Grounding = 'nasa' | 'mixed' | 'general';
+type Message = { role: 'user' | 'bot'; text: string; sources?: { title: string; url: string }[]; retrieval?: 'hybrid' | 'keyword' | 'none'; grounding?: Grounding };
+
+const EXPANDED_KEY = 'echo.chat.expanded';
+const supportsFieldSizing = typeof CSS !== 'undefined' && CSS.supports?.('field-sizing', 'content');
+
+function readExpanded() {
+  try { return localStorage.getItem(EXPANDED_KEY) === '1'; } catch { return false; }
+}
+
+const MessageList = memo(function MessageList({ messages, pending, error }: { messages: Message[]; pending: boolean; error: string }) {
+  const { t } = useTranslation();
+  return (
+    <>
+      <p className="chat-message bot">{t('chat.greeting')}</p>
+      {messages.map((message, i) => (
+        <div key={i} className={`chat-message ${message.role}`}>
+          <p>{message.text}</p>
+          {(message.grounding === 'general' || message.grounding === 'mixed') && (
+            <p className={`chat-grounding ${message.grounding}`}><span aria-hidden="true">ⓘ</span> {t(message.grounding === 'general' ? 'chat.generalNote' : 'chat.mixedNote')}</p>
+          )}
+          {message.retrieval === 'keyword' && message.grounding !== 'general' && <small>{t('chat.keywordFallback')}</small>}
+          {!!message.sources?.length && <div className="chat-sources"><strong>{t('chat.sources')}</strong>{message.sources.map((source) => <a key={source.url} href={source.url} target="_blank" rel="noopener noreferrer">{source.title}</a>)}</div>}
+        </div>
+      ))}
+      {pending && <p className="chat-message bot chat-pending" role="status"><span className="chat-dots" aria-hidden="true"><i /><i /><i /></span><span className="visually-hidden">{t('chat.pending')}</span></p>}
+      {error && <p className="chat-error" role="alert">{error}</p>}
+    </>
+  );
+});
+
+/** Keeps the draft in its own state so typing never re-renders the transcript. */
+const Composer = memo(function Composer({ busy, onSend, onTyping, restore }: { busy: boolean; onSend: (text: string) => void; onTyping: (typing: boolean) => void; restore: { text: string; id: number } | null }) {
+  const { t } = useTranslation();
+  const [draft, setDraft] = useState('');
+  const field = useRef<HTMLTextAreaElement>(null);
+  const typing = draft.trim().length > 0;
+
+  useEffect(() => { onTyping(typing); }, [typing, onTyping]);
+  useEffect(() => { if (restore) setDraft((current) => current || restore.text); }, [restore]);
+  useEffect(() => { field.current?.focus({ preventScroll: true }); }, []);
+  useLayoutEffect(() => {
+    const el = field.current;
+    if (!el || supportsFieldSizing) return;
+    el.style.height = 'auto';
+    el.style.height = `${el.scrollHeight}px`;
+  }, [draft]);
+
+  const submit = () => {
+    const text = draft.trim();
+    if (!text || busy) return;
+    setDraft('');
+    onSend(text);
+  };
+  const keyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing) {
+      event.preventDefault();
+      submit();
+    }
+  };
+  return (
+    <form className="chat-form" onSubmit={(event) => { event.preventDefault(); submit(); }}>
+      <textarea ref={field} rows={1} aria-label={t('chat.input')} placeholder={t('chat.input')} value={draft} onChange={(event) => setDraft(event.target.value)} onKeyDown={keyDown} maxLength={8000} />
+      <button className="btn primary" type="submit" disabled={!typing || busy}>{t('chat.send')}</button>
+    </form>
+  );
+});
 
 export function ChatBot() {
   const { t } = useTranslation();
   const [position, setPosition] = useState(() => clampPosition({ x: window.innerWidth - 112, y: window.innerHeight - 112 }, window.innerWidth, window.innerHeight));
+  const [viewport, setViewport] = useState(() => ({ width: window.innerWidth, height: window.innerHeight }));
   const [open, setOpen] = useState(false);
-  const [input, setInput] = useState('');
+  const [expanded, setExpanded] = useState(readExpanded);
+  const [typing, setTyping] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
+  const [restore, setRestore] = useState<{ text: string; id: number } | null>(null);
+  const history = useRef<Message[]>([]);
   const busy = useRef(false);
   const [modal, setModal] = useState<HTMLDialogElement | null>(null);
   const layer = useRef<HTMLDivElement>(null);
@@ -33,14 +103,24 @@ export function ChatBot() {
 
   useEffect(() => {
     layer.current?.showPopover?.();
-    const resize = () => setPosition((p) => clampPosition(p, window.innerWidth, window.innerHeight));
+    const resize = () => {
+      setViewport({ width: window.innerWidth, height: window.innerHeight });
+      setPosition((p) => clampPosition(p, window.innerWidth, window.innerHeight));
+    };
     window.addEventListener('resize', resize);
     return () => window.removeEventListener('resize', resize);
   }, [modal]);
 
   useEffect(() => {
-    transcript.current?.scrollTo({ top: transcript.current.scrollHeight });
-  }, [messages, open]);
+    try { localStorage.setItem(EXPANDED_KEY, expanded ? '1' : '0'); } catch { /* storage unavailable */ }
+  }, [expanded]);
+
+  useEffect(() => {
+    const el = transcript.current;
+    if (!el) return;
+    const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    el.scrollTo({ top: el.scrollHeight, behavior: smooth ? 'smooth' : 'auto' });
+  }, [messages, pending, open, expanded]);
 
   const move = (x: number, y: number) => setPosition(clampPosition({ x, y }, window.innerWidth, window.innerHeight));
   const pointerDown = (event: PointerEvent<HTMLButtonElement>) => {
@@ -61,13 +141,13 @@ export function ChatBot() {
     dragged.current = drag.current?.moved ?? false;
     drag.current = null;
   };
-  const send = async () => {
-    const text = input.trim();
-    if (!text || busy.current) return;
+
+  const send = useCallback(async (text: string) => {
+    if (busy.current) return;
     busy.current = true;
-    const next: Message[] = [...messages, { role: 'user', text }];
+    const next: Message[] = [...history.current, { role: 'user', text }];
+    history.current = next;
     setMessages(next);
-    setInput('');
     setError('');
     setPending(true);
     try {
@@ -85,37 +165,44 @@ export function ChatBot() {
         ? data.sources.filter((source): source is { title: string; url: string } => source && typeof source.title === 'string' && typeof source.url === 'string' && /^https:\/\/(?:[a-z0-9-]+\.)*nasa\.gov\//i.test(source.url))
         : [];
       const retrieval = 'retrieval' in data && (data.retrieval === 'hybrid' || data.retrieval === 'keyword') ? data.retrieval : 'none';
-      setMessages((items) => [...items, { role: 'bot', text: data.reply as string, sources, retrieval }]);
+      const grounding: Grounding = 'grounding' in data && (data.grounding === 'mixed' || data.grounding === 'general') ? data.grounding : 'nasa';
+      history.current = [...history.current, { role: 'bot', text: data.reply, sources, retrieval, grounding }];
+      setMessages(history.current);
     } catch (cause) {
-      setMessages((items) => items.slice(0, -1));
-      setInput((draft) => draft || text);
+      history.current = history.current.slice(0, -1);
+      setMessages(history.current);
+      setRestore({ text, id: Date.now() });
       setError(t(cause instanceof Error && cause.message === 'limit' ? 'chat.inputLimit' : 'chat.error'));
     } finally {
       busy.current = false;
       setPending(false);
     }
-  };
-  const panelWidth = Math.min(340, window.innerWidth - 16);
-  const panelHeight = Math.min(400, window.innerHeight - BOT_SIZE - 24);
-  const panelX = Math.max(8, Math.min(position.x + BOT_SIZE / 2 - panelWidth / 2, window.innerWidth - panelWidth - 8));
-  const panelY = position.y > window.innerHeight / 2
-    ? Math.max(8, position.y - panelHeight - 8)
-    : Math.min(position.y + BOT_SIZE + 8, window.innerHeight - panelHeight - 8);
+  }, [t]);
+  const sendMessage = useCallback((text: string) => { void send(text); }, [send]);
+
+  const panel = panelLayout(position, viewport.width, viewport.height, expanded);
+  const mood = pending || typing ? 'thinking' : open ? 'greeting' : 'idle';
 
   return createPortal(
     <div ref={layer} popover="manual" className="chat-layer">
-      {open && <section className="chat-panel" aria-label={t('chat.title')} style={{ left: panelX, top: panelY }}>
-        <header className="chat-header"><div><span className="eyebrow">{t('chat.eyebrow')}</span><h2>{t('chat.title')}</h2></div><button type="button" className="chat-close" aria-label={t('chat.close')} onClick={() => setOpen(false)}>×</button></header>
+      {open && <section className={`chat-panel${expanded ? ' expanded' : ''}`} aria-label={t('chat.title')} style={{ left: panel.x, top: panel.y, width: panel.width, height: panel.height }} onKeyDown={(event) => { if (event.key === 'Escape') setOpen(false); }}>
+        <header className="chat-header">
+          <div><span className="eyebrow">{t('chat.eyebrow')}</span><h2>{t('chat.title')}</h2></div>
+          <div className="chat-actions">
+            <button type="button" className="chat-icon" aria-label={t(expanded ? 'chat.shrink' : 'chat.expand')} title={t(expanded ? 'chat.shrink' : 'chat.expand')} aria-pressed={expanded} onClick={() => setExpanded((value) => !value)}>
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                {expanded ? <path d="M4 14h6v6M20 10h-6V4M14 10l7-7M3 21l7-7" /> : <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />}
+              </svg>
+            </button>
+            <button type="button" className="chat-icon" aria-label={t('chat.close')} title={t('chat.close')} onClick={() => setOpen(false)}>
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
+            </button>
+          </div>
+        </header>
         <div ref={transcript} className="chat-messages" role="log" aria-live="polite" aria-label={t('chat.history')}>
-          <p className="chat-message bot">{t('chat.greeting')}</p>
-          {messages.map((message, i) => <div key={i} className={`chat-message ${message.role}`}><p>{message.text}</p>{message.retrieval === 'keyword' && <small>{t('chat.keywordFallback')}</small>}{!!message.sources?.length && <div className="chat-sources"><strong>{t('chat.sources')}</strong>{message.sources.map((source) => <a key={source.url} href={source.url} target="_blank" rel="noopener noreferrer">{source.title}</a>)}</div>}</div>)}
-          {pending && <p className="chat-message bot" role="status">{t('chat.pending')}</p>}
-          {error && <p className="chat-error" role="alert">{error}</p>}
+          <MessageList messages={messages} pending={pending} error={error} />
         </div>
-        <form className="chat-form" onSubmit={(event) => { event.preventDefault(); void send(); }}>
-          <input aria-label={t('chat.input')} placeholder={t('chat.input')} value={input} onChange={(event) => setInput(event.target.value)} maxLength={8000} />
-          <button className="btn primary" type="submit" disabled={!input.trim() || pending}>{t('chat.send')}</button>
-        </form>
+        <Composer busy={pending} onSend={sendMessage} onTyping={setTyping} restore={restore} />
       </section>}
       <button type="button" className="chat-bot" style={{ left: position.x, top: position.y }} aria-label={t('chat.botLabel')} aria-expanded={open} onPointerDown={pointerDown} onPointerMove={pointerMove} onPointerUp={pointerUp} onPointerCancel={() => { drag.current = null; dragged.current = true; }} onClick={() => { if (!dragged.current) setOpen((value) => !value); dragged.current = false; }} onKeyDown={(event) => {
         const step = event.shiftKey ? 40 : 10;
@@ -123,7 +210,7 @@ export function ChatBot() {
         const delta = direction[event.key];
         if (delta) { event.preventDefault(); move(position.x + delta[0], position.y + delta[1]); }
         if (event.key === 'Escape') setOpen(false);
-      }}><span className={`chat-bot-image ${pending || input.trim() ? 'thinking' : open ? 'greeting' : 'idle'}`} style={{ backgroundImage: `url("${import.meta.env.BASE_URL}assets/chat_bot/Lunar%20Bot%20Sticker%20Expression%20Sheet.png")` }} aria-hidden="true" /></button>
+      }}><span className={`chat-bot-image ${mood}`} style={{ backgroundImage: `url("${import.meta.env.BASE_URL}assets/chat_bot/Lunar%20Bot%20Sticker%20Expression%20Sheet.png")` }} aria-hidden="true" /></button>
     </div>, modal ?? document.body
   );
 }
