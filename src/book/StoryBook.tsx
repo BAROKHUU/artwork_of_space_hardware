@@ -1,12 +1,16 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react';
-import HTMLFlipBook, { type BookSnapshot, type FlipBookHandle } from '@gullabs/react-flipbook';
+import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
+import { useGSAP } from '@gsap/react';
+import gsap from 'gsap';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import * as THREE from 'three';
 import { useTranslation } from 'react-i18next';
-import type { Chapter } from '../data/types';
+import type { Chapter, ModelId } from '../data/types';
 import { backdrops, backdropUrl, hardwareById, photoUrl } from '../data';
 import { useGame } from '../state/store';
 import { play } from '../audio/sfx';
-import { StoryPage } from './StoryPage';
-import type { StoryPageSpec, StorySection } from './types';
+import { HardwareModel } from '../three/models';
+import { MoonCuoi, MoonRabbit } from '../three/MoonCharacters';
+import type { StorySection } from './types';
 import './book.css';
 
 interface StoryBookProps {
@@ -19,189 +23,214 @@ interface StoryBookProps {
 }
 
 interface StoryLine { who: 'echo' | 'control' | 'lrv' | 'cuoi' | 'rabbit'; text: string }
-interface BookLeaf {
-  type: 'cover' | 'story' | 'back';
-  section?: StorySection;
-  page?: StoryPageSpec;
-  lines?: StoryLine[];
+type Viewpoint = 'wide' | 'cuoi' | 'rover';
+
+function FaceCamera({ children, position, rotation = 0 }: { children: ReactNode; position: [number, number, number]; rotation?: number }) {
+  const ref = useRef<THREE.Group>(null);
+  const { camera } = useThree();
+  useFrame(() => {
+    if (!ref.current) return;
+    const dx = camera.position.x - ref.current.position.x;
+    const dz = camera.position.z - ref.current.position.z;
+    ref.current.rotation.y = Math.atan2(dx, dz) + rotation;
+  });
+  return <group ref={ref} position={position}>{children}</group>;
 }
 
-const PAGE_WIDTH = 380;
-const PAGE_HEIGHT = 520;
+function CameraView({ viewpoint }: { viewpoint: Viewpoint }) {
+  const { camera } = useThree();
+  const destination = useRef(new THREE.Vector3(0, 4.8, 10));
+  const lookAt = useRef(new THREE.Vector3(0, 1.1, 0));
+  useEffect(() => {
+    const views: Record<Viewpoint, { position: [number, number, number]; target: [number, number, number] }> = {
+      wide: { position: [0, 4.8, 10], target: [0, 1.1, 0] },
+      cuoi: { position: [4.2, 2.4, 4.3], target: [1.4, 1.05, 0] },
+      rover: { position: [-4.6, 2.6, 2.2], target: [-1.3, 1.05, 0] },
+    };
+    destination.current.set(...views[viewpoint].position);
+    lookAt.current.set(...views[viewpoint].target);
+  }, [camera, viewpoint]);
+  useFrame((_, delta) => {
+    camera.position.lerp(destination.current, 1 - Math.exp(-3.5 * delta));
+    camera.lookAt(lookAt.current);
+  });
+  return null;
+}
+
+function StoryStage({ viewpoint, model, chapter, imageAlt }: { viewpoint: Viewpoint; model?: ModelId; chapter: Chapter; imageAlt: string }) {
+  return <Canvas camera={{ position: [0, 4.8, 10], fov: 42 }} dpr={[1, 1.5]} role="img" aria-label={imageAlt}>
+    <CameraView viewpoint={viewpoint} />
+    <ambientLight intensity={1.7} />
+    <directionalLight position={[-5, 8, 5]} intensity={3} castShadow />
+    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.03, 0]} receiveShadow>
+      <circleGeometry args={[12, 48]} />
+      <meshStandardMaterial color="#77766e" roughness={1} />
+    </mesh>
+    <mesh position={[0, -0.1, -3]} rotation={[-Math.PI / 2, 0, 0]}>
+      <circleGeometry args={[4, 32]} /><meshStandardMaterial color="#5b5a55" roughness={1} />
+    </mesh>
+    {model && <FaceCamera position={[-1.35, 0, 0]} rotation={Math.PI}><group scale={0.62}><HardwareModel id={model} /></group></FaceCamera>}
+    {chapter.world === 'moon' && <>
+      <FaceCamera position={[1.65, 0, 0.1]}><MoonCuoi scale={0.95} /></FaceCamera>
+      <FaceCamera position={[3.1, 0, -1]} rotation={Math.PI}><MoonRabbit scale={0.78} /></FaceCamera>
+    </>}
+  </Canvas>;
+}
 
 export function StoryBook({ chapter, sections, mode, activeSectionId, onContinue, onSkip }: StoryBookProps) {
   const { t } = useTranslation();
-  const bookRef = useRef<FlipBookHandle | null>(null);
-  const hostRef = useRef<HTMLElement>(null);
   const markBookOpened = useGame((state) => state.markBookOpened);
   const setBookPage = useGame((state) => state.setBookPage);
   const enterStory = useGame((state) => state.enterStory);
   const setReaderChapter = useGame((state) => state.setReaderChapter);
+  const clearGameBookPage = useGame((state) => state.clearGameBookPage);
   const gamePages = useGame((state) => state.book.gamePages);
   const readerPages = useGame((state) => state.book.readerPages);
   const savedReaderSection = useGame((state) => state.book.readerSections[chapter.id]);
-  const [visiblePages, setVisiblePages] = useState<number[]>([0]);
-  const [reducedMotion, setReducedMotion] = useState(() => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-  useEffect(() => {
-    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const update = () => setReducedMotion(query.matches);
-    query.addEventListener('change', update);
-    return () => query.removeEventListener('change', update);
-  }, []);
-  const clearGameBookPage = useGame((state) => state.clearGameBookPage);
+  const narration = useGame((state) => state.narration);
+  const [viewpoint, setViewpoint] = useState<Viewpoint>('wide');
+  const [lineIndex, setLineIndex] = useState(0);
+  const [typed, setTyped] = useState('');
+  const [typingDone, setTypingDone] = useState(false);
+  const sceneRef = useRef<HTMLDivElement>(null);
 
   const visibleSections = useMemo(() => {
     const candidates = sections.filter((section) => section.chapterId === chapter.id);
     return mode === 'game' && activeSectionId ? candidates.filter((section) => section.id === activeSectionId) : candidates;
   }, [sections, chapter.id, mode, activeSectionId]);
-  const leaves = useMemo<BookLeaf[]>(() => [
-    { type: 'cover' },
-    ...visibleSections.flatMap((section) => {
-      const lines = t(`story:${section.chapterId}.${section.key}`, { returnObjects: true }) as unknown as StoryLine[];
-      return section.pages.map((page) => {
-        const hardware = hardwareById[page.focus];
-        const backdrop = backdrops[chapter.world];
-        const image = page.image ?? (hardware ? {
-          src: photoUrl(hardware.photo),
-          alt: t(`hardware:${hardware.id}.name`),
-          credit: t('logbook.credit', { credit: hardware.credit, id: hardware.nasaId }),
-        } : {
-          src: backdropUrl(chapter.world),
-          alt: t(`world.${chapter.world}`),
-          credit: t('logbook.credit', { credit: backdrop.credit, id: backdrop.nasaId }),
-        });
-        const enriched: StoryPageSpec = {
-          ...page,
-          image,
-          fact: page.fact ?? (hardware ? t(`hardware:${hardware.id}.learned`) : undefined),
-        };
-        return { type: 'story' as const, section, page: enriched, lines: lines.slice(page.start, page.end) };
-      });
-    }),
-    { type: 'back' },
-  ], [visibleSections, t, chapter.world]);
-  const contentPages = leaves.slice(1, -1);
-  const initialPageKey = `${mode}:${chapter.id}:${mode === 'game' ? activeSectionId ?? '' : ''}`;
-  const initialPageRef = useRef<{ key: string; page: number } | null>(null);
-  if (initialPageRef.current?.key !== initialPageKey) {
+  const pages = useMemo(() => visibleSections.flatMap((section) => {
+    const lines = t(`story:${section.chapterId}.${section.key}`, { returnObjects: true }) as unknown as StoryLine[];
+    return section.pages.map((page) => ({ section, page, lines: lines.slice(page.start, page.end) }));
+  }), [visibleSections, t]);
+  const startIndex = useMemo(() => {
     const requestedSection = mode === 'game'
       ? activeSectionId
       : savedReaderSection ?? visibleSections.find((section) => readerPages[section.id])?.id;
     const requestedPage = requestedSection ? (mode === 'game' ? gamePages[requestedSection] : readerPages[requestedSection]) : undefined;
-    const found = leaves.findIndex((leaf) => leaf.type === 'story' && leaf.section?.id === requestedSection && leaf.page?.id === requestedPage);
-    const sectionStart = mode === 'reader' && requestedSection
-      ? leaves.findIndex((leaf) => leaf.type === 'story' && leaf.section?.id === requestedSection)
-      : -1;
-    initialPageRef.current = { key: initialPageKey, page: found >= 1 ? found : sectionStart >= 1 ? sectionStart : 0 };
-  }
-  const initialPage = initialPageRef.current.page;
+    const found = pages.findIndex(({ section, page }) => section.id === requestedSection && page.id === requestedPage);
+    if (found >= 0) return found;
+    return pages.findIndex(({ section }) => section.id === requestedSection);
+  }, [activeSectionId, gamePages, mode, pages, readerPages, savedReaderSection, visibleSections]);
+  const [pageIndex, setPageIndex] = useState(0);
+  useEffect(() => setPageIndex(Math.max(0, startIndex)), [chapter.id, activeSectionId, startIndex]);
+  const current = pages[pageIndex];
+  const currentLine = current?.lines[lineIndex] ?? current?.lines[0];
+  const backdrop = backdrops[chapter.world];
+  const hardware = current ? hardwareById[current.page.focus] : undefined;
+  const image = current?.page.image?.src ?? (hardware ? photoUrl(hardware.photo) : backdropUrl(chapter.world));
+  const imageAlt = current?.page.image?.alt ?? (hardware ? t(`hardware:${hardware.id}.name`) : t(`world.${chapter.world}`));
+  const sceneModel = hardware?.model ?? (chapter.world === 'moon' ? 'lrv' : undefined);
+  const isFinal = pageIndex >= pages.length - 1;
+
+  useEffect(() => {
+    setLineIndex(0);
+  }, [pageIndex]);
+
+  useEffect(() => {
+    if (!currentLine) return;
+    setTyped('');
+    setTypingDone(false);
+    const text = currentLine.text;
+    let index = 0;
+    const timer = window.setInterval(() => {
+      index += 1;
+      setTyped(text.slice(0, index));
+      if (index % 2 === 0) play('type');
+      if (index >= text.length) {
+        window.clearInterval(timer);
+        setTypingDone(true);
+      }
+    }, 28);
+    return () => window.clearInterval(timer);
+  }, [currentLine]);
+
+  useEffect(() => {
+    if (!currentLine) return;
+    const nextView: Viewpoint = currentLine.who === 'cuoi' || currentLine.who === 'rabbit' ? 'cuoi' : currentLine.who === 'lrv' || currentLine.who === 'echo' ? 'rover' : 'wide';
+    setViewpoint(nextView);
+  }, [currentLine]);
+
+  useGSAP(() => {
+    gsap.fromTo(sceneRef.current, { autoAlpha: 0, scale: 1.015 }, { autoAlpha: 1, scale: 1, duration: 0.45, ease: 'power2.out' });
+  }, { scope: sceneRef, dependencies: [pageIndex], revertOnUpdate: true });
 
   useEffect(() => {
     markBookOpened(chapter.id);
     if (mode === 'game' && activeSectionId) enterStory(activeSectionId);
-  }, [chapter.id, mode, activeSectionId, markBookOpened, enterStory]);
-
-  const syncBookmark = useCallback((snapshot: BookSnapshot) => {
-    setVisiblePages(snapshot.visiblePages);
-    const leaf = leaves[snapshot.page];
-    if (leaf?.type !== 'story' || !leaf.section || !leaf.page) return;
-    setBookPage(mode, leaf.section.id, leaf.page.id);
+  }, [activeSectionId, chapter.id, enterStory, markBookOpened, mode]);
+  useEffect(() => {
+    if (!current) return;
+    setBookPage(mode, current.section.id, current.page.id);
     if (mode === 'reader') setReaderChapter(chapter.id);
-  }, [leaves, mode, setBookPage, setReaderChapter, chapter.id]);
+  }, [chapter.id, current, mode, setBookPage, setReaderChapter]);
+  useEffect(() => {
+    if (!narration || !currentLine || !('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(`${t(`story:speakers.${currentLine.who}`)}. ${currentLine.text}`);
+    utterance.lang = document.documentElement.lang || 'en';
+    window.speechSynthesis.speak(utterance);
+    return () => window.speechSynthesis.cancel();
+  }, [currentLine, narration, t]);
 
-  const onPageChange = useCallback((snapshot: BookSnapshot) => {
-    syncBookmark(snapshot);
-    play('page');
-  }, [syncBookmark]);
-  const continueStory = useCallback(() => {
-    if (mode === 'game' && activeSectionId) clearGameBookPage(activeSectionId);
-    onContinue?.();
-  }, [mode, activeSectionId, clearGameBookPage, onContinue]);
-  const skipStory = useCallback(() => {
-    if (mode === 'game' && activeSectionId) clearGameBookPage(activeSectionId);
-    onSkip?.();
-  }, [mode, activeSectionId, clearGameBookPage, onSkip]);
-
-  const onKeyDown = useCallback((event: KeyboardEvent<HTMLElement>) => {
-    if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey) return;
-    const target = event.target;
-    if (!(target instanceof Node) || !hostRef.current?.contains(target)) return;
-    if (target instanceof HTMLElement && (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test(target.tagName))) return;
-    if (event.key === 'ArrowRight' || event.key === 'PageDown') {
-      event.preventDefault();
-      bookRef.current?.flipNext();
-    } else if (event.key === 'ArrowLeft' || event.key === 'PageUp') {
-      event.preventDefault();
-      bookRef.current?.flipPrev();
-    } else if (event.key === 'Home') {
-      event.preventDefault();
-      bookRef.current?.flipToPage(0);
-    } else if (event.key === 'End') {
-      event.preventDefault();
-      bookRef.current?.flipToPage(leaves.length - 1);
+  const moveTo = useCallback((next: number) => {
+    const bounded = Math.max(0, Math.min(pages.length - 1, next));
+    setPageIndex(bounded);
+    const destination = pages[bounded];
+    if (destination) {
+      setBookPage(mode, destination.section.id, destination.page.id);
+      if (mode === 'reader') setReaderChapter(chapter.id);
     }
-  }, [leaves.length]);
-
-  const renderLeaf = (leaf: BookLeaf, index: number) => {
-    if (leaf.type === 'cover') return <div key="cover" className="story-page-host" data-density="hard"><StoryPage chapterId={chapter.id} lines={[]} pageNumber={1} totalPages={contentPages.length} cover /></div>;
-    if (leaf.type === 'back') return <div key="back-cover" className="story-page-host" data-density="hard"><StoryPage chapterId={chapter.id} lines={[]} pageNumber={contentPages.length} totalPages={contentPages.length} backCover /></div>;
-    if (!leaf.section || !leaf.page) return <div className="story-page-host" key={`empty-${index}`} />;
-    return <div key={leaf.page.id} className="story-page-host"><StoryPage chapterId={chapter.id} section={leaf.section} page={leaf.page} lines={leaf.lines ?? []} pageNumber={index} totalPages={contentPages.length} /></div>;
+    play('page');
+  }, [chapter.id, mode, pages, setBookPage, setReaderChapter]);
+  const finish = useCallback((skip = false) => {
+    if (mode === 'game' && activeSectionId) clearGameBookPage(activeSectionId);
+    (skip ? onSkip : onContinue)?.();
+  }, [activeSectionId, clearGameBookPage, mode, onContinue, onSkip]);
+  const advanceDialogue = useCallback(() => {
+    if (!typingDone) {
+      if (currentLine) setTyped(currentLine.text);
+      setTypingDone(true);
+    } else if (current && lineIndex < current.lines.length - 1) {
+      setLineIndex((value) => value + 1);
+    } else if (isFinal && mode === 'game') {
+      finish();
+    } else {
+      moveTo(pageIndex + 1);
+    }
+  }, [current, currentLine, finish, isFinal, lineIndex, mode, moveTo, pageIndex, typingDone]);
+  const onKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.altKey || event.ctrlKey || event.metaKey || (event.target instanceof HTMLElement && /^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test(event.target.tagName))) return;
+    if (event.key === 'ArrowRight' || event.key === 'PageDown') { event.preventDefault(); moveTo(pageIndex + 1); }
+    if (event.key === 'ArrowLeft' || event.key === 'PageUp') { event.preventDefault(); moveTo(pageIndex - 1); }
   };
 
-  if (visibleSections.length === 0 || contentPages.length === 0) {
-    return <section className="story-book-fallback" aria-label={t('book.reading')}>
-      <p className="story-kicker">{t(`story:${chapter.id}.title`)}</p>
-      {visibleSections.map((section) => {
-        const lines = t(`story:${section.chapterId}.${section.key}`, { returnObjects: true }) as unknown as StoryLine[];
-        return <section key={section.id}><h2>{section.title}</h2>{lines.map((line, i) => <p key={`${section.id}-${i}`}><strong>{t(`story:speakers.${line.who}`)}:</strong> {line.text}</p>)}</section>;
-      })}
-      {mode === 'game' && <div className="story-actions"><button className="btn ghost" type="button" onClick={skipStory}>{t('book.skip')}</button></div>}
-    </section>;
-  }
+  if (!current) return <section className="story-book-fallback" aria-label={t('book.reading')}>
+    <p>{t(`story:${chapter.id}.title`)}</p>{mode === 'game' && <button type="button" className="btn ghost" onClick={() => finish(true)}>{t('book.skip')}</button>}
+  </section>;
 
-  const isFinalPage = visiblePages.includes(leaves.length - 2);
-  return <section className="story-book-shell" ref={hostRef} onKeyDown={onKeyDown} aria-label={t('book.reading')} tabIndex={0}>
-    <div className="story-book-controls" aria-label={t('book.reading')}>
-      <button className="btn ghost" type="button" onClick={() => bookRef.current?.flipPrev()}>{t('book.previous')}</button>
-      <button className="btn ghost" type="button" onClick={() => bookRef.current?.flipNext()}>{t('book.next')}</button>
+  return <section className="story-book-shell" onKeyDown={onKeyDown} aria-label={t('book.reading')} tabIndex={0}>
+    <header className="story-cinematic-header">
+      <div><p className="story-kicker">{t('book.section')}</p><h2>{current.section.title}</h2></div>
+    </header>
+    <div className="story-cinematic-scene" ref={sceneRef} style={{ backgroundImage: `linear-gradient(180deg, rgb(13 22 29 / 8%), rgb(13 22 29 / 62%)), url("${image}")` }}>
+      <div className="story-cinematic-credit">{current.page.image?.credit ?? t('logbook.credit', { credit: hardware?.credit ?? backdrop.credit, id: hardware?.nasaId ?? backdrop.nasaId })}</div>
+      <StoryStage viewpoint={viewpoint} model={sceneModel} chapter={chapter} imageAlt={imageAlt} />
+      <div className="story-pov-controls" role="group" aria-label={t('book.viewpoints')}>
+        {(['wide', 'cuoi', 'rover'] as const).map((view) => <button key={view} type="button" className={`btn ${viewpoint === view ? 'primary' : 'ghost'}`} aria-pressed={viewpoint === view} onClick={() => setViewpoint(view)}>{t(`book.pov.${view}`)}</button>)}
+      </div>
+      {currentLine && <div className={`story-dialogue-overlay who-${currentLine.who}`} aria-live="polite" onClick={advanceDialogue}>
+        <strong>{t(`story:speakers.${currentLine.who}`)}</strong>
+        <p>{typed}<span className="type-caret" aria-hidden="true">▌</span></p>
+        <small>{typingDone ? t('book.next') : t('book.tapToFinish')}</small>
+      </div>}
     </div>
-    <div className="story-book-frame">
-      <HTMLFlipBook
-        key={initialPageKey}
-        ref={bookRef}
-        width={PAGE_WIDTH}
-        height={PAGE_HEIGHT}
-        sizing="responsive"
-        minWidth={260}
-        maxWidth={PAGE_WIDTH}
-        minHeight={356}
-        maxHeight={PAGE_HEIGHT}
-        autoSize
-        usePortrait
-        hardCovers
-        initialPage={initialPage}
-        useKeyboard={false}
-        respectReducedMotion
-        flippingTime={reducedMotion ? 0 : 700}
-        allowTouchScroll
-        respectInteractiveContent
-        controls="none"
-        aria-label={`${t('book.bookTitle')}: ${t(`story:${chapter.id}.title`)}`}
-        liveRegion
-        liveRegionText={(page, pageCount) => t('book.pageOf', { page: page + 1, total: pageCount })}
-        onLoaded={syncBookmark}
-        onPageChange={onPageChange}
-        pageBackground="#f6f0df"
-        className="story-flipbook"
-      >
-        {leaves.map(renderLeaf)}
-      </HTMLFlipBook>
-    </div>
-    {mode === 'game' && <div className="story-actions">
-      {isFinalPage && <button className="btn primary" type="button" onClick={continueStory}>{t('book.continue')}</button>}
-      <button className="btn ghost" type="button" onClick={skipStory}>{t('book.skip')}</button>
-    </div>}
-    {mode === 'reader' && <p className="story-reader-caption">{t('book.reading')}</p>}
+    {current.page.fact && <aside className="story-fact"><span className="story-fact-label">{t('book.fact')}</span><p>{current.page.fact}</p></aside>}
+    <nav className="story-actions" aria-label={t('book.reading')}>
+      <button className="btn ghost" type="button" onClick={() => moveTo(pageIndex - 1)} disabled={pageIndex === 0}>{t('book.previous')}</button>
+      {mode === 'game' && <button className="btn ghost" type="button" onClick={() => finish(true)}>{t('book.skip')}</button>}
+      {isFinal && mode === 'game'
+        ? <button className="btn primary" type="button" onClick={advanceDialogue} disabled={!typingDone}>{t('book.continue')}</button>
+        : <button className="btn primary" type="button" onClick={advanceDialogue} disabled={!typingDone}>{t('book.next')}</button>}
+    </nav>
   </section>;
 }

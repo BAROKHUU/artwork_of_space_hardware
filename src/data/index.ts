@@ -34,7 +34,7 @@ export interface Backdrop {
 export const backdrops = backdropsJson as Record<string, Backdrop>;
 export const backdropUrl = (name: string) => `${import.meta.env.BASE_URL}assets/backdrops/${name}.webp`;
 
-export const photoUrl = (photo: string) => `${import.meta.env.BASE_URL}assets/photos/${photo}.webp`;
+export const photoUrl = (photo: string) => `${import.meta.env.BASE_URL}assets/photos/${photo}${photo.includes('.') ? '' : '.webp'}`;
 export const modelUrl = (id: string) => `${import.meta.env.BASE_URL}assets/models/${id}.glb`;
 export const planetMapUrl = (id: string) => (id === 'mars' ? textureUrl('mars') : `${import.meta.env.BASE_URL}assets/textures/planets/${id}.webp`);
 export const textureUrl = (name: 'moon' | 'mars') => `${import.meta.env.BASE_URL}assets/textures/${name}.webp`;

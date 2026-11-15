@@ -36,7 +36,6 @@
     "cover": "Story",
     "open": "Open story",
     "close": "Close book",
-    "pageOf": "Page {{page}} of {{total}}",
     "reading": "Story reader",
     "bookTitle": "Storybook",
     "noImage": "No illustration available",
@@ -45,7 +44,9 @@
     "chapters": "Available chapters",
     "locked": "Story not reached yet",
     "readerIntro": "Revisit story sections you've already encountered. New sections appear here as you discover them.",
-    "empty": "No story sections have been discovered yet. Begin the mission to start the story."
+    "empty": "No story sections have been discovered yet. Begin the mission to start the story.",
+    "viewpoints": "Choose a camera view",
+    "pov": { "wide": "Wide view", "cuoi": "Cuội’s view", "rover": "Rover view" }, "tapToFinish": "Tap the speech box to finish"
   },
   "map": {
     "heading": "The Moon remembers",
@@ -113,7 +114,10 @@
     "correct": "Correct!",
     "incorrect": "Not quite.",
     "next": "Next",
-    "finish": "Finish"
+    "finish": "Finish",
+    "nasaPhoto": "NASA photo: {{name}} · {{credit}} · {{id}}",
+    "psepName": "Apollo 11 Passive Seismic Experiment",
+    "nasaSource": "Check {{source}} source"
   },
   "signal": {
     "heading": "Still listening",
@@ -279,7 +283,6 @@
     "date": "Facts were checked in November 2026. Missions change, so visit NASA for the latest.",
     "listHeading": "References",
     "software": "Software licenses and notices",
-    "flipbookNotice": "The storybook uses the GUL Labs flipbook React binding and its MPL-licensed core. License text and package attribution:",
     "noticeLink": "third-party notice",
     "mplLink": "MPL 2.0 license text",
     "wrapperSource": "wrapper source",

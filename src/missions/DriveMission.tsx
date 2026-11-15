@@ -10,6 +10,7 @@ import { KaraokeNhacTre } from '../three/Echo';
 import { Tracks, WheelDust } from '../three/RoverFx';
 import { GameCanvas } from '../three/GameCanvas';
 import { HardwareModel } from '../three/models';
+import { MoonCuoi } from '../three/MoonCharacters';
 import { Lights, Rocks, SHADOW_TEXEL, SUN_OFFSET, Sky, TerrainMesh } from '../three/Scenery';
 import { play } from '../audio/sfx';
 import { useGame } from '../state/store';
@@ -78,6 +79,7 @@ function Beacon({ x, z, y, state }: { x: number; z: number; y: number; state: 'n
 }
 
 interface RoverProps {
+  missionId: string;
   config: DriveConfig;
   terrain: Terrain;
   obstacles: Obstacle[];
@@ -104,7 +106,7 @@ const LOOK_SENSITIVITY = 0.006;
 const CHASE_ELEVATION = Math.atan2(5.2, 11);
 const CHASE_DISTANCE = Math.hypot(5.2, 11);
 
-function Rover({ config, terrain, obstacles, keys, pad, light, arrow, hud, onFinish, frozen, vehicle, sun, cameraMode, look: lookOffset }: RoverProps) {
+function Rover({ missionId, config, terrain, obstacles, keys, pad, light, arrow, hud, onFinish, frozen, vehicle, sun, cameraMode, look: lookOffset }: RoverProps) {
   const specs = VEHICLES[vehicle];
   const axes = useMemo(() => sunAxes(sun), [sun]);
   const wheelAngle = useRef(0);
@@ -114,10 +116,17 @@ function Rover({ config, terrain, obstacles, keys, pad, light, arrow, hud, onFin
   const camLook = useRef(new THREE.Vector3(config.start.x, 1, config.start.z - 4));
   const scratch = useRef({ wanted: new THREE.Vector3(), look: new THREE.Vector3(), contact: emptyContact() });
   const [progress, setProgress] = useState(0);
+  const cuoiWorking = useRef(false);
+  const cuoiMoving = useRef(false);
+  const cuoiRef = useRef<THREE.Group>(null);
+  const cuoiPosition = useRef(new THREE.Vector3(config.start.x + specs.radius + 1.1, terrain.heightAt(config.start.x + specs.radius + 1.1, config.start.z) + 0.08, config.start.z));
+  const cuoiRotation = useRef(0);
 
   useFrame((state, rawDt) => {
     const dt = Math.min(rawDt, 0.05);
     const s = sim.current;
+    cuoiWorking.current = missionId === 'm2_collect' && s.scan > 0;
+    cuoiMoving.current = missionId === 'm2_collect' && !frozen && !cuoiWorking.current && Math.abs(s.speed) > 0.6;
     const k = keys.current;
     const p = pad.current;
     if (!frozen && !s.done) {
@@ -138,8 +147,11 @@ function Rover({ config, terrain, obstacles, keys, pad, light, arrow, hud, onFin
         }
       }
 
-      const drive = s.asleep ? 0 : forward ? 1 : back ? -0.55 : 0;
-      s.speed += (drive * 11 - s.speed) * damp(2.6, dt);
+      const tgt = config.targets[s.index];
+      const atSample = missionId === 'm2_collect' && tgt && Math.hypot(tgt.x - s.x, tgt.z - s.z) < config.radius;
+      const drive = s.asleep || atSample ? 0 : forward ? 1 : back ? -0.55 : 0;
+      const maxSpeed = missionId === 'm2_collect' ? 2.2 : 11;
+      s.speed += (drive * maxSpeed - s.speed) * damp(atSample ? 7 : 2.6, dt);
       wheelAngle.current += (s.speed * dt) / 0.34;
       s.odometer += Math.abs(s.speed) * dt;
       if (!s.asleep) s.heading += ((left ? 1 : 0) - (right ? 1 : 0)) * dt * (1.9 - Math.min(0.7, Math.abs(s.speed) * 0.05));
@@ -169,7 +181,6 @@ function Rover({ config, terrain, obstacles, keys, pad, light, arrow, hud, onFin
       s.x = nx;
       s.z = nz;
 
-      const tgt = config.targets[s.index];
       if (tgt && Math.hypot(tgt.x - s.x, tgt.z - s.z) < config.radius) {
         s.scan += dt;
         if (s.scan >= SCAN_SECONDS) {
@@ -186,6 +197,25 @@ function Rover({ config, terrain, obstacles, keys, pad, light, arrow, hud, onFin
     }
 
     const y = terrain.heightAt(s.x, s.z);
+    const fx = -Math.sin(s.heading);
+    const fz = -Math.cos(s.heading);
+    const sideX = Math.cos(s.heading);
+    const sideZ = -Math.sin(s.heading);
+    const targetX = s.x + sideX * (specs.radius + 1.1);
+    const targetZ = s.z + sideZ * (specs.radius + 1.1);
+    const targetY = terrain.heightAt(targetX, targetZ);
+    // Delay only the horizontal follow; feet stay planted on the terrain instead of floating.
+    cuoiPosition.current.x = THREE.MathUtils.damp(cuoiPosition.current.x, targetX, 2.7, dt);
+    cuoiPosition.current.z = THREE.MathUtils.damp(cuoiPosition.current.z, targetZ, 2.7, dt);
+    cuoiPosition.current.y = targetY;
+    // The character faces local +Z; the rover's forward direction is local -Z.
+    const desiredCuoiRotation = s.heading + Math.PI;
+    cuoiRotation.current = THREE.MathUtils.damp(cuoiRotation.current, desiredCuoiRotation, 5, dt);
+    if (cuoiRef.current) {
+      cuoiRef.current.position.copy(cuoiPosition.current);
+      cuoiRef.current.rotation.y = cuoiRotation.current;
+      cuoiRef.current.visible = config.world === 'moon' && vehicle === 'lrv';
+    }
     const e = 0.9;
     const pitch = Math.atan2(terrain.heightAt(s.x - Math.sin(s.heading) * e, s.z - Math.cos(s.heading) * e) - y, e);
     const roll = Math.atan2(terrain.heightAt(s.x + Math.cos(s.heading) * e, s.z - Math.sin(s.heading) * e) - y, e);
@@ -207,8 +237,6 @@ function Rover({ config, terrain, obstacles, keys, pad, light, arrow, hud, onFin
       light.current.position.set(ax + sun.x, ay + sun.y, az + sun.z);
     }
 
-    const fx = -Math.sin(s.heading);
-    const fz = -Math.cos(s.heading);
     const { wanted, look } = scratch.current;
     const { yaw, pitch: tilt, active } = lookOffset.current;
     const follow = active ? 16 : 4;
@@ -273,6 +301,7 @@ function Rover({ config, terrain, obstacles, keys, pad, light, arrow, hud, onFin
           <HardwareModel id={vehicle} />
         </group>
       )}
+      {config.world === 'moon' && vehicle === 'lrv' && <group ref={cuoiRef}><MoonCuoi scale={0.72} workingRef={cuoiWorking} movingRef={cuoiMoving} /></group>}
       <Tracks motion={sim} terrain={terrain} halfWidth={specs.track} world={config.world} />
       <WheelDust motion={sim} terrain={terrain} halfWidth={specs.track} world={config.world} />
       {config.targets.map((t, i) => (
@@ -399,7 +428,7 @@ export function DriveMission({ id, config, onResult, lab, vehicle = 'echo', sun 
             <HardwareModel id={config.prop.model} />
           </group>
         )}
-        <Rover config={config} terrain={terrain} obstacles={obstacles} keys={keys} pad={pad} light={sunLight} arrow={arrow} hud={channel} onFinish={finish} frozen={finished} vehicle={vehicle} sun={sunVector} cameraMode={cameraMode} look={lookOffset} />
+        <Rover missionId={id} config={config} terrain={terrain} obstacles={obstacles} keys={keys} pad={pad} light={sunLight} arrow={arrow} hud={channel} onFinish={finish} frozen={finished} vehicle={vehicle} sun={sunVector} cameraMode={cameraMode} look={lookOffset} />
       </GameCanvas>
 
       <DriveHud id={id} config={config} lab={lab} channel={channel} arrow={arrow} />

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, type RefObject } from 'react';
 import { RoundedBox, useTexture } from '@react-three/drei';
 import { useFrame, type ThreeElements } from '@react-three/fiber';
 import * as THREE from 'three';
@@ -114,21 +114,33 @@ function Axe() {
   </group>;
 }
 
-export function Cuoi(props: ThreeElements['group']) {
+export function Cuoi({ movingRef, workingRef, ...props }: ThreeElements['group'] & { movingRef?: RefObject<boolean>; workingRef?: RefObject<boolean> }) {
   const upper = useRef<THREE.Group>(null);
+  const leftLeg = useRef<THREE.Group>(null);
+  const rightLeg = useRef<THREE.Group>(null);
   const scarfTexture = useTexture(`${import.meta.env.BASE_URL}assets/textures/khan-ran-weave.png`);
   scarfTexture.colorSpace = THREE.SRGBColorSpace;
   scarfTexture.wrapS = scarfTexture.wrapT = THREE.RepeatWrapping;
   scarfTexture.repeat.set(0.5, 0.5);
   useFrame(({ clock }) => {
-    if (upper.current && !prefersReducedMotion()) upper.current.position.y = Math.sin(clock.elapsedTime * 1.4) * 0.008;
+    const moving = movingRef?.current ?? false;
+    const working = workingRef?.current ?? false;
+    const phase = clock.elapsedTime * (moving ? 7.2 : 2.2);
+    if (upper.current && !prefersReducedMotion()) {
+      upper.current.position.y = Math.sin(phase) * (moving ? 0.018 : 0.008);
+      upper.current.rotation.z = working ? Math.sin(clock.elapsedTime * 5) * 0.035 : 0;
+    }
+    if (leftLeg.current) leftLeg.current.rotation.x = moving ? Math.sin(phase) * 0.34 : working ? 0.18 : 0;
+    if (rightLeg.current) rightLeg.current.rotation.x = moving ? Math.sin(phase + Math.PI) * 0.34 : working ? 0.18 : 0;
   });
   return <group name="Cuoi" {...props}>
     <group name="trousers">
       {[-1, 1].map((s) => <group key={s}>
-        <RoundedBox args={[0.34, 0.83, 0.34]} radius={0.1} position={[s * 0.19, 0.65, 0]} material={pants} castShadow />
+        <group ref={s < 0 ? leftLeg : rightLeg}>
+          <RoundedBox args={[0.34, 0.83, 0.34]} radius={0.1} position={[s * 0.19, 0.65, 0]} material={pants} castShadow />
         <mesh position={[s * 0.19, 0.21, 0]} material={skin}><cylinderGeometry args={[0.09, 0.08, 0.17, 8]} /></mesh>
-        <Foot side={s} />
+          <Foot side={s} />
+        </group>
       </group>)}
       <mesh position={[-0.19, 0.65, 0.176]} rotation={[0, 0, 0.08]} material={patch}><boxGeometry args={[0.20, 0.21, 0.01]} /></mesh>
     </group>
