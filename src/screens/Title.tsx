@@ -50,8 +50,7 @@ export function Title({ centered = false }: { centered?: boolean }) {
           <Link className="btn ghost big" to="/map">{t('nav.map')}</Link>
         </div>
         <nav className="title-links reveal" aria-label={t('nav.more')}>
-          <Link to="/story" className="title-replay">Read the story again</Link>
-          <Link to="/book">{t('nav.book')}</Link>
+          <Link to="/story" className="title-replay">Story</Link>
           <Link to="/logbook">{t('nav.logbook')}</Link>
           <Link to="/atlas">{t('nav.atlas')}</Link>
           <Link to="/lab">{t('nav.lab')}</Link>

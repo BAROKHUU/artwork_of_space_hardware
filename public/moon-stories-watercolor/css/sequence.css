@@ -53,3 +53,8 @@ dialog .guide-note,.science-note{font-size:15px;line-height:1.7}
 .guide-launch-art:focus-visible{outline:3px solid var(--cream);outline-offset:4px;border-radius:16px}
 @media(max-width:700px){.guide-launch.guide-launch-art{width:80px;top:10px;right:12px}.scene-marker{right:110px}}
 @media(max-height:500px){.guide-launch.guide-launch-art{width:70px;top:8px;right:12px}}
+/* End of the story: a clear way back into the main app (the link targets the top window when framed). */
+.keep-exploring{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:60px;margin-top:28px;padding:16px 34px;border:1px solid rgba(65,76,114,.24);border-radius:16px;background:#fff3dd;color:var(--night);font-size:22px;font-weight:600;line-height:1.3;text-decoration:none;box-shadow:0 6px 20px rgba(40,49,74,.14);transition:transform .2s ease,background .2s ease}.keep-exploring:hover{transform:translateY(-3px);background:#f7e6c4}.keep-exploring:focus-visible{outline:3px solid #fff3dd;outline-offset:4px}
+/* Inside the app the story controls take the top-right corner, so Uncle Cuoi's button moves below them. */
+.in-app .guide-launch.guide-launch-art{top:72px}
+@media(max-width:700px){.in-app .guide-launch.guide-launch-art{top:64px}}

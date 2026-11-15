@@ -9,13 +9,7 @@
   },
   "nav": {
     "story": "Story",
-    "storyMenu": "Choose how to see the story",
-    "storyVideo": "Video story",
-    "storyVideoNote": "Scroll through 22 animated scenes with music",
-    "storyWatercolor": "Watercolor storybook",
-    "storyWatercolorNote": "Turn the pages of the painted book",
     "map": "Missions",
-    "book": "Moon Stories Watercolor",
     "logbook": "Logbook",
     "atlas": "Atlas",
     "lab": "Lab",
@@ -26,6 +20,26 @@
     "more": "More pages",
     "progress": "Learning",
     "archive": "Archive"
+  },
+  "storyModes": {
+    "kicker": "One story, two ways to see it",
+    "title": "Choose your story mode",
+    "sub": "Uncle Cuội, Moon Rabbit and ROVER tell the same Moon story in both modes. Pick the one that suits you tonight.",
+    "watercolor": {
+      "tag": "Painted · scroll at your own pace",
+      "name": "Watercolor Book",
+      "desc": "Scroll through 22 hand-painted pages with big, easy-to-read captions."
+    },
+    "lantern": {
+      "tag": "Animated · with music",
+      "name": "Lantern Show",
+      "desc": "Like a spinning Mid-Autumn lantern: 22 moving scenes with music, read alongside the dialogue."
+    },
+    "start": "Start reading",
+    "switch": "Change mode",
+    "exit": "Exit story",
+    "musicOn": "Play reading music",
+    "musicOff": "Mute reading music"
   },
   "introStory": {
     "exit": "Exit story",

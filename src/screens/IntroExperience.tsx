@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { lazy } from 'react';
 import { mediaUrl } from '../media';
 import { INTRO_SCENES, useGame } from '../state/store';
 import { activeIntroVideo } from './introMedia';
+import { StoryControls, useStoryMusic } from '../components/StoryControls';
 
 const Title = lazy(() => import('./Title').then((m) => ({ default: m.Title })));
 
@@ -37,9 +38,6 @@ const scenes = videoFiles.flatMap((video, videoIndex) => {
   return [{ number: String(videoIndex + 1).padStart(2, '0'), title: scene.title, video, text: paragraphs.slice(start, end).join('\n\n') }];
 });
 
-/** Background music sits well under narration; the Settings volume scales it. */
-const MUSIC_LEVEL = 0.34;
-
 export function IntroExperience({ directStart = false }: { directStart?: boolean }) {
   const savedIntro = useGame((s) => s.intro);
   const setIntroScene = useGame((s) => s.setIntroScene);
@@ -55,37 +53,18 @@ export function IntroExperience({ directStart = false }: { directStart?: boolean
   const navigate = useNavigate();
   const finish = () => {
     finishIntro();
-    setFinished(true);
+    // From the Story page, "Keep exploring" goes to the main page; on first visit it opens it in place.
+    if (directStart) navigate('/home');
+    else setFinished(true);
   };
   // Leaving early counts as having seen the story, so "/" shows the main page next time too.
   const exit = () => {
     finishIntro();
     window.scrollTo(0, 0);
-    if (directStart) navigate('/');
+    if (directStart) navigate('/story');
     else setFinished(true);
   };
-  const [musicEnabled, setMusicEnabled] = useState(true);
-  const volume = useGame((s) => s.volume);
-  const musicRef = useRef<HTMLAudioElement>(null);
-
-  useEffect(() => {
-    const music = musicRef.current;
-    if (!started || finished || !music) return undefined;
-    music.loop = true;
-    void music.play().catch(() => setMusicEnabled(false));
-    return () => { music.pause(); music.currentTime = 0; };
-  }, [started, finished]);
-
-  useEffect(() => {
-    if (musicRef.current) musicRef.current.volume = MUSIC_LEVEL * volume;
-  }, [volume, started, finished]);
-
-  useEffect(() => {
-    const music = musicRef.current;
-    if (!music) return;
-    music.muted = !musicEnabled;
-    if (musicEnabled && started && !finished) void music.play().catch(() => undefined);
-  }, [musicEnabled, started, finished]);
+  const music = useStoryMusic(started && !finished);
 
   useEffect(() => {
     if (!started || resumeScene === 0) return;
@@ -117,15 +96,14 @@ export function IntroExperience({ directStart = false }: { directStart?: boolean
   };
 
   if (finished) return <Title />;
-  if (!started) return <main className="intro-gate" style={{ backgroundImage: `url("${mediaUrl('intro/Image/8.jpg')}")` }}><div className="intro-gate__glow" /><p className="intro-kicker">A story of NASA’s forgotten machines</p><h1>FIND U<br /><em>IN THE YOUNIVERSE</em></h1><button className="btn primary big intro-start" type="button" onClick={() => setIntroductionOpen(true)}>Choose how to read <span aria-hidden="true">↓</span></button><p className="intro-quote">“Old roots hold tight; new dreams take flight”</p><p className="intro-gate__copy">A Vietnamese-inspired journey through NASA's forgotten machines, scientific discoveries, and the dreams of tomorrow's explorers.</p>{introductionOpen && <div className="legend-modal" role="dialog" aria-modal="true" aria-labelledby="legend-title"><button className="legend-modal__close" type="button" onClick={() => setIntroductionOpen(false)} aria-label="Close introduction">×</button><p className="intro-kicker">Before the moon story begins</p><h2 id="legend-title">The Legend of Cuội on the Moon</h2><div className="legend-modal__rule" /><p>Once upon a time, there was a woodcutter named Cuội. One day, while walking through the forest, he suddenly encountered a tiger cub charging towards him. With no time to escape, he bravely raised his axe and fought the tiger. Since the tiger cub was still young and weaker than a human, Cuội struck it with his axe, and it fell to the ground.</p><p>Just then, the mother tiger returned. Cuội quickly threw down his axe and climbed up a nearby tree. From above, he saw the mother tiger run to a bush nearby, pick some leaves, and chew them before feeding them to her cub. After a short while, the tiger cub began to move, wagged its tail, and miraculously came back to life.</p><p>After the mother tiger had carried her cub away, Cuội went to the bush, dug up the plant by its roots, and took it home.</p><p className="legend-modal__hint">A Vietnamese legend about memory, wonder, and the roots that reach all the way to the Moon.</p><div className="intro-reading-options"><button className="btn primary big" type="button" onClick={() => { setIntroductionOpen(false); setStarted(true); }}>Watch the video story <span aria-hidden="true">→</span></button><a className="btn ghost big" href="/moon-stories-watercolor/index.html">Read the watercolor story <span aria-hidden="true">→</span></a></div></div>}</main>;
+  if (!started) return <main className="intro-gate" style={{ backgroundImage: `url("${mediaUrl('intro/Image/8.jpg')}")` }}><div className="intro-gate__glow" /><p className="intro-kicker">A story of NASA’s forgotten machines</p><h1>FIND U<br /><em>IN THE YOUNIVERSE</em></h1><button className="btn primary big intro-start" type="button" onClick={() => setIntroductionOpen(true)}>Choose how to read <span aria-hidden="true">↓</span></button><p className="intro-quote">“Old roots hold tight; new dreams take flight”</p><p className="intro-gate__copy">A Vietnamese-inspired journey through NASA's forgotten machines, scientific discoveries, and the dreams of tomorrow's explorers.</p>{introductionOpen && <div className="legend-modal" role="dialog" aria-modal="true" aria-labelledby="legend-title"><button className="legend-modal__close" type="button" onClick={() => setIntroductionOpen(false)} aria-label="Close introduction">×</button><p className="intro-kicker">Before the moon story begins</p><h2 id="legend-title">The Legend of Cuội on the Moon</h2><div className="legend-modal__rule" /><p>Once upon a time, there was a woodcutter named Cuội. One day, while walking through the forest, he suddenly encountered a tiger cub charging towards him. With no time to escape, he bravely raised his axe and fought the tiger. Since the tiger cub was still young and weaker than a human, Cuội struck it with his axe, and it fell to the ground.</p><p>Just then, the mother tiger returned. Cuội quickly threw down his axe and climbed up a nearby tree. From above, he saw the mother tiger run to a bush nearby, pick some leaves, and chew them before feeding them to her cub. After a short while, the tiger cub began to move, wagged its tail, and miraculously came back to life.</p><p>After the mother tiger had carried her cub away, Cuội went to the bush, dug up the plant by its roots, and took it home.</p><p className="legend-modal__hint">A Vietnamese legend about memory, wonder, and the roots that reach all the way to the Moon.</p><div className="intro-reading-options"><button className="btn primary big" type="button" onClick={() => { setIntroductionOpen(false); setStarted(true); }}>{t('storyModes.lantern.name')} <span aria-hidden="true">→</span></button><Link className="btn ghost big" to="/story?mode=watercolor">{t('storyModes.watercolor.name')} <span aria-hidden="true">→</span></Link></div></div>}</main>;
 
   return <main className="intro-scrollbook">
-    <audio ref={musicRef} src={mediaUrl('intro/reading-music.mp3')} preload="auto" aria-label="Story reading music" />
     <div className="intro-fixed-scene" aria-hidden="true">
       <video key={activeScene} className="is-active" src={activeIntroVideo(scenes, activeScene)} autoPlay muted loop playsInline preload="none" />
       <div className="intro-fixed-scene__wash" />
     </div>
-    <header className="intro-sample-header"><span>FIND U IN THE YOUNIVERSE</span><span>{String(activeScene + 1).padStart(2, '0')} / 22</span><div className="intro-header-actions"><button className="intro-music-toggle" type="button" onClick={() => setMusicEnabled((enabled) => !enabled)} aria-label={musicEnabled ? 'Mute reading music' : 'Play reading music'}>{musicEnabled ? '♫' : '♫̸'}</button><button className="intro-exit" type="button" onClick={exit} aria-label={t('introStory.exitLabel')}>{t('introStory.exit')} <span aria-hidden="true">✕</span></button></div></header>
+    <header className="intro-sample-header"><span>FIND U IN THE YOUNIVERSE</span><span>{String(activeScene + 1).padStart(2, '0')} / 22</span><StoryControls musicEnabled={music.enabled} onToggleMusic={music.toggle} onExit={exit} showModeSwitch={directStart} /></header>
     <nav className="intro-filmstrip" aria-label="Story scenes">{scenes.map((scene, index) => <a href={`#story-${scene.number}`} onClick={(event) => jumpToScene(event, scene.number)} className={index === activeScene ? 'is-active' : ''} key={scene.number} aria-label={`Jump to story image ${scene.number}`}><img src={mediaUrl(`intro/Image/${index + 1}.jpg`)} alt="" loading="lazy" decoding="async" /><span>{scene.number}</span></a>)}</nav>
     <div className="intro-scrollbook__steps">
       {scenes.map((scene, index) => <section className="intro-step" id={`story-${scene.number}`} data-scene={index} key={scene.number}>
