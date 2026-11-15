@@ -8,6 +8,16 @@ import { emptyAssessment, type AssessmentProgress, type ReflectionReview } from 
 export type Quality = 'high' | 'low' | 'off';
 export type Reading = 'young';
 
+export interface IntroProgress { scene: number; finished: boolean }
+export const INTRO_SCENES = 22;
+const emptyIntro = (): IntroProgress => ({ scene: 0, finished: false });
+/** Saved data can be old or hand-edited, so keep only a valid scene index and a boolean. */
+export function normalizeIntro(value: unknown): IntroProgress {
+  const v = (value ?? {}) as Partial<IntroProgress>;
+  const scene = Number.isInteger(v.scene) && v.scene! >= 0 && v.scene! < INTRO_SCENES ? v.scene! : 0;
+  return { scene, finished: v.finished === true };
+}
+
 interface GameState {
   completed: Record<string, boolean>;
   stars: Record<string, number>;
@@ -24,6 +34,8 @@ interface GameState {
   narration: boolean;
   missionFailures: Record<string, number>;
   assistedMissions: Record<string, boolean>;
+  /** Opening video story: the last scene seen, and whether the reader reached the end. */
+  intro: IntroProgress;
   setStars: (mission: string, stars: number) => void;
   unlock: (hardware: string) => void;
   setBeat: (chapter: string, beat: number) => void;
@@ -39,6 +51,8 @@ interface GameState {
   saveReflection: (key: string, answer: string, review: ReflectionReview | null, skipped?: boolean) => void;
   recordMissionFailure: (mission: string) => number;
   resetMissionFailures: (mission: string) => void;
+  setIntroScene: (scene: number) => void;
+  finishIntro: () => void;
   update: (patch: Partial<Pick<GameState, 'language' | 'quality' | 'reading' | 'sound' | 'explorer' | 'settingsOpen' | 'narration'>>) => void;
   reset: () => void;
 }
@@ -79,12 +93,19 @@ export const useGame = create<GameState>()(
       narration: false,
       missionFailures: {},
       assistedMissions: {},
+      intro: emptyIntro(),
       language: DEFAULT_LANGUAGE,
       quality: 'high',
       reading: 'young',
       sound: true,
       explorer: false,
       settingsOpen: false,
+      setIntroScene: (scene) => {
+        if (!Number.isInteger(scene) || scene < 0 || scene >= INTRO_SCENES) return;
+        // Reaching the last scene counts as having read the story.
+        set((s) => (s.intro.scene === scene && (scene < INTRO_SCENES - 1 || s.intro.finished) ? s : { intro: { scene, finished: s.intro.finished || scene === INTRO_SCENES - 1 } }));
+      },
+      finishIntro: () => set((s) => (s.intro.finished ? s : { intro: { ...s.intro, finished: true } })),
       setStars: (mission, stars) => set((s) => ({ stars: { ...s.stars, [mission]: Math.max(stars, s.stars[mission] ?? 0) } })),
       unlock: (hardware) => set((s) => ({ unlocked: { ...s.unlocked, [hardware]: true } })),
       setBeat: (chapter, beat) => {
@@ -145,7 +166,7 @@ export const useGame = create<GameState>()(
       },
       resetMissionFailures: (mission) => set((s) => ({ missionFailures: { ...s.missionFailures, [mission]: 0 } })),
       update: (patch) => set(patch),
-      reset: () => set({ ...emptyProgress, language: DEFAULT_LANGUAGE, quality: 'high', reading: 'young', sound: true, explorer: false, settingsOpen: false, narration: false, book: emptyBookProgress(), assessment: emptyAssessment(), missionFailures: {}, assistedMissions: {} }),
+      reset: () => set({ ...emptyProgress, language: DEFAULT_LANGUAGE, quality: 'high', reading: 'young', sound: true, explorer: false, settingsOpen: false, narration: false, book: emptyBookProgress(), assessment: emptyAssessment(), missionFailures: {}, assistedMissions: {}, intro: emptyIntro() }),
     }),
     {
       name: 'echo-save',
@@ -188,10 +209,11 @@ export const useGame = create<GameState>()(
           ...saved,
           reading: 'young',
           book: normalizeBookProgress(saved.book, chapters.map((chapter) => chapter.id), false),
+          intro: normalizeIntro(saved.intro),
           assessment: { ...emptyAssessment(), ...saved.assessment, quizzes: saved.assessment?.quizzes ?? {}, applications: saved.assessment?.applications ?? {}, reflections: saved.assessment?.reflections ?? {} },
         };
       },
-      partialize: ({ settingsOpen: _open, setStars: _a, unlock: _b, setBeat: _c, completeChapter: _d, enterStory: _g, markBookOpened: _h, setBookPage: _i, clearGameBookPage: _j, setReaderChapter: _k, update: _e, reset: _f, ...saved }) => saved,
+      partialize: ({ settingsOpen: _open, setStars: _a, unlock: _b, setBeat: _c, completeChapter: _d, enterStory: _g, markBookOpened: _h, setBookPage: _i, clearGameBookPage: _j, setReaderChapter: _k, setIntroScene: _l, finishIntro: _m, update: _e, reset: _f, ...saved }) => saved,
     },
   ),
 );
