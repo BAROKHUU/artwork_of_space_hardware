@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { SOLID_ROCK_SIZE, resolveCollisions, rocksInCell, scatterRocks, solidRocks } from './obstacles';
+import { SOLID_ROCK_SIZE, resolveCollisions, scatterRocks, solidRocks } from './obstacles';
 import { makeTerrain } from './terrain';
 
 const terrain = makeTerrain({ seed: 11, size: 260, amplitude: 5, craterCount: 20 });
@@ -10,24 +10,6 @@ describe('rocks', () => {
     const a = scatterRocks(terrain, 180, 14, clear);
     expect(a).toEqual(scatterRocks(terrain, 180, 14, clear));
     for (const r of a) expect(Math.hypot(r.x, r.z)).toBeGreaterThan(6);
-  });
-
-  it('gives every cell of an endless field its own repeatable rocks', () => {
-    const clear = [{ x: 4, z: 4, r: 6 }];
-    const a = rocksInCell(terrain, 0, 0, 32, 3, 14, clear);
-    expect(a).toEqual(rocksInCell(terrain, 0, 0, 32, 3, 14, clear));
-    expect(rocksInCell(terrain, 1, 0, 32, 3, 14)).not.toEqual(rocksInCell(terrain, 0, 1, 32, 3, 14));
-    let total = 0;
-    for (let cx = 90; cx < 100; cx++) for (let cz = -5; cz < 5; cz++) {
-      const rocks = rocksInCell(terrain, cx, cz, 32, 3, 14);
-      total += rocks.length;
-      for (const r of rocks) {
-        expect(r.x).toBeGreaterThanOrEqual(cx * 32);
-        expect(r.x).toBeLessThan((cx + 1) * 32);
-      }
-    }
-    expect(total).toBeGreaterThan(250);
-    for (const r of a) expect(Math.hypot(r.x - 4, r.z - 4)).toBeGreaterThan(6);
   });
 
   it('only treats rocks above the pebble size as solid', () => {

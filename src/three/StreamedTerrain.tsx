@@ -2,158 +2,96 @@ import { useEffect, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import type { Surface } from '../data/types';
-import type { RockField } from '../sim/obstacles';
 import type { Terrain } from '../sim/terrain';
 import { useGame } from '../state/store';
-import { PALETTE, regolithFor, rockGeometry } from './Scenery';
-import { TILE, fillTerrainTile, tileGeometry } from './terrainTiles';
+import { PALETTE, regolithFor } from './Scenery';
 
-/**
- * Endless ground: only the tiles around the camera exist. Near tiles are detailed, far ones coarse,
- * and fog hides where the last ring stops, so the surface seems to go on forever at a fixed cost.
- */
-const RADIUS = 4;
-/** Segments per tile by ring (Chebyshev distance from the camera's tile). */
-const RINGS = [{ upTo: 1, segments: 24 }, { upTo: 2, segments: 12 }, { upTo: RADIUS, segments: 6 }];
-const ROCK_RADIUS = 3;
-const MAX_ROCKS_PER_CELL = 8;
-/** Vertex budget per frame once the first view is built; about one detailed tile. */
-const FRAME_BUDGET = 1400;
+const SIZE = 32;
+const RADIUS = 3;
 
-export const FOG_NEAR = TILE * (RADIUS - 1.6);
-export const FOG_FAR = TILE * (RADIUS + 0.35);
-
-const ringOf = (dx: number, dz: number) => Math.max(Math.abs(dx), Math.abs(dz));
-const lodFor = (ring: number) => RINGS.findIndex((r) => ring <= r.upTo);
-
-interface Slot { mesh: THREE.Mesh; lod: number; key: number | null }
-const keyOf = (x: number, z: number) => x * 65536 + z;
-
-function StreamedRocks({ field, world }: { field: RockField; world: Surface }) {
-  const mesh = useMemo(() => {
-    const capacity = (ROCK_RADIUS * 2 + 1) ** 2 * MAX_ROCKS_PER_CELL;
-    const m = new THREE.InstancedMesh(rockGeometry(), new THREE.MeshStandardMaterial({ color: PALETTE[world].rock, roughness: 0.95, flatShading: true }), capacity);
-    m.castShadow = m.receiveShadow = true;
-    m.count = 0;
-    m.frustumCulled = false;
-    m.userData.center = null;
-    return m;
-  }, [world]);
-  useEffect(() => () => (mesh.material as THREE.Material).dispose(), [mesh]);
-  useFrame(({ camera }) => {
-    const cx = Math.floor(camera.position.x / field.cell);
-    const cz = Math.floor(camera.position.z / field.cell);
-    const center = keyOf(cx, cz);
-    if (mesh.userData.center === center) return;
-    mesh.userData.center = center;
-    const o = new THREE.Object3D();
-    let i = 0;
-    for (let dz = -ROCK_RADIUS; dz <= ROCK_RADIUS; dz++) for (let dx = -ROCK_RADIUS; dx <= ROCK_RADIUS; dx++) {
-      for (const r of field.at(cx + dx, cz + dz).slice(0, MAX_ROCKS_PER_CELL)) {
-        o.position.set(r.x, r.y, r.z);
-        o.rotation.set(...r.rotation);
-        o.scale.set(...r.scale);
-        o.updateMatrix();
-        mesh.setMatrixAt(i++, o.matrix);
-      }
-    }
-    mesh.count = i;
-    mesh.instanceMatrix.needsUpdate = true;
-  });
-  return <primitive object={mesh} />;
+/** Rebuild a reusable tile from world coordinates so adjacent edges agree. */
+export function fillTerrainTile(g: THREE.PlaneGeometry, terrain: Terrain, world: Surface, cx: number, cz: number, segments: number) {
+  const pos = g.attributes.position as THREE.BufferAttribute;
+  const uv = g.attributes.uv as THREE.BufferAttribute;
+  const color = g.attributes.color as THREE.BufferAttribute;
+  const c = new THREE.Color();
+  const { low, high } = PALETTE[world];
+  for (let i = 0; i < pos.count; i++) {
+    const x = cx * SIZE + pos.getX(i);
+    const z = cz * SIZE + pos.getZ(i);
+    const h = terrain.heightAt(x, z);
+    pos.setY(i, h);
+    uv.setXY(i, x / terrain.size + 0.5, 0.5 - z / terrain.size);
+    const patches = Math.sin(x * 0.13) * Math.sin(z * 0.17) * 0.09 + Math.sin(x * 0.41 + z * 0.23) * 0.05;
+    c.copy(low).lerp(high, THREE.MathUtils.clamp(0.62 + h * 0.09 + patches, 0, 1));
+    color.setXYZ(i, c.r, c.g, c.b);
+  }
+  pos.needsUpdate = uv.needsUpdate = color.needsUpdate = true;
+  g.computeVertexNormals();
+  // Shared world-space derivatives prevent lighting seams at tile boundaries.
+  const normal = g.attributes.normal as THREE.BufferAttribute;
+  const step = SIZE / segments;
+  const n = new THREE.Vector3();
+  for (let row = 0; row <= segments; row++) for (let col = 0; col <= segments; col++) {
+    if (row !== 0 && row !== segments && col !== 0 && col !== segments) continue;
+    const i = row * (segments + 1) + col;
+    const x = cx * SIZE + pos.getX(i), z = cz * SIZE + pos.getZ(i);
+    n.set(terrain.heightAt(x - step, z) - terrain.heightAt(x + step, z), 2 * step, terrain.heightAt(x, z - step) - terrain.heightAt(x, z + step)).normalize();
+    normal.setXYZ(i, n.x, n.y, n.z);
+  }
+  normal.needsUpdate = true;
+  g.computeBoundingSphere();
 }
 
-export function StreamedTerrain({ terrain, world, rocks }: { terrain: Terrain; world: Surface; rocks?: RockField }) {
+export function StreamedTerrain({ terrain, world }: { terrain: Terrain; world: Surface }) {
   const low = useGame((s) => s.quality) === 'low';
   const scene = useMemo(() => {
+    const segments = low ? 12 : 24;
     const ground = regolithFor(world);
     const material = new THREE.MeshStandardMaterial({ vertexColors: true, map: ground.map, bumpMap: ground.bump, bumpScale: world === 'moon' ? 0.18 : 1.4, roughness: 1 });
     const group = new THREE.Group();
-    // Far below the last ring and lost in fog: only shows if a tile is still being built.
+    // Distant fill covers the horizon while detailed tiles are streamed in.
     const horizon = new THREE.Mesh(new THREE.PlaneGeometry(1800, 1800), new THREE.MeshStandardMaterial({ color: PALETTE[world].low, roughness: 1 }));
     horizon.rotation.x = -Math.PI / 2;
     horizon.position.y = -20;
     group.add(horizon);
-    const pools = RINGS.map((ring, lod) => {
-      const inner = lod === 0 ? 0 : (RINGS[lod - 1].upTo * 2 + 1) ** 2;
-      const slots = (ring.upTo * 2 + 1) ** 2 - inner;
-      const segments = Math.max(4, low ? Math.round(ring.segments / 2) : ring.segments);
-      return Array.from({ length: slots }, (): Slot => {
-        const mesh = new THREE.Mesh(tileGeometry(segments), material);
-        mesh.receiveShadow = true;
-        mesh.visible = false;
-        group.add(mesh);
-        return { mesh, lod, key: null };
-      });
+    const tiles = Array.from({ length: (RADIUS * 2 + 1) ** 2 }, () => {
+      const geometry = new THREE.PlaneGeometry(SIZE, SIZE, segments, segments);
+      geometry.rotateX(-Math.PI / 2);
+      geometry.setAttribute('color', new THREE.BufferAttribute(new Float32Array(geometry.attributes.position.count * 3), 3));
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.receiveShadow = true;
+      mesh.visible = false;
+      group.add(mesh);
+      return { mesh, x: Infinity, z: Infinity };
     });
-    return { group, pools, material, horizon, active: new Map<number, Slot>(), built: false, center: NaN, pending: true };
+    return { group, tiles, segments, material, horizon };
   }, [terrain, world, low]);
   useEffect(() => () => {
-    scene.pools.flat().forEach(({ mesh }) => mesh.geometry.dispose());
+    scene.tiles.forEach(({ mesh }) => mesh.geometry.dispose());
     scene.material.dispose();
     scene.horizon.geometry.dispose();
     (scene.horizon.material as THREE.Material).dispose();
   }, [scene]);
-
   useFrame(({ camera }) => {
-    const cx = Math.floor(camera.position.x / TILE + 0.5);
-    const cz = Math.floor(camera.position.z / TILE + 0.5);
-    // Nothing to do until the camera enters another tile or tiles are still being built.
-    if (keyOf(cx, cz) === scene.center && !scene.pending) return;
-    scene.center = keyOf(cx, cz);
-    scene.horizon.position.set(cx * TILE, -20, cz * TILE);
-    const wanted = new Map<number, { x: number; z: number; lod: number; ring: number }>();
+    const cx = Math.floor(camera.position.x / SIZE + 0.5), cz = Math.floor(camera.position.z / SIZE + 0.5);
+    scene.horizon.position.x = cx * SIZE;
+    scene.horizon.position.z = cz * SIZE;
+    // At most one tile per frame; retain existing tiles until their replacements are ready.
+    let targetX = 0, targetZ = 0, best = Infinity;
     for (let dz = -RADIUS; dz <= RADIUS; dz++) for (let dx = -RADIUS; dx <= RADIUS; dx++) {
-      const ring = ringOf(dx, dz);
-      wanted.set(keyOf(cx + dx, cz + dz), { x: cx + dx, z: cz + dz, lod: lodFor(ring), ring });
-    }
-    // Tiles that left the view or changed detail go back to their pool.
-    for (const [key, slot] of scene.active) {
-      const want = wanted.get(key);
-      if (!want || want.lod !== slot.lod) {
-        slot.key = null;
-        scene.active.delete(key);
-        if (!want) slot.mesh.visible = false;
+      const x = cx + dx, z = cz + dz, distance = dx * dx + dz * dz;
+      if (distance < best && !scene.tiles.some((tile) => tile.x === x && tile.z === z)) {
+        targetX = x; targetZ = z; best = distance;
       }
     }
-    const missing = [...wanted.entries()].filter(([key]) => !scene.active.has(key)).sort((a, b) => a[1].ring - b[1].ring);
-    // The first view is built at once; afterwards, a small budget per frame keeps driving smooth.
-    let budget = scene.built ? FRAME_BUDGET : Infinity;
-    let filled = 0;
-    for (const [key, want] of missing) {
-      const slot = scene.pools[want.lod].find((s) => s.key === null);
-      if (!slot) continue;
-      const cost = slot.mesh.geometry.attributes.position.count;
-      if (cost > budget && budget !== FRAME_BUDGET) break;
-      budget -= cost;
-      // Hide whatever tile of another detail level still sits here.
-      for (const pool of scene.pools) for (const other of pool) if (other.key === null && other !== slot && other.mesh.visible && other.mesh.position.x === want.x * TILE && other.mesh.position.z === want.z * TILE) other.mesh.visible = false;
-      fillTerrainTile(slot.mesh.geometry, terrain, PALETTE[world], want.x, want.z);
-      slot.mesh.position.set(want.x * TILE, 0, want.z * TILE);
-      slot.mesh.visible = true;
-      slot.key = key;
-      scene.active.set(key, slot);
-      filled++;
-      if (budget <= 0) break;
-    }
-    scene.pending = filled < missing.length;
-    // Idle slots that are no longer anywhere in view stay hidden.
-    for (const pool of scene.pools) for (const s of pool) {
-      if (s.key !== null || !s.mesh.visible) continue;
-      const tx = Math.round(s.mesh.position.x / TILE);
-      const tz = Math.round(s.mesh.position.z / TILE);
-      if (!wanted.has(keyOf(tx, tz)) || scene.active.has(keyOf(tx, tz))) s.mesh.visible = false;
-    }
-    scene.built = true;
+    if (best === Infinity) return;
+    const tile = scene.tiles.find((t) => Math.abs(t.x - cx) > RADIUS || Math.abs(t.z - cz) > RADIUS);
+    if (!tile) return;
+    fillTerrainTile(tile.mesh.geometry, terrain, world, targetX, targetZ, scene.segments);
+    tile.x = targetX; tile.z = targetZ;
+    tile.mesh.position.set(targetX * SIZE, 0, targetZ * SIZE);
+    tile.mesh.visible = true;
   });
-
-  const sky = PALETTE[world].sky;
-  return (
-    <>
-      {/* Earth and Mars skies bring their own fog; the airless Moon only needs it to hide the last ring. */}
-      {world === 'moon' && <fog attach="fog" args={[sky, FOG_NEAR, FOG_FAR]} />}
-      <primitive object={scene.group} />
-      {rocks && <StreamedRocks field={rocks} world={world} />}
-    </>
-  );
+  return <primitive object={scene.group} />;
 }

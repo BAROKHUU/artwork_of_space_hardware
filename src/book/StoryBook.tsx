@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useTranslation } from 'react-i18next';
 import type { Chapter, ModelId } from '../data/types';
@@ -10,12 +10,9 @@ import { useGame } from '../state/store';
 import { play } from '../audio/sfx';
 import { HardwareModel } from '../three/models';
 import { MoonCuoi, MoonRabbit } from '../three/MoonCharacters';
-import { Rocks, TerrainMesh } from '../three/Scenery';
-import { makeTerrain } from '../sim/terrain';
-import { scatterRocks } from '../sim/obstacles';
 import type { StorySection } from './types';
 import './book.css';
-import { useDialogueCue } from '../state/dialogueCue';
+import { mediaUrl } from '../media';
 
 interface StoryBookProps {
   chapter: Chapter;
@@ -62,23 +59,23 @@ function CameraView({ viewpoint }: { viewpoint: Viewpoint }) {
   return null;
 }
 
-/** The same sharp-crater ground and rocks as the drive missions, kept level where the cast stands. */
-const STAGE_TERRAIN = makeTerrain({ seed: 77, size: 70, amplitude: 2.2, craterCount: 14, sharpCraters: true, flat: [{ x: 0, z: 0, r: 6.5 }] });
-const STAGE_ROCKS = scatterRocks(STAGE_TERRAIN, 46, 9, [{ x: 0, z: 0, r: 6 }]);
-
 function StoryStage({ viewpoint, model, chapter, imageAlt }: { viewpoint: Viewpoint; model?: ModelId; chapter: Chapter; imageAlt: string }) {
+  const moonSurface = useLoader(THREE.TextureLoader, mediaUrl('intro/images/1.jpg'));
+  moonSurface.colorSpace = THREE.SRGBColorSpace;
 
   return <Canvas camera={{ position: [0, 4.8, 10], fov: 42 }} dpr={[1, 1.5]} role="img" aria-label={imageAlt}>
     <CameraView viewpoint={viewpoint} />
     <ambientLight intensity={1.7} />
     <directionalLight position={[-5, 8, 5]} intensity={3} castShadow />
-    {chapter.world === 'moon' ? <>
-      <TerrainMesh terrain={STAGE_TERRAIN} world="moon" />
-      <Rocks rocks={STAGE_ROCKS} world="moon" />
-    </> : <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.03, 0]} receiveShadow>
+    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.03, 0]} receiveShadow>
       <planeGeometry args={[24, 24]} />
-      <meshStandardMaterial color="#77766e" roughness={1} />
-    </mesh>}
+      <meshStandardMaterial map={chapter.world === 'moon' ? moonSurface : undefined} color={chapter.world === 'moon' ? '#ffffff' : '#77766e'} roughness={1} />
+    </mesh>
+    {chapter.world === 'moon' && <>
+      <mesh position={[-3.8, 0.02, -2.5]} rotation={[-Math.PI / 2, 0, 0]}><circleGeometry args={[1.2, 24]} /><meshStandardMaterial color="#4c4b4d" roughness={1} /></mesh>
+      <mesh position={[3.7, 0.02, -4]} rotation={[-Math.PI / 2, 0, 0]}><circleGeometry args={[1.8, 28]} /><meshStandardMaterial color="#5b5a55" roughness={1} /></mesh>
+      <mesh position={[0, 0.01, -5.5]} rotation={[-Math.PI / 2, 0, 0]}><ringGeometry args={[1.1, 1.55, 28]} /><meshStandardMaterial color="#69686a" roughness={1} /></mesh>
+    </>}
     {model && <FaceCamera position={[-1.35, 0, 0]} rotation={Math.PI}><group scale={0.62}><HardwareModel id={model} /></group></FaceCamera>}
     {chapter.world === 'moon' && <>
       <FaceCamera position={[1.65, 0, 0.1]}><MoonCuoi scale={0.95} /></FaceCamera>
@@ -153,13 +150,6 @@ export function StoryBook({ chapter, sections, mode, activeSectionId, onContinue
     }, 28);
     return () => window.clearInterval(timer);
   }, [currentLine]);
-
-  // In place, the mission scene behind this dialogue turns its camera to whoever is speaking.
-  const setSpeaker = useDialogueCue((state) => state.setSpeaker);
-  useEffect(() => {
-    if (inPlace) setSpeaker(currentLine?.who ?? null);
-  }, [currentLine, inPlace, setSpeaker]);
-  useEffect(() => () => setSpeaker(null), [setSpeaker]);
 
   useEffect(() => {
     if (!currentLine) return;

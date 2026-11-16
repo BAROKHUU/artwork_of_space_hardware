@@ -142,7 +142,7 @@
     "right": "Phải",
     "forward": "Tiến",
     "backward": "Lùi",
-    "toTarget": "{{name}}: {{d}} m", "backToTarget": "Mục tiêu {{d}} m",
+    "toTarget": "{{name}}: {{d}} m",
     "slope": "Độ dốc",
     "lookKeys": "Giữ chuột phải và kéo để nhìn quanh"
   },

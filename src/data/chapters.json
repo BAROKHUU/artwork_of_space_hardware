@@ -893,7 +893,6 @@
           "vehicle": "lrv"
         }
       },
-      { "kind": "dialogue", "key": "afterCollect", "focus": "rabbit" },
       {
         "kind": "mission",
         "id": "m2_samples",
@@ -904,7 +903,6 @@
           "seed": 202
         }
       },
-      { "kind": "dialogue", "key": "afterSamples", "focus": "lrv" },
       {
         "kind": "reflect",
         "key": "r1"
@@ -952,7 +950,6 @@
           "seed": 33
         }
       },
-      { "kind": "dialogue", "key": "afterCraters", "focus": "rabbit" },
       {
         "kind": "quiz",
         "key": "m3",
@@ -1007,7 +1004,6 @@
           "vehicle": "lrv"
         }
       },
-      { "kind": "dialogue", "key": "afterSignal", "focus": "lrv" },
       {
         "kind": "archive",
         "key": "psep"
