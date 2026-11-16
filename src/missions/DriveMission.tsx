@@ -3,35 +3,45 @@ import { useFrame } from '@react-three/fiber';
 import { useTranslation } from 'react-i18next';
 import * as THREE from 'three';
 import type { DriveConfig } from '../data/types';
-import { emptyContact, resolveCollisions, scatterRocks, solidRocks, type Obstacle } from '../sim/obstacles';
+import { emptyContact, resolveCollisions, rockField, solidRocks, type Obstacle, type RockField } from '../sim/obstacles';
 import { makeTerrain, type Terrain } from '../sim/terrain';
-import { dustLevel, stepBattery, sunlight } from '../sim/rover';
+import { meshHeightAt, terrainSegments } from '../sim/terrainMesh';
+import { dustLevel, roverGroundPose, stepBattery, sunlight } from '../sim/rover';
 import { Tracks, WheelDust } from '../three/RoverFx';
 import { GameCanvas } from '../three/GameCanvas';
 import { HardwareModel } from '../three/models';
-import { MoonCuoi } from '../three/MoonCharacters';
-import { Lights, Rocks, SHADOW_TEXEL, SUN_OFFSET, Sky, TerrainMesh } from '../three/Scenery';
+import { MoonCuoi, MoonRabbit } from '../three/MoonCharacters';
+import { Lights, SHADOW_TEXEL, SUN_OFFSET, Sky } from '../three/Scenery';
+import { StreamedTerrain } from '../three/StreamedTerrain';
+import { TILE } from '../three/terrainTiles';
+import { useDialogueCue, type Speaker } from '../state/dialogueCue';
 import { play } from '../audio/sfx';
 import { useGame } from '../state/store';
 import { Gauge, HoldButton, Readout, useKeys, type HudChannel, type MissionProps } from './common';
 
-const WORLD_LIMIT = 118;
 const SCAN_SECONDS = 0.9;
 const WAKE_LEVEL = 12;
 
 export type LabVehicle = 'sojourner' | 'mer' | 'curiosity' | 'lrv';
 export type LabCamera = 'chase' | 'high' | 'cockpit';
-const VEHICLES: Record<LabVehicle, { radius: number; track: number; camera: number; eye: number }> = {
-  sojourner: { radius: 1, track: 0.78, camera: 0.85, eye: 1.5 },
-  mer: { radius: 1.5, track: 0.95, camera: 1.15, eye: 2.5 },
-  curiosity: { radius: 1.8, track: 1.27, camera: 1.35, eye: 3.4 },
-  lrv: { radius: 1.6, track: 0.95, camera: 1.2, eye: 1.9 },
+const VEHICLES: Record<LabVehicle, { radius: number; track: number; wheelbase: number; wheelRadius: number; camera: number; eye: number }> = {
+  sojourner: { radius: 1, track: 0.78, wheelbase: 1.8, wheelRadius: 0, camera: 0.85, eye: 1.5 },
+  mer: { radius: 1.5, track: 0.95, wheelbase: 1.8, wheelRadius: 0, camera: 1.15, eye: 2.5 },
+  curiosity: { radius: 1.8, track: 1.27, wheelbase: 1.8, wheelRadius: 0, camera: 1.35, eye: 3.4 },
+  lrv: { radius: 1.6, track: 0.69, wheelbase: 1.732, wheelRadius: 0.33, camera: 1.2, eye: 1.9 },
 };
 const BEACON_ROCK_RADIUS = 1;
 const PROP_RADIUS = 2.4;
+/** Same rock density as the old 260 m field (180 rocks, 60 on low graphics), now per 32 m cell. */
+const ROCKS_PER_CELL = { high: (180 / (260 * 0.95) ** 2) * TILE * TILE, low: (60 / (260 * 0.95) ** 2) * TILE * TILE };
+/** Keeps the target indicator inside the screen edges (fraction of half the width/height). */
+const EDGE_X = 0.86;
+const EDGE_Y = 0.74;
 
 // Frame-rate independent smoothing: the same feel at 30 fps and at 144 fps.
 const damp = (rate: number, dt: number) => 1 - Math.exp(-rate * dt);
+/** Turns the short way round, so a character never spins a full circle to face the camera. */
+const dampAngle = (from: number, to: number, rate: number, dt: number) => from + Math.atan2(Math.sin(to - from), Math.cos(to - from)) * damp(rate, dt);
 
 /** The sun's axes, used to move the shadow map in whole texels so shadow edges don't shimmer. */
 function sunAxes(sun: THREE.Vector3) {
@@ -56,17 +66,18 @@ interface Hud {
 
 type Pad = { forward: boolean; back: boolean; left: boolean; right: boolean };
 
-function Beacon({ x, z, y, state }: { x: number; z: number; y: number; state: 'next' | 'done' | 'later' }) {
+function Beacon({ x, z, y, state, quiet = false }: { x: number; z: number; y: number; state: 'next' | 'done' | 'later'; quiet?: boolean }) {
   const color = state === 'done' ? '#37e6c0' : state === 'next' ? '#ff6a2b' : '#8b90a0';
   return (
     <group position={[x, y, z]}>
-      <mesh position={[0, 16, 0]}>
+      {/* Once the mission is won the beam and ring step aside for the conversation. */}
+      <mesh position={[0, 16, 0]} visible={!quiet}>
         <cylinderGeometry args={[0.32, 0.32, 32, 8, 1, true]} />
-        <meshBasicMaterial color={color} transparent opacity={state === 'later' ? 0.12 : 0.42} depthWrite={false} toneMapped={false} />
+        <meshBasicMaterial color={color} transparent opacity={state === 'later' ? 0.12 : 0.42} depthWrite={false} toneMapped={false} fog={false} />
       </mesh>
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.16, 0]}>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.16, 0]} visible={!quiet}>
         <ringGeometry args={[3.2, 3.6, 40]} />
-        <meshBasicMaterial color={color} transparent opacity={0.8} toneMapped={false} />
+        <meshBasicMaterial color={color} transparent opacity={0.8} toneMapped={false} fog={false} />
       </mesh>
       <mesh position={[0, 0.7, 0]} castShadow>
         <dodecahedronGeometry args={[BEACON_ROCK_RADIUS, 0]} />
@@ -80,14 +91,19 @@ interface RoverProps {
   missionId: string;
   config: DriveConfig;
   terrain: Terrain;
-  obstacles: Obstacle[];
+  /** Beacons and props; rocks come from `field` around wherever the rover is. */
+  fixed: Obstacle[];
+  field: RockField;
   keys: ReturnType<typeof useKeys>;
   pad: RefObject<Pad>;
   light: RefObject<THREE.DirectionalLight | null>;
   arrow: RefObject<HTMLSpanElement | null>;
+  edge: RefObject<HTMLDivElement | null>;
   hud: HudChannel<Hud>;
   onFinish: (r: 'win' | 'storm') => void;
   frozen: boolean;
+  /** The mission was won: Cuội and the Moon Rabbit come to the rover and the dialogue plays here. */
+  celebrate: boolean;
   vehicle: LabVehicle;
   sun: THREE.Vector3;
   cameraMode: LabCamera;
@@ -104,27 +120,40 @@ const LOOK_SENSITIVITY = 0.006;
 const CHASE_ELEVATION = Math.atan2(5.2, 11);
 const CHASE_DISTANCE = Math.hypot(5.2, 11);
 
-function Rover({ missionId, config, terrain, obstacles, keys, pad, light, arrow, hud, onFinish, frozen, vehicle, sun, cameraMode, look: lookOffset }: RoverProps) {
+type View = 'wide' | 'friends' | 'rover';
+const viewFor = (speaker: Speaker | null): View => (speaker === 'cuoi' || speaker === 'rabbit' ? 'friends' : speaker === 'lrv' || speaker === 'echo' ? 'rover' : 'wide');
+
+function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arrow, edge, hud, onFinish, frozen, celebrate, vehicle, sun, cameraMode, look: lookOffset }: RoverProps) {
   const specs = VEHICLES[vehicle];
   const axes = useMemo(() => sunAxes(sun), [sun]);
   const ref = useRef<THREE.Group>(null);
   const sim = useRef({ x: config.start.x, z: config.start.z, heading: 0, speed: 0, index: 0, scan: 0, battery: 100, t: 0, asleep: false, hudAt: 0, done: false, tethered: false, odometer: 0 });
   const camPos = useRef(new THREE.Vector3(config.start.x, 8, config.start.z + 14));
   const camLook = useRef(new THREE.Vector3(config.start.x, 1, config.start.z - 4));
-  const scratch = useRef({ wanted: new THREE.Vector3(), look: new THREE.Vector3(), contact: emptyContact() });
+  const scratch = useRef({ wanted: new THREE.Vector3(), look: new THREE.Vector3(), contact: emptyContact(), pose: { y: 0, pitch: 0, roll: 0 } });
   const [progress, setProgress] = useState(0);
   const cuoiWorking = useRef(false);
   const cuoiMoving = useRef(false);
   const cuoiRef = useRef<THREE.Group>(null);
   const withCuoi = config.world === 'moon' && vehicle === 'lrv' && config.cuoi !== false;
+  const friendsCome = celebrate && config.world === 'moon';
   const cuoiPosition = useRef(new THREE.Vector3(config.start.x + specs.radius + 1.1, terrain.heightAt(config.start.x + specs.radius + 1.1, config.start.z) + 0.08, config.start.z));
   const cuoiRotation = useRef(0);
+  const rabbitRef = useRef<THREE.Group>(null);
+  const rabbitPosition = useRef(new THREE.Vector3());
+  const rabbitRotation = useRef(0);
+  const arrived = useRef(false);
+  // The side of the rover facing away from the last target: the cast stands and the camera films there.
+  const away = useRef(1);
+  // Rocks near the rover, rebuilt only when it drives into another cell.
+  const nearby = useRef<{ cell: number; list: Obstacle[] }>({ cell: NaN, list: fixed });
+  const projected = useRef(new THREE.Vector3());
 
   useFrame((state, rawDt) => {
     const dt = Math.min(rawDt, 0.05);
     const s = sim.current;
     cuoiWorking.current = missionId === 'm2_collect' && s.scan > 0;
-    cuoiMoving.current = missionId === 'm2_collect' && !frozen && !cuoiWorking.current && Math.abs(s.speed) > 0.6;
+    if (!friendsCome) cuoiMoving.current = missionId === 'm2_collect' && !frozen && !cuoiWorking.current && Math.abs(s.speed) > 0.6;
     const k = keys.current;
     const p = pad.current;
     if (!frozen && !s.done) {
@@ -142,20 +171,28 @@ function Rover({ missionId, config, terrain, obstacles, keys, pad, light, arrow,
         if (dustLevel(s.t, config.battery.stormAt) >= 1) {
           s.done = true;
           onFinish('storm');
+          return;
         }
       }
 
       const tgt = config.targets[s.index];
       const atSample = missionId === 'm2_collect' && tgt && Math.hypot(tgt.x - s.x, tgt.z - s.z) < config.radius;
       const drive = s.asleep || atSample ? 0 : forward ? 1 : back ? -0.55 : 0;
-      const maxSpeed = missionId === 'm2_collect' ? 2.2 : 11;
-      s.speed += (drive * maxSpeed - s.speed) * damp(atSample ? 7 : 2.6, dt);
+      const maxSpeed = missionId === 'm2_collect' ? 12 : 11;
+      s.speed = atSample ? 0 : s.speed + (drive * maxSpeed - s.speed) * damp(missionId === 'm2_collect' ? 3.4 : 2.6, dt);
       s.odometer += Math.abs(s.speed) * dt;
       if (!s.asleep) s.heading += ((left ? 1 : 0) - (right ? 1 : 0)) * dt * (1.9 - Math.min(0.7, Math.abs(s.speed) * 0.05));
 
       const dirX = -Math.sin(s.heading);
       const dirZ = -Math.cos(s.heading);
-      const contact = resolveCollisions(s.x + dirX * s.speed * dt, s.z + dirZ * s.speed * dt, specs.radius, obstacles, scratch.current.contact);
+      const rcx = Math.floor(s.x / field.cell);
+      const rcz = Math.floor(s.z / field.cell);
+      if (nearby.current.cell !== rcx * 65536 + rcz) {
+        const list = [...fixed];
+        for (let dz = -1; dz <= 1; dz++) for (let dx = -1; dx <= 1; dx++) list.push(...solidRocks(field.at(rcx + dx, rcz + dz)));
+        nearby.current = { cell: rcx * 65536 + rcz, list };
+      }
+      const contact = resolveCollisions(s.x + dirX * s.speed * dt, s.z + dirZ * s.speed * dt, specs.radius, nearby.current.list, scratch.current.contact);
       if (contact.hit) {
         // Lose only the part of the speed aimed at the rock, so a glancing hit keeps sliding.
         const sign = Math.sign(s.speed);
@@ -165,7 +202,7 @@ function Rover({ missionId, config, terrain, obstacles, keys, pad, light, arrow,
       let nx = contact.x;
       let nz = contact.z;
 
-      const limit = config.tether ?? WORLD_LIMIT;
+      const limit = config.tether ?? Infinity;
       const cx = nx - config.start.x;
       const cz = nz - config.start.z;
       const r = Math.hypot(cx, cz);
@@ -193,33 +230,63 @@ function Rover({ missionId, config, terrain, obstacles, keys, pad, light, arrow,
       } else s.scan = 0;
     }
 
-    const y = terrain.heightAt(s.x, s.z);
+    const { y, pitch, roll } = roverGroundPose(terrain.heightAt, s.x, s.z, s.heading, specs.track, specs.wheelbase / 2, specs.wheelRadius, scratch.current.pose);
     const fx = -Math.sin(s.heading);
     const fz = -Math.cos(s.heading);
     const sideX = Math.cos(s.heading);
     const sideZ = -Math.sin(s.heading);
-    const targetX = s.x + sideX * (specs.radius + 1.1);
-    const targetZ = s.z + sideZ * (specs.radius + 1.1);
-    const targetY = terrain.heightAt(targetX, targetZ);
+    // After a win, Cuội and the rabbit walk up beside the rover and stand facing the camera.
+    const spot = (side: number, ahead: number, out: THREE.Vector3) => out.set(s.x + sideX * side * away.current + fx * ahead, 0, s.z + sideZ * side * away.current + fz * ahead);
+    if (friendsCome && !arrived.current) {
+      arrived.current = true;
+      const last = config.targets[config.targets.length - 1];
+      away.current = (last.x - s.x) * sideX + (last.z - s.z) * sideZ > 0 ? -1 : 1;
+      // Whoever was not riding along arrives from behind the rover.
+      if (!withCuoi) spot(5, -9, cuoiPosition.current);
+      spot(7, -11, rabbitPosition.current);
+      rabbitRotation.current = s.heading;
+    }
+    const cuoiGoal = friendsCome ? spot(2.4, -0.1, scratch.current.look) : spot(specs.radius + 1.1, 0, scratch.current.look);
+    const goalX = cuoiGoal.x;
+    const goalZ = cuoiGoal.z;
+    const walkRate = friendsCome ? 1.4 : 2.7;
     // Delay only the horizontal follow; feet stay planted on the terrain instead of floating.
-    cuoiPosition.current.x = THREE.MathUtils.damp(cuoiPosition.current.x, targetX, 2.7, dt);
-    cuoiPosition.current.z = THREE.MathUtils.damp(cuoiPosition.current.z, targetZ, 2.7, dt);
-    cuoiPosition.current.y = targetY;
-    // The character faces local +Z; the rover's forward direction is local -Z.
-    const desiredCuoiRotation = s.heading + Math.PI;
-    cuoiRotation.current = THREE.MathUtils.damp(cuoiRotation.current, desiredCuoiRotation, 5, dt);
+    cuoiPosition.current.x = THREE.MathUtils.damp(cuoiPosition.current.x, goalX, walkRate, dt);
+    cuoiPosition.current.z = THREE.MathUtils.damp(cuoiPosition.current.z, goalZ, walkRate, dt);
+    cuoiPosition.current.y = terrain.heightAt(cuoiPosition.current.x, cuoiPosition.current.z);
+    const cuoiLeft = Math.hypot(goalX - cuoiPosition.current.x, goalZ - cuoiPosition.current.z);
+    // Characters face local +Z. Walking, they face their path; standing, they face the camera.
+    const camera = state.camera.position;
+    const desiredCuoiRotation = !friendsCome
+      ? s.heading + Math.PI
+      : cuoiLeft > 0.35
+        ? Math.atan2(goalX - cuoiPosition.current.x, goalZ - cuoiPosition.current.z)
+        : Math.atan2(camera.x - cuoiPosition.current.x, camera.z - cuoiPosition.current.z);
+    if (friendsCome) cuoiMoving.current = cuoiLeft > 0.35;
+    cuoiRotation.current = dampAngle(cuoiRotation.current, desiredCuoiRotation, 5, dt);
     if (cuoiRef.current) {
       cuoiRef.current.position.copy(cuoiPosition.current);
       cuoiRef.current.rotation.y = cuoiRotation.current;
       cuoiRef.current.visible = config.world === 'moon' && vehicle === 'lrv';
     }
-    const e = 0.9;
-    const pitch = Math.atan2(terrain.heightAt(s.x - Math.sin(s.heading) * e, s.z - Math.cos(s.heading) * e) - y, e);
-    const roll = Math.atan2(terrain.heightAt(s.x + Math.cos(s.heading) * e, s.z - Math.sin(s.heading) * e) - y, e);
+    if (friendsCome && rabbitRef.current) {
+      const goal = spot(2.5, -1.35, scratch.current.wanted);
+      const r = rabbitPosition.current;
+      r.x = THREE.MathUtils.damp(r.x, goal.x, 1.8, dt);
+      r.z = THREE.MathUtils.damp(r.z, goal.z, 1.8, dt);
+      const left = Math.hypot(goal.x - r.x, goal.z - r.z);
+      // Little hops while travelling, then still.
+      r.y = terrain.heightAt(r.x, r.z) + (left > 0.3 ? Math.abs(Math.sin(state.clock.elapsedTime * 9)) * 0.22 : 0);
+      // The rabbit model faces local -Z, hence the half turn.
+      const want = left > 0.3 ? Math.atan2(goal.x - r.x, goal.z - r.z) + Math.PI : Math.atan2(camera.x - r.x, camera.z - r.z) + Math.PI;
+      rabbitRotation.current = dampAngle(rabbitRotation.current, want, 6, dt);
+      rabbitRef.current.position.copy(r);
+      rabbitRef.current.rotation.y = rabbitRotation.current;
+    }
     if (ref.current) {
       ref.current.visible = cameraMode !== 'cockpit';
       ref.current.position.set(s.x, y, s.z);
-      ref.current.rotation.set(pitch, s.heading, -roll, 'YXZ');
+      ref.current.rotation.set(pitch, s.heading, roll, 'YXZ');
     }
     if (light.current) {
       const { dir, right, up } = axes;
@@ -239,7 +306,28 @@ function Rover({ missionId, config, terrain, obstacles, keys, pad, light, arrow,
     const follow = active ? 16 : 4;
     const yawX = -Math.sin(s.heading + yaw);
     const yawZ = -Math.cos(s.heading + yaw);
-    if (cameraMode === 'cockpit') {
+    if (friendsCome) {
+      // A small film crew: a wide shot, then whoever speaks. Shots are set around the parked rover.
+      const view = viewFor(useDialogueCue.getState().speaker);
+      const ox = sideX * away.current;
+      const oz = sideZ * away.current;
+      const friendsX = s.x + ox * 2.45 - fx * 0.7;
+      const friendsZ = s.z + oz * 2.45 - fz * 0.7;
+      if (view === 'friends') {
+        // From outside, looking back at the two of them with the rover behind.
+        wanted.set(friendsX + ox * 4.3 + fx * 0.8, 0, friendsZ + oz * 4.3 + fz * 0.8);
+        look.set(friendsX, y + 0.85, friendsZ);
+      } else if (view === 'rover') {
+        wanted.set(s.x + ox * 4.4 + fx * 3.4, 0, s.z + oz * 4.4 + fz * 3.4);
+        look.set(s.x, y + 0.8, s.z);
+      } else {
+        wanted.set(s.x + ox * 8.5 - fx * 4.5, 0, s.z + oz * 8.5 - fz * 4.5);
+        look.set(s.x + ox * 1.3, y + 0.9, s.z + oz * 1.3);
+      }
+      wanted.y = Math.max(y + (view === 'wide' ? 4 : 1.9), terrain.heightAt(wanted.x, wanted.z) + 1.3);
+      camPos.current.lerp(wanted, damp(2.6, dt));
+      camLook.current.lerp(look, damp(3.2, dt));
+    } else if (cameraMode === 'cockpit') {
       wanted.set(s.x + fx * (specs.radius * 0.7), y + specs.eye, s.z + fz * (specs.radius * 0.7));
       camPos.current.lerp(wanted, damp(14, dt));
       camLook.current.lerp(look.set(s.x + yawX * 26, y + specs.eye - 1.2 + pitch * 18 - tilt * 26, s.z + yawZ * 26), damp(active ? 24 : 14, dt));
@@ -269,6 +357,25 @@ function Rover({ missionId, config, terrain, obstacles, keys, pad, light, arrow,
     const dz = tgt.z - s.z;
     // The arrow updates every frame without touching React.
     if (arrow.current) arrow.current.style.transform = `rotate(${s.heading - Math.atan2(-dx, -dz)}rad)`;
+    // When the next target leaves the screen, an indicator on the screen edge points back to it.
+    if (edge.current) {
+      const p = projected.current.set(tgt.x, terrain.heightAt(tgt.x, tgt.z) + 2, tgt.z).project(state.camera);
+      const behind = p.z > 1;
+      const offscreen = behind || Math.abs(p.x) > EDGE_X || Math.abs(p.y) > EDGE_Y;
+      const show = offscreen && !frozen && !s.done;
+      edge.current.hidden = !show;
+      if (show) {
+        let ex = behind ? -p.x : p.x;
+        let ey = behind ? -p.y : p.y;
+        if (Math.hypot(ex, ey) < 1e-3) ey = -1;
+        const k = 1 / Math.max(Math.abs(ex) / EDGE_X, Math.abs(ey) / EDGE_Y);
+        ex *= k;
+        ey *= k;
+        edge.current.style.left = `${(ex * 0.5 + 0.5) * 100}%`;
+        edge.current.style.top = `${(-ey * 0.5 + 0.5) * 100}%`;
+        edge.current.style.setProperty('--edge-angle', `${Math.atan2(ex, ey)}rad`);
+      }
+    }
 
     s.hudAt += dt;
     if (s.hudAt > 0.12) {
@@ -294,18 +401,19 @@ function Rover({ missionId, config, terrain, obstacles, keys, pad, light, arrow,
       <group ref={ref}>
         <HardwareModel id={vehicle} />
       </group>
-      {withCuoi && <group ref={cuoiRef}><MoonCuoi scale={0.72} workingRef={cuoiWorking} movingRef={cuoiMoving} /></group>}
+      {(withCuoi || friendsCome) && <group ref={cuoiRef}><MoonCuoi scale={0.72} workingRef={cuoiWorking} movingRef={cuoiMoving} /></group>}
+      {friendsCome && <group ref={rabbitRef} position={rabbitPosition.current}><MoonRabbit scale={0.62} /></group>}
       <Tracks motion={sim} terrain={terrain} halfWidth={specs.track} world={config.world} />
       <WheelDust motion={sim} terrain={terrain} halfWidth={specs.track} world={config.world} />
       {config.targets.map((t, i) => (
-        <Beacon key={i} x={t.x} z={t.z} y={terrain.heightAt(t.x, t.z)} state={i < progress ? 'done' : i === progress ? 'next' : 'later'} />
+        <Beacon key={i} x={t.x} z={t.z} y={terrain.heightAt(t.x, t.z)} state={i < progress ? 'done' : i === progress ? 'next' : 'later'} quiet={friendsCome} />
       ))}
     </>
   );
 }
 
 /** Holds its own state so readout updates never re-render the 3D scene. */
-function DriveHud({ id, config, lab, channel, arrow }: { id: string; config: DriveConfig; lab?: boolean; channel: HudChannel<Hud>; arrow: RefObject<HTMLSpanElement | null> }) {
+function DriveHud({ id, config, lab, channel, arrow, edge }: { id: string; config: DriveConfig; lab?: boolean; channel: HudChannel<Hud>; arrow: RefObject<HTMLSpanElement | null>; edge: RefObject<HTMLDivElement | null> }) {
   const { t } = useTranslation();
   const [hud, setHud] = useState<Hud | null>(null);
   useEffect(() => {
@@ -344,6 +452,12 @@ function DriveHud({ id, config, lab, channel, arrow }: { id: string; config: Dri
           <Readout label={t('hud.speed')} value={hud.speed.toFixed(1)} unit="m/s" />
           <Readout label={t('hud.odometer')} value={hud.odometer.toFixed(0)} unit="m" />
           <Readout label={t('hud.slope')} value={hud.slope.toFixed(0)} unit="°" />
+        </div>
+      )}
+      {!lab && (
+        <div className="edge-target" ref={edge} hidden role="status">
+          <span className="edge-target__arrow" aria-hidden="true">▲</span>
+          <span className="edge-target__label">{t('hud.backToTarget', { d: hud ? Math.round(hud.distance) : 0 })}</span>
         </div>
       )}
       {hud && hud.scan > 0 && <div className="scanbar"><span>{t('hud.scanning')}</span><i style={{ width: `${hud.scan * 100}%` }} /></div>}
@@ -387,19 +501,21 @@ export function DriveMission({ id, config, onResult, lab, vehicle = 'lrv', sun =
       }
     : {};
   const arrow = useRef<HTMLSpanElement>(null);
-  const [finished, setFinished] = useState(false);
+  const edge = useRef<HTMLDivElement>(null);
+  const [finished, setFinished] = useState<'win' | 'storm' | null>(null);
   const sunLight = useRef<THREE.DirectionalLight>(null);
   const sunVector = sun;
   const clear = useMemo(() => [{ x: config.start.x, z: config.start.z, r: 5 }, ...config.targets.map((p) => ({ x: p.x, z: p.z, r: 6 })), ...(config.prop ? [{ x: config.prop.x, z: config.prop.z, r: 5 }] : [])], [config]);
-  const terrain = useMemo(() => makeTerrain({ seed: config.seed, size: 260, amplitude: config.world === 'moon' ? 5.5 : 8, craterCount: config.world === 'moon' ? 58 : 14, flat: clear }), [config, clear]);
-  const rocks = useMemo(() => scatterRocks(terrain, quality === 'low' ? 60 : 180, config.seed + 3, clear), [terrain, quality, config.seed, clear]);
-  const obstacles = useMemo(
-    () => [...solidRocks(rocks), ...config.targets.map((p) => ({ x: p.x, z: p.z, r: BEACON_ROCK_RADIUS })), ...(config.prop ? [{ x: config.prop.x, z: config.prop.z, r: PROP_RADIUS }] : [])],
-    [rocks, config],
+  const terrain = useMemo(() => makeTerrain({ seed: config.seed, size: 260, amplitude: config.world === 'moon' ? 5.5 : 8, craterCount: config.world === 'moon' ? 58 : 14, sharpCraters: config.world === 'moon', flat: clear, endless: true }), [config, clear]);
+  const groundTerrain = useMemo(() => ({ ...terrain, heightAt: meshHeightAt(terrain.heightAt, terrainSegments(quality === 'low')) }), [terrain, quality]);
+  const field = useMemo(() => rockField(groundTerrain, TILE, quality === 'low' ? ROCKS_PER_CELL.low : ROCKS_PER_CELL.high, config.seed + 3, clear), [groundTerrain, quality, config.seed, clear]);
+  const fixed = useMemo(
+    () => [...config.targets.map((p) => ({ x: p.x, z: p.z, r: BEACON_ROCK_RADIUS })), ...(config.prop ? [{ x: config.prop.x, z: config.prop.z, r: PROP_RADIUS }] : [])],
+    [config],
   );
 
   const finish = (r: 'win' | 'storm') => {
-    setFinished(true);
+    setFinished(r);
     window.setTimeout(() => onResult(r === 'win' ? { win: true } : { win: false, failKey: 'fail_storm' }), 900);
   };
 
@@ -410,21 +526,20 @@ export function DriveMission({ id, config, onResult, lab, vehicle = 'lrv', sun =
   );
 
   return (
-    <div className="stage" {...lookHandlers}>
+    <div className={`stage${finished === 'win' ? ' is-celebrating' : ''}`} {...lookHandlers}>
       <GameCanvas camera={{ position: [0, 8, 14], fov: 55, far: 520 }}>
         <Sky world={config.world} sun={sunVector} />
         <Lights world={config.world} sunRef={sunLight} sun={sunVector} />
-        <TerrainMesh terrain={terrain} world={config.world} />
-        <Rocks rocks={rocks} world={config.world} />
+        <StreamedTerrain terrain={terrain} world={config.world} rocks={field} />
         {config.prop && (
-          <group position={[config.prop.x, terrain.heightAt(config.prop.x, config.prop.z), config.prop.z]}>
+          <group position={[config.prop.x, groundTerrain.heightAt(config.prop.x, config.prop.z), config.prop.z]}>
             <HardwareModel id={config.prop.model} />
           </group>
         )}
-        <Rover missionId={id} config={config} terrain={terrain} obstacles={obstacles} keys={keys} pad={pad} light={sunLight} arrow={arrow} hud={channel} onFinish={finish} frozen={finished} vehicle={vehicle} sun={sunVector} cameraMode={cameraMode} look={lookOffset} />
+        <Rover missionId={id} config={config} terrain={groundTerrain} fixed={fixed} field={field} keys={keys} pad={pad} light={sunLight} arrow={arrow} edge={edge} hud={channel} onFinish={finish} frozen={finished !== null} celebrate={finished === 'win' && !lab} vehicle={vehicle} sun={sunVector} cameraMode={cameraMode} look={lookOffset} />
       </GameCanvas>
 
-      <DriveHud id={id} config={config} lab={lab} channel={channel} arrow={arrow} />
+      <DriveHud id={id} config={config} lab={lab} channel={channel} arrow={arrow} edge={edge} />
 
       <p className="keys-hint">{t('hud.keys')}{lab ? ` · ${t('hud.lookKeys')}` : ''}</p>
       <div className="dpad">

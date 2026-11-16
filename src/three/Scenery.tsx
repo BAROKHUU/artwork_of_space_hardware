@@ -17,7 +17,7 @@ const SHADOW_MAP_SIZE = 1024;
 const SHADOW_HALF_SPAN = 38;
 export const SHADOW_TEXEL = (SHADOW_HALF_SPAN * 2) / SHADOW_MAP_SIZE;
 
-const PALETTE = {
+export const PALETTE = {
   moon: { low: new THREE.Color('#62626a'), high: new THREE.Color('#bdbcbd'), rock: '#77767b', sky: '#04050a', sun: '#fff6e8', ambient: 0.12, sunIntensity: 3.1 },
   earth: { low: new THREE.Color('#3c6a2c'), high: new THREE.Color('#9ab765'), rock: '#7d786f', sky: '#9fcdf0', sun: '#fff5e2', ambient: 0.62, sunIntensity: 2.7 },
   mars: { low: new THREE.Color('#8a4526'), high: new THREE.Color('#dc9a66'), rock: '#5a3122', sky: '#c99a6d', sun: '#ffe2c0', ambient: 0.75, sunIntensity: 2.1 },
@@ -93,7 +93,7 @@ function regolith(world: Surface) {
 }
 
 const REGOLITH: Partial<Record<Surface, ReturnType<typeof regolith>>> = {};
-const regolithFor = (world: Surface) => (REGOLITH[world] ??= regolith(world));
+export const regolithFor = (world: Surface) => (REGOLITH[world] ??= regolith(world));
 
 const sunElevation = (sun: THREE.Vector3) => Math.asin(sun.y / sun.length());
 
@@ -177,7 +177,7 @@ function MoonSky({ sun }: { sun: THREE.Vector3 }) {
       <sprite material={halo} position={dir} scale={46} />
       <mesh position={[-90, 62, -150]} rotation={[0.3, 2.2, 0.2]}>
         <sphereGeometry args={[11, 48, 32]} />
-        <meshStandardMaterial map={earthMap} roughness={0.7} emissive="#123a7a" emissiveIntensity={0.14} />
+        <meshStandardMaterial map={earthMap} roughness={0.7} emissive="#123a7a" emissiveIntensity={0.14} fog={false} />
       </mesh>
     </>
   );
@@ -323,7 +323,7 @@ export function EarthScenery({ terrain, keepClear }: { terrain: Terrain; keepCle
 
 let sharedRock: THREE.BufferGeometry | null = null;
 /** An icosphere pushed in and out, so rocks look chipped rather than like dice. */
-function rockGeometry() {
+export function rockGeometry() {
   if (sharedRock) return sharedRock;
   const g = new THREE.IcosahedronGeometry(1, 2);
   const pos = g.attributes.position as THREE.BufferAttribute;

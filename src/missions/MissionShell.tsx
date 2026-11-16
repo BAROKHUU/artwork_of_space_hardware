@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { MissionBeat } from '../data/types';
 import { useGame } from '../state/store';
@@ -12,7 +12,7 @@ import type { MissionResult } from './common';
 
 type Phase = 'brief' | 'play' | 'fail' | 'win';
 
-export function MissionShell({ beat, onDone }: { beat: MissionBeat; onDone: () => void }) {
+export function MissionShell({ beat, onDone, onSuccess }: { beat: MissionBeat; onDone: () => void; onSuccess?: () => void }) {
   const { t } = useTranslation();
   const setStars = useGame((s) => s.setStars);
   const recordMissionFailure = useGame((s) => s.recordMissionFailure);
@@ -22,11 +22,21 @@ export function MissionShell({ beat, onDone }: { beat: MissionBeat; onDone: () =
   const [attempt, setAttempt] = useState(1);
   const [result, setResult] = useState<MissionResult | null>(null);
   const [earned, setEarned] = useState(0);
+  const active = useRef(true);
+  useEffect(() => {
+    active.current = true;
+    return () => { active.current = false; };
+  }, []);
+  const leave = () => {
+    active.current = false;
+    onDone();
+  };
   const key = `missions:${beat.id}`;
   const interpolation = { ...('safe' in beat.config ? { safe: beat.config.safe } : {}), ...('hold' in beat.config ? { hold: beat.config.hold } : {}), ...('shots' in beat.config ? { shots: beat.config.shots } : {}) };
 
   const onResult = useCallback(
     (r: MissionResult) => {
+      if (!active.current) return;
       setResult(r);
       if (r.win) {
         const stars = Math.max(1, r.stars ?? (attempt === 1 ? 3 : attempt === 2 ? 2 : 1));
@@ -35,12 +45,13 @@ export function MissionShell({ beat, onDone }: { beat: MissionBeat; onDone: () =
         resetMissionFailures(beat.id);
         play('win');
         setPhase('win');
+        onSuccess?.();
       } else {
         recordMissionFailure(beat.id);
         setPhase('fail');
       }
     },
-    [attempt, beat.id, recordMissionFailure, resetMissionFailures, setStars],
+    [attempt, beat.id, onSuccess, recordMissionFailure, resetMissionFailures, setStars],
   );
 
   const retry = () => {
@@ -52,15 +63,15 @@ export function MissionShell({ beat, onDone }: { beat: MissionBeat; onDone: () =
   const common = { id: beat.id, onResult };
   return (
     <div className="mission">
-      {phase === 'play' && (
-        <>
+      {(phase === 'play' || (phase === 'win' && onSuccess)) && (
+        <div inert={phase === 'win'} style={{ height: '100%' }}>
           {beat.template === 'drive' && <DriveMission key={attempt} {...common} config={beat.config} vehicle={beat.config.vehicle} />}
           {beat.template === 'landing' && <LandingMission key={attempt} {...common} config={beat.config} />}
           {beat.template === 'laser' && <LaserMission key={attempt} {...common} config={beat.config} />}
           {beat.template === 'slingshot' && <SlingshotMission key={attempt} {...common} config={beat.config} />}
           {beat.template === 'classify' && <ClassifyMission key={attempt} {...common} config={beat.config} assisted={assisted} />}
-          <button type="button" className="skip-link" onClick={onDone}>{t('mission.skip')}</button>
-        </>
+          {phase === 'play' && <button type="button" className="skip-link" onClick={leave}>{t('mission.skip')}</button>}
+        </div>
       )}
 
       {phase === 'brief' && (
@@ -71,7 +82,7 @@ export function MissionShell({ beat, onDone }: { beat: MissionBeat; onDone: () =
           <p className="hint"><b>{t('mission.hint')}</b> {t(`${key}.hint`)}</p>
           <div className="row">
             <button type="button" autoFocus className="btn primary" onClick={() => { play('blip'); setPhase('play'); }}>{t('mission.start')}</button>
-            <button type="button" className="btn ghost" onClick={onDone}>{t('mission.skip')}</button>
+            <button type="button" className="btn ghost" onClick={leave}>{t('mission.skip')}</button>
           </div>
         </section>
       )}
@@ -84,18 +95,18 @@ export function MissionShell({ beat, onDone }: { beat: MissionBeat; onDone: () =
           <p className="hint"><b>{t('mission.hint')}</b> {t(`${key}.hint`)}{assisted && <> · {t('mission.assist')}</>}</p>
           <div className="row">
             <button type="button" autoFocus className="btn primary" onClick={retry}>{t('mission.retry')}</button>
-            <button type="button" className="btn ghost" onClick={onDone}>{t('mission.skip')}</button>
+            <button type="button" className="btn ghost" onClick={leave}>{t('mission.skip')}</button>
           </div>
         </section>
       )}
 
-      {phase === 'win' && (
+      {phase === 'win' && !onSuccess && (
         <section className="panel brief">
           <p className="eyebrow ok">{t('mission.complete')}</p>
           <h1>{t(`${key}.title`)}</h1>
           <p className="stars" aria-label={t('complete.stars', { n: earned, max: 3 })}>{'★'.repeat(earned)}<span>{'★'.repeat(3 - earned)}</span></p>
           <p className="lede">{t(`${key}.success`)}</p>
-          <button type="button" autoFocus className="btn primary" onClick={onDone}>{t('mission.continue')}</button>
+          <button type="button" autoFocus className="btn primary" onClick={leave}>{t('mission.continue')}</button>
         </section>
       )}
     </div>
