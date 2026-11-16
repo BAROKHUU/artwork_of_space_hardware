@@ -5,11 +5,11 @@ import { StoryControls, useStoryMusic } from '../components/StoryControls';
 import { mediaUrl } from '../media';
 import { STORY_MODES, storyModeFrom, type StoryMode } from './storyModes';
 
-const WATERCOLOR_URL = '/moon-stories-watercolor/index.html';
+const WATERCOLOR_URL = `${import.meta.env.BASE_URL}moon-stories-watercolor/index.html`;
 /** Scene 21 of the painted story: Cuội, ROVER and Moon Rabbit under the glowing banyan, Earth rising. */
-const PICKER_BACKGROUND = '/moon-stories-watercolor/assets/images/21.jpg';
+const PICKER_BACKGROUND = `${import.meta.env.BASE_URL}moon-stories-watercolor/assets/images/21.jpg`;
 const covers: Record<StoryMode, string> = {
-  watercolor: '/moon-stories-watercolor/assets/images/22.jpg',
+  watercolor: `${import.meta.env.BASE_URL}moon-stories-watercolor/assets/images/22.jpg`,
   lantern: mediaUrl('intro/Image/8.jpg'),
 };
 
@@ -52,7 +52,7 @@ function WatercolorMode() {
     <main className="story-watercolor">
       <iframe src={WATERCOLOR_URL} title={t('storyModes.watercolor.name')} />
       <header className="intro-sample-header story-watercolor__header">
-        <StoryControls musicEnabled={music.enabled} onToggleMusic={music.toggle} onExit={() => navigate('/home')} />
+        <StoryControls musicAvailable={music.available} musicEnabled={music.enabled} onToggleMusic={music.toggle} onExit={() => navigate('/home')} />
       </header>
     </main>
   );

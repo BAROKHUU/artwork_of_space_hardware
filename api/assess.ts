@@ -20,7 +20,7 @@ const json = (body: unknown, status = 200) => new Response(JSON.stringify(body),
 });
 
 const localShape = (questionId: string, answer: string): Review => {
-  const question = (rubric.questions as Record<string, RubricQuestion>)[questionId];
+  const question = Object.hasOwn(rubric.questions, questionId) ? (rubric.questions as Record<string, RubricQuestion>)[questionId] : undefined;
   if (!question) return { score: 0, max: 5, source: 'local', criteria: [], concepts: [] };
 
   const text = answer.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
@@ -46,7 +46,9 @@ export default async function assess(request: Request) {
 
   let body: { questionId?: unknown; answer?: unknown };
   try {
-    body = await request.json() as { questionId?: unknown; answer?: unknown };
+    const parsed: unknown = await request.json();
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return json({ error: 'invalid_input' }, 400);
+    body = parsed as { questionId?: unknown; answer?: unknown };
   } catch {
     return json({ error: 'invalid_json' }, 400);
   }
@@ -58,7 +60,7 @@ export default async function assess(request: Request) {
     body.answer.length > 1200
   ) return json({ error: 'invalid_input' }, 400);
 
-  const question = (rubric.questions as Record<string, RubricQuestion>)[body.questionId];
+  const question = Object.hasOwn(rubric.questions, body.questionId) ? (rubric.questions as Record<string, RubricQuestion>)[body.questionId] : undefined;
   if (!question) return json({ error: 'unknown_question' }, 400);
 
   const fallback = () => json(localShape(body.questionId as string, body.answer as string));
@@ -71,6 +73,7 @@ export default async function assess(request: Request) {
       {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
+        signal: AbortSignal.timeout(8000),
         body: JSON.stringify({
           contents: [{ parts: [{ text: `Score this child answer against the rubric. Return JSON only with score (0-5 integer), criteria (array of key/score/max), and concepts (string array). Do not invent criteria. Question: ${question.prompt}\nRubric: ${JSON.stringify(question.criteria)}\nAnswer: ${body.answer}` }] }],
           generationConfig: { responseMimeType: 'application/json', temperature: 0 },
@@ -83,12 +86,17 @@ export default async function assess(request: Request) {
     const parsed = JSON.parse(payload.candidates?.[0]?.content?.parts?.[0]?.text || '{}') as Partial<Review>;
     const score = parsed.score;
     if (typeof score !== 'number' || !Number.isInteger(score) || score < 0 || score > 5 || !Array.isArray(parsed.criteria) || !Array.isArray(parsed.concepts)) return fallback();
+    const criteria = parsed.criteria;
+    if (criteria.length !== question.criteria.length || criteria.some((item, i) => {
+      const expected = question.criteria[i];
+      return !item || item.key !== expected.key || item.max !== expected.max || !Number.isInteger(item.score) || item.score < 0 || item.score > expected.max;
+    }) || criteria.reduce((sum, item) => sum + item.score, 0) !== score) return fallback();
 
     return json({
       score,
       max: 5,
       source: 'gemini',
-      criteria: parsed.criteria,
+      criteria,
       concepts: parsed.concepts.filter((value): value is string => typeof value === 'string').slice(0, 8),
     });
   } catch {

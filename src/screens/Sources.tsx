@@ -79,7 +79,7 @@ export function Sources() {
       <section ref={keep('software')} className="sources-group sources-software" aria-labelledby="sources-software">
         <h2 id="sources-software" className="sources-heading">{t('sources.software')}</h2>
         <p>
-          {t('sources.noticeLink')} · <a href="/third-party/MPL-2.0.txt">{t('sources.mplLink')}</a> · <a href="https://www.mozilla.org/media/MPL/2.0/index.815ca599c9df.txt" target="_blank" rel="noreferrer">{t('sources.mplOfficial')}</a>
+          {t('sources.noticeLink')} · <a href={`${import.meta.env.BASE_URL}third-party/MPL-2.0.txt`}>{t('sources.mplLink')}</a> · <a href="https://www.mozilla.org/media/MPL/2.0/index.815ca599c9df.txt" target="_blank" rel="noreferrer">{t('sources.mplOfficial')}</a>
         </p>
       </section>
     </main>

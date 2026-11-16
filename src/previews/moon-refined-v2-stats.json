@@ -1,0 +1,22 @@
+{
+  "COL_Lunar terrain": {
+    "objects": 91,
+    "triangles": 72000
+  },
+  "COL_Cuoi": {
+    "objects": 84,
+    "triangles": 21952
+  },
+  "COL_ThoNgoc.001": {
+    "objects": 30,
+    "triangles": 15056
+  },
+  "COL_Apollo lunar rover": {
+    "objects": 561,
+    "triangles": 21500
+  },
+  "COL_Preview lights and camera": {
+    "objects": 3,
+    "triangles": 0
+  }
+}

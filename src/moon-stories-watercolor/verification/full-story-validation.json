@@ -1,0 +1,14 @@
+{
+  "shots": 22,
+  "authored_caption_beats": 51,
+  "display_units": 97,
+  "exact_source_caption_match": true,
+  "all_source_images_byte_identical": true,
+  "protected_files": 26,
+  "local_paths_and_ids": "PASS",
+  "Cabin_Sketch_700": "PASS",
+  "minimum_mobile_width_two_line_font_metrics": "PASS",
+  "timeline_and_renderer_tests": "PASS",
+  "browser_check": "Not run: user prohibits browser control",
+  "unresolved_asset_or_narrative_mismatch": null
+}

@@ -14,8 +14,14 @@ describe('Moon assessment', () => {
     expect(result.score).toBeLessThanOrEqual(5);
   });
 
+  it('treats inherited question names as unknown', () => {
+    expect(scoreLocally('toString', 'answer').criteria).toEqual([]);
+    expect(validateReflectionReview({}, 'toString')).toBeNull();
+  });
+
   it('rejects malformed model responses and clamps no invalid values through', () => {
-    expect(validateReflectionReview({ score: 9, criteria: [], concepts: [] })).toBeNull();
-    expect(validateReflectionReview({ score: 4, criteria: [{ key: 'data', score: 2, max: 2 }], concepts: ['data'] })).toMatchObject({ source: 'gemini', score: 4 });
+    expect(validateReflectionReview({ score: 9, criteria: [], concepts: [] }, 'r2')).toBeNull();
+    expect(validateReflectionReview({ score: 2, max: 5, source: 'gemini', criteria: [{ key: 'data', score: 2, max: 2 }, { key: 'continuation', score: 0, max: 2 }, { key: 'own_words', score: 0, max: 1 }], concepts: ['data'] }, 'r2')).toMatchObject({ source: 'gemini', score: 2 });
+    expect(validateReflectionReview({ score: 4, max: 5, source: 'gemini', criteria: [{ key: 'data', score: 2, max: 2 }], concepts: ['data'] }, 'r2')).toBeNull();
   });
 });

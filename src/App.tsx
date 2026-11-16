@@ -7,6 +7,7 @@ import { backdropUrl, backdrops, chapterById } from './data';
 import { Settings } from './components/Settings';
 import { ChatBot } from './components/ChatBot';
 import { IntroExperience } from './screens/IntroExperience';
+import { storyModeFrom } from './screens/storyModes';
 
 const Title = lazy(() => import('./screens/Title').then((m) => ({ default: m.Title })));
 const MapScreen = lazy(() => import('./screens/MapScreen').then((m) => ({ default: m.MapScreen })));
@@ -38,7 +39,7 @@ function TopBar() {
   return (
     <header className="topbar">
       <NavLink to="/" className="brand" aria-label={t('nav.home')}>
-        <img className="brand-logo" src="/moon-stories-watercolor/assets/images/ask-uncle-cuoi.png" alt="" aria-hidden="true" />
+        <img className="brand-logo" src={`${import.meta.env.BASE_URL}moon-stories-watercolor/assets/images/ask-uncle-cuoi.png`} alt="" aria-hidden="true" />
         <span>Moon Stories</span>
       </NavLink>
       <nav aria-label={t('nav.main')}>
@@ -54,7 +55,7 @@ export function App() {
   const language = useGame((s) => s.language);
   const { pathname, search } = useLocation();
   // Once a story mode is chosen it fills the screen and has its own Exit control; the mode picker keeps the top bar.
-  const immersive = pathname.startsWith('/chapter') || pathname === '/' || (pathname === '/story' && new URLSearchParams(search).has('mode'));
+  const immersive = pathname.startsWith('/chapter') || pathname === '/' || (pathname === '/story' && storyModeFrom(new URLSearchParams(search).get('mode')) !== null);
   const backdrop = backdropFor(pathname);
 
   useEffect(() => {
@@ -67,7 +68,7 @@ export function App() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [pathname]);
+  }, [pathname, search]);
 
   return (
     <>

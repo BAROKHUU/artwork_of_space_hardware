@@ -107,18 +107,27 @@ export function Lab() {
       </header>
       <div className="lab-tabs" role="tablist">
         {tabs.map((k) => (
-          <button type="button" key={k} role="tab" aria-selected={tab === k} className={tab === k ? 'on' : ''} onClick={() => setTab(k)}>
+          <button type="button" key={k} id={`lab-tab-${k}`} aria-controls="lab-panel" role="tab" aria-selected={tab === k} tabIndex={tab === k ? 0 : -1} className={tab === k ? 'on' : ''} onKeyDown={(e) => {
+            const index = tabs.indexOf(k);
+            const next = e.key === 'Home' ? 0 : e.key === 'End' ? tabs.length - 1 : e.key === 'ArrowRight' || e.key === 'ArrowDown' ? (index + 1) % tabs.length : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? (index + tabs.length - 1) % tabs.length : -1;
+            if (next < 0) return;
+            e.preventDefault();
+            setTab(tabs[next]);
+            e.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('[role="tab"]')[next]?.focus();
+          }} onClick={() => setTab(k)}>
             <strong>{t(`lab.${k}`)}</strong>
             <small>{t(`lab.${k}Sub`)}</small>
           </button>
         ))}
       </div>
-      {tab === 'landing' && <LandingLab />}
-      {tab === 'slingshot' && <Suspense fallback={<div className="loading" role="status">{t('common.loading')}</div>}><SlingshotLab /></Suspense>}
-      {tab === 'solar' && <Suspense fallback={<div className="loading" role="status">{t('common.loading')}</div>}><SolarLab /></Suspense>}
-      {tab === 'laser' && <Suspense fallback={<div className="loading" role="status">{t('common.loading')}</div>}><LaserLab /></Suspense>}
-      {tab === 'drive' && <DriveLab />}
-      {tab === 'seismic' && <Suspense fallback={<div className="loading" role="status">{t('common.loading')}</div>}><SeismicLab /></Suspense>}
+      <div id="lab-panel" role="tabpanel" aria-labelledby={`lab-tab-${tab}`} tabIndex={0}>
+        {tab === 'landing' && <LandingLab />}
+        {tab === 'slingshot' && <Suspense fallback={<div className="loading" role="status">{t('common.loading')}</div>}><SlingshotLab /></Suspense>}
+        {tab === 'solar' && <Suspense fallback={<div className="loading" role="status">{t('common.loading')}</div>}><SolarLab /></Suspense>}
+        {tab === 'laser' && <Suspense fallback={<div className="loading" role="status">{t('common.loading')}</div>}><LaserLab /></Suspense>}
+        {tab === 'drive' && <DriveLab />}
+        {tab === 'seismic' && <Suspense fallback={<div className="loading" role="status">{t('common.loading')}</div>}><SeismicLab /></Suspense>}
+      </div>
       <p className="lab-note">{t('lab.simNote')}</p>
     </main>
   );
