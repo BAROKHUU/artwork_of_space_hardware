@@ -1,0 +1,1526 @@
+{
+  "source": "src/previews/terrain-rover-refined.blend",
+  "asset": "public/assets/models/lrv.glb",
+  "source_objects": 134,
+  "source_triangles": 3607145,
+  "triangle_target": 150000,
+  "triangle_target_met": false,
+  "nodes": 5,
+  "meshes": 5,
+  "primitives": 54,
+  "triangles": 248082,
+  "materials": 40,
+  "embedded_images": 0,
+  "bytes": 4851744,
+  "units": "metres",
+  "up": "+Y",
+  "forward": "-Z",
+  "origin": "centre between four wheel bounds, lowest wheel contact at Y=0",
+  "bounds_xyz": [
+    [
+      -1.0287529230117798,
+      0.0,
+      -1.8840250968933105
+    ],
+    [
+      1.0287528038024902,
+      2.308867931365967,
+      1.525557279586792
+    ]
+  ],
+  "dimensions_xyz": [
+    2.05750572681427,
+    2.308867931365967,
+    3.4095823764801025
+  ],
+  "wheel_bottom_y": {
+    "Wheel - Front Left": 0.007278705481439829,
+    "Wheel - Front Right": 0.0,
+    "Wheel - Rear Left": 0.007278710603713989,
+    "Wheel - Rear Right": 0.007252485491335392
+  },
+  "wheel_centres_xyz": {
+    "Wheel - Front Left": [
+      -0.8196777701377869,
+      0.4163911167997867,
+      -1.0938439071178436
+    ],
+    "Wheel - Front Right": [
+      0.8888595104217529,
+      0.4127386510372162,
+      -1.0938482284545898
+    ],
+    "Wheel - Rear Left": [
+      -0.8777227401733398,
+      0.4302864521741867,
+      1.0828697383403778
+    ],
+    "Wheel - Rear Right": [
+      0.8764351010322571,
+      0.4163648639805615,
+      1.0938738882541656
+    ]
+  },
+  "wheel_radius": {
+    "Wheel - Front Left": 0.40911241131834686,
+    "Wheel - Front Right": 0.4127386510372162,
+    "Wheel - Rear Left": 0.4230077415704727,
+    "Wheel - Rear Right": 0.4091123784892261
+  },
+  "source_sha256": "ff159c3d1f75cbc2730f19bbe45ad939f107d8592bdb612c89602d7a9657e5fd",
+  "texture_policy": "No source image textures exported; rights unverified. CC0 viewport base colors retained.",
+  "material_replacements": [
+    {
+      "source_material": "MAT_PreviewRover_Metal - Black",
+      "export_material": "LRV Metal - Black",
+      "base_color": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "metallic": 0.800000011920929,
+      "roughness": 0.44999998807907104,
+      "omitted_image_maps": [
+        {
+          "image": "Metal012_4K-PNG_Metalness.png",
+          "direct_targets": [
+            "Separate Color:Color"
+          ]
+        },
+        {
+          "image": "Metal012_4K-PNG_Roughness.png",
+          "direct_targets": [
+            "Separate Color.001:Color"
+          ]
+        },
+        {
+          "image": "Metal012_4K-PNG_NormalGL.png",
+          "direct_targets": [
+            "Normal Map:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Plastic - Yellow",
+      "export_material": "LRV Plastic - Yellow",
+      "base_color": [
+        0.9215689897537231,
+        0.784313976764679,
+        0.4078429937362671,
+        1.0
+      ],
+      "metallic": 1.0,
+      "roughness": 0.4894818961620331,
+      "omitted_image_maps": [
+        {
+          "image": "Metal009_4K-PNG_NormalGL.png",
+          "direct_targets": [
+            "Normal Map:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Plastic - White",
+      "export_material": "LRV Plastic - White",
+      "base_color": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.44999998807907104,
+      "omitted_image_maps": [
+        {
+          "image": "Plastic018B_4K-PNG_Color.png",
+          "direct_targets": [
+            "RGB Curves:Color"
+          ]
+        },
+        {
+          "image": "Plastic018B_4K-PNG_Roughness.png",
+          "direct_targets": [
+            "Separate Color:Color"
+          ]
+        },
+        {
+          "image": "Plastic018B_4K-PNG_NormalGL.png",
+          "direct_targets": [
+            "Normal Map:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Plastic - Blue",
+      "export_material": "LRV Plastic - Blue",
+      "base_color": [
+        0.18431399762630463,
+        0.5176470279693604,
+        0.7764710187911987,
+        1.0
+      ],
+      "metallic": 1.0,
+      "roughness": 0.05699481815099716,
+      "omitted_image_maps": [
+        {
+          "image": "Metal009_4K-PNG_NormalGL.png",
+          "direct_targets": [
+            "Normal Map:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Metal - White",
+      "export_material": "LRV Metal - White",
+      "base_color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "metallic": 0.12694302201271057,
+      "roughness": 0.44999998807907104,
+      "omitted_image_maps": [
+        {
+          "image": "Metal012_4K-PNG_Color.png",
+          "direct_targets": [
+            "Color Ramp:Fac"
+          ]
+        },
+        {
+          "image": "Metal012_4K-PNG_Metalness.png",
+          "direct_targets": [
+            "Separate Color:Color"
+          ]
+        },
+        {
+          "image": "Metal012_4K-PNG_Roughness.png",
+          "direct_targets": []
+        },
+        {
+          "image": "Metal012_4K-PNG_NormalGL.png",
+          "direct_targets": [
+            "Normal Map:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_RedSticker",
+      "export_material": "LRV RedSticker",
+      "base_color": [
+        1.0,
+        0.044821903109550476,
+        0.028140246868133545,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 1.0,
+      "omitted_image_maps": [
+        {
+          "image": "Metal009_4K-PNG_NormalGL.png",
+          "direct_targets": [
+            "Normal Map:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Lense",
+      "export_material": "LRV Lense",
+      "base_color": [
+        0.053372614085674286,
+        0.3196958899497986,
+        0.5882358551025391,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.44999998807907104,
+      "omitted_image_maps": []
+    },
+    {
+      "source_material": "MAT_PreviewRover_Foil - Gold 2",
+      "export_material": "LRV Foil - Gold 2",
+      "base_color": [
+        0.8000074625015259,
+        0.5874536037445068,
+        0.11430173367261887,
+        1.0
+      ],
+      "metallic": 0.800000011920929,
+      "roughness": 0.44999998807907104,
+      "omitted_image_maps": [
+        {
+          "image": "Foil002_4K-PNG_Color.png",
+          "direct_targets": [
+            "Principled BSDF:Base Color"
+          ]
+        },
+        {
+          "image": "Foil002_4K-PNG_Metalness.png",
+          "direct_targets": [
+            "Separate Color:Color"
+          ]
+        },
+        {
+          "image": "Foil002_4K-PNG_Roughness.png",
+          "direct_targets": [
+            "Separate Color.001:Color"
+          ]
+        },
+        {
+          "image": "Foil002_4K-PNG_NormalGL.png",
+          "direct_targets": [
+            "Normal Map:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Plastic - Green",
+      "export_material": "LRV Plastic - Green",
+      "base_color": [
+        0.4588240087032318,
+        0.5764709711074829,
+        0.4352940022945404,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.0,
+      "omitted_image_maps": [
+        {
+          "image": "Metal012_4K-PNG_NormalGL.png",
+          "direct_targets": [
+            "Normal Map:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Metal - Default",
+      "export_material": "LRV Metal - Default",
+      "base_color": [
+        0.2686929404735565,
+        0.2686929404735565,
+        0.2686929404735565,
+        1.0
+      ],
+      "metallic": 0.800000011920929,
+      "roughness": 0.44999998807907104,
+      "omitted_image_maps": [
+        {
+          "image": "Metal012_4K-PNG_Color.png",
+          "direct_targets": [
+            "Principled BSDF:Base Color"
+          ]
+        },
+        {
+          "image": "Metal012_4K-PNG_Metalness.png",
+          "direct_targets": [
+            "Separate Color:Color"
+          ]
+        },
+        {
+          "image": "Metal012_4K-PNG_Roughness.png",
+          "direct_targets": [
+            "Separate Color.001:Color"
+          ]
+        },
+        {
+          "image": "Metal012_4K-PNG_NormalGL.png",
+          "direct_targets": [
+            "Normal Map:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Metal - Red",
+      "export_material": "LRV Metal - Red",
+      "base_color": [
+        0.24310946464538574,
+        0.0,
+        0.00043602241203188896,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.0,
+      "omitted_image_maps": [
+        {
+          "image": "Tools_Metalbasecolortexture.jpeg",
+          "direct_targets": [
+            "Mix:A"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Leather - Dark Red",
+      "export_material": "LRV Leather - Dark Red",
+      "base_color": [
+        0.08560121804475784,
+        0.005056862719357014,
+        0.0031453408300876617,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.75,
+      "omitted_image_maps": [
+        {
+          "image": "Plastic003_4K-PNG_Color.png",
+          "direct_targets": [
+            "Principled BSDF:Base Color"
+          ]
+        },
+        {
+          "image": "Plastic003_4K-PNG_Roughness.png",
+          "direct_targets": [
+            "Separate Color:Color"
+          ]
+        },
+        {
+          "image": "Plastic003_4K-PNG_NormalGL.png",
+          "direct_targets": [
+            "Normal Map:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Foil - Gold 1",
+      "export_material": "LRV Foil - Gold 1",
+      "base_color": [
+        0.8000074625015259,
+        0.5816754698753357,
+        0.03353625908493996,
+        1.0
+      ],
+      "metallic": 0.800000011920929,
+      "roughness": 0.44999998807907104,
+      "omitted_image_maps": [
+        {
+          "image": "Foil002_4K-PNG_Color.png",
+          "direct_targets": [
+            "Principled BSDF:Base Color"
+          ]
+        },
+        {
+          "image": "Foil002_4K-PNG_Metalness.png",
+          "direct_targets": [
+            "Separate Color:Color"
+          ]
+        },
+        {
+          "image": "Foil002_4K-PNG_Roughness.png",
+          "direct_targets": [
+            "Separate Color.001:Color"
+          ]
+        },
+        {
+          "image": "Foil002_4K-PNG_NormalGL.png",
+          "direct_targets": [
+            "Normal Map:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Fabric - White",
+      "export_material": "LRV Fabric - White",
+      "base_color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.75,
+      "omitted_image_maps": [
+        {
+          "image": "Fabric048_4K-PNG_Color.png",
+          "direct_targets": [
+            "Principled BSDF:Base Color"
+          ]
+        },
+        {
+          "image": "Fabric048_4K-PNG_Roughness.png",
+          "direct_targets": [
+            "Separate Color:Color"
+          ]
+        },
+        {
+          "image": "Fabric048_4K-PNG_NormalGL.png",
+          "direct_targets": [
+            "Normal Map:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Metal - Reflective",
+      "export_material": "LRV Metal - Reflective",
+      "base_color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "metallic": 0.800000011920929,
+      "roughness": 0.44999998807907104,
+      "omitted_image_maps": [
+        {
+          "image": "Metal012_4K-PNG_Color.png",
+          "direct_targets": [
+            "Principled BSDF:Base Color"
+          ]
+        },
+        {
+          "image": "Metal012_4K-PNG_Metalness.png",
+          "direct_targets": [
+            "Separate Color:Color"
+          ]
+        },
+        {
+          "image": "Metal012_4K-PNG_Roughness.png",
+          "direct_targets": [
+            "Separate Color.001:Color"
+          ]
+        },
+        {
+          "image": "Metal012_4K-PNG_NormalGL.png",
+          "direct_targets": [
+            "Normal Map:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Plastic - Black",
+      "export_material": "LRV Plastic - Black",
+      "base_color": [
+        0.009425555355846882,
+        0.009425555355846882,
+        0.009425555355846882,
+        1.0
+      ],
+      "metallic": 0.6994818449020386,
+      "roughness": 0.27000001072883606,
+      "omitted_image_maps": []
+    },
+    {
+      "source_material": "MAT_PreviewRover_Console_1",
+      "export_material": "LRV Console_1",
+      "base_color": [
+        0.039902374148368835,
+        0.039902374148368835,
+        0.039902374148368835,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.10000000149011612,
+      "omitted_image_maps": [
+        {
+          "image": "Console_1basecolortexture.png",
+          "direct_targets": [
+            "Mix:A",
+            "Principled BSDF:Alpha"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Dial_1",
+      "export_material": "LRV Dial_1",
+      "base_color": [
+        0.0,
+        0.007308006286621094,
+        0.8003778457641602,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.10000000149011612,
+      "omitted_image_maps": [
+        {
+          "image": "Dial_1basecolortexture.jpeg",
+          "direct_targets": [
+            "Mix:A"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Dial_3",
+      "export_material": "LRV Dial_3",
+      "base_color": [
+        0.0,
+        0.027120310813188553,
+        0.8002356290817261,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.10000000149011612,
+      "omitted_image_maps": [
+        {
+          "image": "Dial_3basecolortexture.jpeg",
+          "direct_targets": [
+            "Mix:A"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Dial_4",
+      "export_material": "LRV Dial_4",
+      "base_color": [
+        0.0,
+        0.04578796774148941,
+        0.8003470301628113,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.10000000149011612,
+      "omitted_image_maps": [
+        {
+          "image": "Dial_4basecolortexture.jpeg",
+          "direct_targets": [
+            "Mix:A"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Guage 1",
+      "export_material": "LRV Guage 1",
+      "base_color": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.10000000149011612,
+      "omitted_image_maps": [
+        {
+          "image": "Material__807basecolortexture.jpeg",
+          "direct_targets": [
+            "Mix:A"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Guage 2",
+      "export_material": "LRV Guage 2",
+      "base_color": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.10000000149011612,
+      "omitted_image_maps": [
+        {
+          "image": "Material__820basecolortexture.jpeg",
+          "direct_targets": [
+            "Mix:A"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Guage 3",
+      "export_material": "LRV Guage 3",
+      "base_color": [
+        0.0,
+        0.8036746978759766,
+        0.004867898765951395,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.10000000149011612,
+      "omitted_image_maps": [
+        {
+          "image": "Material__833basecolortexture.jpeg",
+          "direct_targets": [
+            "Mix:A"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Guage 4",
+      "export_material": "LRV Guage 4",
+      "base_color": [
+        0.035134706646203995,
+        0.035134706646203995,
+        0.035134706646203995,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.10000000149011612,
+      "omitted_image_maps": [
+        {
+          "image": "Material__846basecolortexture.jpeg",
+          "direct_targets": [
+            "Mix:A"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Metal - Black Plain",
+      "export_material": "LRV Metal - Black Plain",
+      "base_color": [
+        0.03747456520795822,
+        0.03747456520795822,
+        0.03747456520795822,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.44999998807907104,
+      "omitted_image_maps": [
+        {
+          "image": "Plastic006_4K-PNG_Color.png",
+          "direct_targets": [
+            "Principled BSDF:Base Color"
+          ]
+        },
+        {
+          "image": "Plastic006_4K-PNG_Roughness.png",
+          "direct_targets": [
+            "Separate Color:Color"
+          ]
+        },
+        {
+          "image": "Plastic006_4K-PNG_NormalGL.png",
+          "direct_targets": [
+            "Normal Map:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Dial_2",
+      "export_material": "LRV Dial_2",
+      "base_color": [
+        0.0,
+        0.8011652231216431,
+        0.00986962579190731,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.10000000149011612,
+      "omitted_image_maps": [
+        {
+          "image": "Dial_2basecolortexture.jpeg",
+          "direct_targets": [
+            "Mix:A"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Cloth - Bands",
+      "export_material": "LRV Cloth - Bands",
+      "base_color": [
+        0.31194454431533813,
+        0.31194454431533813,
+        0.31194454431533813,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.75,
+      "omitted_image_maps": [
+        {
+          "image": "Cloth_Mask.png",
+          "direct_targets": [
+            "Principled BSDF:Roughness"
+          ]
+        },
+        {
+          "image": "Cloth_Normal.png",
+          "direct_targets": [
+            "Normal Map:Color"
+          ]
+        },
+        {
+          "image": "Cloth_Diffuse.png",
+          "direct_targets": [
+            "Brightness/Contrast:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Metal - Brushed",
+      "export_material": "LRV Metal - Brushed",
+      "base_color": [
+        0.4588240087032318,
+        0.4274510145187378,
+        0.32548999786376953,
+        1.0
+      ],
+      "metallic": 0.800000011920929,
+      "roughness": 0.44999998807907104,
+      "omitted_image_maps": [
+        {
+          "image": "Metal009_4K-PNG_Color.png",
+          "direct_targets": [
+            "RGB Curves:Color"
+          ]
+        },
+        {
+          "image": "Metal009_4K-PNG_Metalness.png",
+          "direct_targets": [
+            "Separate Color:Color"
+          ]
+        },
+        {
+          "image": "Metal009_4K-PNG_Roughness.png",
+          "direct_targets": [
+            "Separate Color.001:Color"
+          ]
+        },
+        {
+          "image": "Metal009_4K-PNG_NormalGL.png",
+          "direct_targets": [
+            "Normal Map:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Fabric - Blue",
+      "export_material": "LRV Fabric - Blue",
+      "base_color": [
+        0.0035856948234140873,
+        0.0718168318271637,
+        0.3328549861907959,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.75,
+      "omitted_image_maps": [
+        {
+          "image": "Fabric022_4K-PNG_Color.png",
+          "direct_targets": [
+            "Principled BSDF:Base Color"
+          ]
+        },
+        {
+          "image": "Fabric022_4K-PNG_Roughness.png",
+          "direct_targets": [
+            "Separate Color:Color"
+          ]
+        },
+        {
+          "image": "Fabric022_4K-PNG_NormalGL.png",
+          "direct_targets": [
+            "Normal Map:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Us_Flag_Flip",
+      "export_material": "LRV Us_Flag_Flip",
+      "base_color": [
+        0.8006381988525391,
+        0.0017988011240959167,
+        0.0,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.2839379906654358,
+      "omitted_image_maps": [
+        {
+          "image": "US-Flag-Flipped.jpg",
+          "direct_targets": [
+            "Principled BSDF:Base Color"
+          ]
+        },
+        {
+          "image": "Plastic014B_4K-PNG_NormalGL.png",
+          "direct_targets": [
+            "Normal Map:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Wheel_Covers",
+      "export_material": "LRV Wheel_Covers",
+      "base_color": [
+        0.38629674911499023,
+        0.05743889510631561,
+        0.014121247455477715,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.44999998807907104,
+      "omitted_image_maps": [
+        {
+          "image": "Plastic014B_4K-PNG_Color.png",
+          "direct_targets": [
+            "Hue/Saturation/Value:Color"
+          ]
+        },
+        {
+          "image": "Plastic014B_4K-PNG_Roughness.png",
+          "direct_targets": [
+            "Separate Color:Color"
+          ]
+        },
+        {
+          "image": "Plastic014B_4K-PNG_NormalGL.png",
+          "direct_targets": [
+            "Normal Map:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Us_Flag",
+      "export_material": "LRV Us_Flag",
+      "base_color": [
+        0.8004324436187744,
+        0.0,
+        0.0007393343839794397,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.28393781185150146,
+      "omitted_image_maps": [
+        {
+          "image": "US-Flag.jpg",
+          "direct_targets": [
+            "Principled BSDF:Base Color"
+          ]
+        },
+        {
+          "image": "Plastic014B_4K-PNG_NormalGL.png",
+          "direct_targets": [
+            "Normal Map:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Studs",
+      "export_material": "LRV Studs",
+      "base_color": [
+        0.49803900718688965,
+        0.49803900718688965,
+        0.49803900718688965,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.20000000298023224,
+      "omitted_image_maps": []
+    },
+    {
+      "source_material": "MAT_PreviewRover_Solar Panel",
+      "export_material": "LRV Solar Panel",
+      "base_color": [
+        0.0031508682295680046,
+        0.02735055610537529,
+        0.17223034799098969,
+        1.0
+      ],
+      "metallic": 0.7797927260398865,
+      "roughness": 0.0,
+      "omitted_image_maps": [
+        {
+          "image": "SolarPanel004_4K-PNG_Color.png",
+          "direct_targets": [
+            "Principled BSDF:Base Color"
+          ]
+        },
+        {
+          "image": "SolarPanel004_4K-PNG_NormalGL.png",
+          "direct_targets": [
+            "Mix:B"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Wheel_Hub",
+      "export_material": "LRV Wheel_Hub",
+      "base_color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.44999998807907104,
+      "omitted_image_maps": [
+        {
+          "image": "Wheel_Hubbasecolortexture.jpeg",
+          "direct_targets": [
+            "Mix:A"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Photo_1",
+      "export_material": "LRV Photo_1",
+      "base_color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.3901554346084595,
+      "omitted_image_maps": [
+        {
+          "image": "Colour_Photo_1basecolortexture.jpeg",
+          "direct_targets": [
+            "Mix:A"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Photo_2",
+      "export_material": "LRV Photo_2",
+      "base_color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.2590673565864563,
+      "omitted_image_maps": [
+        {
+          "image": "Colour_Photo_1basecolortexture.jpeg",
+          "direct_targets": [
+            "Mix:A",
+            "Principled BSDF:Alpha"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Photo_3",
+      "export_material": "LRV Photo_3",
+      "base_color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.4212435185909271,
+      "omitted_image_maps": [
+        {
+          "image": "Photo_3basecolortexture.jpeg",
+          "direct_targets": [
+            "Mix:A"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Metal - Mesh",
+      "export_material": "LRV Metal - Mesh",
+      "base_color": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "metallic": 0.800000011920929,
+      "roughness": 0.44999998807907104,
+      "omitted_image_maps": [
+        {
+          "image": "SheetMetal002_4K-PNG_Color.png",
+          "direct_targets": [
+            "Principled BSDF:Base Color"
+          ]
+        },
+        {
+          "image": "SheetMetal002_4K-PNG_Metalness.png",
+          "direct_targets": [
+            "Separate Color:Color"
+          ]
+        },
+        {
+          "image": "SheetMetal002_4K-PNG_Roughness.png",
+          "direct_targets": [
+            "Bump:Height",
+            "Separate Color.001:Color"
+          ]
+        },
+        {
+          "image": "SheetMetal002_4K-PNG_Opacity.png",
+          "direct_targets": [
+            "Separate Color.002:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Plastic - Red",
+      "export_material": "LRV Plastic - Red",
+      "base_color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "metallic": 0.1632128357887268,
+      "roughness": 0.3199999928474426,
+      "omitted_image_maps": [
+        {
+          "image": "Red_Plastic_2basecolortexture.jpeg",
+          "direct_targets": [
+            "Mix:A"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_moon_rock_01",
+      "export_material": "LRV moon_rock_01",
+      "base_color": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.44999998807907104,
+      "omitted_image_maps": [
+        {
+          "image": "moon_rock_01_disp.png",
+          "direct_targets": [
+            "Displacement:Height"
+          ]
+        },
+        {
+          "image": "moon_rock_01_diff.png",
+          "direct_targets": [
+            "Brightness/Contrast.001:Color"
+          ]
+        },
+        {
+          "image": "moon_rock_01_rough.png",
+          "direct_targets": [
+            "Principled BSDF:Roughness"
+          ]
+        },
+        {
+          "image": "moon_rock_01_nor_gl.png",
+          "direct_targets": [
+            "Normal Map:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_moon_rock_07",
+      "export_material": "LRV moon_rock_07",
+      "base_color": [
+        0.30380040407180786,
+        0.30380040407180786,
+        0.30380040407180786,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.44999998807907104,
+      "omitted_image_maps": [
+        {
+          "image": "moon_rock_07_disp.png",
+          "direct_targets": [
+            "Displacement:Height"
+          ]
+        },
+        {
+          "image": "moon_rock_07_diff.png",
+          "direct_targets": [
+            "Brightness/Contrast.001:Color"
+          ]
+        },
+        {
+          "image": "moon_rock_07_rough.png",
+          "direct_targets": [
+            "Principled BSDF:Roughness"
+          ]
+        },
+        {
+          "image": "moon_rock_07_nor_gl.png",
+          "direct_targets": [
+            "Normal Map:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_moon_rock_06",
+      "export_material": "LRV moon_rock_06",
+      "base_color": [
+        0.30379998683929443,
+        0.30379998683929443,
+        0.30379998683929443,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.44999998807907104,
+      "omitted_image_maps": [
+        {
+          "image": "moon_rock_06_disp.png",
+          "direct_targets": [
+            "Displacement:Height"
+          ]
+        },
+        {
+          "image": "moon_rock_06_diff.png",
+          "direct_targets": [
+            "Brightness/Contrast.001:Color"
+          ]
+        },
+        {
+          "image": "moon_rock_06_rough.png",
+          "direct_targets": [
+            "Principled BSDF:Roughness"
+          ]
+        },
+        {
+          "image": "moon_rock_06_nor_gl.png",
+          "direct_targets": [
+            "Normal Map:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_moon_rock_05",
+      "export_material": "LRV moon_rock_05",
+      "base_color": [
+        0.30379998683929443,
+        0.30379998683929443,
+        0.30379998683929443,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.44999998807907104,
+      "omitted_image_maps": [
+        {
+          "image": "moon_rock_05_disp.png",
+          "direct_targets": [
+            "Displacement:Height"
+          ]
+        },
+        {
+          "image": "moon_rock_05_diff.png",
+          "direct_targets": [
+            "Brightness/Contrast.001:Color"
+          ]
+        },
+        {
+          "image": "moon_rock_05_rough.png",
+          "direct_targets": [
+            "Principled BSDF:Roughness"
+          ]
+        },
+        {
+          "image": "moon_rock_05_nor_gl.png",
+          "direct_targets": [
+            "Normal Map:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_moon_rock_03",
+      "export_material": "LRV moon_rock_03",
+      "base_color": [
+        0.30379998683929443,
+        0.30379998683929443,
+        0.30379998683929443,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.44999998807907104,
+      "omitted_image_maps": [
+        {
+          "image": "moon_rock_03_disp.png",
+          "direct_targets": [
+            "Displacement:Height"
+          ]
+        },
+        {
+          "image": "moon_rock_03_diff.png",
+          "direct_targets": [
+            "Brightness/Contrast.001:Color"
+          ]
+        },
+        {
+          "image": "moon_rock_03_rough.png",
+          "direct_targets": [
+            "Principled BSDF:Roughness"
+          ]
+        },
+        {
+          "image": "moon_rock_03_nor_gl.png",
+          "direct_targets": [
+            "Normal Map:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_moon_rock_04",
+      "export_material": "LRV moon_rock_04",
+      "base_color": [
+        0.30379998683929443,
+        0.30379998683929443,
+        0.30379998683929443,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.44999998807907104,
+      "omitted_image_maps": [
+        {
+          "image": "moon_rock_04_disp.png",
+          "direct_targets": [
+            "Displacement:Height"
+          ]
+        },
+        {
+          "image": "moon_rock_04_diff.png",
+          "direct_targets": [
+            "Brightness/Contrast.001:Color"
+          ]
+        },
+        {
+          "image": "moon_rock_04_rough.png",
+          "direct_targets": [
+            "Principled BSDF:Roughness"
+          ]
+        },
+        {
+          "image": "moon_rock_04_nor_gl.png",
+          "direct_targets": [
+            "Normal Map:Color"
+          ]
+        },
+        {
+          "image": "moon_rock_04_ao.png",
+          "direct_targets": []
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Metal - Default.001",
+      "export_material": "LRV Metal - Default.001",
+      "base_color": [
+        0.2686929404735565,
+        0.2686929404735565,
+        0.2686929404735565,
+        1.0
+      ],
+      "metallic": 0.800000011920929,
+      "roughness": 0.44999998807907104,
+      "omitted_image_maps": [
+        {
+          "image": "Metal012_4K-PNG_Color.png.001",
+          "direct_targets": [
+            "RGB Curves:Color"
+          ]
+        },
+        {
+          "image": "Metal012_4K-PNG_Metalness.png.001",
+          "direct_targets": [
+            "Separate Color:Color"
+          ]
+        },
+        {
+          "image": "Metal012_4K-PNG_Roughness.png.001",
+          "direct_targets": [
+            "Separate Color.001:Color"
+          ]
+        },
+        {
+          "image": "Metal012_4K-PNG_NormalGL.png.001",
+          "direct_targets": [
+            "Normal Map:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Metal - Default.002",
+      "export_material": "LRV Metal - Default.002",
+      "base_color": [
+        0.2686929404735565,
+        0.2686929404735565,
+        0.2686929404735565,
+        1.0
+      ],
+      "metallic": 0.800000011920929,
+      "roughness": 0.44999998807907104,
+      "omitted_image_maps": [
+        {
+          "image": "Metal012_4K-PNG_Color.png.002",
+          "direct_targets": [
+            "Principled BSDF:Base Color"
+          ]
+        },
+        {
+          "image": "Metal012_4K-PNG_Metalness.png.002",
+          "direct_targets": [
+            "Separate Color:Color"
+          ]
+        },
+        {
+          "image": "Metal012_4K-PNG_Roughness.png.002",
+          "direct_targets": [
+            "Separate Color.001:Color"
+          ]
+        },
+        {
+          "image": "Metal012_4K-PNG_NormalGL.png.002",
+          "direct_targets": [
+            "Normal Map:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Wheel_Mesh",
+      "export_material": "LRV Wheel_Mesh",
+      "base_color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "metallic": 1.0,
+      "roughness": 0.44999998807907104,
+      "omitted_image_maps": [
+        {
+          "image": "SheetMetal002_4K-PNG_Roughness.png",
+          "direct_targets": [
+            "Bump:Distance",
+            "Reroute.001:Input"
+          ]
+        },
+        {
+          "image": "SheetMetal002_4K-PNG_Opacity.png",
+          "direct_targets": [
+            "Separate Color.004:Color"
+          ]
+        }
+      ]
+    },
+    {
+      "source_material": "MAT_PreviewRover_Wheel_inner_band",
+      "export_material": "LRV Wheel_inner_band",
+      "base_color": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "metallic": 0.0,
+      "roughness": 0.25999999046325684,
+      "omitted_image_maps": []
+    },
+    {
+      "source_material": "MAT_PreviewRover_Wires - Exposed",
+      "export_material": "LRV Wires - Exposed",
+      "base_color": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ],
+      "metallic": 0.09067356586456299,
+      "roughness": 0.10000000149011612,
+      "omitted_image_maps": [
+        {
+          "image": "Exposed_Wiresbasecolortexture.jpeg",
+          "direct_targets": [
+            "Mix:A",
+            "Normal Map:Strength"
+          ]
+        }
+      ]
+    }
+  ],
+  "caveats": [
+    "Static model; wheels and suspension are not rigged.",
+    "All source image textures omitted: flags, dial labels and fine surface detail are absent.",
+    "Authored viewport colors and simple scalar PBR approximate the source material appearance.",
+    "All source geometry retained; dense meshes simplified and static parts joined by material for the browser."
+  ],
+  "static_batching": {
+    "source_parts": 130,
+    "export_meshes": 1,
+    "separate_wheels": 4
+  },
+  "runtime_span_2_7_scale": 0.7918858387540579,
+  "runtime_span_2_7_wheel_centres_xyz": {
+    "Wheel - Front Left": [
+      -0.6490912185136173,
+      0.32973422877673797,
+      -0.8661994998540294
+    ],
+    "Wheel - Front Right": [
+      0.7038752589448511,
+      0.3268418928628244,
+      -0.8662029218594033
+    ],
+    "Wheel - Rear Left": [
+      -0.6950562082956753,
+      0.34073774808446367,
+      0.8575092110070573
+    ],
+    "Wheel - Rear Right": [
+      0.6940365450944264,
+      0.32971343954096616,
+      0.8662232414913126
+    ]
+  },
+  "runtime_span_2_7_wheel_radius": {
+    "Wheel - Front Left": 0.3239703249815242,
+    "Wheel - Front Right": 0.3268418928628244,
+    "Wheel - Rear Left": 0.3349738402329936,
+    "Wheel - Rear Right": 0.32397029898460844
+  },
+  "runtime_span_2_7_loader_wheel_centres_xyz": {
+    "Wheel - Front Left": [
+      -0.6490911713135431,
+      0.32973422877673797,
+      -0.724266705766975
+    ],
+    "Wheel - Front Right": [
+      0.7038753061449252,
+      0.3268418928628244,
+      -0.7242701277723488
+    ],
+    "Wheel - Rear Left": [
+      -0.6950561610956012,
+      0.34073774808446367,
+      0.9994420050941117
+    ],
+    "Wheel - Rear Right": [
+      0.6940365922945005,
+      0.32971343954096616,
+      1.008156035578367
+    ]
+  },
+  "roundtrip_meshes": 5
+}

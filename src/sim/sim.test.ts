@@ -95,10 +95,24 @@ describe('ephemeris', () => {
 
 describe('terrain', () => {
   it('is deterministic and level on flat pads', () => {
-    const o = { seed: 7, size: 200, amplitude: 4, craterCount: 30, flat: [{ x: 5, z: 5, r: 6 }] };
+    const o = { seed: 7, size: 200, amplitude: 4, craterCount: 30, sharpCraters: true, flat: [{ x: 5, z: 5, r: 6 }] };
     const a = makeTerrain(o);
     const b = makeTerrain(o);
     expect(a.heightAt(33, -12)).toBe(b.heightAt(33, -12));
     expect(a.heightAt(5, 5)).toBe(0);
+  });
+
+  it('gives lunar craters flat floors, raised sharp rims and continuous shoulders', () => {
+    const terrain = makeTerrain({ seed: 7, size: 100, amplitude: 0, craterCount: 1, sharpCraters: true });
+    const { x, z, r, depth } = terrain.craters[0];
+    const at = (q: number) => terrain.heightAt(x + r * q, z);
+    expect(at(0)).toBeCloseTo(-depth);
+    expect(at(0.3)).toBeCloseTo(at(0));
+    expect(at(0.98)).toBeGreaterThan(0);
+    expect(at(0.98) - at(0.8)).toBeGreaterThan(depth * 0.3);
+    expect(at(1.6)).toBe(0);
+    for (let q = 0; q < 1.6; q += 0.002) {
+      expect(Math.abs(at(q + 0.002) - at(q))).toBeLessThan(depth * 0.02);
+    }
   });
 });

@@ -18,6 +18,7 @@ interface StoryBookProps {
   chapter: Chapter;
   sections: StorySection[];
   mode: 'game' | 'reader';
+  inPlace?: boolean;
   activeSectionId?: string;
   onContinue?: () => void;
   onSkip?: () => void;
@@ -83,7 +84,7 @@ function StoryStage({ viewpoint, model, chapter, imageAlt }: { viewpoint: Viewpo
   </Canvas>;
 }
 
-export function StoryBook({ chapter, sections, mode, activeSectionId, onContinue, onSkip }: StoryBookProps) {
+export function StoryBook({ chapter, sections, mode, activeSectionId, onContinue, onSkip, inPlace = false }: StoryBookProps) {
   const { t } = useTranslation();
   const markBookOpened = useGame((state) => state.markBookOpened);
   const setBookPage = useGame((state) => state.setBookPage);
@@ -216,13 +217,13 @@ export function StoryBook({ chapter, sections, mode, activeSectionId, onContinue
     <p>{t(`story:${chapter.id}.title`)}</p>{mode === 'game' && <button type="button" className="btn ghost" onClick={() => finish(true)}>{t('book.skip')}</button>}
   </section>;
 
-  return <section className="story-book-shell" onKeyDown={onKeyDown} aria-label={t('book.reading')} tabIndex={0}>
-    <header className="story-cinematic-header">
+  return <section className={`story-book-shell${inPlace ? ' in-place' : ''}`} onKeyDown={onKeyDown} aria-label={t('book.reading')} tabIndex={0}>
+    {!inPlace && <header className="story-cinematic-header">
       <div><p className="story-kicker">{t('book.section')}</p><h2>{current.section.title}</h2></div>
-    </header>
-    <div className="story-cinematic-scene" ref={sceneRef} style={{ backgroundImage: `linear-gradient(180deg, rgb(13 22 29 / 8%), rgb(13 22 29 / 62%)), url("${image}")` }}>
-      <div className="story-cinematic-credit">{current.page.image?.credit ?? t('logbook.credit', { credit: hardware?.credit ?? backdrop.credit, id: hardware?.nasaId ?? backdrop.nasaId })}</div>
-      <StoryStage viewpoint={viewpoint} model={sceneModel} chapter={chapter} imageAlt={imageAlt} />
+    </header>}
+    <div className="story-cinematic-scene" ref={sceneRef} style={inPlace ? undefined : { backgroundImage: `linear-gradient(180deg, rgb(13 22 29 / 8%), rgb(13 22 29 / 62%)), url("${image}")` }}>
+      {!inPlace && <><div className="story-cinematic-credit">{current.page.image?.credit ?? t('logbook.credit', { credit: hardware?.credit ?? backdrop.credit, id: hardware?.nasaId ?? backdrop.nasaId })}</div>
+      <StoryStage viewpoint={viewpoint} model={sceneModel} chapter={chapter} imageAlt={imageAlt} /></>}
       {currentLine && <div className={`story-dialogue-overlay who-${currentLine.who}`} aria-live="polite" onClick={advanceDialogue}>
         <strong>{t(`story:speakers.${currentLine.who}`)}</strong>
         <p>{typed}<span className="type-caret" aria-hidden="true">▌</span></p>

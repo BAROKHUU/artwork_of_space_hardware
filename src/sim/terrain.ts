@@ -5,6 +5,7 @@ export interface TerrainOptions {
   size: number;
   amplitude: number;
   craterCount: number;
+  sharpCraters?: boolean;
   /** Discs kept level so landing pads and mission targets stay reachable. */
   flat?: { x: number; z: number; r: number }[];
 }
@@ -42,7 +43,7 @@ function valueNoise(x: number, z: number, seed: number): number {
   return a + (b - a) * fx + (c - a) * fz + (a - b - c + d) * fx * fz;
 }
 
-export function makeTerrain({ seed, size, amplitude, craterCount, flat = [] }: TerrainOptions): Terrain {
+export function makeTerrain({ seed, size, amplitude, craterCount, sharpCraters = false, flat = [] }: TerrainOptions): Terrain {
   const rng = makeRng(seed);
   const craters: Crater[] = [];
   for (let i = 0; i < craterCount; i++) {
@@ -65,8 +66,14 @@ export function makeTerrain({ seed, size, amplitude, craterCount, flat = [] }: T
     for (const c of craters) {
       const d = Math.hypot(x - c.x, z - c.z);
       if (d > c.r * 1.5) continue;
-      const q = d / c.r;
-      h += q < 1 ? -c.depth * (1 - q * q) + c.depth * 0.15 : c.depth * 0.15 * (1 - smooth((q - 1) / 0.5));
+      let q = d / c.r;
+      if (sharpCraters) {
+        // Broad floors, steep inner walls and a broken, narrow crest; shared by mesh and collision.
+        q += (valueNoise(x / c.r * 4, z / c.r * 4, seed + 17) - 0.5) * 0.1 * Math.min(q / 0.48, 1);
+        h += c.depth * (q < 0.48 ? -1 : q < 1 ? -1 + 1.2 * ((q - 0.48) / 0.52) ** 1.25 : 0.2 * (1 - smooth(Math.min((q - 1) / 0.45, 1))));
+      } else {
+        h += q < 1 ? -c.depth * (1 - q * q) + c.depth * 0.15 : c.depth * 0.15 * (1 - smooth((q - 1) / 0.5));
+      }
     }
     let keep = 1;
     for (const f of flat) {
