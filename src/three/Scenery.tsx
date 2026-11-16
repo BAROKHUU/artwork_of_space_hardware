@@ -174,7 +174,7 @@ function MoonSky({ sun }: { sun: THREE.Vector3 }) {
       <sprite material={halo} position={dir} scale={46} />
       <mesh position={[-90, 62, -150]} rotation={[0.3, 2.2, 0.2]}>
         <sphereGeometry args={[11, 48, 32]} />
-        <meshStandardMaterial map={earthMap} roughness={0.7} emissive="#123a7a" emissiveIntensity={0.14} fog={false} />
+        <meshStandardMaterial map={earthMap} roughness={0.7} emissive="#123a7a" emissiveIntensity={0.14} />
       </mesh>
     </>
   );
@@ -320,7 +320,7 @@ export function EarthScenery({ terrain, keepClear }: { terrain: Terrain; keepCle
 
 let sharedRock: THREE.BufferGeometry | null = null;
 /** An icosphere pushed in and out, so rocks look chipped rather than like dice. */
-export function rockGeometry() {
+function rockGeometry() {
   if (sharedRock) return sharedRock;
   const g = new THREE.IcosahedronGeometry(1, 2);
   const pos = g.attributes.position as THREE.BufferAttribute;
