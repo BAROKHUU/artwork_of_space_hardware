@@ -5,8 +5,14 @@ export interface TerrainOptions {
   size: number;
   amplitude: number;
   craterCount: number;
+  sharpCraters?: boolean;
   /** Discs kept level so landing pads and mission targets stay reachable. */
   flat?: { x: number; z: number; r: number }[];
+  /**
+   * Craters everywhere instead of only inside `size`: each 48 m cell makes its own, from its
+   * coordinates, at the same density. Lets a rover drive forever with no visible edge.
+   */
+  endless?: boolean;
 }
 
 export interface Crater {
@@ -42,16 +48,59 @@ function valueNoise(x: number, z: number, seed: number): number {
   return a + (b - a) * fx + (c - a) * fz + (a - b - c + d) * fx * fz;
 }
 
-export function makeTerrain({ seed, size, amplitude, craterCount, flat = [] }: TerrainOptions): Terrain {
-  const rng = makeRng(seed);
-  const craters: Crater[] = [];
-  for (let i = 0; i < craterCount; i++) {
+/** Craters reach at most 13 m × 1.5; a 48 m cell means only the 3×3 cells around a point matter. */
+export const CRATER_CELL = 48;
+
+export function makeTerrain({ seed, size, amplitude, craterCount, sharpCraters = false, flat = [], endless = false }: TerrainOptions): Terrain {
+  const blocked = (x: number, z: number, r: number) => flat.some((f) => Math.hypot(f.x - x, f.z - z) < f.r + r * 1.4);
+  const crater = (rng: () => number, x: number, z: number): Crater | null => {
     const r = 2 + rng() ** 2 * 11;
-    const x = (rng() - 0.5) * size;
-    const z = (rng() - 0.5) * size;
-    if (flat.some((f) => Math.hypot(f.x - x, f.z - z) < f.r + r * 1.4)) continue;
-    craters.push({ x, z, r, depth: r * (0.16 + rng() * 0.1) });
+    return blocked(x, z, r) ? null : { x, z, r, depth: r * (0.16 + rng() * 0.1) };
+  };
+
+  const rng = makeRng(seed);
+  const fixed: Crater[] = [];
+  if (!endless) {
+    for (let i = 0; i < craterCount; i++) {
+      // Same draw order as before endless terrain existed, so saved missions keep their layout.
+      const r = 2 + rng() ** 2 * 11;
+      const x = (rng() - 0.5) * size;
+      const z = (rng() - 0.5) * size;
+      if (blocked(x, z, r)) continue;
+      fixed.push({ x, z, r, depth: r * (0.16 + rng() * 0.1) });
+    }
   }
+
+  const perCell = (craterCount / (size * size)) * CRATER_CELL * CRATER_CELL;
+  const cells = new Map<string, Crater[]>();
+  const cellCraters = (cx: number, cz: number): Crater[] => {
+    const key = `${cx},${cz}`;
+    let list = cells.get(key);
+    if (list) return list;
+    const cellRng = makeRng(Math.floor(hash(cx, cz, seed + 101) * 4294967296));
+    const count = Math.floor(perCell + cellRng());
+    list = [];
+    for (let i = 0; i < count; i++) {
+      const c = crater(cellRng, (cx + cellRng()) * CRATER_CELL, (cz + cellRng()) * CRATER_CELL);
+      if (c) list.push(c);
+    }
+    if (cells.size > 4096) cells.clear();
+    cells.set(key, list);
+    return list;
+  };
+  const near: Crater[] = [];
+  const cratersNear = (x: number, z: number): Crater[] => {
+    if (!endless) return fixed;
+    const cx = Math.floor(x / CRATER_CELL);
+    const cz = Math.floor(z / CRATER_CELL);
+    near.length = 0;
+    for (let dz = -1; dz <= 1; dz++) for (let dx = -1; dx <= 1; dx++) near.push(...cellCraters(cx + dx, cz + dz));
+    return near;
+  };
+  const half = Math.ceil(size / 2 / CRATER_CELL);
+  const craters: Crater[] = endless
+    ? Array.from({ length: (half * 2) ** 2 }, (_, i) => cellCraters((i % (half * 2)) - half, Math.floor(i / (half * 2)) - half)).flat()
+    : fixed;
 
   const heightAt = (x: number, z: number) => {
     let h = 0;
@@ -62,11 +111,16 @@ export function makeTerrain({ seed, size, amplitude, craterCount, flat = [] }: T
       freq *= 2.1;
       amp *= 0.45;
     }
-    for (const c of craters) {
+    for (const c of cratersNear(x, z)) {
       const d = Math.hypot(x - c.x, z - c.z);
       if (d > c.r * 1.5) continue;
-      const q = d / c.r;
-      h += q < 1 ? -c.depth * (1 - q * q) + c.depth * 0.15 : c.depth * 0.15 * (1 - smooth((q - 1) / 0.5));
+      let q = d / c.r;
+      if (sharpCraters) {
+        q += (valueNoise(x / c.r * 4, z / c.r * 4, seed + 17) - 0.5) * 0.1 * Math.min(q / 0.48, 1);
+        h += c.depth * (q < 0.48 ? -1 : q < 1 ? -1 + 1.2 * ((q - 0.48) / 0.52) ** 1.25 : 0.2 * (1 - smooth(Math.min((q - 1) / 0.45, 1))));
+      } else {
+        h += q < 1 ? -c.depth * (1 - q * q) + c.depth * 0.15 : c.depth * 0.15 * (1 - smooth((q - 1) / 0.5));
+      }
     }
     let keep = 1;
     for (const f of flat) {

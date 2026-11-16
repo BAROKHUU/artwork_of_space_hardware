@@ -101,4 +101,36 @@ describe('terrain', () => {
     expect(a.heightAt(33, -12)).toBe(b.heightAt(33, -12));
     expect(a.heightAt(5, 5)).toBe(0);
   });
+
+  it('keeps making craters far beyond its size when endless, the same way every time', () => {
+    const o = { seed: 9, size: 260, amplitude: 0, craterCount: 58, sharpCraters: true, endless: true, flat: [{ x: 0, z: 0, r: 5 }] };
+    const a = makeTerrain(o);
+    const b = makeTerrain(o);
+    expect(a.heightAt(0, 0)).toBe(0);
+    let dented = 0;
+    for (let i = 0; i < 400; i++) {
+      const x = 4000 + (i % 20) * 6;
+      const z = -3000 + Math.floor(i / 20) * 6;
+      expect(a.heightAt(x, z)).toBe(b.heightAt(x, z));
+      if (Math.abs(a.heightAt(x, z)) > 0.05) dented++;
+    }
+    // With no noise, only craters move the ground: a 120 m patch 5 km out must still have some.
+    expect(dented).toBeGreaterThan(20);
+    // Crater cells join without a step.
+    expect(Math.abs(a.heightAt(47.999, 10) - a.heightAt(48.001, 10))).toBeLessThan(0.01);
+  });
+
+  it('gives lunar craters flat floors, raised sharp rims and continuous shoulders', () => {
+    const terrain = makeTerrain({ seed: 7, size: 100, amplitude: 0, craterCount: 1, sharpCraters: true });
+    const { x, z, r, depth } = terrain.craters[0];
+    const at = (q: number) => terrain.heightAt(x + r * q, z);
+    expect(at(0)).toBeCloseTo(-depth);
+    expect(at(0.3)).toBeCloseTo(at(0));
+    expect(at(0.98)).toBeGreaterThan(0);
+    expect(at(0.98) - at(0.8)).toBeGreaterThan(depth * 0.3);
+    expect(at(1.6)).toBe(0);
+    for (let q = 0; q < 1.6; q += 0.002) {
+      expect(Math.abs(at(q + 0.002) - at(q))).toBeLessThan(depth * 0.02);
+    }
+  });
 });

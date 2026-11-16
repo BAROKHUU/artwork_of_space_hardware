@@ -158,7 +158,7 @@
     "right": "Right",
     "forward": "Forward",
     "backward": "Reverse",
-    "toTarget": "{{name}}: {{d}} m",
+    "toTarget": "{{name}}: {{d}} m", "backToTarget": "Target {{d}} m",
     "slope": "Slope",
     "lookKeys": "Hold right mouse and drag to look around"
   },

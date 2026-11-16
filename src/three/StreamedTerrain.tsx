@@ -2,10 +2,11 @@ import { useEffect, useMemo } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import type { Surface } from '../data/types';
+import type { RockField } from '../sim/obstacles';
 import type { Terrain } from '../sim/terrain';
 import { TILE_SIZE as SIZE, terrainSegments } from '../sim/terrainMesh';
 import { useGame } from '../state/store';
-import { PALETTE, regolithFor } from './Scenery';
+import { PALETTE, regolithFor, rockGeometry } from './Scenery';
 
 const RADIUS = 3;
 // Cover diagonal far-plane corners on wide screens without adding vertices.
@@ -151,7 +152,45 @@ export function makeTerrainTiles(terrain: Terrain, world: Surface, segments: num
   });
 }
 
-export function StreamedTerrain({ terrain, world }: { terrain: Terrain; world: Surface }) {
+const ROCK_RADIUS = 3;
+const MAX_ROCKS_PER_CELL = 8;
+const keyOf = (x: number, z: number) => `${x},${z}`;
+
+function StreamedRocks({ field, world }: { field: RockField; world: Surface }) {
+  const mesh = useMemo(() => {
+    const capacity = (ROCK_RADIUS * 2 + 1) ** 2 * MAX_ROCKS_PER_CELL;
+    const m = new THREE.InstancedMesh(rockGeometry(), new THREE.MeshStandardMaterial({ color: PALETTE[world].rock, roughness: 0.95, flatShading: true }), capacity);
+    m.castShadow = m.receiveShadow = true;
+    m.count = 0;
+    m.frustumCulled = false;
+    m.userData.center = null;
+    return m;
+  }, [world]);
+  useEffect(() => () => (mesh.material as THREE.Material).dispose(), [mesh]);
+  useFrame(({ camera }) => {
+    const cx = Math.floor(camera.position.x / field.cell);
+    const cz = Math.floor(camera.position.z / field.cell);
+    const center = keyOf(cx, cz);
+    if (mesh.userData.center === center) return;
+    mesh.userData.center = center;
+    const o = new THREE.Object3D();
+    let i = 0;
+    for (let dz = -ROCK_RADIUS; dz <= ROCK_RADIUS; dz++) for (let dx = -ROCK_RADIUS; dx <= ROCK_RADIUS; dx++) {
+      for (const r of field.at(cx + dx, cz + dz).slice(0, MAX_ROCKS_PER_CELL)) {
+        o.position.set(r.x, r.y, r.z);
+        o.rotation.set(...r.rotation);
+        o.scale.set(...r.scale);
+        o.updateMatrix();
+        mesh.setMatrixAt(i++, o.matrix);
+      }
+    }
+    mesh.count = i;
+    mesh.instanceMatrix.needsUpdate = true;
+  });
+  return <primitive object={mesh} />;
+}
+
+export function StreamedTerrain({ terrain, world, rocks }: { terrain: Terrain; world: Surface; rocks?: RockField }) {
   const low = useGame((s) => s.quality) === 'low';
   const camera = useThree((s) => s.camera);
   const scene = useMemo(() => {
@@ -196,5 +235,5 @@ export function StreamedTerrain({ terrain, world }: { terrain: Terrain; world: S
     tile.mesh.position.set(targetX * SIZE, 0, targetZ * SIZE);
     tile.mesh.visible = true;
   });
-  return <primitive object={scene.group} />;
+  return <><primitive object={scene.group} />{rocks && <StreamedRocks field={rocks} world={world} />}</>;
 }
