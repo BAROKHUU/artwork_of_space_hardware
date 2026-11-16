@@ -111,12 +111,27 @@
   },
   {
     "chapterId": "m2",
+    "key": "afterCollect",
+    "focus": "rabbit"
+  },
+  {
+    "chapterId": "m2",
+    "key": "afterSamples",
+    "focus": "lrv"
+  },
+  {
+    "chapterId": "m2",
     "key": "outro",
     "focus": "lrv"
   },
   {
     "chapterId": "m3",
     "key": "intro",
+    "focus": "rabbit"
+  },
+  {
+    "chapterId": "m3",
+    "key": "afterCraters",
     "focus": "rabbit"
   },
   {
@@ -128,6 +143,11 @@
     "chapterId": "m4",
     "key": "intro",
     "focus": "cuoi"
+  },
+  {
+    "chapterId": "m4",
+    "key": "afterSignal",
+    "focus": "lrv"
   },
   {
     "chapterId": "m4",
