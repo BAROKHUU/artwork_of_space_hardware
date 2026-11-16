@@ -5,12 +5,13 @@ import * as THREE from 'three';
 import type { DriveConfig } from '../data/types';
 import { emptyContact, resolveCollisions, scatterRocks, solidRocks, type Obstacle } from '../sim/obstacles';
 import { makeTerrain, type Terrain } from '../sim/terrain';
-import { dustLevel, stepBattery, sunlight } from '../sim/rover';
+import { dustLevel, roverGroundPose, stepBattery, sunlight } from '../sim/rover';
 import { Tracks, WheelDust } from '../three/RoverFx';
 import { GameCanvas } from '../three/GameCanvas';
 import { HardwareModel } from '../three/models';
 import { MoonCuoi } from '../three/MoonCharacters';
-import { Lights, Rocks, SHADOW_TEXEL, SUN_OFFSET, Sky, TerrainMesh } from '../three/Scenery';
+import { Lights, Rocks, SHADOW_TEXEL, SUN_OFFSET, Sky } from '../three/Scenery';
+import { StreamedTerrain } from '../three/StreamedTerrain';
 import { play } from '../audio/sfx';
 import { useGame } from '../state/store';
 import { Gauge, HoldButton, Readout, useKeys, type HudChannel, type MissionProps } from './common';
@@ -21,11 +22,11 @@ const WAKE_LEVEL = 12;
 
 export type LabVehicle = 'sojourner' | 'mer' | 'curiosity' | 'lrv';
 export type LabCamera = 'chase' | 'high' | 'cockpit';
-const VEHICLES: Record<LabVehicle, { radius: number; track: number; camera: number; eye: number }> = {
-  sojourner: { radius: 1, track: 0.78, camera: 0.85, eye: 1.5 },
-  mer: { radius: 1.5, track: 0.95, camera: 1.15, eye: 2.5 },
-  curiosity: { radius: 1.8, track: 1.27, camera: 1.35, eye: 3.4 },
-  lrv: { radius: 1.6, track: 0.95, camera: 1.2, eye: 1.9 },
+const VEHICLES: Record<LabVehicle, { radius: number; track: number; wheelbase: number; wheelRadius: number; camera: number; eye: number }> = {
+  sojourner: { radius: 1, track: 0.78, wheelbase: 1.8, wheelRadius: 0, camera: 0.85, eye: 1.5 },
+  mer: { radius: 1.5, track: 0.95, wheelbase: 1.8, wheelRadius: 0, camera: 1.15, eye: 2.5 },
+  curiosity: { radius: 1.8, track: 1.27, wheelbase: 1.8, wheelRadius: 0, camera: 1.35, eye: 3.4 },
+  lrv: { radius: 1.6, track: 0.69, wheelbase: 1.732, wheelRadius: 0.33, camera: 1.2, eye: 1.9 },
 };
 const BEACON_ROCK_RADIUS = 1;
 const PROP_RADIUS = 2.4;
@@ -111,7 +112,7 @@ function Rover({ missionId, config, terrain, obstacles, keys, pad, light, arrow,
   const sim = useRef({ x: config.start.x, z: config.start.z, heading: 0, speed: 0, index: 0, scan: 0, battery: 100, t: 0, asleep: false, hudAt: 0, done: false, tethered: false, odometer: 0 });
   const camPos = useRef(new THREE.Vector3(config.start.x, 8, config.start.z + 14));
   const camLook = useRef(new THREE.Vector3(config.start.x, 1, config.start.z - 4));
-  const scratch = useRef({ wanted: new THREE.Vector3(), look: new THREE.Vector3(), contact: emptyContact() });
+  const scratch = useRef({ wanted: new THREE.Vector3(), look: new THREE.Vector3(), contact: emptyContact(), pose: { y: 0, pitch: 0, roll: 0 } });
   const [progress, setProgress] = useState(0);
   const cuoiWorking = useRef(false);
   const cuoiMoving = useRef(false);
@@ -148,8 +149,8 @@ function Rover({ missionId, config, terrain, obstacles, keys, pad, light, arrow,
       const tgt = config.targets[s.index];
       const atSample = missionId === 'm2_collect' && tgt && Math.hypot(tgt.x - s.x, tgt.z - s.z) < config.radius;
       const drive = s.asleep || atSample ? 0 : forward ? 1 : back ? -0.55 : 0;
-      const maxSpeed = missionId === 'm2_collect' ? 2.2 : 11;
-      s.speed += (drive * maxSpeed - s.speed) * damp(atSample ? 7 : 2.6, dt);
+      const maxSpeed = missionId === 'm2_collect' ? 12 : 11;
+      s.speed = atSample ? 0 : s.speed + (drive * maxSpeed - s.speed) * damp(missionId === 'm2_collect' ? 3.4 : 2.6, dt);
       s.odometer += Math.abs(s.speed) * dt;
       if (!s.asleep) s.heading += ((left ? 1 : 0) - (right ? 1 : 0)) * dt * (1.9 - Math.min(0.7, Math.abs(s.speed) * 0.05));
 
@@ -193,7 +194,7 @@ function Rover({ missionId, config, terrain, obstacles, keys, pad, light, arrow,
       } else s.scan = 0;
     }
 
-    const y = terrain.heightAt(s.x, s.z);
+    const { y, pitch, roll } = roverGroundPose(terrain.heightAt, s.x, s.z, s.heading, specs.track, specs.wheelbase / 2, specs.wheelRadius, scratch.current.pose);
     const fx = -Math.sin(s.heading);
     const fz = -Math.cos(s.heading);
     const sideX = Math.cos(s.heading);
@@ -213,13 +214,10 @@ function Rover({ missionId, config, terrain, obstacles, keys, pad, light, arrow,
       cuoiRef.current.rotation.y = cuoiRotation.current;
       cuoiRef.current.visible = config.world === 'moon' && vehicle === 'lrv';
     }
-    const e = 0.9;
-    const pitch = Math.atan2(terrain.heightAt(s.x - Math.sin(s.heading) * e, s.z - Math.cos(s.heading) * e) - y, e);
-    const roll = Math.atan2(terrain.heightAt(s.x + Math.cos(s.heading) * e, s.z - Math.sin(s.heading) * e) - y, e);
     if (ref.current) {
       ref.current.visible = cameraMode !== 'cockpit';
       ref.current.position.set(s.x, y, s.z);
-      ref.current.rotation.set(pitch, s.heading, -roll, 'YXZ');
+      ref.current.rotation.set(pitch, s.heading, roll, 'YXZ');
     }
     if (light.current) {
       const { dir, right, up } = axes;
@@ -391,7 +389,7 @@ export function DriveMission({ id, config, onResult, lab, vehicle = 'lrv', sun =
   const sunLight = useRef<THREE.DirectionalLight>(null);
   const sunVector = sun;
   const clear = useMemo(() => [{ x: config.start.x, z: config.start.z, r: 5 }, ...config.targets.map((p) => ({ x: p.x, z: p.z, r: 6 })), ...(config.prop ? [{ x: config.prop.x, z: config.prop.z, r: 5 }] : [])], [config]);
-  const terrain = useMemo(() => makeTerrain({ seed: config.seed, size: 260, amplitude: config.world === 'moon' ? 5.5 : 8, craterCount: config.world === 'moon' ? 58 : 14, flat: clear }), [config, clear]);
+  const terrain = useMemo(() => makeTerrain({ seed: config.seed, size: 260, amplitude: config.world === 'moon' ? 5.5 : 8, craterCount: config.world === 'moon' ? 58 : 14, sharpCraters: config.world === 'moon', flat: clear }), [config, clear]);
   const rocks = useMemo(() => scatterRocks(terrain, quality === 'low' ? 60 : 180, config.seed + 3, clear), [terrain, quality, config.seed, clear]);
   const obstacles = useMemo(
     () => [...solidRocks(rocks), ...config.targets.map((p) => ({ x: p.x, z: p.z, r: BEACON_ROCK_RADIUS })), ...(config.prop ? [{ x: config.prop.x, z: config.prop.z, r: PROP_RADIUS }] : [])],
@@ -414,7 +412,7 @@ export function DriveMission({ id, config, onResult, lab, vehicle = 'lrv', sun =
       <GameCanvas camera={{ position: [0, 8, 14], fov: 55, far: 520 }}>
         <Sky world={config.world} sun={sunVector} />
         <Lights world={config.world} sunRef={sunLight} sun={sunVector} />
-        <TerrainMesh terrain={terrain} world={config.world} />
+        <StreamedTerrain terrain={terrain} world={config.world} />
         <Rocks rocks={rocks} world={config.world} />
         {config.prop && (
           <group position={[config.prop.x, terrain.heightAt(config.prop.x, config.prop.z), config.prop.z]}>

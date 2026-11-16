@@ -201,7 +201,7 @@ export function LandingMission({ config, onResult, lab }: MissionProps<LandingCo
   }, [config.hasChute]);
 
   const clear = useMemo(() => [{ x: 0, z: 0, r: 8 }], []);
-  const terrain = useMemo(() => makeTerrain({ seed: 31, size: 260, amplitude: config.world === 'moon' ? 4 : config.world === 'mars' ? 6 : 3.5, craterCount: config.world === 'moon' ? 45 : config.world === 'mars' ? 10 : 0, flat: clear }), [config.world, clear]);
+  const terrain = useMemo(() => makeTerrain({ seed: 31, size: 260, amplitude: config.world === 'moon' ? 4 : config.world === 'mars' ? 6 : 3.5, craterCount: config.world === 'moon' ? 45 : config.world === 'mars' ? 10 : 0, sharpCraters: config.world === 'moon', flat: clear }), [config.world, clear]);
   const rocks = useMemo(() => scatterRocks(terrain, config.world === 'earth' ? 26 : 110, 8, clear), [terrain, clear, config.world]);
 
   const end = (s: LanderState, heldEnough: boolean) => {

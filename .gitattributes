@@ -7,3 +7,6 @@
 /src/NASA[[:space:]]Lunar[[:space:]]Rover[[:space:]]-[[:space:]]Blender[[:space:]]Model/NASA[[:space:]]Lunar[[:space:]]Rover[[:space:]]for[[:space:]]Blender/textures/Plastic018B_4K-PNG_NormalGL.png filter=lfs diff=lfs merge=lfs -text
 /src/previews/moon-refined-v2.blend filter=lfs diff=lfs merge=lfs -text
 /src/previews/terrain-rover-preview.blend filter=lfs diff=lfs merge=lfs -text
+/src/previews/terrain-rover-preview-ready.blend filter=lfs diff=lfs merge=lfs -text
+/src/previews/terrain-rover-preview-relocated.blend filter=lfs diff=lfs merge=lfs -text
+/src/previews/terrain-rover-refined.blend filter=lfs diff=lfs merge=lfs -text

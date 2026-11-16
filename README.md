@@ -14,6 +14,8 @@ npm run preview   # serve the built site
 
 `dist/` is plain static files and runs on GitHub Pages, Netlify, Vercel, or any web server. Routes use `#/`, so no rewrite rules are needed.
 
+High graphics loads the community lunar rover GLB; low graphics uses a procedural rover and skips that download. Include `public/assets/models/lrv.glb` when deploying: it is currently untracked. The 4,851,744-byte model has 248,082 triangles, 54 primitives and 40 materials, with no external textures or decoder. A local production build served it successfully; hosted Vercel performance remains unverified.
+
 ### Story media
 
 `/#/story` offers the video and watercolor stories. For local video playback, copy the original sibling folders into the ignored media directory before starting or building:
@@ -99,4 +101,4 @@ Do not upload or commit `.env`; add the values through each provider's Environme
 
 ## What is real and what is not
 
-Photos, planetary maps, dates, distances, and status come from NASA, JPL, and USGS, and are listed on the in-game Sources page. Echo and Archive Control are fictional. Most 3D spacecraft are NASA's published models (compressed in `public/assets/models/`); Ranger, Surveyor, the laser mirror, the Lunar Rover, and Sojourner are hand-built. The simulations shorten real distances and times. This is an independent project and is not endorsed by NASA.
+Photos, planetary maps, dates, distances, and status come from NASA, JPL, and USGS, and are listed on the in-game Sources page. Echo and Archive Control are fictional. Most 3D spacecraft are NASA's published models (compressed in `public/assets/models/`); Ranger, Surveyor, the laser mirror, and Sojourner are hand-built. The Lunar Rover uses community mesh and materials by Hameed / DeviantArt, released under CC0 1.0 (bundled `NASA_Lunar_Rover.pdf`, page 2); texture maps with uncertain rights are omitted. Terrain is generated client-side; the rover ships as a static GLB exported locally with Blender. The simulations shorten real distances and times. This is an independent project and is not endorsed by NASA.

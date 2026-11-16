@@ -3,6 +3,7 @@ import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import { modelUrl } from '../data';
 import type { ModelId } from '../data/types';
+import { useGame } from '../state/store';
 
 /** Crumpled thermal blanket, used as a bump map so foil catches light unevenly. */
 function foilBump(): THREE.CanvasTexture {
@@ -276,7 +277,7 @@ const Lrrr = () => (
 );
 
 const Lrv = () => (
-  <group>
+  <group scale={[0.69 / 0.98, 0.33 / 0.42, 0.866 / 1.2]}>
     {[-1.2, 1.2].flatMap((z) => [-1, 1].map((x) => (
       <group key={`${x}${z}`}>
         <CleatWheel p={[x * 0.98, 0.42, z]} r={0.42} w={0.24} m="silver" cleats={18} />
@@ -480,12 +481,13 @@ const PROCEDURAL: Record<ModelId, () => ReactNode> = {
   sojourner: Sojourner, mer: Mer, curiosity: Curiosity, perseverance: Curiosity, ingenuity: Ingenuity, newhorizons: NewHorizons,
 };
 
-/** NASA's published models. `span` is the size of the largest side in scene units. */
+/** Static GLB assets; source credits are in README. `span` is the largest side in scene units. */
 const ASSETS: Partial<Record<ModelId, { span: number; float?: boolean; turnY?: number; keepBelow?: number }>> = {
   // NASA's rovers face +z in their files; the game drives toward -z.
   curiosity: { span: 4.4, turnY: Math.PI },
   perseverance: { span: 4.4, turnY: Math.PI },
   mer: { span: 3.4, turnY: Math.PI },
+  lrv: { span: 2.7 },
   ingenuity: { span: 3.2 },
   viking: { span: 3.1 },
   descent: { span: 4.4, keepBelow: 0.5 }, // only the lower stage stayed on the Moon
@@ -536,10 +538,10 @@ function NasaModel({ id }: { id: ModelId }) {
     const center = box.getCenter(new THREE.Vector3());
     const holder = new THREE.Group();
     holder.add(copy);
-    copy.position.set(-center.x, asset.float ? -center.y : -box.min.y, -center.z);
+    copy.position.set(id === 'lrv' ? 0 : -center.x, asset.float ? -center.y : -box.min.y, id === 'lrv' ? 0 : -center.z);
     holder.scale.setScalar(k);
     return holder;
-  }, [scene, asset]);
+  }, [scene, asset, id]);
   return <primitive object={model} position={asset.float ? [0, FLOAT_HEIGHT, 0] : [0, 0, 0]} />;
 }
 
@@ -554,8 +556,9 @@ class ModelBoundary extends Component<{ fallback: ReactNode; children: ReactNode
 }
 
 export function HardwareModel({ id }: { id: ModelId }) {
+  const quality = useGame((s) => s.quality);
   const Fallback = PROCEDURAL[id];
-  if (!ASSETS[id]) return <Fallback />;
+  if (!ASSETS[id] || (id === 'lrv' && quality === 'low')) return <Fallback />;
   return (
     <ModelBoundary fallback={<Fallback />}>
       <Suspense fallback={<Fallback />}>

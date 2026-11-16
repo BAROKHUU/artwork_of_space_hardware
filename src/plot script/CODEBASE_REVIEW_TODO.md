@@ -56,8 +56,8 @@ Scope: `artwork_of_space_hardware`; sibling watercolor files are source referenc
 ## Blender quick preview
 - [x] Render a local 1440×900 concept containing Chú Cuội, Thỏ Ngọc, Luna Rover and the Moon mission map, using the supplied image references.
 - [x] Save `previews/moon-concept.png`, `previews/moon-concept.blend` and the reusable `previews/moon_concept.py`; preserve the original Blender scene and app code.
-- [ ] Obtain direction on the concept before production modeling or app integration. Current render is a stylized blockout, not final watercolor fidelity.
-- [ ] Export browser-ready assets and verify loading, terrain alignment and gameplay in a production build before claiming Vercel compatibility.
+- [x] Obtain direction on terrain and rover integration. User approved integration, sharper realistic craters and fast Vercel loading; the original concept remains a stylized blockout, not final watercolor fidelity.
+- [ ] Complete production QA before claiming Vercel compatibility. Browser-ready rover export and local production loading are verified; hosted loading, frame performance and exact terrain contact remain open (see implementation record below).
 
 ## Lunar terrain reference review — 2026-11-16
 - User reference: https://www.turbosquid.com/3d-models/3d-lunar-blender-model-1545577. Public request returned HTTP 403; browser access unavailable even after @Browser mention. Reference visuals, license and model contents remain unverified; no asset downloaded or purchased.
@@ -80,6 +80,13 @@ Scope: `artwork_of_space_hardware`; sibling watercolor files are source referenc
 - Separate asset direction: retain a realistic NASA-based Luna Rover using the supplied source; preserve Chú Cuội/Thỏ Ngọc's stylized identity while refining silhouettes, facial features, clothing seams and material separation. These terrain references do not specify new character designs or animation requirements.
 - [x] User authorized terrain and rover only preview. Created isolated `Terrain and Rover Preview` scene using all 134 supplied community rover objects; preserved source/v2. Separate builder `previews/terrain_rover_preview.py` avoids the unrelated v3 defects above.
 - [x] Created `previews/terrain-rover-preview.blend` and scene stats; corrected the copied rover's `Dial_2basecolortexture.jpeg` capitalization mismatch. No missing referenced rover images reported. Replaced periodic crater ribs with irregular spatial detail.
-- [ ] Render overview and ground-level views, compare with supplied references, independently review visible ground contact/materials, then deliver preview PNGs. No character, application, export or deployment changes in this preview scope.
+- [x] Rendered baseline and refined overview/ground-level views at 1440×900 using Eevee. Refined outputs: `previews/terrain-rover-refined-overview.png`, `previews/terrain-rover-refined-ground.png`, editable `previews/terrain-rover-refined.blend`. Blender exited successfully; both PNG headers verified. No character, application, export or deployment changes in this preview scope.
+- [ ] Preview QA follow-up: surface grain and angular rocks were visible, but preview crater rims remained soft/clay-like; wheel contact remained unverified (source checks wheel bounding boxes near zero, not evaluated tires against terrain). Compare directly with original reference images when available again; `/tmp` attachments were unavailable. See implementation record below for later browser loading checks.
 - Proposed browser delivery: GLB with standard baked PBR materials; bake fine grain into texture/normal detail, reuse rock geometry through instances, keep collision geometry simple and consistent with visible terrain. Check the current runtime's support before choosing compression or adding a decoder/dependency.
 - Acceptance before a Vercel-readiness claim: reference comparison; exported assets/materials load from a served production build without missing resources; rover/characters sit on terrain; movement/collision and mission interactions work; record transfer size and browser frame performance on agreed test devices. Actual hosted verification requires a deployed build; Blender renders alone cannot guarantee it.
+
+### Implementation and verification — 2026-11-16
+- User approved terrain and rover integration, sharper realistic craters and fast loading. High graphics loads the community rover GLB; low graphics uses the procedural fallback without downloading it.
+- `public/assets/models/lrv.glb`: 4,851,744 bytes, 248,082 triangles, 54 primitives and 40 materials; no external textures or decoder. The asset is untracked and must be included when deploying.
+- Production build passed; 18 simulation and rover tests passed. The production GLB returned HTTP 200 with identical hashes. Browser driving reached 134 m.
+- QA remains partial: hosted Vercel loading, FPS and exact crater/wheel contact are unverified. Reference comparison and remaining gameplay acceptance above still apply.
