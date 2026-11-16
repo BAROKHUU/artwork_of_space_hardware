@@ -21,3 +21,9 @@ services:
         value: nasa_knowledge
       - key: CORS_ORIGIN
         sync: false
+      - key: MOON_MAIL_TO
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false

@@ -47,6 +47,27 @@
     "progress": "Learning",
     "archive": "Archive"
   },
+  "roverMail": {
+    "open": "Mở hộp thư Mặt Trăng của ROVER",
+    "bubble": "Psst! Bạn muốn gửi lời nhắn lên Mặt Trăng không?",
+    "title": "Gửi lời nhắn lên Mặt Trăng",
+    "intro": "ROVER sẽ chuyển lời của bạn lên tận Mặt Trăng. Hôm nay bạn thấy thế nào? Bạn mơ ước điều gì? Bạn muốn nói gì với Mặt Trăng?",
+    "label": "Lời nhắn của bạn gửi Mặt Trăng",
+    "placeholder": "Mặt Trăng thân mến, …",
+    "remaining": "Còn {{n}} ký tự",
+    "safety": "Đừng viết họ tên đầy đủ, địa chỉ, số điện thoại hay tên trường của bạn nhé. Một người lớn trong nhóm Echo sẽ đọc lời nhắn của bạn.",
+    "send": "Gửi lên Mặt Trăng",
+    "sending": "ROVER đang gửi…",
+    "sent": "Bíp bíp! Lời nhắn của bạn đang bay lên Mặt Trăng. Cảm ơn bạn đã chia sẻ! 🌕",
+    "another": "Viết thêm lời nhắn",
+    "cancel": "Để sau",
+    "close": "Đóng",
+    "error": {
+      "not_configured": "Hộp thư Mặt Trăng chưa mở. Nhờ người lớn thử lại sau nhé.",
+      "too_many": "Ăng-ten của ROVER cần nghỉ một chút. Thử lại sau vài phút nhé.",
+      "failed": "Ôi, tín hiệu bị lạc rồi. Bạn thử lại nhé."
+    }
+  },
   "storyModes": {
     "kicker": "Một câu chuyện, hai cách xem",
     "title": "Chọn chế độ đọc truyện",
@@ -348,7 +369,7 @@
     "close": "Đóng",
     "on": "Bật",
     "off2": "Tắt",
-    "privacy": "Tiến trình chỉ được lưu trên thiết bị này. Chúng tôi không thu thập dữ liệu.",
+    "privacy": "Tiến trình chỉ lưu trên thiết bị này. Nếu bạn gửi lời nhắn cho ROVER, lời nhắn sẽ được gửi qua email đến nhóm Echo; không có thông tin nào khác về bạn được gửi đi.",
     "narration": "Read aloud",
     "narrationNote": "Uses your device's voice. It is off by default."
   },

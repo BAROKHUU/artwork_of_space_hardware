@@ -1,9 +1,9 @@
 // Uploads media from /public to Cloudinary so the deployed site does not have to carry it.
-// Each file keeps its path, so `public/intro/Video/1.mp4` becomes `<folder>/intro/Video/1`,
+// Each file keeps its path, so `public/intro/videos/1.mp4` becomes `<folder>/intro/videos/1`,
 // which is exactly what src/media.ts asks for.
 //
-//   npm run media:upload                 # uploads public/intro
-//   npm run media:upload -- intro assets # uploads several folders inside /public
+//   npm run media:upload                 # uploads every heavy folder (see DEFAULT_ROOTS)
+//   npm run media:upload -- assets/models # uploads only the folders you name inside /public
 //   npm run media:upload -- --dry-run    # lists what would be uploaded
 //
 // Needs CLOUDINARY_URL (cloudinary://KEY:SECRET@CLOUD) or CLOUDINARY_CLOUD_NAME,
@@ -15,7 +15,10 @@ import { basename, extname, join, relative, resolve, sep } from 'node:path';
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
 const folders = args.filter((a) => !a.startsWith('--'));
-const roots = folders.length ? folders : ['intro'];
+// Everything the app loads through src/media.ts. Fonts and page code stay on the site itself.
+const DEFAULT_ROOTS = ['intro', 'assets', 'moon-stories-watercolor/assets'];
+const roots = folders.length ? folders : DEFAULT_ROOTS;
+const SKIP = new Set(['.ttf', '.otf', '.woff', '.woff2', '.txt', '.md', '.zip', '.blend', '.blend1']);
 
 const fromUrl = process.env.CLOUDINARY_URL?.match(/^cloudinary:\/\/([^:]+):([^@]+)@(.+)$/);
 const cloud = fromUrl?.[3] ?? process.env.CLOUDINARY_CLOUD_NAME;
@@ -30,9 +33,13 @@ const LIMIT = { image: 10 * 1024 * 1024, video: 100 * 1024 * 1024, raw: 10 * 102
 const MIME = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.gif': 'image/gif', '.avif': 'image/avif', '.mp4': 'video/mp4', '.webm': 'video/webm', '.mov': 'video/quicktime', '.mp3': 'audio/mpeg', '.wav': 'audio/wav', '.ogg': 'audio/ogg', '.m4a': 'audio/mp4' };
 
 async function walk(dir) {
-  const entries = await readdir(dir, { withFileTypes: true });
+  const entries = await readdir(dir, { withFileTypes: true }).catch((error) => {
+    if (error.code !== 'ENOENT') throw error;
+    console.warn(`  (skipping ${relative(resolve('public'), dir)}: folder not found)`);
+    return [];
+  });
   const files = await Promise.all(entries.map((e) => (e.isDirectory() ? walk(join(dir, e.name)) : [join(dir, e.name)])));
-  return files.flat().filter((f) => !basename(f).startsWith('.'));
+  return files.flat().filter((f) => !basename(f).startsWith('.') && !SKIP.has(extname(f).toLowerCase()));
 }
 
 function plan(file, publicDir) {

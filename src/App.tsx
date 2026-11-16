@@ -8,6 +8,7 @@ import { Settings } from './components/Settings';
 import { ChatBot } from './components/ChatBot';
 import { IntroExperience } from './screens/IntroExperience';
 import { storyModeFrom } from './screens/storyModes';
+import { mediaUrl } from './media';
 
 const Title = lazy(() => import('./screens/Title').then((m) => ({ default: m.Title })));
 const MapScreen = lazy(() => import('./screens/MapScreen').then((m) => ({ default: m.MapScreen })));
@@ -39,7 +40,7 @@ function TopBar() {
   return (
     <header className="topbar">
       <NavLink to="/" className="brand" aria-label={t('nav.home')}>
-        <img className="brand-logo" src={`${import.meta.env.BASE_URL}moon-stories-watercolor/assets/images/ask-uncle-cuoi.png`} alt="" aria-hidden="true" />
+        <img className="brand-logo" src={mediaUrl('moon-stories-watercolor/assets/images/ask-uncle-cuoi.png')} alt="" aria-hidden="true" />
         <span>Moon Stories</span>
       </NavLink>
       <nav aria-label={t('nav.main')}>

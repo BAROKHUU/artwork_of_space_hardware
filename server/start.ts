@@ -1,5 +1,6 @@
 import { createServer } from 'node:http';
 import { chatHandler } from './groq.ts';
+import { mailConfigFrom, moonMailHandler } from './moonMail.ts';
 
 const port = Number(process.env.PORT ?? 3000);
 if (!Number.isInteger(port) || port < 1 || port > 65535) throw new Error('PORT must be a valid TCP port');
@@ -13,6 +14,7 @@ const handleChat = chatHandler(
   process.env.COHERE_API_KEY ?? '',
   process.env.GROQ_API_KEY_2 ?? '',
 );
+const handleMoonMail = moonMailHandler(mailConfigFrom(process.env));
 
 const server = createServer((req, res) => {
   const origin = req.headers.origin?.replace(/\/$/, '');
@@ -39,6 +41,7 @@ const server = createServer((req, res) => {
     return res.end(JSON.stringify({ status: 'ok' }));
   }
   if (pathname === '/api/chat') return void handleChat(req, res);
+  if (pathname === '/api/moon-message') return void handleMoonMail(req, res);
   res.writeHead(404, { 'Content-Type': 'application/json' });
   res.end(JSON.stringify({ error: 'Not found' }));
 });

@@ -17,6 +17,9 @@ export function useDismissibleDialog(open: boolean, onDismiss: () => void) {
   }, [onDismiss]);
 
   const onClick = useCallback((event: ReactMouseEvent<HTMLDialogElement>) => {
+    // Only a click on the backdrop itself counts. Clicks on buttons inside, including keyboard
+    // presses (which report 0,0 coordinates), must never close the dialog.
+    if (event.target !== event.currentTarget) return;
     const rect = event.currentTarget.getBoundingClientRect();
     const outside = event.clientX < rect.left || event.clientX > rect.right
       || event.clientY < rect.top || event.clientY > rect.bottom;

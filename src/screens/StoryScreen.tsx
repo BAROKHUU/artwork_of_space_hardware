@@ -1,16 +1,20 @@
+import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { IntroExperience } from './IntroExperience';
 import { StoryControls, useStoryMusic } from '../components/StoryControls';
-import { mediaUrl } from '../media';
+import { MoonRover } from '../components/MoonRover';
+import { imageBase, mediaUrl } from '../media';
 import { STORY_MODES, storyModeFrom, type StoryMode } from './storyModes';
 
-const WATERCOLOR_URL = `${import.meta.env.BASE_URL}moon-stories-watercolor/index.html`;
+// The book is a static page, so it learns where its images live from `?media=` (absent: its own folder).
+const WATERCOLOR_MEDIA = imageBase('moon-stories-watercolor');
+const WATERCOLOR_URL = `${import.meta.env.BASE_URL}moon-stories-watercolor/index.html${WATERCOLOR_MEDIA ? `?media=${encodeURIComponent(WATERCOLOR_MEDIA)}` : ''}`;
 /** Scene 21 of the painted story: Cuội, ROVER and Moon Rabbit under the glowing banyan, Earth rising. */
-const PICKER_BACKGROUND = `${import.meta.env.BASE_URL}moon-stories-watercolor/assets/images/21.jpg`;
+const PICKER_BACKGROUND = mediaUrl('moon-stories-watercolor/assets/images/21.jpg');
 const covers: Record<StoryMode, string> = {
-  watercolor: `${import.meta.env.BASE_URL}moon-stories-watercolor/assets/images/22.jpg`,
-  lantern: mediaUrl('intro/Image/8.jpg'),
+  watercolor: mediaUrl('moon-stories-watercolor/assets/images/22.jpg'),
+  lantern: mediaUrl('intro/images/8.jpg'),
 };
 
 function ModePicker() {
@@ -48,9 +52,24 @@ function WatercolorMode() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const music = useStoryMusic(true);
+  const frameRef = useRef<HTMLIFrameElement>(null);
+  const [atEnd, setAtEnd] = useState(false);
+
+  // The book tells us when its ending is on screen, so ROVER can roll in.
+  useEffect(() => {
+    const onMessage = (event: MessageEvent) => {
+      if (event.origin !== window.location.origin || event.source !== frameRef.current?.contentWindow) return;
+      const data = event.data as { type?: unknown; atEnd?: unknown } | null;
+      if (data?.type === 'echo:story-end' && typeof data.atEnd === 'boolean') setAtEnd(data.atEnd);
+    };
+    window.addEventListener('message', onMessage);
+    return () => window.removeEventListener('message', onMessage);
+  }, []);
+
   return (
     <main className="story-watercolor">
-      <iframe src={WATERCOLOR_URL} title={t('storyModes.watercolor.name')} />
+      <iframe ref={frameRef} src={WATERCOLOR_URL} title={t('storyModes.watercolor.name')} />
+      <MoonRover visible={atEnd} mode="watercolor" />
       <header className="intro-sample-header story-watercolor__header">
         <StoryControls musicAvailable={music.available} musicEnabled={music.enabled} onToggleMusic={music.toggle} onExit={() => navigate('/home')} />
       </header>

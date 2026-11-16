@@ -4,14 +4,15 @@ import type { ClassifyConfig } from '../data/types';
 import { makeRng } from '../sim/rng';
 import { play } from '../audio/sfx';
 import type { MissionProps } from './common';
+import { mediaUrl } from '../media';
 
 const stars = (mistakes: number) => mistakes === 0 ? 3 : mistakes === 1 ? 2 : 1;
 const LETTERS = ['A', 'B', 'C', 'D'];
 const landingSurfaceImages = [
-  ['/yes-stay.png', '/no-stay.png', '/no-stay1.png', '/no-stay2.png'],
-  ['/yes-stay2.png', '/no-stay3.png', '/no-stay.png', '/no-stay1.png'],
-  ['/yes-stay.png', '/no-stay2.png', '/yes-stay2.png', '/no-stay3.png'],
-] as const;
+  ['yes-stay', 'no-stay', 'no-stay1', 'no-stay2'],
+  ['yes-stay2', 'no-stay3', 'no-stay', 'no-stay1'],
+  ['yes-stay', 'no-stay2', 'yes-stay2', 'no-stay3'],
+].map((round) => round.map((name) => mediaUrl(`assets/missions/${name}.png`)));
 
 function Craters({ id, config, onResult }: MissionProps<Extract<ClassifyConfig, { visual: 'craters' }>> & { assisted?: boolean }) {
   const { t } = useTranslation();

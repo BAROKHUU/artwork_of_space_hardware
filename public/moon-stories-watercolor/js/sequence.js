@@ -51,7 +51,7 @@
   const expected=String(index);
   slot.onload=()=>{const done=()=>{if(slot.dataset.shot===expected){slot.dataset.ready='true';requestRender();}};if(slot.decode)slot.decode().then(done,done);else done();};
   slot.onerror=()=>{if(slot.dataset.shot===expected){slot.dataset.ready='error';requestRender();}};
-  slot.src=shots[index].src;
+  slot.src=window.moonMedia?window.moonMedia(shots[index].src):shots[index].src;
  }
  function prepareImages(index){
   const wanted=[index,index-1,index+1].filter(i=>i>=0&&i<shots.length);
