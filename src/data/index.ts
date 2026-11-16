@@ -4,6 +4,7 @@ import backdropsJson from './backdrops.json';
 import sourcesJson from './sources.json';
 import type { Chapter, Hardware, MissionBeat, Source } from './types';
 import { mediaUrl } from '../media';
+import lunarRoverUrl from '../assets/lrv.glb?url';
 
 export const chapters = chaptersJson as unknown as Chapter[];
 export const hardware = hardwareJson as unknown as Hardware[];
@@ -36,6 +37,7 @@ export const backdrops = backdropsJson as Record<string, Backdrop>;
 export const backdropUrl = (name: string) => mediaUrl(`assets/backdrops/${name}.webp`);
 
 export const photoUrl = (photo: string) => mediaUrl(`assets/photos/${photo}${photo.includes('.') ? '' : '.webp'}`);
-export const modelUrl = (id: string) => mediaUrl(`assets/models/${id}.glb`);
+// Bundle the approved rover with a content hash; Cloudinary may contain an older export.
+export const modelUrl = (id: string) => id === 'lrv' ? lunarRoverUrl : mediaUrl(`assets/models/${id}.glb`);
 export const planetMapUrl = (id: string) => (id === 'mars' ? textureUrl('mars') : mediaUrl(`assets/textures/planets/${id}.webp`));
 export const textureUrl = (name: 'moon' | 'mars') => mediaUrl(`assets/textures/${name}.webp`);

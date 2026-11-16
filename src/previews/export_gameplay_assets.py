@@ -17,7 +17,7 @@ from mathutils import Matrix, Vector
 
 
 ROOT = Path(__file__).resolve().parents[2]
-OUTPUT = ROOT / 'public/assets/models/lrv.glb'
+OUTPUT = ROOT / 'src/assets/lrv.glb'
 TRIANGLE_BUDGET = 145_000
 assert not OUTPUT.exists() or '--replace' in sys.argv, 'Use -- --replace for an intentional repeat export.'
 source_path = Path(bpy.data.filepath)
