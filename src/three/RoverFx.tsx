@@ -78,6 +78,8 @@ export function WheelDust({ motion, terrain, halfWidth, world }: { motion: RefOb
     velocity: new Float32Array(PARTICLES * 3),
     next: 0,
     carry: 0,
+    /** Which wheel the next grain comes from. Kept across frames: at 60 fps most frames emit a single grain. */
+    leftSide: true,
   });
   const parts = useMemo(() => {
     const geometry = new THREE.BufferGeometry();
@@ -140,7 +142,8 @@ export function WheelDust({ motion, terrain, halfWidth, world }: { motion: RefOb
     for (let i = 0; i < count; i++) {
       const n = sim.current.next;
       sim.current.next = (n + 1) % PARTICLES;
-      const side = i % 2 ? halfWidth : -halfWidth;
+      const side = sim.current.leftSide ? -halfWidth : halfWidth;
+      sim.current.leftSide = !sim.current.leftSide;
       const x = m.x + sideX * side + fwdX * back * 0.7;
       const z = m.z + sideZ * side + fwdZ * back * 0.7;
       pos.setXYZ(n, x, terrain.heightAt(x, z) + 0.15, z);
