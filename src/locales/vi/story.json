@@ -429,6 +429,16 @@
         "text": "Then we look again. A wrong guess is not the end of a journey."
       }
     ],
+    "afterCollect": [
+      {"who":"rabbit","text":"Four sites, four rocks. Your basket is heavy now!"},
+      {"who":"lrv","text":"I drove slowly this time. Every sample is still in one piece."},
+      {"who":"cuoi","text":"Good. Now comes the part you never got to do: reading them."}
+    ],
+    "afterSamples": [
+      {"who":"lrv","text":"Some were dark and smooth. Some were full of broken pieces."},
+      {"who":"cuoi","text":"Different rocks keep different stories. You sorted them like a field geologist."},
+      {"who":"rabbit","text":"I only sorted the snacks. Yours was harder."}
+    ],
     "outro": [
       {
         "who": "lrv",
@@ -473,6 +483,11 @@
         "text": "Good. Observation is science too. Point, look, and write it down."
       }
     ],
+    "afterCraters": [
+      {"who":"rabbit","text":"You found the older ground!"},
+      {"who":"lrv","text":"More craters, softer edges. I looked a little longer this time."},
+      {"who":"cuoi","text":"Then the map of time is clearer. Let us see what you remember."}
+    ],
     "outro": [
       {
         "who": "cuoi",
@@ -516,6 +531,11 @@
         "who": "rabbit",
         "text": "Follow the signal. We will bring a leaf."
       }
+    ],
+    "afterSignal": [
+      {"who":"lrv","text":"There it is. A small package, half buried in the dust."},
+      {"who":"rabbit","text":"It is so quiet. Can I put the leaf here?"},
+      {"who":"cuoi","text":"Yes. Now let us open the archive and learn what it listened to."}
     ],
     "outro": [
       {
