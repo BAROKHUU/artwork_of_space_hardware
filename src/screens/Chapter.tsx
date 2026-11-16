@@ -42,10 +42,10 @@ const quizEvidence: Record<string, string[]> = {
 
 gsap.registerPlugin(useGSAP);
 
-function Dialogue({ chapter, beat, sections, onDone, inPlace = false }: { chapter: ChapterData; beat: Extract<Beat, { kind: 'dialogue' }>; sections: StorySection[]; onDone: () => void; inPlace?: boolean }) {
+function Dialogue({ chapter, beat, sections, onDone }: { chapter: ChapterData; beat: Extract<Beat, { kind: 'dialogue' }>; sections: StorySection[]; onDone: () => void }) {
   const section = sections.find((item) => item.key === beat.key);
   if (!section) return null;
-  return <GameplayStory chapter={chapter} section={section} onContinue={onDone} inPlace={inPlace} />;
+  return <GameplayStory chapter={chapter} section={section} onContinue={onDone} />;
 }
 function Memory({ id, onDone }: { id: string; onDone: () => void }) {
   const { t } = useTranslation();
@@ -252,31 +252,19 @@ export function Chapter() {
   const [index, setIndex] = useState(saved);
   const activeChapterId = useRef(id);
   const [finished, setFinished] = useState(false);
-  const [heldMission, setHeldMission] = useState<number | null>(null);
   const fade = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setIndex(useGame.getState().beat[id] ?? 0);
     setFinished(false);
-    setHeldMission(null);
     activeChapterId.current = id;
   }, [id]);
-
-  useEffect(() => {
-    if (heldMission === null) return;
-    const blockChute = (event: KeyboardEvent) => {
-      if (event.code === 'KeyP') event.stopImmediatePropagation();
-    };
-    window.addEventListener('keydown', blockChute, true);
-    return () => window.removeEventListener('keydown', blockChute, true);
-  }, [heldMission]);
 
   const activeIndex = activeChapterId.current === id ? index : saved;
   const beat = chapter?.beats[Math.min(activeIndex, chapter.beats.length - 1)];
 
   useGSAP(
     () => {
-      if (heldMission !== null) return;
       gsap.matchMedia().add('(prefers-reduced-motion: no-preference)', () => {
         gsap.from(fade.current, { autoAlpha: 0, duration: 0.45, ease: 'power1.out' });
       });
@@ -288,7 +276,6 @@ export function Chapter() {
   if (!chapter || !beat) return <main className="page"><h1>{t('common.notFound')}</h1><Link className="btn primary" to="/map">{t('common.backToMap')}</Link></main>;
 
   const next = () => {
-    setHeldMission(null);
     if (activeIndex + 1 >= chapter.beats.length) {
       completeChapter(chapter.id);
       setFinished(true);
@@ -298,13 +285,6 @@ export function Chapter() {
     }
   };
 
-  const mission = heldMission !== null ? chapter.beats[heldMission] : beat.kind === 'mission' ? beat : null;
-  const preserveMission = mission?.kind === 'mission' && (heldMission !== null || chapter.beats[activeIndex + 1]?.kind === 'dialogue');
-  const missionSucceeded = preserveMission ? () => {
-    setHeldMission(activeIndex);
-    setBeat(chapter.id, activeIndex + 1);
-    setIndex(activeIndex + 1);
-  } : undefined;
   const tint = `tint-${chapter.world}`;
   return (
     <main className={`chapter ${tint}`}>
@@ -313,20 +293,18 @@ export function Chapter() {
         <span className="chapter-name">{chapter.era} · {t(`story:${chapter.id}.title`)}</span>
         <div className="pips" aria-hidden="true">{pips.map((p) => <i key={p} className={p < activeIndex || finished ? 'on' : p === activeIndex ? 'next' : ''} />)}</div>
       </div>
-      <div className="chapter-body" ref={fade}>
-        {mission?.kind === 'mission' && !finished && <MissionShell key={`${id}-${mission.id}`} beat={mission} onDone={next} onSuccess={missionSucceeded} />}
-        <div key={`${id}-${activeIndex}-${finished}`} className={heldMission !== null && beat.kind === 'dialogue' ? 'mission-dialogue' : undefined}>
+      <div className="chapter-body" ref={fade} key={`${id}-${activeIndex}-${finished}`}>
         {finished ? <ChapterDone chapter={chapter} /> : (
           <>
-            {beat.kind === 'dialogue' && <Dialogue chapter={chapter} beat={beat} sections={sections} onDone={next} inPlace={heldMission !== null} />}
+            {beat.kind === 'dialogue' && <Dialogue chapter={chapter} beat={beat} sections={sections} onDone={next} />}
             {beat.kind === 'memory' && <Memory id={beat.hardware} onDone={next} />}
+            {beat.kind === 'mission' && <MissionShell beat={beat} onDone={next} />}
             {(beat.kind === 'quiz' || beat.kind === 'apply' || beat.kind === 'precheck' || beat.kind === 'postcheck') && <Quiz beat={beat} onDone={next} />}
             {beat.kind === 'reflect' && <Reflection beat={beat} onDone={next} />}
             {beat.kind === 'archive' && <MemoryArchive onDone={next} />}
             {beat.kind === 'signal' && <SignalBoard onDone={next} />}
           </>
         )}
-        </div>
       </div>
     </main>
   );

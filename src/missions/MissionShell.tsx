@@ -12,7 +12,7 @@ import type { MissionResult } from './common';
 
 type Phase = 'brief' | 'play' | 'fail' | 'win';
 
-export function MissionShell({ beat, onDone, onSuccess }: { beat: MissionBeat; onDone: () => void; onSuccess?: () => void }) {
+export function MissionShell({ beat, onDone }: { beat: MissionBeat; onDone: () => void }) {
   const { t } = useTranslation();
   const setStars = useGame((s) => s.setStars);
   const recordMissionFailure = useGame((s) => s.recordMissionFailure);
@@ -35,13 +35,12 @@ export function MissionShell({ beat, onDone, onSuccess }: { beat: MissionBeat; o
         resetMissionFailures(beat.id);
         play('win');
         setPhase('win');
-        onSuccess?.();
       } else {
         recordMissionFailure(beat.id);
         setPhase('fail');
       }
     },
-    [attempt, beat.id, onSuccess, recordMissionFailure, resetMissionFailures, setStars],
+    [attempt, beat.id, recordMissionFailure, resetMissionFailures, setStars],
   );
 
   const retry = () => {
@@ -53,15 +52,15 @@ export function MissionShell({ beat, onDone, onSuccess }: { beat: MissionBeat; o
   const common = { id: beat.id, onResult };
   return (
     <div className="mission">
-      {(phase === 'play' || (phase === 'win' && onSuccess)) && (
-        <div inert={phase === 'win'} style={{ height: '100%' }}>
+      {phase === 'play' && (
+        <>
           {beat.template === 'drive' && <DriveMission key={attempt} {...common} config={beat.config} vehicle={beat.config.vehicle} />}
           {beat.template === 'landing' && <LandingMission key={attempt} {...common} config={beat.config} />}
           {beat.template === 'laser' && <LaserMission key={attempt} {...common} config={beat.config} />}
           {beat.template === 'slingshot' && <SlingshotMission key={attempt} {...common} config={beat.config} />}
           {beat.template === 'classify' && <ClassifyMission key={attempt} {...common} config={beat.config} assisted={assisted} />}
-          {phase === 'play' && <button type="button" className="skip-link" onClick={onDone}>{t('mission.skip')}</button>}
-        </div>
+          <button type="button" className="skip-link" onClick={onDone}>{t('mission.skip')}</button>
+        </>
       )}
 
       {phase === 'brief' && (
@@ -90,7 +89,7 @@ export function MissionShell({ beat, onDone, onSuccess }: { beat: MissionBeat; o
         </section>
       )}
 
-      {phase === 'win' && !onSuccess && (
+      {phase === 'win' && (
         <section className="panel brief">
           <p className="eyebrow ok">{t('mission.complete')}</p>
           <h1>{t(`${key}.title`)}</h1>
