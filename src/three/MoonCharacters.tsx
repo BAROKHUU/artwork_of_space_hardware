@@ -73,9 +73,9 @@ export function MoonRabbit(props: ThreeElements['group']) {
   </group>;
 }
 
-export function MoonCuoi({ workingRef, movingRef, ...props }: ThreeElements['group'] & { workingRef?: RefObject<boolean>; movingRef?: RefObject<boolean> }) {
+export function MoonCuoi({ workingRef, movingRef, runningRef, ...props }: ThreeElements['group'] & { workingRef?: RefObject<boolean>; movingRef?: RefObject<boolean>; runningRef?: RefObject<boolean> }) {
   return <group name="Uncle Cuoi" {...props}>
-    <Cuoi movingRef={movingRef} workingRef={workingRef} />
+    <Cuoi movingRef={movingRef} workingRef={workingRef} runningRef={runningRef} />
   </group>;
 }
 

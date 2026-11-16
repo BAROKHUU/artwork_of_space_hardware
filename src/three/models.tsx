@@ -507,9 +507,10 @@ function visibleBounds(root: THREE.Object3D): THREE.Box3 {
   return box;
 }
 
-function NasaModel({ id }: { id: ModelId }) {
+function NasaModel({ id, variant }: { id: ModelId; variant?: 'home' }) {
   const asset = ASSETS[id]!;
-  const { scene } = useGLTF(modelUrl(id), false, true);
+  const urlId = variant === 'home' && id === 'lrv' ? 'lrv-home' : id;
+  const { scene } = useGLTF(modelUrl(urlId), false, true);
   const model = useMemo(() => {
     const copy = scene.clone(true);
     if (asset.keepBelow !== undefined) {
@@ -556,14 +557,14 @@ class ModelBoundary extends Component<{ fallback: ReactNode; children: ReactNode
   }
 }
 
-export function HardwareModel({ id }: { id: ModelId }) {
+export function HardwareModel({ id, variant }: { id: ModelId; variant?: 'home' }) {
   const Fallback = PROCEDURAL[id];
   const quality = useGame((s) => s.quality);
   if (!ASSETS[id] || (id === 'lrv' && quality === 'low')) return <Fallback />;
   return (
     <ModelBoundary fallback={<Fallback />}>
       <Suspense fallback={<Fallback />}>
-        <NasaModel id={id} />
+        <NasaModel id={id} variant={variant} />
       </Suspense>
     </ModelBoundary>
   );

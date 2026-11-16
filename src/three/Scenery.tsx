@@ -390,7 +390,7 @@ export function DeepSpace() {
 }
 
 /** A slowly orbiting scene: the machine in focus, or the Lunar Roving Vehicle when none is given. */
-export function Diorama({ world, model }: { world: World; model: ModelId | null }) {
+export function Diorama({ world, model, home }: { world: World; model: ModelId | null; home?: boolean }) {
   const terrain = useMemo(() => (world === 'deep' ? null : makeTerrain({ seed: 77, size: 110, amplitude: world === 'moon' ? 3 : 4.5, craterCount: world === 'moon' ? 22 : 6, sharpCraters: world === 'moon', flat: [{ x: 0, z: 0, r: 9 }] })), [world]);
   const rocks = useMemo(() => (terrain ? scatterRocks(terrain, 60, 5, [{ x: 0, z: 0, r: 7 }]) : []), [terrain]);
   if (world === 'deep') {
@@ -398,7 +398,7 @@ export function Diorama({ world, model }: { world: World; model: ModelId | null 
       <>
         <DeepSpace />
         <SlowOrbit radius={7.6} height={1.2} target={0.2} />
-        <Drift><HardwareModel id={model ?? 'lrv'} /></Drift>
+        <Drift><HardwareModel id={model ?? 'lrv'} variant={home && !model ? 'home' : undefined} /></Drift>
       </>
     );
   }
@@ -409,7 +409,7 @@ export function Diorama({ world, model }: { world: World; model: ModelId | null 
       <TerrainMesh terrain={terrain!} world={world} />
       <Rocks rocks={rocks} world={world} />
       <SlowOrbit radius={model ? 10.5 : 8.4} height={model ? 3.2 : 2.8} target={model ? 0.3 : 0.6} />
-      {model ? <HardwareModel id={model} /> : <group rotation={[0, 0.6, 0]}><HardwareModel id="lrv" /></group>}
+      {model ? <HardwareModel id={model} /> : <group rotation={[0, 0.6, 0]}><HardwareModel id="lrv" variant={home ? 'home' : undefined} /></group>}
     </>
   );
 }

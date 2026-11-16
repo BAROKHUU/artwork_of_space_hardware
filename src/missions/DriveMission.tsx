@@ -134,6 +134,7 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
   const [progress, setProgress] = useState(0);
   const cuoiWorking = useRef(false);
   const cuoiMoving = useRef(false);
+  const cuoiRunning = useRef(false);
   const cuoiRef = useRef<THREE.Group>(null);
   const withCuoi = config.world === 'moon' && vehicle === 'lrv' && config.cuoi !== false;
   const friendsCome = celebrate && config.world === 'moon';
@@ -152,8 +153,15 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
   useFrame((state, rawDt) => {
     const dt = Math.min(rawDt, 0.05);
     const s = sim.current;
-    cuoiWorking.current = missionId === 'm2_collect' && s.scan > 0;
-    if (!friendsCome) cuoiMoving.current = missionId === 'm2_collect' && !frozen && !cuoiWorking.current && Math.abs(s.speed) > 0.6;
+    const maxSpeed = missionId === 'm2_collect' ? 12 : 11;
+    cuoiWorking.current = withCuoi && s.scan > 0;
+    if (!friendsCome) {
+      const speed = Math.abs(s.speed);
+      cuoiMoving.current = withCuoi && !frozen && !cuoiWorking.current && speed > 0.3;
+      cuoiRunning.current = cuoiMoving.current && speed >= maxSpeed * 0.5;
+    } else {
+      cuoiRunning.current = false;
+    }
     const k = keys.current;
     const p = pad.current;
     if (!frozen && !s.done) {
@@ -178,7 +186,6 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
       const tgt = config.targets[s.index];
       const atSample = missionId === 'm2_collect' && tgt && Math.hypot(tgt.x - s.x, tgt.z - s.z) < config.radius;
       const drive = s.asleep || atSample ? 0 : forward ? 1 : back ? -0.55 : 0;
-      const maxSpeed = missionId === 'm2_collect' ? 12 : 11;
       s.speed = atSample ? 0 : s.speed + (drive * maxSpeed - s.speed) * damp(missionId === 'm2_collect' ? 3.4 : 2.6, dt);
       s.odometer += Math.abs(s.speed) * dt;
       if (!s.asleep) s.heading += ((left ? 1 : 0) - (right ? 1 : 0)) * dt * (1.9 - Math.min(0.7, Math.abs(s.speed) * 0.05));
@@ -401,7 +408,7 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
       <group ref={ref}>
         <HardwareModel id={vehicle} />
       </group>
-      {(withCuoi || friendsCome) && <group ref={cuoiRef}><MoonCuoi scale={0.72} workingRef={cuoiWorking} movingRef={cuoiMoving} /></group>}
+      {(withCuoi || friendsCome) && <group ref={cuoiRef}><MoonCuoi scale={0.72} workingRef={cuoiWorking} movingRef={cuoiMoving} runningRef={cuoiRunning} /></group>}
       {friendsCome && <group ref={rabbitRef} position={rabbitPosition.current}><MoonRabbit scale={0.62} /></group>}
       <Tracks motion={sim} terrain={terrain} halfWidth={specs.track} world={config.world} />
       <WheelDust motion={sim} terrain={terrain} halfWidth={specs.track} world={config.world} />
