@@ -26,7 +26,7 @@ export const emptyAssessment = (): AssessmentProgress => ({ quizzes: {}, applica
 const normalize = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9\s]/g, ' ').replace(/\s+/g, ' ').trim();
 
 export function scoreLocally(questionId: string, answer: string): ReflectionReview {
-  const question = rubric.questions[questionId as keyof typeof rubric.questions];
+  const question = Object.hasOwn(rubric.questions, questionId) ? rubric.questions[questionId as keyof typeof rubric.questions] : undefined;
   if (!question) return { score: 0, max: 5, source: 'local', criteria: [], concepts: [] };
   const text = normalize(answer);
   const criteria = question.criteria.map((criterion) => {
@@ -45,13 +45,17 @@ export function scoreLocally(questionId: string, answer: string): ReflectionRevi
   };
 }
 
-export function validateReflectionReview(value: unknown): ReflectionReview | null {
+export function validateReflectionReview(value: unknown, questionId: string): ReflectionReview | null {
   if (!value || typeof value !== 'object') return null;
   const candidate = value as Partial<ReflectionReview>;
-  if (!Number.isInteger(candidate.score) || candidate.score! < 0 || candidate.score! > 5 || !Array.isArray(candidate.criteria) || !Array.isArray(candidate.concepts)) return null;
-  const criteria = candidate.criteria.filter((item) => item && typeof item.key === 'string' && Number.isInteger(item.score) && Number.isInteger(item.max) && item.score >= 0 && item.score <= item.max);
-  if (criteria.length !== candidate.criteria.length) return null;
-  return { score: candidate.score!, max: 5, source: 'gemini', criteria, concepts: candidate.concepts.filter((item): item is string => typeof item === 'string').slice(0, 8) };
+  const question = Object.hasOwn(rubric.questions, questionId) ? rubric.questions[questionId as keyof typeof rubric.questions] : undefined;
+  if (!question || !Number.isInteger(candidate.score) || candidate.score! < 0 || candidate.score! > 5 || candidate.max !== 5 || !['gemini', 'local'].includes(candidate.source ?? '') || !Array.isArray(candidate.criteria) || !Array.isArray(candidate.concepts)) return null;
+  if (candidate.criteria.length !== question.criteria.length || candidate.criteria.some((item, index) => {
+    const expected = question.criteria[index];
+    return !item || item.key !== expected.key || item.max !== expected.max || !Number.isInteger(item.score) || item.score < 0 || item.score > expected.max;
+  }) || candidate.criteria.reduce((sum, item) => sum + item.score, 0) !== candidate.score) return null;
+  if (candidate.concepts.some((item) => typeof item !== 'string')) return null;
+  return { score: candidate.score!, max: 5, source: candidate.source!, criteria: candidate.criteria, concepts: candidate.concepts.slice(0, 8) };
 }
 
 function percent(records: Record<string, boolean[]>, keys: string[]) {

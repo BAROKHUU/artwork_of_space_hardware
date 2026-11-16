@@ -89,10 +89,18 @@ export function Atlas() {
         <h1>{t('atlas.heading')}</h1>
         <p>{t('atlas.sub')}</p>
       </header>
-      <div className="choice" role="tablist">
-        {(['moon', 'mars', 'deep'] as World[]).map((w) => <button type="button" key={w} role="tab" aria-selected={world === w} className={world === w ? 'on' : ''} onClick={() => { setWorld(w); setSelected(null); }}>{t(`world.${w}`)}</button>)}
+      <div className="choice" role="tablist" aria-label={t('atlas.heading')}>
+        {(['moon', 'mars', 'deep'] as World[]).map((w, _i, worlds) => <button type="button" key={w} id={`atlas-tab-${w}`} aria-controls="atlas-panel" role="tab" aria-selected={world === w} tabIndex={world === w ? 0 : -1} className={world === w ? 'on' : ''} onKeyDown={(e) => {
+          const index = worlds.indexOf(w);
+          const next = e.key === 'Home' ? 0 : e.key === 'End' ? worlds.length - 1 : e.key === 'ArrowRight' || e.key === 'ArrowDown' ? (index + 1) % worlds.length : e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? (index + worlds.length - 1) % worlds.length : -1;
+          if (next < 0) return;
+          e.preventDefault();
+          setWorld(worlds[next]);
+          setSelected(null);
+          e.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('[role="tab"]')[next]?.focus();
+        }} onClick={() => { setWorld(w); setSelected(null); }}>{t(`world.${w}`)}</button>)}
       </div>
-      <div className="atlas-grid">
+      <div id="atlas-panel" role="tabpanel" aria-labelledby={`atlas-tab-${world}`} tabIndex={0} className="atlas-grid">
         <div className="atlas-view">
           {world === 'deep' ? <DeepChart onSelect={setOpen} /> : (
             <GameCanvas key={world} camera={{ position: [0, 0, 7], fov: 45 }} shadows={false}>

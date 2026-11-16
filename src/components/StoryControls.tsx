@@ -14,6 +14,7 @@ const MUSIC_LEVEL = 0.34;
 export function useStoryMusic(active: boolean) {
   const volume = useGame((s) => s.volume);
   const [enabled, setEnabled] = useState(true);
+  const [available, setAvailable] = useState(true);
   const musicRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -22,7 +23,11 @@ export function useStoryMusic(active: boolean) {
     music.loop = true;
     music.preload = 'auto';
     musicRef.current = music;
+    setAvailable(true);
+    const onError = () => { setAvailable(false); setEnabled(false); };
+    music.addEventListener('error', onError);
     return () => {
+      music.removeEventListener('error', onError);
       music.pause();
       music.src = '';
       musicRef.current = null;
@@ -41,11 +46,12 @@ export function useStoryMusic(active: boolean) {
   }, [active, enabled]);
 
   const toggle = useCallback(() => setEnabled((value) => !value), []);
-  return { enabled, toggle };
+  return { enabled, available, toggle };
 }
 
 /** The top-right controls shared by every story mode: music, change mode, and exit. */
-export function StoryControls({ musicEnabled, onToggleMusic, onExit, showModeSwitch = true }: {
+export function StoryControls({ musicAvailable = true, musicEnabled, onToggleMusic, onExit, showModeSwitch = true }: {
+  musicAvailable?: boolean;
   musicEnabled: boolean;
   onToggleMusic: () => void;
   onExit: () => void;
@@ -54,15 +60,15 @@ export function StoryControls({ musicEnabled, onToggleMusic, onExit, showModeSwi
   const { t } = useTranslation();
   return (
     <div className="story-controls">
-      <button className={`story-control story-control--icon${musicEnabled ? '' : ' is-off'}`} type="button" onClick={onToggleMusic} aria-pressed={musicEnabled} aria-label={t(musicEnabled ? 'storyModes.musicOff' : 'storyModes.musicOn')} title={t(musicEnabled ? 'storyModes.musicOff' : 'storyModes.musicOn')}>
+      {musicAvailable && <button className={`story-control story-control--icon${musicEnabled ? '' : ' is-off'}`} type="button" onClick={onToggleMusic} aria-pressed={musicEnabled} aria-label={t(musicEnabled ? 'storyModes.musicOff' : 'storyModes.musicOn')} title={t(musicEnabled ? 'storyModes.musicOff' : 'storyModes.musicOn')}>
         <span aria-hidden="true">♫</span>
-      </button>
+      </button>}
       {showModeSwitch && (
         <Link className="story-control" to="/story" aria-label={t('storyModes.switch')}>
           <span aria-hidden="true">⇄</span><span className="story-control__text">{t('storyModes.switch')}</span>
         </Link>
       )}
-      <button className="story-control story-control--primary" type="button" onClick={onExit} aria-label={t('introStory.exitLabel')}>
+      <button className="story-control story-control--primary" type="button" onClick={onExit} aria-label={t('introStory.exit')}>
         <span className="story-control__text">{t('introStory.exit')}</span><span aria-hidden="true">✕</span>
       </button>
     </div>

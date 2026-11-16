@@ -1,5 +1,7 @@
 node_modules
 dist
+# Local story originals are supplied separately before building.
+/public/intro/
 *.log
 .DS_Store
 

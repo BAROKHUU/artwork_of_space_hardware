@@ -1,0 +1,20 @@
+{
+  "scene": "Terrain and Rover Preview",
+  "source_rover_objects": 134,
+  "source_rover_polygons": 3101689,
+  "terrain_vertices": 256221,
+  "rocks": 4343,
+  "wheel_minima_m": [
+    0.003000346478074789,
+    0.0029996465891599655,
+    0.002999795600771904,
+    0.003000346478074789
+  ],
+  "missing_rover_images": [],
+  "renderer": "BLENDER_EEVEE",
+  "cameras": [
+    "CAM_TerrainOverview",
+    "CAM_GroundLevel"
+  ],
+  "preview_only": true
+}

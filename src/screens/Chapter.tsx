@@ -148,9 +148,9 @@ function Reflection({ beat, onDone }: { beat: Extract<Beat, { kind: 'reflect' }>
     setBusy(true);
     let result = scoreLocally(beat.key, text);
     try {
-      const response = await fetch('/api/assess', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ questionId: beat.key, answer: text, language: document.documentElement.lang }) });
+      const response = await fetch('/api/assess', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ questionId: beat.key, answer: text, language: document.documentElement.lang }), signal: AbortSignal.timeout(10000) });
       if (!response.ok) throw new Error('assessment_unavailable');
-      const validated = validateReflectionReview(await response.json());
+      const validated = validateReflectionReview(await response.json(), beat.key);
       if (validated) result = validated;
     } catch { /* local rubric is the offline-safe assessment */ }
     save(beat.key, text.trim(), result);

@@ -7,8 +7,14 @@ import { useDismissibleDialog } from './useDismissibleDialog';
 function Choice<T extends string>({ value, options, onChange, label }: { value: T; options: { v: T; text: string }[]; onChange: (v: T) => void; label: string }) {
   return (
     <div className="choice" role="radiogroup" aria-label={label}>
-      {options.map((o) => (
-        <button type="button" key={o.v} role="radio" aria-checked={value === o.v} className={value === o.v ? 'on' : ''} onClick={() => onChange(o.v)}>{o.text}</button>
+      {options.map((o, i) => (
+        <button type="button" key={o.v} role="radio" aria-checked={value === o.v} tabIndex={value === o.v ? 0 : -1} className={value === o.v ? 'on' : ''} onClick={() => onChange(o.v)} onKeyDown={(e) => {
+          if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(e.key)) return;
+          e.preventDefault();
+          const next = (i + (e.key === 'ArrowLeft' || e.key === 'ArrowUp' ? options.length - 1 : 1)) % options.length;
+          onChange(options[next].v);
+          e.currentTarget.parentElement?.querySelectorAll<HTMLButtonElement>('[role="radio"]')[next]?.focus();
+        }}>{o.text}</button>
       ))}
     </div>
   );

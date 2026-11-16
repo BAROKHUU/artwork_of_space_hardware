@@ -14,6 +14,17 @@ npm run preview   # serve the built site
 
 `dist/` is plain static files and runs on GitHub Pages, Netlify, Vercel, or any web server. Routes use `#/`, so no rewrite rules are needed.
 
+### Story media
+
+`/#/story` offers the video and watercolor stories. For local video playback, copy the original sibling folders into the ignored media directory before starting or building:
+
+```bash
+mkdir -p public/intro
+cp -Rn ../Image ../Video public/intro/
+```
+
+Both folders need files numbered `1` through `22` (`Image/*.jpg`, `Video/*.mp4`). Optional background music goes at `public/intro/reading-music.mp3`; its control disappears if the file cannot load. Originals stay unchanged. These files are excluded from Git, so another checkout or deployment must supply them before building. Leave `VITE_CLOUDINARY_CLOUD_NAME` unset to use local files; setting it selects Cloudinary instead.
+
 ### RISE BOT: NASA knowledge and RAG
 
 The bot uses Groq to answer. Hybrid retrieval combines curated records in `knowledge/nasa.json` and extracted NASA/NSSDCA pages in `knowledge/crawled.json` using BM25 and Cohere multilingual embeddings, then reranks passages with Cohere. Sentence embeddings define semantic chunk boundaries: chunks split when adjacent sentence similarity falls below 0.62, with a 120-word cap and 8-word overlap only at size boundaries. NASA source links appear below each answer. Simple greetings bypass retrieval. The system prompt is in `knowledge/system-prompt.ts`.
