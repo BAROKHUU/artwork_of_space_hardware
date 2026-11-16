@@ -9,6 +9,7 @@ import '@fontsource/ibm-plex-mono/600.css';
 import './i18n';
 import './styles.css';
 import './intro.css';
+import './rover.css';
 import { App } from './App';
 
 createRoot(document.getElementById('root')!).render(

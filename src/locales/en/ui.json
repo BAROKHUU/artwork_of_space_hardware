@@ -21,6 +21,27 @@
     "progress": "Learning",
     "archive": "Archive"
   },
+  "roverMail": {
+    "open": "Open ROVER's Moon mailbox",
+    "bubble": "Psst! Want to send a message to the Moon?",
+    "title": "Send a message to the Moon",
+    "intro": "ROVER will beam your words all the way up to the Moon. How do you feel today? What do you dream about? What would you like to tell the Moon?",
+    "label": "Your message to the Moon",
+    "placeholder": "Dear Moon, …",
+    "remaining": "{{n}} characters left",
+    "safety": "Please don't write your full name, address, phone number or school. A grown-up from the Echo team will read your message.",
+    "send": "Send to the Moon",
+    "sending": "ROVER is beaming…",
+    "sent": "Beep boop! Your message is flying to the Moon. Thank you for sharing your heart with us! 🌕",
+    "another": "Write another",
+    "cancel": "Not now",
+    "close": "Close",
+    "error": {
+      "not_configured": "The Moon mailbox isn't open yet. Please ask a grown-up to try again later.",
+      "too_many": "ROVER's antenna needs a little rest. Try again in a few minutes.",
+      "failed": "Oh no, the signal got lost. Please try again."
+    }
+  },
   "storyModes": {
     "kicker": "One story, two ways to see it",
     "title": "Choose your story mode",
@@ -364,7 +385,7 @@
     "close": "Close",
     "on": "On",
     "off2": "Off",
-    "privacy": "Your progress stays on this device. We collect no data.",
+    "privacy": "Your progress stays on this device. If you send ROVER a message, it is emailed to the Echo team; nothing else about you is sent.",
     "narration": "Read aloud",
     "narrationNote": "Uses your device's voice. It is off by default."
   },

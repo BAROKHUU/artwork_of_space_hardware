@@ -1,0 +1,64 @@
+/* ROVER's Moon mailbox: a 2D rover that waits at the end of each story. */
+
+.rover-figure { display: block; width: 100%; height: auto; overflow: visible; }
+.rover-figure .rover-body { animation: rover-bob 3.2s ease-in-out infinite; transform-origin: 50% 100%; }
+.rover-figure .rover-antenna-light { animation: rover-glow 1.8s ease-in-out infinite; }
+.rover-figure .rover-blink { animation: rover-blink 4.6s infinite; transform-box: fill-box; transform-origin: center; }
+.rover-figure .rover-beam { opacity: 0; }
+.rover-figure--sending .rover-beam { opacity: 1; animation: rover-beam .7s linear infinite; }
+.rover-figure--sending .rover-body { animation-duration: .9s; }
+.rover-figure--happy .rover-body { animation: rover-hop .9s ease-in-out 2; }
+.rover-figure--sad .rover-body { animation: none; transform: rotate(-2deg); }
+
+@keyframes rover-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+@keyframes rover-hop { 0%, 100% { transform: translateY(0); } 40% { transform: translateY(-10px); } }
+@keyframes rover-glow { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+@keyframes rover-blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
+@keyframes rover-beam { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -22; } }
+
+/* The docked ROVER, bottom-left (the chat helper owns bottom-right). Slides in at the end of a story. */
+.moon-rover-dock { position: fixed; z-index: 25; left: 16px; bottom: 14px; display: flex; align-items: flex-end; gap: 0; padding: 0; border: 0; background: none; cursor: pointer; transform: translateX(-140%); opacity: 0; pointer-events: none; transition: transform .6s cubic-bezier(.2, .9, .3, 1.2), opacity .4s ease; }
+.moon-rover-dock.is-visible { transform: none; opacity: 1; pointer-events: auto; }
+.moon-rover-dock__figure { order: 1; width: 128px; filter: drop-shadow(0 10px 18px rgba(8, 6, 16, .45)); }
+.moon-rover-dock__bubble { order: 2; position: relative; max-width: 190px; margin: 0 0 92px -8px; padding: 10px 14px; border: 2px solid #6C541E; border-radius: 16px 16px 16px 4px; background: #FFF9E3; color: #4b3a12; font: 700 14px/1.35 var(--body, system-ui); text-align: left; box-shadow: 0 8px 22px rgba(8, 6, 16, .3); animation: rover-bubble 2.6s ease-in-out infinite; }
+.moon-rover-dock:hover .moon-rover-dock__figure, .moon-rover-dock:focus-visible .moon-rover-dock__figure { transform: translateY(-4px) rotate(-2deg); transition: transform .2s; }
+.moon-rover-dock:focus-visible { outline: none; }
+.moon-rover-dock:focus-visible .moon-rover-dock__bubble { outline: 3px solid #FFF9E3; outline-offset: 3px; }
+@keyframes rover-bubble { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+/* The letter to the Moon. */
+dialog.moon-rover-dialog { width: min(520px, calc(100% - 24px)); max-height: calc(100svh - 24px); overflow: auto; padding: 0 26px 24px; border: 1px solid rgba(255, 232, 205, .28); border-radius: 22px; color: #fff8ea; background: linear-gradient(170deg, #3a2d55 0%, #1d1830 46%, #15121f 100%); box-shadow: 0 30px 90px rgba(4, 3, 10, .7); }
+.moon-rover-dialog__close { position: absolute; z-index: 2; top: 12px; right: 12px; width: 40px; height: 40px; border: 1px solid rgba(255, 248, 234, .3); border-radius: 50%; color: #fff8ea; background: rgba(255, 255, 255, .08); font-size: 24px; line-height: 1; cursor: pointer; }
+.moon-rover-dialog__close:hover { background: rgba(255, 255, 255, .18); }
+.moon-rover-dialog__hero { position: relative; display: grid; place-items: end center; height: 170px; margin: 0 -26px 6px; overflow: hidden; background: radial-gradient(circle at 22% 30%, rgba(255, 255, 255, .7) 0 1px, transparent 2px) 0 0 / 46px 46px, radial-gradient(circle at 70% 60%, rgba(255, 230, 190, .6) 0 1px, transparent 2px) 0 0 / 63px 63px, linear-gradient(180deg, #2a2347, #3a2d55); }
+.moon-rover-dialog__hero .rover-figure { width: 180px; margin-bottom: -6px; }
+.moon-rover-dialog__moon { position: absolute; top: 20px; left: 30px; width: 54px; height: 54px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #fffbe9, #f1dca4 60%, #d9bd7a); box-shadow: 0 0 34px rgba(255, 231, 160, .55); }
+.moon-rover-dialog h2 { margin: 14px 0 6px; color: #ffd2c1; font-size: clamp(26px, 5vw, 34px); line-height: 1.05; }
+.moon-rover-dialog__intro { margin: 0 0 14px; color: #ece4ef; line-height: 1.55; }
+.moon-rover-dialog__field { display: grid; gap: 6px; }
+.moon-rover-dialog textarea { width: 100%; min-height: 130px; padding: 14px; resize: vertical; border: 2px solid rgba(255, 232, 205, .3); border-radius: 14px; color: #2b2238; background: #FFF9E3; font: 18px/1.5 Georgia, serif; }
+.moon-rover-dialog textarea:focus { outline: none; border-color: #f0b9ac; box-shadow: 0 0 0 4px rgba(240, 185, 172, .25); }
+.moon-rover-dialog__field small { justify-self: end; color: #c9bfd3; font-size: 13px; }
+.moon-rover-dialog__note { margin: 12px 0 0; padding: 10px 12px; border-left: 3px solid #e7b76e; border-radius: 6px; color: #f3e8d6; background: rgba(231, 183, 110, .1); font-size: 14px; line-height: 1.5; }
+.moon-rover-dialog__error { margin: 12px 0 0; color: #ffb4a8; font-weight: 700; }
+.moon-rover-dialog__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+.moon-rover-dialog__done p { margin: 6px 0 0; color: #ece4ef; font-size: 18px; line-height: 1.55; }
+.moon-rover-trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+
+@media (max-width: 760px) {
+  /* On phones the story text fills the bottom, so ROVER parks top-left, under the scene strip. */
+  .moon-rover-dock { top: 118px; bottom: auto; left: 10px; align-items: flex-start; }
+  .moon-rover-dock__figure { width: 84px; }
+  .moon-rover-dock__bubble { max-width: 160px; margin: 6px 0 0 -4px; border-radius: 4px 16px 16px 16px; font-size: 13px; }
+  /* Leave the bottom-right corner free for the chat helper, which floats above dialogs. */
+  dialog.moon-rover-dialog { margin: 12px auto auto; max-height: calc(100svh - 124px); padding: 0 18px 18px; }
+  .moon-rover-dialog__hero { height: 140px; margin: 0 -18px 6px; }
+  .moon-rover-dialog__hero .rover-figure { width: 150px; }
+  .moon-rover-dialog textarea { min-height: 110px; font-size: 17px; }
+  .moon-rover-dialog__actions { flex-direction: column-reverse; align-items: stretch; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rover-figure .rover-body, .rover-figure .rover-antenna-light, .rover-figure .rover-blink, .moon-rover-dock__bubble { animation: none; }
+  .moon-rover-dock { transition: opacity .2s; transform: none; }
+}
