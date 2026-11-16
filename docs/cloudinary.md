@@ -24,6 +24,7 @@ Public ID and does not put the folder in it, so upload with the script below ins
 npm run media:upload -- --dry-run      # list what would be uploaded and its Public ID
 npm run media:upload                   # upload intro/, assets/ and moon-stories-watercolor/assets/
 npm run media:upload -- assets/models  # upload one folder only
+npm run media:upload -- --organize     # already uploaded: only move files into their Media Library folders
 ```
 
 Folders are created by the upload; there is nothing to create by hand. `public/intro/` is not in git:

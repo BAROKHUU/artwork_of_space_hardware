@@ -43,6 +43,15 @@ dialog.moon-rover-dialog { width: min(520px, calc(100% - 24px)); max-height: cal
 .moon-rover-dialog__error { margin: 12px 0 0; color: #ffb4a8; font-weight: 700; }
 .moon-rover-dialog__actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; margin-top: 18px; }
 .moon-rover-dialog__done p { margin: 6px 0 0; color: #ece4ef; font-size: 18px; line-height: 1.55; }
+/* The sent letter, shown back as a postcard with a "received" stamp. */
+.moon-rover-letter { position: relative; margin: 16px 0 0; padding: 16px 18px 18px; border-radius: 14px; color: #2b2238; background: #FFF9E3; box-shadow: 0 10px 26px rgba(4, 3, 10, .35); animation: moon-letter-in .5s ease-out both; }
+.moon-rover-letter figcaption { margin-right: 96px; color: #7a5c45; font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.moon-rover-letter blockquote { margin: 8px 0 0; font: 18px/1.5 Georgia, serif; white-space: pre-wrap; overflow-wrap: anywhere; }
+.moon-rover-letter__stamp { position: absolute; top: 12px; right: 12px; padding: 4px 10px; border: 2px solid #c0504d; border-radius: 6px; color: #c0504d; font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; transform: rotate(8deg); animation: moon-stamp-in .35s .35s cubic-bezier(.3, 1.6, .5, 1) both; }
+.moon-rover-dialog__done .moon-rover-dialog__thanks { margin-top: 14px; color: #ffd2c1; font-size: 16px; font-weight: 700; }
+@keyframes moon-letter-in { from { opacity: 0; transform: translateY(10px); } }
+@keyframes moon-stamp-in { from { opacity: 0; transform: rotate(8deg) scale(1.8); } }
+@media (prefers-reduced-motion: reduce) { .moon-rover-letter, .moon-rover-letter__stamp { animation: none; } }
 .moon-rover-trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
 
 @media (max-width: 760px) {
