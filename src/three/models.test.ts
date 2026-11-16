@@ -26,7 +26,13 @@ it('loads the bundled LRV on high graphics, skips the GLB on low graphics', () =
   expect(useGLTF).toHaveBeenCalledWith(modelUrl('lrv'), false, true);
   expect(modelUrl('lrv')).not.toContain('cloudinary.com');
   vi.mocked(useGLTF).mockClear();
+  renderToStaticMarkup(createElement(HardwareModel, { id: 'lrv', variant: 'home' }));
+  expect(useGLTF).toHaveBeenCalledWith(modelUrl('lrv-home'), false, true);
+  expect(modelUrl('lrv-home')).not.toBe(modelUrl('lrv'));
+  expect(modelUrl('lrv-home')).not.toContain('cloudinary.com');
+  vi.mocked(useGLTF).mockClear();
   state.quality = 'low';
   renderToStaticMarkup(createElement(HardwareModel, { id: 'lrv' }));
+  renderToStaticMarkup(createElement(HardwareModel, { id: 'lrv', variant: 'home' }));
   expect(useGLTF).not.toHaveBeenCalled();
 });

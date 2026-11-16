@@ -80,8 +80,8 @@ function Limb({ from, to, radius, surface }: { from: [number, number, number]; t
   return <mesh position={a.add(b).multiplyScalar(0.5)} quaternion={q} material={surface} castShadow><cylinderGeometry args={[radius * 0.9, radius, delta.length(), 8]} /></mesh>;
 }
 
-function Foot({ side }: { side: number }) {
-  return <group name="wooden-sandal" position={[side * 0.19, 0, 0]}>
+function Foot() {
+  return <group name="wooden-sandal" position={[0, -0.28, 0]}>
     <RoundedBox args={[0.25, 0.08, 0.45]} radius={0.04} position={[0, 0.09, 0.07]} material={wood} castShadow />
     <RoundedBox args={[0.19, 0.07, 0.15]} radius={0.02} position={[0, 0.035, -0.07]} material={wood} />
     <mesh position={[0, 0.16, 0.08]} scale={[0.105, 0.065, 0.18]} material={skin}><sphereGeometry args={[1, 12, 8]} /></mesh>
@@ -115,37 +115,61 @@ function Axe() {
   </group>;
 }
 
-export function Cuoi({ movingRef, workingRef, ...props }: ThreeElements['group'] & { movingRef?: RefObject<boolean>; workingRef?: RefObject<boolean> }) {
+export function Cuoi({ movingRef, workingRef, runningRef, ...props }: ThreeElements['group'] & { movingRef?: RefObject<boolean>; workingRef?: RefObject<boolean>; runningRef?: RefObject<boolean> }) {
+  const body = useRef<THREE.Group>(null);
   const upper = useRef<THREE.Group>(null);
-  const leftLeg = useRef<THREE.Group>(null);
-  const rightLeg = useRef<THREE.Group>(null);
+  const leftFoot = useRef<THREE.Group>(null);
+  const rightFoot = useRef<THREE.Group>(null);
+  const rightArm = useRef<THREE.Group>(null);
+  const phaseRef = useRef(0);
+  const moveBlend = useRef(0);
+  const runBlend = useRef(0);
   const scarfTexture = useTexture(mediaUrl('assets/textures/khan-ran-weave.png'));
   scarfTexture.colorSpace = THREE.SRGBColorSpace;
   scarfTexture.wrapS = scarfTexture.wrapT = THREE.RepeatWrapping;
   scarfTexture.repeat.set(0.5, 0.5);
-  useFrame(({ clock }) => {
+  useFrame(({ clock }, rawDt) => {
+    const dt = Math.min(rawDt, 0.05);
     const moving = movingRef?.current ?? false;
     const working = workingRef?.current ?? false;
-    const phase = clock.elapsedTime * (moving ? 7.2 : 2.2);
-    if (upper.current && !prefersReducedMotion()) {
-      upper.current.position.y = Math.sin(phase) * (moving ? 0.018 : 0.008);
-      upper.current.rotation.z = working ? Math.sin(clock.elapsedTime * 5) * 0.035 : 0;
+    const running = moving && (runningRef?.current ?? false);
+    const k = 1 - Math.exp(-10 * dt);
+    moveBlend.current += ((moving ? 1 : 0) - moveBlend.current) * k;
+    runBlend.current += ((running ? 1 : 0) - runBlend.current) * k;
+    const m = moveBlend.current;
+    const r = runBlend.current;
+    const rate = THREE.MathUtils.lerp(2.2, THREE.MathUtils.lerp(7.2, 13.5, r), m);
+    phaseRef.current += dt * rate;
+    const phase = phaseRef.current;
+    const stride = THREE.MathUtils.lerp(0.42, 0.85, r) * m;
+    const armSwing = THREE.MathUtils.lerp(0.24, 0.78, r) * m;
+    if (!prefersReducedMotion()) {
+      const stepBounce = Math.abs(Math.sin(phase)) * (0.055 * m + 0.065 * r);
+      if (body.current) body.current.position.y = stepBounce;
+      if (upper.current) {
+        upper.current.position.y = Math.sin(phase) * 0.008 * (1 - m);
+        upper.current.rotation.x = 0.22 * r;
+        upper.current.rotation.y = Math.sin(phase) * 0.09 * r;
+        upper.current.rotation.z = working ? Math.sin(clock.elapsedTime * 5) * 0.035 : 0;
+      }
     }
-    if (leftLeg.current) leftLeg.current.rotation.x = moving ? Math.sin(phase) * 0.34 : working ? 0.18 : 0;
-    if (rightLeg.current) rightLeg.current.rotation.x = moving ? Math.sin(phase + Math.PI) * 0.34 : working ? 0.18 : 0;
+    if (leftFoot.current) leftFoot.current.rotation.x = Math.sin(phase) * stride;
+    if (rightFoot.current) rightFoot.current.rotation.x = Math.sin(phase + Math.PI) * stride;
+    if (rightArm.current) rightArm.current.rotation.x = Math.sin(phase) * armSwing;
   });
   return <group name="Cuoi" {...props}>
-    <group name="trousers">
-      {[-1, 1].map((s) => <group key={s}>
-        <group ref={s < 0 ? leftLeg : rightLeg}>
+    <group ref={body}>
+      <group name="trousers">
+        {[-1, 1].map((s) => <group key={s}>
           <RoundedBox args={[0.34, 0.83, 0.34]} radius={0.1} position={[s * 0.19, 0.65, 0]} material={pants} castShadow />
-        <mesh position={[s * 0.19, 0.21, 0]} material={skin}><cylinderGeometry args={[0.09, 0.08, 0.17, 8]} /></mesh>
-          <Foot side={s} />
-        </group>
-      </group>)}
-      <mesh position={[-0.19, 0.65, 0.176]} rotation={[0, 0, 0.08]} material={patch}><boxGeometry args={[0.20, 0.21, 0.01]} /></mesh>
-    </group>
-    <group ref={upper} name="upper-body">
+          <group ref={s < 0 ? leftFoot : rightFoot} position={[s * 0.19, 0.28, 0]}>
+            <mesh position={[0, -0.07, 0]} material={skin}><cylinderGeometry args={[0.09, 0.08, 0.17, 8]} /></mesh>
+            <Foot />
+          </group>
+        </group>)}
+        <mesh position={[-0.19, 0.65, 0.176]} rotation={[0, 0, 0.08]} material={patch}><boxGeometry args={[0.20, 0.21, 0.01]} /></mesh>
+      </group>
+      <group ref={upper} name="upper-body">
       <RoundedBox name="tunic" args={[0.75, 0.85, 0.43]} radius={0.1} position={[0, 1.32, 0]} material={shirt} castShadow />
       <Limb from={[-0.20, 1.72, 0.22]} to={[0.18, 1.30, 0.23]} radius={0.022} surface={dark} />
       <Limb from={[0.20, 1.72, 0.22]} to={[0.02, 1.52, 0.24]} radius={0.022} surface={dark} />
@@ -157,14 +181,17 @@ export function Cuoi({ movingRef, workingRef, ...props }: ThreeElements['group']
         <Limb from={[-0.37, 1.62, 0]} to={[-0.57, 1.35, 0.02]} radius={0.14} surface={shirt} />
         <Limb from={[-0.57, 1.35, 0.02]} to={[-0.55, 1.68, 0.25]} radius={0.085} surface={skin} />
         <mesh position={[-0.55, 1.68, 0.25]} material={skin}><sphereGeometry args={[0.105, 10, 8]} /></mesh>
-        <Limb from={[0.37, 1.62, 0]} to={[0.52, 1.25, 0]} radius={0.14} surface={shirt} />
-        <Limb from={[0.52, 1.25, 0]} to={[0.46, 1.02, 0.13]} radius={0.085} surface={skin} />
-        <mesh position={[0.46, 1.0, 0.13]} material={skin}><sphereGeometry args={[0.10, 10, 8]} /></mesh>
+        <group ref={rightArm} position={[0.37, 1.62, 0]}>
+          <Limb from={[0, 0, 0]} to={[0.15, -0.37, 0]} radius={0.14} surface={shirt} />
+          <Limb from={[0.15, -0.37, 0]} to={[0.09, -0.60, 0.13]} radius={0.085} surface={skin} />
+          <mesh position={[0.09, -0.62, 0.13]} material={skin}><sphereGeometry args={[0.10, 10, 8]} /></mesh>
+        </group>
       </group>
       <mesh name="khan-ran" geometry={scarfGeometry} castShadow receiveShadow>
         <meshStandardMaterial map={scarfTexture} roughness={1} side={THREE.DoubleSide} />
       </mesh>
       <Axe />
+    </group>
     </group>
   </group>;
 }
