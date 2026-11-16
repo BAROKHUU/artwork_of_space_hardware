@@ -2,6 +2,7 @@ import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState, type K
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 import { clampPosition, panelLayout } from './chatPosition';
+import { mediaUrl } from '../media';
 
 type Grounding = 'nasa' | 'mixed' | 'general';
 type Message = { role: 'user' | 'bot'; text: string; sources?: { title: string; url: string }[]; retrieval?: 'hybrid' | 'keyword' | 'none'; grounding?: Grounding };
@@ -210,7 +211,7 @@ export function ChatBot() {
         const delta = direction[event.key];
         if (delta) { event.preventDefault(); move(position.x + delta[0], position.y + delta[1]); }
         if (event.key === 'Escape') setOpen(false);
-      }}><span className={`chat-bot-image ${mood}`} style={{ backgroundImage: `url("${import.meta.env.BASE_URL}assets/chat_bot/Lunar%20Bot%20Sticker%20Expression%20Sheet.png")` }} aria-hidden="true" /></button>
+      }}><span className={`chat-bot-image ${mood}`} style={{ backgroundImage: `url("${mediaUrl('assets/chat_bot/Lunar Bot Sticker Expression Sheet.png')}")` }} aria-hidden="true" /></button>
     </div>, modal ?? document.body
   );
 }

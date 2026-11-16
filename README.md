@@ -21,11 +21,12 @@ High graphics loads the tracked community lunar rover at `public/assets/models/l
 `/#/story` offers the video and watercolor stories. For local video playback, copy the original sibling folders into the ignored media directory before starting or building:
 
 ```bash
-mkdir -p public/intro
-cp -Rn ../Image ../Video public/intro/
+mkdir -p public/intro/images public/intro/videos
+cp -n ../Image/* public/intro/images/
+cp -n ../Video/* public/intro/videos/
 ```
 
-Both folders need files numbered `1` through `22` (`Image/*.jpg`, `Video/*.mp4`). Optional background music goes at `public/intro/reading-music.mp3`; its control disappears if the file cannot load. Originals stay unchanged. These files are excluded from Git, so another checkout or deployment must supply them before building. Leave `VITE_CLOUDINARY_CLOUD_NAME` unset to use local files; setting it selects Cloudinary instead.
+Both folders need files numbered `1` through `22` (`images/*.jpg`, `videos/*.mp4`, matching the Cloudinary folders). Optional background music goes at `public/intro/reading-music.mp3`; its control disappears if the file cannot load. Originals stay unchanged. These files are excluded from Git, so another checkout or deployment must supply them before building. Leave `VITE_CLOUDINARY_CLOUD_NAME` unset to use local files; setting it selects Cloudinary instead. Images, video, audio and 3D models all follow the same rule; see [docs/cloudinary.md](docs/cloudinary.md) for the folder tree, upload and Vercel steps.
 
 ### RISE BOT: NASA knowledge and RAG
 
@@ -34,6 +35,20 @@ The bot uses Groq to answer. Hybrid retrieval combines curated records in `knowl
 Copy `.env.example` to the ignored `.env` file, then set `GROQ_API_KEY` and `COHERE_API_KEY`. Optionally set `GROQ_API_KEY_2` as a backup; the server retries once with it if the primary returns HTTP 429 or 402. Groq rate limits apply at organization level, so two keys in the same organization share quota. Each question is limited to 512 tokens; the server keeps at most 2,048 tokens of recent conversation history. The system prompt and retrieved context are additional input tokens. Keep keys server-side and never prefix them with `VITE_` or commit them. After editing the knowledge files, run `npm run knowledge:index` and commit the resulting `knowledge/index.json`. The index contains 512-dimensional vectors, a model identifier, and content hashes; it contains no API keys. Cohere is used both when indexing and querying, so embedding models and dimensions match.
 
 The endpoint runs in Vite dev/preview, as `api/chat.ts` on Vercel, or as a standalone Node service on Render. If Qdrant is configured, dense retrieval is performed there; otherwise the committed local vector index is used. If Cohere and the vector index are unavailable, the bot visibly falls back to keyword retrieval. The endpoint has no user authentication or request rate limit; input token limits do not cap the number of requests or prevent API charges. Production needs access controls, rate limits and a labeled retrieval evaluation.
+
+### ROVER's Moon mailbox
+
+At the end of both story modes, a 2D ROVER rolls in and lets children write a short message (500 characters) "to the Moon". `POST /api/moon-message` emails it as plain text to `MOON_MAIL_TO` over SMTP. No name, email or other contact details are asked for. Nothing is stored, and each client can send 3 messages every 10 minutes. The endpoint runs in Vite dev/preview, as `api/moon-message.ts` on Vercel, and in the Render service.
+
+**FormSubmit (default, no server):** set `VITE_FORMSUBMIT_ID` and the browser posts each letter to `https://formsubmit.co/ajax/<id>`, which emails it to the team. To get the ID:
+
+1. Temporarily set `VITE_FORMSUBMIT_ID` to the team inbox address, run `npm run dev`, and send one letter. FormSubmit replies that the form needs activation and emails that inbox.
+2. Click **Activate Form** in that email. A second email from FormSubmit gives a random string that stands in for the address.
+3. Put that random string in `VITE_FORMSUBMIT_ID` (locally and on Vercel), so the inbox address never appears in the public bundle, then rebuild.
+
+After sending, ROVER shows the letter back with a "Received" stamp and a thank-you. If FormSubmit refuses a letter (for example before activation), ROVER says the mailbox isn't open yet.
+
+**Own server (fallback):** with `VITE_FORMSUBMIT_ID` empty, letters go to `POST /api/moon-message` instead. Set `MOON_MAIL_TO`, `SMTP_USER` and `SMTP_PASS` server-side (see `.env.example`). With Gmail, `SMTP_PASS` must be an App Password, not the account password. Until all three are set, the endpoint returns 503 and ROVER tells the child the mailbox isn't open yet.
 
 ### Deploy: Qdrant + Render API + Vercel frontend
 

@@ -1,6 +1,7 @@
 import { useRef, type RefObject } from 'react';
 import { RoundedBox, useTexture } from '@react-three/drei';
 import { useFrame, type ThreeElements } from '@react-three/fiber';
+import { mediaUrl } from '../media';
 import * as THREE from 'three';
 import { prefersReducedMotion } from './GameCanvas';
 
@@ -118,7 +119,7 @@ export function Cuoi({ movingRef, workingRef, ...props }: ThreeElements['group']
   const upper = useRef<THREE.Group>(null);
   const leftLeg = useRef<THREE.Group>(null);
   const rightLeg = useRef<THREE.Group>(null);
-  const scarfTexture = useTexture(`${import.meta.env.BASE_URL}assets/textures/khan-ran-weave.png`);
+  const scarfTexture = useTexture(mediaUrl('assets/textures/khan-ran-weave.png'));
   scarfTexture.colorSpace = THREE.SRGBColorSpace;
   scarfTexture.wrapS = scarfTexture.wrapT = THREE.RepeatWrapping;
   scarfTexture.repeat.set(0.5, 0.5);

@@ -1,21 +1,28 @@
 // Uploads media from /public to Cloudinary so the deployed site does not have to carry it.
-// Each file keeps its path, so `public/intro/Video/1.mp4` becomes `<folder>/intro/Video/1`,
+// Each file keeps its path, so `public/intro/videos/1.mp4` becomes `<folder>/intro/videos/1`,
 // which is exactly what src/media.ts asks for.
 //
-//   npm run media:upload                 # uploads public/intro
-//   npm run media:upload -- intro assets # uploads several folders inside /public
+//   npm run media:upload                 # uploads every heavy folder (MEDIA_ROOTS in media-files.mjs)
+//   npm run media:upload -- assets/models # uploads only the folders you name inside /public
 //   npm run media:upload -- --dry-run    # lists what would be uploaded
+//   npm run media:upload -- --organize   # files already uploaded: only move them into their folders
+//
+// Accounts with dynamic folders keep the Media Library folder (`asset_folder`) separate from the
+// Public ID, so every file also gets `asset_folder` = its Public ID's directory. Without it the URLs
+// still work but the files show up loose in Home instead of inside their folders.
 //
 // Needs CLOUDINARY_URL (cloudinary://KEY:SECRET@CLOUD) or CLOUDINARY_CLOUD_NAME,
 // CLOUDINARY_API_KEY and CLOUDINARY_API_SECRET in .env. The secret never goes to the browser.
 import { createHash } from 'node:crypto';
-import { readdir, readFile, stat } from 'node:fs/promises';
-import { basename, extname, join, relative, resolve, sep } from 'node:path';
+import { readFile, stat } from 'node:fs/promises';
+import { basename, extname, join, resolve } from 'node:path';
+import { MEDIA_ROOTS, listMediaFiles } from './media-files.mjs';
 
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
+const organizeOnly = args.includes('--organize');
 const folders = args.filter((a) => !a.startsWith('--'));
-const roots = folders.length ? folders : ['intro'];
+const roots = folders.length ? folders : MEDIA_ROOTS;
 
 const fromUrl = process.env.CLOUDINARY_URL?.match(/^cloudinary:\/\/([^:]+):([^@]+)@(.+)$/);
 const cloud = fromUrl?.[3] ?? process.env.CLOUDINARY_CLOUD_NAME;
@@ -29,24 +36,19 @@ const VIDEO = new Set(['.mp4', '.webm', '.mov', '.mp3', '.wav', '.ogg', '.m4a'])
 const LIMIT = { image: 10 * 1024 * 1024, video: 100 * 1024 * 1024, raw: 10 * 1024 * 1024 };
 const MIME = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.webp': 'image/webp', '.gif': 'image/gif', '.avif': 'image/avif', '.mp4': 'video/mp4', '.webm': 'video/webm', '.mov': 'video/quicktime', '.mp3': 'audio/mpeg', '.wav': 'audio/wav', '.ogg': 'audio/ogg', '.m4a': 'audio/mp4' };
 
-async function walk(dir) {
-  const entries = await readdir(dir, { withFileTypes: true });
-  const files = await Promise.all(entries.map((e) => (e.isDirectory() ? walk(join(dir, e.name)) : [join(dir, e.name)])));
-  return files.flat().filter((f) => !basename(f).startsWith('.'));
-}
-
-function plan(file, publicDir) {
-  const ext = extname(file).toLowerCase();
+function plan(path, publicDir) {
+  const file = join(publicDir, path);
+  const ext = extname(path).toLowerCase();
   const type = IMAGE.has(ext) ? 'image' : VIDEO.has(ext) ? 'video' : 'raw';
-  const path = relative(publicDir, file).split(sep).join('/');
   // Images and videos are addressed without their extension; raw files keep it.
   const id = type === 'raw' ? path : path.slice(0, -ext.length);
-  return { file, type, path, publicId: `${folder}/${id}`, ext };
+  const publicId = `${folder}/${id}`;
+  return { file, type, path, publicId, assetFolder: publicId.slice(0, publicId.lastIndexOf('/')), ext };
 }
 
-async function upload({ file, type, publicId, ext }) {
+async function upload({ file, type, publicId, assetFolder, ext }) {
   const timestamp = Math.floor(Date.now() / 1000);
-  const params = { overwrite: 'true', public_id: publicId, timestamp: String(timestamp) };
+  const params = { asset_folder: assetFolder, overwrite: 'true', public_id: publicId, timestamp: String(timestamp) };
   const toSign = Object.keys(params).sort().map((k) => `${k}=${params[k]}`).join('&');
   const signature = createHash('sha1').update(toSign + apiSecret).digest('hex');
   const form = new FormData();
@@ -60,8 +62,22 @@ async function upload({ file, type, publicId, ext }) {
   return data.secure_url;
 }
 
+/** Admin API: moves an uploaded file into its Media Library folder without uploading it again. */
+async function organize({ type, publicId, assetFolder }) {
+  const form = new FormData();
+  form.append('asset_folder', assetFolder);
+  const id = publicId.split('/').map(encodeURIComponent).join('/');
+  const response = await fetch(`https://api.cloudinary.com/v1_1/${cloud}/resources/${type}/upload/${id}`, {
+    method: 'POST',
+    headers: { Authorization: `Basic ${Buffer.from(`${apiKey}:${apiSecret}`).toString('base64')}` },
+    body: form,
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data?.error?.message ?? `HTTP ${response.status}`);
+}
+
 const publicDir = resolve('public');
-const files = (await Promise.all(roots.map((r) => walk(join(publicDir, r))))).flat().map((f) => plan(f, publicDir));
+const files = (await listMediaFiles(publicDir, roots, (dir) => console.warn(`  (skipping ${dir}: folder not found)`))).map((p) => plan(p, publicDir));
 console.log(`${files.length} files from public/${roots.join(', public/')} -> Cloudinary folder "${folder}"`);
 
 if (dryRun) {
@@ -77,6 +93,16 @@ let failed = 0;
 const queue = [...files];
 async function worker() {
   for (let f = queue.shift(); f; f = queue.shift()) {
+    if (organizeOnly) {
+      try {
+        await organize(f);
+        console.log(`  OK    ${f.publicId} -> ${f.assetFolder}/`);
+      } catch (error) {
+        failed++;
+        console.error(`  FAIL  ${f.publicId}: ${error.message}`);
+      }
+      continue;
+    }
     const size = (await stat(f.file)).size;
     if (size > LIMIT[f.type]) {
       failed++;
@@ -93,5 +119,5 @@ async function worker() {
   }
 }
 await Promise.all([worker(), worker(), worker()]);
-console.log(failed ? `${failed} file(s) failed.` : 'All files uploaded.');
+console.log(failed ? `${failed} file(s) failed.` : organizeOnly ? 'All files are in their folders.' : 'All files uploaded.');
 process.exit(failed ? 1 : 0);
