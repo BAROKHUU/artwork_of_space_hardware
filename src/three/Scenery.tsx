@@ -18,7 +18,7 @@ const SHADOW_HALF_SPAN = 38;
 export const SHADOW_TEXEL = (SHADOW_HALF_SPAN * 2) / SHADOW_MAP_SIZE;
 
 export const PALETTE = {
-  moon: { low: new THREE.Color('#62626a'), high: new THREE.Color('#bdbcbd'), rock: '#77767b', sky: '#04050a', sun: '#fff6e8', ambient: 0.12, sunIntensity: 3.1 },
+  moon: { low: new THREE.Color('#626264'), high: new THREE.Color('#bdbdbd'), rock: '#777779', sky: '#04050a', sun: '#fff6e8', ambient: 0.12, sunIntensity: 3.1 },
   earth: { low: new THREE.Color('#3c6a2c'), high: new THREE.Color('#9ab765'), rock: '#7d786f', sky: '#9fcdf0', sun: '#fff5e2', ambient: 0.62, sunIntensity: 2.7 },
   mars: { low: new THREE.Color('#8a4526'), high: new THREE.Color('#dc9a66'), rock: '#5a3122', sky: '#c99a6d', sun: '#ffe2c0', ambient: 0.75, sunIntensity: 2.1 },
 };
@@ -47,12 +47,9 @@ function regolith(world: Surface) {
     stamp(rng() * size, rng() * size, 20 + rng() * 60, `rgba(${v},${v},${v},.22)`);
   }
   if (world === 'moon') {
-    for (let i = 0; i < 130; i++) {
-      const x = rng() * size;
-      const y = rng() * size;
-      const r = 2 + rng() ** 2 * 15;
-      stamp(x - r * 0.15, y - r * 0.15, r * 1.12, 'rgba(236,236,236,.5)');
-      stamp(x, y, r, 'rgba(120,120,120,.6)');
+    for (let i = 0; i < 1600; i++) {
+      const v = 145 + Math.floor(rng() * 60);
+      stamp(rng() * size, rng() * size, 0.3 + rng() * 1.2, `rgba(${v},${v},${v},.3)`);
     }
   } else if (world === 'earth') {
     for (let i = 0; i < 1500; i++) {
@@ -234,7 +231,7 @@ export function TerrainMesh({ terrain, world }: { terrain: Terrain; world: Surfa
   const low = useGame((s) => s.quality) === 'low';
   const ground = useMemo(() => regolithFor(world), [world]);
   const geometry = useMemo(() => {
-    const seg = low ? 110 : 230;
+    const seg = world === 'moon' ? Math.ceil(terrain.size / (low ? 1.8 : 0.9)) : low ? 110 : 230;
     const g = new THREE.PlaneGeometry(terrain.size, terrain.size, seg, seg);
     g.rotateX(-Math.PI / 2);
     const pos = g.attributes.position as THREE.BufferAttribute;
@@ -257,7 +254,7 @@ export function TerrainMesh({ terrain, world }: { terrain: Terrain; world: Surfa
   useEffect(() => () => geometry.dispose(), [geometry]);
   return (
     <mesh geometry={geometry} receiveShadow>
-      <meshStandardMaterial vertexColors map={ground.map} bumpMap={ground.bump} bumpScale={1.4} roughness={1} />
+      <meshStandardMaterial vertexColors map={ground.map} bumpMap={ground.bump} bumpScale={world === 'moon' ? 0.18 : 1.4} roughness={1} />
     </mesh>
   );
 }
@@ -394,7 +391,7 @@ export function DeepSpace() {
 
 /** A slowly orbiting scene: the machine in focus, or the Lunar Roving Vehicle when none is given. */
 export function Diorama({ world, model }: { world: World; model: ModelId | null }) {
-  const terrain = useMemo(() => (world === 'deep' ? null : makeTerrain({ seed: 77, size: 110, amplitude: world === 'moon' ? 3 : 4.5, craterCount: world === 'moon' ? 22 : 6, flat: [{ x: 0, z: 0, r: 9 }] })), [world]);
+  const terrain = useMemo(() => (world === 'deep' ? null : makeTerrain({ seed: 77, size: 110, amplitude: world === 'moon' ? 3 : 4.5, craterCount: world === 'moon' ? 22 : 6, sharpCraters: world === 'moon', flat: [{ x: 0, z: 0, r: 9 }] })), [world]);
   const rocks = useMemo(() => (terrain ? scatterRocks(terrain, 60, 5, [{ x: 0, z: 0, r: 7 }]) : []), [terrain]);
   if (world === 'deep') {
     return (

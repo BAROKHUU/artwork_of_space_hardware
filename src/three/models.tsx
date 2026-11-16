@@ -2,6 +2,7 @@ import { Component, Suspense, useMemo, type ReactNode } from 'react';
 import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import { modelUrl } from '../data';
+import { useGame } from '../state/store';
 import type { ModelId } from '../data/types';
 
 /** Crumpled thermal blanket, used as a bump map so foil catches light unevenly. */
@@ -483,6 +484,7 @@ const PROCEDURAL: Record<ModelId, () => ReactNode> = {
 /** NASA's published models. `span` is the size of the largest side in scene units. */
 const ASSETS: Partial<Record<ModelId, { span: number; float?: boolean; turnY?: number; keepBelow?: number }>> = {
   // NASA's rovers face +z in their files; the game drives toward -z.
+  lrv: { span: 2.7 },
   curiosity: { span: 4.4, turnY: Math.PI },
   perseverance: { span: 4.4, turnY: Math.PI },
   mer: { span: 3.4, turnY: Math.PI },
@@ -536,10 +538,11 @@ function NasaModel({ id }: { id: ModelId }) {
     const center = box.getCenter(new THREE.Vector3());
     const holder = new THREE.Group();
     holder.add(copy);
-    copy.position.set(-center.x, asset.float ? -center.y : -box.min.y, -center.z);
+    // The LRV export is centered on its wheels, not its asymmetric antenna bounds.
+    copy.position.set(id === 'lrv' ? 0 : -center.x, asset.float ? -center.y : -box.min.y, id === 'lrv' ? 0 : -center.z);
     holder.scale.setScalar(k);
     return holder;
-  }, [scene, asset]);
+  }, [scene, asset, id]);
   return <primitive object={model} position={asset.float ? [0, FLOAT_HEIGHT, 0] : [0, 0, 0]} />;
 }
 
@@ -555,7 +558,8 @@ class ModelBoundary extends Component<{ fallback: ReactNode; children: ReactNode
 
 export function HardwareModel({ id }: { id: ModelId }) {
   const Fallback = PROCEDURAL[id];
-  if (!ASSETS[id]) return <Fallback />;
+  const quality = useGame((s) => s.quality);
+  if (!ASSETS[id] || (id === 'lrv' && quality === 'low')) return <Fallback />;
   return (
     <ModelBoundary fallback={<Fallback />}>
       <Suspense fallback={<Fallback />}>

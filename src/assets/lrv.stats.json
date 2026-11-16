@@ -1,6 +1,6 @@
 {
   "source": "src/previews/terrain-rover-refined.blend",
-  "asset": "public/assets/models/lrv.glb",
+  "asset": "src/assets/lrv.glb",
   "source_objects": 134,
   "source_triangles": 3607145,
   "triangle_target": 150000,
