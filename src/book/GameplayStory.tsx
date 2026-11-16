@@ -6,17 +6,15 @@ interface GameplayStoryProps {
   chapter: Chapter;
   section: StorySection;
   onContinue: () => void;
-  inPlace?: boolean;
 }
 
 /** Shows only the dialogue beat currently reached by gameplay. */
-export function GameplayStory({ chapter, section, onContinue, inPlace }: GameplayStoryProps) {
+export function GameplayStory({ chapter, section, onContinue }: GameplayStoryProps) {
   return (
     <StoryBook
       chapter={chapter}
       sections={[section]}
       mode="game"
-      inPlace={inPlace}
       activeSectionId={section.id}
       onContinue={onContinue}
       onSkip={onContinue}
