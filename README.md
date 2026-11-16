@@ -38,7 +38,15 @@ The endpoint runs in Vite dev/preview, as `api/chat.ts` on Vercel, or as a stand
 
 At the end of both story modes, a 2D ROVER rolls in and lets children write a short message (500 characters) "to the Moon". `POST /api/moon-message` emails it as plain text to `MOON_MAIL_TO` over SMTP. No name, email or other contact details are asked for. Nothing is stored, and each client can send 3 messages every 10 minutes. The endpoint runs in Vite dev/preview, as `api/moon-message.ts` on Vercel, and in the Render service.
 
-Set `MOON_MAIL_TO`, `SMTP_USER` and `SMTP_PASS` server-side (see `.env.example`). With Gmail, `SMTP_PASS` must be an App Password, not the account password. Until all three are set, the endpoint returns 503 and ROVER tells the child the mailbox isn't open yet.
+**FormSubmit (default, no server):** set `VITE_FORMSUBMIT_ID` and the browser posts each letter to `https://formsubmit.co/ajax/<id>`, which emails it to the team. To get the ID:
+
+1. Temporarily set `VITE_FORMSUBMIT_ID` to the team inbox address, run `npm run dev`, and send one letter. FormSubmit replies that the form needs activation and emails that inbox.
+2. Click **Activate Form** in that email. A second email from FormSubmit gives a random string that stands in for the address.
+3. Put that random string in `VITE_FORMSUBMIT_ID` (locally and on Vercel), so the inbox address never appears in the public bundle, then rebuild.
+
+After sending, ROVER shows the letter back with a "Received" stamp and a thank-you. If FormSubmit refuses a letter (for example before activation), ROVER says the mailbox isn't open yet.
+
+**Own server (fallback):** with `VITE_FORMSUBMIT_ID` empty, letters go to `POST /api/moon-message` instead. Set `MOON_MAIL_TO`, `SMTP_USER` and `SMTP_PASS` server-side (see `.env.example`). With Gmail, `SMTP_PASS` must be an App Password, not the account password. Until all three are set, the endpoint returns 503 and ROVER tells the child the mailbox isn't open yet.
 
 ### Deploy: Qdrant + Render API + Vercel frontend
 

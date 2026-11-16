@@ -2,6 +2,7 @@ import { useCallback, useId, useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RoverFigure, type RoverMood } from './RoverFigure';
 import { useDismissibleDialog } from './useDismissibleDialog';
+import { moonMailRequest, readMoonMailReply } from '../moonMailClient';
 
 /** Same limit as the server (server/moonMail.ts). */
 const MAX_LENGTH = 500;
@@ -9,14 +10,17 @@ const MAX_LENGTH = 500;
 type Status = 'writing' | 'sending' | 'sent' | 'error';
 type ErrorKind = 'not_configured' | 'too_many' | 'failed';
 
-function endpoint() {
-  const configured = import.meta.env.VITE_API_URL?.trim().replace(/\/$/, '');
-  return configured ? `${configured}/api/moon-message` : `${import.meta.env.BASE_URL}api/moon-message`;
-}
+const mailEnv = {
+  formSubmitId: import.meta.env.VITE_FORMSUBMIT_ID as string | undefined,
+  apiUrl: import.meta.env.VITE_API_URL as string | undefined,
+  base: import.meta.env.BASE_URL,
+};
+const viaFormSubmit = Boolean(mailEnv.formSubmitId?.trim());
 
 /**
  * ROVER waits at the end of every story. Children can write how they feel and ROVER "beams" it
- * to the Moon: the server emails it to the team. No name or contact details are asked for.
+ * to the Moon: FormSubmit (or the app's own server) emails it to the team. No name or contact
+ * details are asked for. After sending, ROVER shows the letter back with a "received" stamp.
  */
 export function MoonRover({ visible, mode }: { visible: boolean; mode: 'watercolor' | 'lantern' }) {
   const { t, i18n } = useTranslation();
@@ -45,16 +49,13 @@ export function MoonRover({ visible, mode }: { visible: boolean; mode: 'watercol
     if (!text || status === 'sending') return;
     setStatus('sending');
     try {
-      const response = await fetch(endpoint(), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: text, lang: i18n.resolvedLanguage ?? i18n.language, mode, website: trap }),
-      });
-      if (response.ok) {
+      const { url, init } = moonMailRequest({ message: text, lang: i18n.resolvedLanguage ?? i18n.language, mode, trap }, mailEnv);
+      const result = await readMoonMailReply(await fetch(url, init), viaFormSubmit);
+      if (result === 'sent') {
         setStatus('sent');
         return;
       }
-      setErrorKind(response.status === 503 ? 'not_configured' : response.status === 429 ? 'too_many' : 'failed');
+      setErrorKind(result);
     } catch {
       setErrorKind('failed');
     }
@@ -77,11 +78,17 @@ export function MoonRover({ visible, mode }: { visible: boolean; mode: 'watercol
           <RoverFigure mood={mood} />
           <div className="moon-rover-dialog__moon" aria-hidden="true" />
         </div>
-        <h2 id={titleId}>{t('roverMail.title')}</h2>
+        <h2 id={titleId}>{status === 'sent' ? t('roverMail.sentTitle') : t('roverMail.title')}</h2>
 
         {status === 'sent' ? (
           <div className="moon-rover-dialog__done" role="status">
             <p>{t('roverMail.sent')}</p>
+            <figure className="moon-rover-letter">
+              <span className="moon-rover-letter__stamp" aria-hidden="true">{t('roverMail.stamp')}</span>
+              <figcaption>{t('roverMail.yourLetter')}</figcaption>
+              <blockquote>{message.trim()}</blockquote>
+            </figure>
+            <p className="moon-rover-dialog__thanks">{t('roverMail.received')}</p>
             <div className="moon-rover-dialog__actions">
               <button type="button" className="btn ghost" onClick={() => { setMessage(''); setStatus('writing'); }}>{t('roverMail.another')}</button>
               <button type="button" className="btn primary" onClick={close}>{t('roverMail.close')}</button>
