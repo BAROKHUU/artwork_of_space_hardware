@@ -14,7 +14,7 @@ npm run preview   # serve the built site
 
 `dist/` is plain static files and runs on GitHub Pages, Netlify, Vercel, or any web server. Routes use `#/`, so no rewrite rules are needed.
 
-High graphics loads the community lunar rover GLB; low graphics uses a procedural rover and skips that download. Include `public/assets/models/lrv.glb` when deploying: it is currently untracked. The 4,851,744-byte model has 248,082 triangles, 54 primitives and 40 materials, with no external textures or decoder. A local production build served it successfully; hosted Vercel performance remains unverified.
+High graphics loads the tracked community lunar rover at `public/assets/models/lrv.glb`; low graphics uses a procedural rover and skips that download. The 4,851,744-byte model has 248,082 triangles, 54 primitives and 40 materials, with no external textures or decoder. A local production build served it successfully; hosted Vercel performance remains unverified.
 
 ### Story media
 

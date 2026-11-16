@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import type { DriveConfig } from '../data/types';
 import { emptyContact, resolveCollisions, scatterRocks, solidRocks, type Obstacle } from '../sim/obstacles';
 import { makeTerrain, type Terrain } from '../sim/terrain';
+import { meshHeightAt, terrainSegments } from '../sim/terrainMesh';
 import { dustLevel, roverGroundPose, stepBattery, sunlight } from '../sim/rover';
 import { Tracks, WheelDust } from '../three/RoverFx';
 import { GameCanvas } from '../three/GameCanvas';
@@ -16,7 +17,6 @@ import { play } from '../audio/sfx';
 import { useGame } from '../state/store';
 import { Gauge, HoldButton, Readout, useKeys, type HudChannel, type MissionProps } from './common';
 
-const WORLD_LIMIT = 118;
 const SCAN_SECONDS = 0.9;
 const WAKE_LEVEL = 12;
 
@@ -143,6 +143,7 @@ function Rover({ missionId, config, terrain, obstacles, keys, pad, light, arrow,
         if (dustLevel(s.t, config.battery.stormAt) >= 1) {
           s.done = true;
           onFinish('storm');
+          return;
         }
       }
 
@@ -166,7 +167,7 @@ function Rover({ missionId, config, terrain, obstacles, keys, pad, light, arrow,
       let nx = contact.x;
       let nz = contact.z;
 
-      const limit = config.tether ?? WORLD_LIMIT;
+      const limit = config.tether ?? Infinity;
       const cx = nx - config.start.x;
       const cz = nz - config.start.z;
       const r = Math.hypot(cx, cz);
@@ -201,11 +202,10 @@ function Rover({ missionId, config, terrain, obstacles, keys, pad, light, arrow,
     const sideZ = -Math.sin(s.heading);
     const targetX = s.x + sideX * (specs.radius + 1.1);
     const targetZ = s.z + sideZ * (specs.radius + 1.1);
-    const targetY = terrain.heightAt(targetX, targetZ);
     // Delay only the horizontal follow; feet stay planted on the terrain instead of floating.
     cuoiPosition.current.x = THREE.MathUtils.damp(cuoiPosition.current.x, targetX, 2.7, dt);
     cuoiPosition.current.z = THREE.MathUtils.damp(cuoiPosition.current.z, targetZ, 2.7, dt);
-    cuoiPosition.current.y = targetY;
+    cuoiPosition.current.y = terrain.heightAt(cuoiPosition.current.x, cuoiPosition.current.z);
     // The character faces local +Z; the rover's forward direction is local -Z.
     const desiredCuoiRotation = s.heading + Math.PI;
     cuoiRotation.current = THREE.MathUtils.damp(cuoiRotation.current, desiredCuoiRotation, 5, dt);
@@ -390,7 +390,8 @@ export function DriveMission({ id, config, onResult, lab, vehicle = 'lrv', sun =
   const sunVector = sun;
   const clear = useMemo(() => [{ x: config.start.x, z: config.start.z, r: 5 }, ...config.targets.map((p) => ({ x: p.x, z: p.z, r: 6 })), ...(config.prop ? [{ x: config.prop.x, z: config.prop.z, r: 5 }] : [])], [config]);
   const terrain = useMemo(() => makeTerrain({ seed: config.seed, size: 260, amplitude: config.world === 'moon' ? 5.5 : 8, craterCount: config.world === 'moon' ? 58 : 14, sharpCraters: config.world === 'moon', flat: clear }), [config, clear]);
-  const rocks = useMemo(() => scatterRocks(terrain, quality === 'low' ? 60 : 180, config.seed + 3, clear), [terrain, quality, config.seed, clear]);
+  const groundTerrain = useMemo(() => ({ ...terrain, heightAt: meshHeightAt(terrain.heightAt, terrainSegments(quality === 'low')) }), [terrain, quality]);
+  const rocks = useMemo(() => scatterRocks(groundTerrain, quality === 'low' ? 60 : 180, config.seed + 3, clear), [groundTerrain, quality, config.seed, clear]);
   const obstacles = useMemo(
     () => [...solidRocks(rocks), ...config.targets.map((p) => ({ x: p.x, z: p.z, r: BEACON_ROCK_RADIUS })), ...(config.prop ? [{ x: config.prop.x, z: config.prop.z, r: PROP_RADIUS }] : [])],
     [rocks, config],
@@ -415,11 +416,11 @@ export function DriveMission({ id, config, onResult, lab, vehicle = 'lrv', sun =
         <StreamedTerrain terrain={terrain} world={config.world} />
         <Rocks rocks={rocks} world={config.world} />
         {config.prop && (
-          <group position={[config.prop.x, terrain.heightAt(config.prop.x, config.prop.z), config.prop.z]}>
+          <group position={[config.prop.x, groundTerrain.heightAt(config.prop.x, config.prop.z), config.prop.z]}>
             <HardwareModel id={config.prop.model} />
           </group>
         )}
-        <Rover missionId={id} config={config} terrain={terrain} obstacles={obstacles} keys={keys} pad={pad} light={sunLight} arrow={arrow} hud={channel} onFinish={finish} frozen={finished} vehicle={vehicle} sun={sunVector} cameraMode={cameraMode} look={lookOffset} />
+        <Rover missionId={id} config={config} terrain={groundTerrain} obstacles={obstacles} keys={keys} pad={pad} light={sunLight} arrow={arrow} hud={channel} onFinish={finish} frozen={finished} vehicle={vehicle} sun={sunVector} cameraMode={cameraMode} look={lookOffset} />
       </GameCanvas>
 
       <DriveHud id={id} config={config} lab={lab} channel={channel} arrow={arrow} />
