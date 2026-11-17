@@ -58,7 +58,8 @@
     "miss": "No echo. The pulse didn't hit the reflector.",
     "distance": "Distance",
     "shots": "Echoes",
-    "drift": "Since 1969, the Moon has drifted about {{m}} m farther away."
+    "drift": "Since 1969, the Moon has drifted about {{m}} m farther away.",
+    "markerHint": "Hint: Target beacon revealed! Aim at the pulsing ring near the Moon's center-right."
   },
   "ch2_lrv": {
     "title": "Follow the Rover Tracks",
@@ -194,6 +195,26 @@
     "fail_crash": "Hard landing at {{speed}} m/s. Tap the rotors to slow down near the ground.",
     "fail_fuel": "Battery is flat. Use shorter taps."
   },
+  "ch6_perseverance": {
+    "title": "Core the Ancient Lakebed",
+    "goal": "Drive across Jezero Crater's ancient river delta to core-sample three rock stations.",
+    "hint": "Perseverance runs on nuclear plutonium heat, not solar panels — take your time navigating the boulder field.",
+    "success": "Three Jezero core tubes sealed and cached for a future Mars Sample Return mission.",
+    "targets": [
+      {
+        "name": "Crater Floor (Séítah)",
+        "found": "Volcanic bedrock altered by ancient groundwater long before the lake dried."
+      },
+      {
+        "name": "Delta Front (Wildcat Ridge)",
+        "found": "Fine-grained mudstone laid down where an ancient river entered Lake Jezero."
+      },
+      {
+        "name": "Sample Depot (Three Forks)",
+        "found": "Sealed titanium sample tube resting safely on flat regolith for future retrieval."
+      }
+    ]
+  },
   "ch7_golden": {
     "title": "Pack the Golden Record",
     "goal": "Which of these are really on the Golden Record? Sort each one.",
@@ -231,32 +252,53 @@
     }
   },
   "ch2_apollo12": {
-    "title": "Set Down on the Moon",
-    "goal": "Control the descent and bring the lander to rest below {{safe}} m/s.",
-    "hint": "The Moon has no air to slow you. Use short engine burns before the surface gets close.",
-    "success": "A gentle touchdown. Apollo 12's descent stage stayed behind while its ascent stage carried the crew back to orbit.",
+    "title": "Pinpoint Moon Touchdown",
+    "goal": "Steer onto the glowing target pad near Surveyor 3 and touch down below {{safe}} m/s.",
+    "hint": "Use A/D or Left/Right to line up over the pad, and save short engine pulses to brake before touchdown.",
+    "success": "A pinpoint touchdown right beside Surveyor 3, just like Apollo 12 in 1969.",
     "fail_crash": "The lander hit at {{speed}} m/s. Burn earlier and use shorter taps.",
-    "fail_fuel": "The engines ran out before touchdown. Save fuel by starting the burn later."
+    "fail_fuel": "The engines ran out before touchdown. Save fuel by starting the burn later.",
+    "fail_target": "You landed {{dist}} m off the target pad. Steer over the amber ring before touchdown."
   },
   "ch2_alsep": {
     "title": "Listen for the Moon",
-    "goal": "Find the Apollo 12 reflector site and return three laser pulses.",
-    "hint": "The marker appears after a few misses. The lunar experiment package also left instruments to collect data after the crew left.",
-    "success": "The reflected pulse came home. Apollo's surface experiments sent data for years after the astronauts departed."
+    "goal": "Record {{captures}} lunar seismic windows on ALSEP when all four channels oscillate between A and B.",
+    "hint": "Watch all four traces move left. Press Space or Capture when every line is active inside the red A–B window.",
+    "success": "Seismic waves captured! Apollo's ALSEP network revealed the Moon's crust, mantle, and core.",
+    "progress": "Signals captured",
+    "hit": "Signal captured! All four ALSEP channels filled the window.",
+    "miss": "Missed window — at least one channel was flat between A and B."
   },
   "ch2_lrv_extra": {
-    "title": "Drive the Lunar Highlands",
-    "goal": "Reach all three geology stops before you run out of tether.",
-    "hint": "Take wide turns around the rocks and watch your distance from the lander.",
-    "success": "The rover made distant rock samples reachable on foot and on wheels."
+    "title": "Deep Lunar Core Drill",
+    "goal": "Drill {{targetDepth}} m into the lunar highlands to extract a layered core sample without overheating.",
+    "hint": "Hold Space or Drill to penetrate deeper, then release briefly whenever bit heat climbs near red.",
+    "success": "Core extracted! Apollo 15–17 deep cores preserved layers of lunar history untouched for billions of years.",
+    "fail_jam": "The drill bit overheated and jammed {{jams}} times. Release the drill sooner to let it cool.",
+    "rigLabel": "Apollo Lunar Surface Drill",
+    "ready": "Ready",
+    "drilling": "Drilling",
+    "cooling": "Cooling down…",
+    "depthLabel": "Core depth",
+    "heatLabel": "Bit heat",
+    "jamsLabel": "Overheats",
+    "layerLabel": "Current layer: {{layer}}",
+    "drillBtn": "Hold to drill",
+    "controls": "Hold Space or button to drill · Release to cool",
+    "layers": {
+      "dust": "Surface dust",
+      "ejecta": "Ejecta gravel",
+      "dense": "Dense highlands"
+    }
   },
   "ch4_viking2": {
-    "title": "Land at Utopia Planitia",
-    "goal": "Open the parachute, then fire your engines. Land below {{safe}} m/s.",
-    "hint": "The atmosphere helps, but the rockets still have to finish the job.",
-    "success": "Viking 2 touched down safely and returned images from the Martian north.",
+    "title": "Pinpoint Utopia Planitia",
+    "goal": "Open the parachute, steer onto the smooth Utopia Planitia target pad, and land below {{safe}} m/s.",
+    "hint": "Deploy the chute early, use A/D or Left/Right to line up over the amber landing zone, then brake with rockets.",
+    "success": "Viking 2 touched down safely on target and returned images from the Martian north.",
     "fail_crash": "Touchdown at {{speed}} m/s was too hard. Open the parachute early, then brake.",
-    "fail_fuel": "The lander ran out of fuel. Let the parachute slow you first."
+    "fail_fuel": "The lander ran out of fuel. Let the parachute slow you first.",
+    "fail_target": "You landed {{dist}} m off the target pad. Steer over the amber ring before touchdown."
   },
   "ch5_spirit": {
     "title": "Cross the Columbia Hills",
@@ -266,12 +308,11 @@
     "fail_storm": "The storm blocked the Sun. Spirit's twin Opportunity met a planet-wide storm years later."
   },
   "ch5_newlanders": {
-    "title": "Touch Down in the Martian North",
-    "goal": "Guide a lander through the thin atmosphere and settle below {{safe}} m/s.",
-    "hint": "The parachute slows the fall; use the engines near the ground.",
-    "success": "A soft landing leaves the instruments ready to study ice and marsquakes.",
-    "fail_crash": "The lander hit at {{speed}} m/s. Brake earlier near the surface.",
-    "fail_fuel": "The fuel ran out before touchdown. Let the parachute do more work."
+    "title": "Dig for Polar Water Ice",
+    "goal": "Drill {{targetDepth}} m into the Martian northern plains to reach buried polar water ice without overheating.",
+    "hint": "Hold Space or Drill to cut through frozen dust and rocky ejecta, then release before bit heat hits red.",
+    "success": "Ice reached! Phoenix scraped and confirmed buried water ice beneath the northern Martian plains.",
+    "fail_jam": "The drill bit overheated and jammed {{jams}} times in frozen soil. Release earlier to let it cool."
   },
   "ch7_dawn": {
     "title": "Borrow a Planet",
@@ -301,11 +342,12 @@
   },
   "ch7_near": {
     "title": "A Gentle Asteroid Touchdown",
-    "goal": "Use the thrusters to settle onto a low-gravity surface below {{safe}} m/s.",
-    "hint": "This is a simplified small-body landing exercise, not a reconstruction of NEAR's actual Eros approach.",
+    "goal": "Steer onto the glowing Eros target zone and settle in low gravity below {{safe}} m/s.",
+    "hint": "Gravity on Eros is tiny. Use A/D to align over the amber ring and short upward pulses to ease down.",
     "success": "NEAR Shoemaker survived its touchdown on Eros and sent data from the surface.",
     "fail_crash": "The touchdown at {{speed}} m/s was too hard. Start braking sooner.",
-    "fail_fuel": "You ran out of fuel before settling. Use short pulses."
+    "fail_fuel": "You ran out of fuel before settling. Use short pulses.",
+    "fail_target": "You touched down {{dist}} m off the target zone. Steer onto the amber ring before settling."
   },
   "ch7_kepler": {
     "title": "Find a Planet in Starlight",
@@ -353,9 +395,10 @@
   },
   "m2_collect": {
     "title": "Four sample sites",
-    "goal": "Drive to four sites and collect a rock from each. The rover was built to carry samples like these.",
-    "hint": "The arrow points to the next site. You have no time limit. Look around.",
+    "goal": "Drive to four sites and collect a rock from each while staying within walk-back range of the lander.",
+    "hint": "The red ring is your 78 m walk-back limit. Follow the arrow to each sample site.",
     "success": "Four samples secured. Now let us find out what they are.",
+    "tether": "Walk-back limit! Stay within 78 m of the lander.",
     "targets": [
       {
         "name": "Dark patch",
@@ -410,8 +453,8 @@
   },
   "m4_signal": {
     "title": "Follow the old signal",
-    "goal": "Drive toward the faint signal. It is older than the rover, and much quieter.",
-    "hint": "The signal gets stronger as you get closer. Follow the arrow.",
+    "goal": "Drive through the long lunar dusk shadows toward the faint 1969 signal.",
+    "hint": "Watch the shadows around craters as the arrow guides you closer.",
     "success": "The signal is coming from a small package half buried in the dust.",
     "targets": [
       {
@@ -419,5 +462,28 @@
         "found": "A small instrument, silent since 1969."
       }
     ]
+  },
+  "m4_seismic": {
+    "title": "Catch a Moonquake",
+    "goal": "Help PSEP record {{captures}} seismic events when all four channels shake across the A–B window.",
+    "hint": "Wait until every trace oscillates together between A and B, then press Capture or Space.",
+    "success": "You caught two moonquakes! Even after three weeks in 1969, PSEP's record kept teaching Earth.",
+    "progress": "Quakes caught",
+    "hit": "Moonquake recorded across all four channels!",
+    "miss": "Flat trace inside the window — wait until all four lines shake together."
+  },
+  "m5_laser": {
+    "title": "A Thin Line of Light",
+    "goal": "Aim at Tranquility Base on the Moon and bounce {{shots}} laser pulses off Apollo 11's mirror.",
+    "hint": "Look just right of center near the lunar equator. After three misses, a marker reveals the mirror.",
+    "success": "Light returned! Even silent instruments still answer when we shine a light.",
+    "instruction": "Click or tap the Moon to fire the laser.",
+    "fire": "Pulse fired",
+    "hit": "Echo received after {{t}} s",
+    "miss": "No echo. The pulse missed the retroreflector.",
+    "distance": "Distance",
+    "shots": "Echoes",
+    "drift": "Since 1969, the Moon has drifted about {{m}} m farther away.",
+    "markerHint": "Hint: Reflector beacon revealed! Aim at the pulsing ring on the Moon."
   }
 }

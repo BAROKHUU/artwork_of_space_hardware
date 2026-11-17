@@ -65,6 +65,13 @@ describe('content', () => {
     }
   });
 
+  it('keeps all Moon chapters in the Moon arc and none in Archive', () => {
+    const moon = chapters.filter((c) => c.arc === 'moon');
+    const archive = chapters.filter((c) => c.arc !== 'moon');
+    expect(moon.map((c) => c.id)).toEqual(['ch0', 'ch1', 'ch2', 'm1', 'm2', 'm3', 'm4', 'm5']);
+    expect(archive.every((c) => c.world !== 'moon')).toBe(true);
+  });
+
   it('other languages match the English keys exactly', () => {
     for (const lang of fs.readdirSync(LOCALES).filter((l) => l !== 'en')) {
       for (const ns of ['ui', 'story', 'missions', 'hardware', 'quiz']) {

@@ -21,7 +21,7 @@ export function MapScreen() {
       </header>
       <ol className="trail">
         {moonChapters.map((c, i) => {
-          const open = i === 0 || explorer || completed[moonChapters[i - 1].id] || completed[c.id];
+          const open = i === 0 || c.id === 'm1' || explorer || completed[moonChapters[i - 1].id] || completed[c.id];
           const label = completed[c.id] ? t('map.replay') : (beat[c.id] ?? 0) > 0 ? t('map.resume') : t('map.play');
           const body = (
             <>
@@ -42,7 +42,7 @@ export function MapScreen() {
       </ol>
       {archiveChapters.length > 0 && <section className="archive-route">
         <h2>{t('nav.archive')}</h2>
-        <p>{t('book.readerIntro')}</p>
+        <p>{t('learn.archiveScreen.sub')}</p>
         <ol className="trail">
           {archiveChapters.map((c, i) => {
             const open = i === 0 || explorer || completed[archiveChapters[i - 1].id] || completed[c.id];

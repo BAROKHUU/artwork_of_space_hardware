@@ -4,7 +4,7 @@ import { useFrame } from '@react-three/fiber';
 import { useTranslation } from 'react-i18next';
 import * as THREE from 'three';
 import type { LandingConfig } from '../data/types';
-import { initialLander, isDown, stepLander, type LanderState } from '../sim/lander';
+import { initialLander, isDown, isOnTarget, stepLander, type LanderState } from '../sim/lander';
 import { scatterRocks } from '../sim/obstacles';
 import { makeTerrain } from '../sim/terrain';
 import { GameCanvas } from '../three/GameCanvas';
@@ -20,34 +20,43 @@ const visualAlt = (alt: number, hover: boolean) => (hover ? alt * 1.15 : 15 * Ma
 interface Hud {
   alt: number;
   vel: number;
+  x: number;
   fuel: number;
   chute: boolean;
   firing: boolean;
   held: number;
 }
 
-function Flight({ config, input, keys, channel, onEnd }: { config: LandingConfig; input: RefObject<{ throttle: boolean; chute: boolean }>; keys: ReturnType<typeof useKeys>; channel: HudChannel<Hud>; onEnd: (s: LanderState, heldEnough: boolean) => void }) {
+type LanderInputRef = { throttle: boolean; chute: boolean; left: boolean; right: boolean };
+
+function Flight({ config, input, keys, channel, onEnd }: { config: LandingConfig; input: RefObject<LanderInputRef>; keys: ReturnType<typeof useKeys>; channel: HudChannel<Hud>; onEnd: (s: LanderState, heldEnough: boolean) => void }) {
   const hover = config.objective === 'hover';
+  const hasTarget = config.targetX !== undefined;
   const craft = useRef<THREE.Group>(null);
   const fire = useRef(0);
   const height = useRef(visualAlt(config.alt, hover));
+  const craftX = useRef(0);
   const rotor = useRef<THREE.Group>(null);
   const canopy = useRef<THREE.Group>(null);
   const streaks = useRef<THREE.Group>(null);
-  const sim = useRef({ s: initialLander(config.alt, config.vel, config.fuel), prevAlt: config.alt, acc: 0, hudAt: 0, over: false, held: 0, tilt: 0 });
+  const sim = useRef({ s: initialLander(config.alt, config.vel, config.fuel), prevAlt: config.alt, prevX: 0, acc: 0, hudAt: 0, over: false, held: 0, tilt: 0 });
 
   useFrame((state, rawDt) => {
     const dt = Math.min(rawDt, 0.05);
     const c = sim.current;
     const k = keys.current;
     const throttle = input.current.throttle || k.has('Space') || k.has('ArrowUp') || k.has('KeyW');
+    const left = hasTarget && (input.current.left || k.has('ArrowLeft') || k.has('KeyA'));
+    const right = hasTarget && (input.current.right || k.has('ArrowRight') || k.has('KeyD'));
+    const steer: -1 | 0 | 1 = left === right ? 0 : left ? -1 : 1;
     const chute = !!config.hasChute && input.current.chute;
     if (!c.over) {
       c.acc += dt;
       while (c.acc >= STEP && !c.over) {
         c.acc -= STEP;
         c.prevAlt = c.s.alt;
-        c.s = stepLander(c.s, config.params, { throttle, chute }, STEP);
+        c.prevX = c.s.x;
+        c.s = stepLander(c.s, config.params, { throttle, chute, steer }, STEP);
         if (hover && config.band && c.s.alt >= config.band[0] && c.s.alt <= config.band[1]) c.held = Math.min(config.hold ?? 0, c.held + STEP);
         if (isDown(c.s)) {
           const soft = Math.abs(c.s.vel) <= config.safe;
@@ -70,28 +79,32 @@ function Flight({ config, input, keys, channel, onEnd }: { config: LandingConfig
     const firing = throttle && s.fuel > 0 && !c.over;
     // Physics runs in fixed steps; blend the last two so motion stays even at any frame rate.
     const shownAlt = c.over ? s.alt : c.prevAlt + (s.alt - c.prevAlt) * (c.acc / STEP);
+    const shownX = c.over ? s.x : c.prevX + (s.x - c.prevX) * (c.acc / STEP);
     const y = visualAlt(shownAlt, hover);
     height.current = y;
+    craftX.current = shownX;
     // Engines ramp up and cut off fast, but never pop.
     fire.current += ((firing && !hover ? 1 : 0) - fire.current) * (1 - Math.exp(-dt * 20));
     if (craft.current) {
-      craft.current.position.set(Math.sin(state.clock.elapsedTime * 73) * 0.012 * fire.current, y, Math.cos(state.clock.elapsedTime * 59) * 0.012 * fire.current);
-      craft.current.rotation.z += (c.tilt - craft.current.rotation.z) * Math.min(1, dt * 7);
+      craft.current.position.set(shownX + Math.sin(state.clock.elapsedTime * 73) * 0.012 * fire.current, y, Math.cos(state.clock.elapsedTime * 59) * 0.012 * fire.current);
+      const targetTilt = c.over ? c.tilt : -steer * 0.14;
+      craft.current.rotation.z += (targetTilt - craft.current.rotation.z) * Math.min(1, dt * 7);
     }
     if (rotor.current) rotor.current.rotation.y += dt * (firing ? 60 : 8);
     if (canopy.current) canopy.current.visible = chute && s.alt > 0.5;
     if (streaks.current) {
-      streaks.current.position.y = ((shownAlt * (hover ? 1.15 : 0.5)) % 12) + y - 6;
+      streaks.current.position.set(shownX, ((shownAlt * (hover ? 1.15 : 0.5)) % 12) + y - 6, 0);
       streaks.current.visible = !hover && s.alt > 6;
     }
     const camY = hover ? 4.5 : Math.max(y + 3.4, 3.2);
-    state.camera.position.set(hover ? 5 : 5.6, camY, hover ? 12 : 10.5);
-    state.camera.lookAt(0, hover ? 3.4 : Math.max(y - 0.4, 1.1), 0);
+    const focusX = hasTarget ? shownX * 0.65 + (config.targetX ?? 0) * 0.35 : shownX;
+    state.camera.position.set(focusX + (hover ? 5 : 5.6), camY, hover ? 12 : hasTarget ? 18 : 10.5);
+    state.camera.lookAt(focusX, hover ? 3.4 : Math.max(y - 0.4, 1.1), 0);
 
     c.hudAt += dt;
     if (c.hudAt > 0.1) {
       c.hudAt = 0;
-      channel.current?.({ alt: s.alt, vel: s.vel, fuel: s.fuel, chute, firing, held: c.held });
+      channel.current?.({ alt: s.alt, vel: s.vel, x: s.x, fuel: s.fuel, chute, firing, held: c.held });
     }
   });
 
@@ -125,7 +138,7 @@ function Flight({ config, input, keys, channel, onEnd }: { config: LandingConfig
           </group>
         )}
       </group>
-      <GroundDust world={config.world} fire={fire} height={height} />
+      <GroundDust world={config.world} fire={fire} height={height} x={craftX} />
       <group ref={streaks}>
         {streakPositions.map((p, i) => (
           <mesh key={i} position={p as unknown as [number, number, number]}>
@@ -140,18 +153,30 @@ function Flight({ config, input, keys, channel, onEnd }: { config: LandingConfig
           <meshBasicMaterial color="#37e6c0" transparent opacity={0.18} side={THREE.DoubleSide} depthWrite={false} />
         </mesh>
       )}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.06, 0]}>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[config.targetX ?? 0, 0.06, 0]}>
         <ringGeometry args={[3.4, 3.8, 40]} />
-        <meshBasicMaterial color="#37e6c0" transparent opacity={0.7} toneMapped={false} />
+        <meshBasicMaterial color="#37e6c0" transparent opacity={0.75} toneMapped={false} />
       </mesh>
+      {hasTarget && config.targetX !== undefined && (
+        <group position={[config.targetX, 0.1, 0]}>
+          <mesh rotation={[-Math.PI / 2, 0, 0]}>
+            <ringGeometry args={[Math.max(4, (config.targetRadius ?? 12) - 0.6), Math.max(4.6, config.targetRadius ?? 12), 48]} />
+            <meshBasicMaterial color="#ffb25a" transparent opacity={0.85} toneMapped={false} />
+          </mesh>
+          <mesh position={[0, 1.2, 0]}>
+            <cylinderGeometry args={[0.12, 0.12, 2.4, 10]} />
+            <meshBasicMaterial color="#37e6c0" toneMapped={false} />
+          </mesh>
+        </group>
+      )}
     </>
   );
 }
 
 /** Holds its own state so readout updates never re-render the 3D scene. */
-function LandingHud({ config, channel, input, lab }: { config: LandingConfig; channel: HudChannel<Hud>; input: RefObject<{ throttle: boolean; chute: boolean }>; lab?: boolean }) {
+function LandingHud({ config, channel, input, lab }: { config: LandingConfig; channel: HudChannel<Hud>; input: RefObject<LanderInputRef>; lab?: boolean }) {
   const { t } = useTranslation();
-  const [hud, setHud] = useState<Hud>({ alt: config.alt, vel: config.vel, fuel: config.fuel, chute: false, firing: false, held: 0 });
+  const [hud, setHud] = useState<Hud>({ alt: config.alt, vel: config.vel, x: 0, fuel: config.fuel, chute: false, firing: false, held: 0 });
   useEffect(() => {
     channel.current = setHud;
     return () => {
@@ -160,17 +185,31 @@ function LandingHud({ config, channel, input, lab }: { config: LandingConfig; ch
   }, [channel]);
   const hover = config.objective === 'hover';
   const fast = Math.abs(hud.vel) > config.safe;
+  const hasTarget = config.targetX !== undefined;
+  const offset = hasTarget ? hud.x - config.targetX! : 0;
+  const offPad = hasTarget && config.targetRadius !== undefined && Math.abs(offset) > config.targetRadius;
   return (
     <>
       <div className="hud-side">
         <Readout label={t('hud.altitude')} value={hud.alt.toFixed(hud.alt < 20 ? 1 : 0)} unit="m" />
         <Readout label={t('hud.speed')} value={Math.abs(hud.vel).toFixed(1)} unit="m/s" warn={fast} />
+        {hasTarget && <Readout label={t('hud.targetOffset')} value={`${offset >= 0 ? '+' : ''}${offset.toFixed(0)}`} unit="m" warn={offPad} />}
         <p className="safe-note">{t('hud.safe', { v: config.safe })}</p>
         <Gauge label={hover ? t('hud.power') : t('hud.fuel')} value={hud.fuel} max={config.fuel} warn={hud.fuel / config.fuel < 0.2} />
         {hover && config.hold ? <Gauge label={t('hud.hold')} value={hud.held} max={config.hold} text={`${hud.held.toFixed(1)} / ${config.hold} s`} /> : null}
       </div>
-      <p className="keys-hint">{t('hud.thrustKeys')}{config.hasChute ? ` · ${t('hud.chuteKeys')}` : ''}</p>
+      <p className="keys-hint">
+        {t('hud.thrustKeys')}
+        {hasTarget ? ` · ${t('hud.steerKeys')}` : ''}
+        {config.hasChute ? ` · ${t('hud.chuteKeys')}` : ''}
+      </p>
       <div className={`action-row${lab ? ' always' : ''}`}>
+        {hasTarget && (
+          <div className="steer-row">
+            <HoldButton label={t('hud.left')} onChange={(v) => (input.current.left = v)}>◀</HoldButton>
+            <HoldButton label={t('hud.right')} onChange={(v) => (input.current.right = v)}>▶</HoldButton>
+          </div>
+        )}
         {config.hasChute && (
           <button type="button" className={`chute-btn${hud.chute ? ' done' : ''}`} disabled={hud.chute} onClick={() => { input.current.chute = true; play('blip'); }}>
             {hud.chute ? t('hud.chuteOpen') : t('hud.chute')}
@@ -186,7 +225,7 @@ function LandingHud({ config, channel, input, lab }: { config: LandingConfig; ch
 
 export function LandingMission({ config, onResult, lab }: MissionProps<LandingConfig>) {
   const keys = useKeys();
-  const input = useRef({ throttle: false, chute: false });
+  const input = useRef<LanderInputRef>({ throttle: false, chute: false, left: false, right: false });
   const channel = useRef<((h: Hud) => void) | null>(null);
 
   // Latched on keydown: a quick tap can begin and end between two rendered frames.
@@ -200,17 +239,33 @@ export function LandingMission({ config, onResult, lab }: MissionProps<LandingCo
     return () => window.removeEventListener('keydown', onKey);
   }, [config.hasChute]);
 
-  const clear = useMemo(() => [{ x: 0, z: 0, r: 8 }], []);
-  const terrain = useMemo(() => makeTerrain({ seed: 31, size: 260, amplitude: config.world === 'moon' ? 4 : config.world === 'mars' ? 6 : 3.5, craterCount: config.world === 'moon' ? 45 : config.world === 'mars' ? 10 : 0, flat: clear }), [config.world, clear]);
+  const clear = useMemo(
+    () => [
+      { x: 0, z: 0, r: 8 },
+      ...(config.targetX !== undefined ? [{ x: config.targetX, z: 0, r: Math.max(10, config.targetRadius ?? 10) }] : []),
+    ],
+    [config.targetX, config.targetRadius],
+  );
+  const amplitude = config.roughness ?? (config.world === 'moon' ? 4 : config.world === 'mars' ? 6 : 3.5);
+  const terrain = useMemo(
+    () => makeTerrain({ seed: 31, size: 260, amplitude, craterCount: config.world === 'moon' ? 45 : config.world === 'mars' ? 10 : 0, flat: clear }),
+    [config.world, amplitude, clear],
+  );
   const rocks = useMemo(() => scatterRocks(terrain, config.world === 'earth' ? 26 : 110, 8, clear), [terrain, clear, config.world]);
 
   const end = (s: LanderState, heldEnough: boolean) => {
     const speed = Math.abs(s.vel);
     const soft = speed <= config.safe;
-    const win = soft && heldEnough;
+    const onTarget = isOnTarget(s, config.targetX, config.targetRadius);
+    const win = soft && heldEnough && onTarget;
     play(win ? 'win' : 'fail');
-    const failKey = soft ? 'fail_fuel' : s.fuel <= 0 ? 'fail_fuel' : 'fail_crash';
-    window.setTimeout(() => onResult({ win, failKey, values: { speed: speed.toFixed(1), v: speed.toFixed(1) } }), 900);
+    const failKey = !soft
+      ? (s.fuel <= 0 ? 'fail_fuel' : 'fail_crash')
+      : !heldEnough
+        ? 'fail_fuel'
+        : 'fail_target';
+    const dist = config.targetX !== undefined ? Math.abs(s.x - config.targetX).toFixed(1) : '0';
+    window.setTimeout(() => onResult({ win, failKey, values: { speed: speed.toFixed(1), v: speed.toFixed(1), dist } }), 900);
   };
 
   return (

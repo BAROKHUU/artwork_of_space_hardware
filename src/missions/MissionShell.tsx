@@ -5,9 +5,11 @@ import { useChatCue } from '../state/chatCue';
 import { useGame } from '../state/store';
 import { play } from '../audio/sfx';
 import { ClassifyMission } from './ClassifyMission';
+import { DrillMission } from './DrillMission';
 import { DriveMission } from './DriveMission';
 import { LandingMission } from './LandingMission';
 import { LaserMission } from './LaserMission';
+import { SeismicMission } from './SeismicMission';
 import { SlingshotMission } from './SlingshotMission';
 import type { MissionResult } from './common';
 
@@ -34,7 +36,13 @@ export function MissionShell({ beat, onDone, onSuccess }: { beat: MissionBeat; o
     onDone();
   };
   const key = `missions:${beat.id}`;
-  const interpolation = { ...('safe' in beat.config ? { safe: beat.config.safe } : {}), ...('hold' in beat.config ? { hold: beat.config.hold } : {}), ...('shots' in beat.config ? { shots: beat.config.shots } : {}) };
+  const interpolation = {
+    ...('safe' in beat.config ? { safe: beat.config.safe } : {}),
+    ...('hold' in beat.config ? { hold: beat.config.hold } : {}),
+    ...('shots' in beat.config ? { shots: beat.config.shots } : {}),
+    ...('captures' in beat.config ? { captures: beat.config.captures } : {}),
+    ...('targetDepth' in beat.config ? { targetDepth: beat.config.targetDepth } : {}),
+  };
 
   const onResult = useCallback(
     (r: MissionResult) => {
@@ -79,6 +87,8 @@ export function MissionShell({ beat, onDone, onSuccess }: { beat: MissionBeat; o
           {beat.template === 'laser' && <LaserMission key={attempt} {...common} config={beat.config} />}
           {beat.template === 'slingshot' && <SlingshotMission key={attempt} {...common} config={beat.config} />}
           {beat.template === 'classify' && <ClassifyMission key={attempt} {...common} config={beat.config} assisted={assisted} />}
+          {beat.template === 'seismic' && <SeismicMission key={attempt} {...common} config={beat.config} />}
+          {beat.template === 'drill' && <DrillMission key={attempt} {...common} config={beat.config} />}
           {phase === 'play' && <button type="button" className="skip-link" onClick={leave}>{t('mission.skip')}</button>}
         </div>
       )}

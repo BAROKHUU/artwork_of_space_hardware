@@ -9,7 +9,8 @@ export type ModelId = 'ranger' | 'surveyor' | 'descent' | 'lrrr' | 'lrv' | 'pion
 
 /** Which journey a chapter belongs to. Moon chapters are the main story; archive chapters are optional. */
 export type Arc = 'moon' | 'archive';
-export type DriveVehicle = 'lrv' | 'mer';
+export type DriveVehicle = 'lrv' | 'mer' | 'curiosity';
+export type ScanKind = 'basalt' | 'anorthosite' | 'breccia' | 'mineral' | 'signal' | 'beacon';
 
 export interface Hardware {
   id: string;
@@ -29,7 +30,7 @@ export interface DriveConfig {
   world: 'moon' | 'mars';
   seed: number;
   start: { x: number; z: number };
-  targets: { x: number; z: number }[];
+  targets: { x: number; z: number; kind?: ScanKind }[];
   radius: number;
   tether?: number;
   prop?: { model: ModelId; x: number; z: number };
@@ -38,6 +39,8 @@ export interface DriveConfig {
   vehicle?: DriveVehicle;
   /** Cuội walks beside the Lunar Roving Vehicle on the Moon unless this is false. */
   cuoi?: boolean;
+  /** Low-angle lunar sun casting long shadows during dusk approaches. */
+  dusk?: boolean;
 }
 
 export interface LandingConfig {
@@ -51,7 +54,23 @@ export interface LandingConfig {
   hasChute?: boolean;
   band?: [number, number];
   hold?: number;
+  roughness?: number;
+  targetX?: number;
+  targetRadius?: number;
   params: LanderParams;
+}
+
+export interface SeismicConfig {
+  captures: number;
+  speed?: 1 | 1.5;
+  maxMisses?: number;
+}
+
+export interface DrillConfig {
+  targetDepth: number;
+  seed: number;
+  maxJams?: number;
+  world?: 'moon' | 'mars';
 }
 
 export interface LaserConfig {
@@ -69,7 +88,7 @@ export interface SlingshotConfig {
 }
 
 export type ClassifyConfig =
-  | { visual: 'craters'; rounds: number; seed: number }
+  | { visual: 'craters'; rounds: number; seed: number; criterion?: 'safest' | 'oldest' }
   | { visual: 'samples'; rounds: number; seed: number }
   | { visual: 'lr'; answers: number[] }
   | { visual: 'golden'; items: { id: string; on: boolean }[] };
@@ -79,7 +98,9 @@ export type MissionBeat =
   | { kind: 'mission'; id: string; template: 'landing'; config: LandingConfig }
   | { kind: 'mission'; id: string; template: 'laser'; config: LaserConfig }
   | { kind: 'mission'; id: string; template: 'slingshot'; config: SlingshotConfig }
-  | { kind: 'mission'; id: string; template: 'classify'; config: ClassifyConfig };
+  | { kind: 'mission'; id: string; template: 'classify'; config: ClassifyConfig }
+  | { kind: 'mission'; id: string; template: 'seismic'; config: SeismicConfig }
+  | { kind: 'mission'; id: string; template: 'drill'; config: DrillConfig };
 
 export type Beat =
   | { kind: 'dialogue'; key: string; focus: string }

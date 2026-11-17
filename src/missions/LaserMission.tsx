@@ -1,4 +1,4 @@
-import { useRef, useState, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { Stars, useTexture } from '@react-three/drei';
 import { useFrame, type ThreeEvent } from '@react-three/fiber';
 import { useTranslation } from 'react-i18next';
@@ -20,6 +20,35 @@ export interface Pulse {
   duration: number;
   hit: boolean;
   start: number;
+}
+
+function TargetMarker({ position }: { position: [number, number, number] }) {
+  const ref = useRef<THREE.Group>(null);
+  const quat = useMemo(
+    () => new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), new THREE.Vector3(...position).normalize()),
+    [position],
+  );
+  useFrame((state) => {
+    if (!ref.current) return;
+    const s = 1 + 0.16 * Math.sin(state.clock.elapsedTime * 5);
+    ref.current.scale.setScalar(s);
+  });
+  return (
+    <group ref={ref} position={position} quaternion={quat}>
+      <mesh>
+        <ringGeometry args={[0.16, 0.23, 32]} />
+        <meshBasicMaterial color="#ff6a2b" side={THREE.DoubleSide} toneMapped={false} />
+      </mesh>
+      <mesh>
+        <ringGeometry args={[0.07, 0.11, 24]} />
+        <meshBasicMaterial color="#37e6c0" side={THREE.DoubleSide} toneMapped={false} />
+      </mesh>
+      <mesh>
+        <sphereGeometry args={[0.055, 12, 12]} />
+        <meshBasicMaterial color="#fff6e8" toneMapped={false} />
+      </mesh>
+    </group>
+  );
 }
 
 export function Moon({ onShoot, marker, pulse, onPulseEnd, children }: { onShoot: (p: THREE.Vector3) => void; marker: [number, number, number] | null; pulse: Pulse | null; onPulseEnd: () => void; children?: ReactNode }) {
@@ -67,12 +96,7 @@ export function Moon({ onShoot, marker, pulse, onPulseEnd, children }: { onShoot
         <meshStandardMaterial map={map} roughness={1} />
       </mesh>
       {children}
-      {marker && (
-        <mesh position={marker}>
-          <sphereGeometry args={[0.07, 12, 12]} />
-          <meshBasicMaterial color="#37e6c0" toneMapped={false} />
-        </mesh>
-      )}
+      {marker && <TargetMarker position={marker} />}
       <mesh ref={beam} visible={false}>
         <cylinderGeometry args={[0.012, 0.012, 1, 6]} />
         <meshBasicMaterial color="#37e6c0" transparent opacity={0.45} toneMapped={false} depthWrite={false} />
@@ -93,6 +117,11 @@ export function LaserMission({ id, config, onResult, lab, distanceKm = MOON_DIST
   const [message, setMessage] = useState<string>('');
   const [lastEcho, setLastEcho] = useState<number | null>(null);
   const busy = useRef(false);
+  const winTimer = useRef<number | null>(null);
+
+  useEffect(() => () => {
+    if (winTimer.current !== null) window.clearTimeout(winTimer.current);
+  }, []);
 
   const echoSeconds = roundTripSeconds(distanceKm);
 
@@ -102,7 +131,7 @@ export function LaserMission({ id, config, onResult, lab, distanceKm = MOON_DIST
     const hit = lab || angularDistanceDeg(where, config.target) <= config.radiusDeg;
     busy.current = true;
     play('blip');
-    setMessage(t('missions:ch2_laser.fire'));
+    setMessage(t(`missions:${id}.fire`));
     setPulse({ to: point, duration: echoSeconds, hit, start: -1 });
   };
 
@@ -114,15 +143,17 @@ export function LaserMission({ id, config, onResult, lab, distanceKm = MOON_DIST
       play('ping');
       useChatCue.getState().dismissFail();
       setLastEcho(echoSeconds);
-      setMessage(t('missions:ch2_laser.hit', { t: echoSeconds.toFixed(2) }));
+      setMessage(t(`missions:${id}.hit`, { t: echoSeconds.toFixed(2) }));
       const next = echoes + 1;
       setEchoes(next);
-      if (!lab && next >= config.shots) window.setTimeout(() => onResult({ win: true, stars: misses === 0 ? 3 : misses <= 3 ? 2 : 1 }), 1100);
+      if (!lab && next >= config.shots) {
+        winTimer.current = window.setTimeout(() => onResult({ win: true, stars: misses === 0 ? 3 : misses <= 3 ? 2 : 1 }), 1100);
+      }
     } else {
       play('fail');
       const nextMisses = misses + 1;
       setMisses(nextMisses);
-      setMessage(t('missions:ch2_laser.miss'));
+      setMessage(t(`missions:${id}.miss`));
       if (!lab && nextMisses >= 2) {
         useChatCue.getState().showPopup({
           kind: 'fail',
@@ -146,12 +177,15 @@ export function LaserMission({ id, config, onResult, lab, distanceKm = MOON_DIST
         <Moon onShoot={shoot} marker={marker} pulse={pulse} onPulseEnd={pulseEnd} />
       </GameCanvas>
       <div className="hud-side">
-        {!lab && <Readout label={t('missions:ch2_laser.shots')} value={`${echoes} / ${config.shots}`} />}
-        <Readout label={t('missions:ch2_laser.distance')} value={lastEcho ? Math.round(distanceFromEcho(lastEcho)).toLocaleString() : '—'} unit="km" />
+        {!lab && <Readout label={t(`missions:${id}.shots`)} value={`${echoes} / ${config.shots}`} />}
+        <Readout label={t(`missions:${id}.distance`)} value={lastEcho ? Math.round(distanceFromEcho(lastEcho)).toLocaleString() : '—'} unit="km" />
         <Readout label={t('lab.echoTime')} value={lastEcho ? lastEcho.toFixed(2) : '—'} unit="s" />
-        {echoes > 0 && !lab && <p className="safe-note">{t('missions:ch2_laser.drift', { m: drift })}</p>}
+        {echoes > 0 && !lab && <p className="safe-note">{t(`missions:${id}.drift`, { m: drift })}</p>}
+        {!lab && misses >= 3 && <p className="safe-note">{t(`missions:${id}.markerHint`)}</p>}
       </div>
-      <div className="laser-status" role="status">{message || t('missions:ch2_laser.instruction')}</div>
+      <div className="laser-status" role="status">
+        {!lab && misses >= 3 && (!message || message === t(`missions:${id}.miss`)) ? t(`missions:${id}.markerHint`) : message || t(`missions:${id}.instruction`)}
+      </div>
     </div>
   );
 }

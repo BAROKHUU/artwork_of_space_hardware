@@ -11,8 +11,9 @@ const SolarLab = lazy(() => import('./SolarLab'));
 const SlingshotLab = lazy(() => import('./SlingshotLab'));
 const LaserLab = lazy(() => import('./LaserLab'));
 const SeismicLab = lazy(() => import('./SeismicLab'));
+const DrillLab = lazy(() => import('./DrillLab'));
 
-type Tab = 'landing' | 'slingshot' | 'solar' | 'laser' | 'drive' | 'seismic';
+type Tab = 'landing' | 'slingshot' | 'solar' | 'laser' | 'drive' | 'seismic' | 'drill';
 
 const NO_OP = () => undefined;
 
@@ -22,10 +23,26 @@ function LandingLab() {
   const [thrust, setThrust] = useState(4.2);
   const [alt, setAlt] = useState(260);
   const [air, setAir] = useState(0);
+  const [padEnabled, setPadEnabled] = useState(true);
+  const [targetX, setTargetX] = useState(18);
+  const [targetRadius, setTargetRadius] = useState(12);
   const [run, setRun] = useState(0);
   const [result, setResult] = useState<MissionResult | null>(null);
   const world = g > 6.5 ? 'earth' : g > 2.5 ? 'mars' : 'moon';
-  const config = useMemo<LandingConfig>(() => ({ world, vehicle: 'surveyor', objective: 'touchdown', alt, vel: -20, fuel: 40, safe: 3, params: { g, thrust, burn: 1, drag: air * 1e-4, chuteDrag: 0 } }), [world, alt, g, thrust, air]);
+  const config = useMemo<LandingConfig>(
+    () => ({
+      world,
+      vehicle: 'surveyor',
+      objective: 'touchdown',
+      alt,
+      vel: -20,
+      fuel: 42,
+      safe: 3,
+      ...(padEnabled ? { targetX, targetRadius } : {}),
+      params: { g, thrust, burn: 1, drag: air * 1e-4, chuteDrag: 0 },
+    }),
+    [world, alt, g, thrust, air, padEnabled, targetX, targetRadius],
+  );
   const restart = () => {
     setResult(null);
     setRun((r) => r + 1);
@@ -36,7 +53,13 @@ function LandingLab() {
         <LandingMission key={run} id="lab" lab config={config} onResult={setResult} />
         {result && (
           <div className="lab-result">
-            <p>{result.win ? t('lab.landed', { v: result.values?.v }) : t('lab.crashed', { v: result.values?.v })}</p>
+            <p>
+              {result.win
+                ? t('lab.landed', { v: result.values?.v })
+                : result.failKey === 'fail_target'
+                  ? t('lab.missedPad', { dist: result.values?.dist })
+                  : t('lab.crashed', { v: result.values?.v })}
+            </p>
             <button type="button" className="btn primary" onClick={restart}>{t('lab.reset')}</button>
           </div>
         )}
@@ -49,6 +72,17 @@ function LandingLab() {
         <Slider label={t('lab.thrust')} value={thrust} min={1} max={20} step={0.1} unit="m/s²" onChange={setThrust} />
         <Slider label={t('lab.startAlt')} value={alt} min={50} max={800} step={10} unit="m" onChange={setAlt} />
         <Slider label={t('lab.air')} value={air} min={0} max={20} step={1} unit="" onChange={setAir} />
+        <span className="control-label">{t('lab.targetPad')}</span>
+        <div className="choice">
+          <button type="button" className={padEnabled ? 'on' : ''} onClick={() => { setPadEnabled(true); restart(); }}>{t('settings.on')}</button>
+          <button type="button" className={!padEnabled ? 'on' : ''} onClick={() => { setPadEnabled(false); restart(); }}>{t('settings.off2')}</button>
+        </div>
+        {padEnabled && (
+          <>
+            <Slider label={t('lab.padOffset')} value={targetX} min={-25} max={25} step={1} unit="m" onChange={(v) => { setTargetX(v); restart(); }} />
+            <Slider label={t('lab.padRadius')} value={targetRadius} min={6} max={18} step={1} unit="m" onChange={(v) => { setTargetRadius(v); restart(); }} />
+          </>
+        )}
         <button type="button" className="btn" onClick={restart}>{t('lab.reset')}</button>
       </aside>
     </div>
@@ -98,7 +132,7 @@ function DriveLab() {
 export function Lab() {
   const { t } = useTranslation();
   const [tab, setTab] = useState<Tab>('landing');
-  const tabs: Tab[] = ['landing', 'slingshot', 'solar', 'laser', 'drive', 'seismic'];
+  const tabs: Tab[] = ['landing', 'slingshot', 'solar', 'laser', 'drive', 'seismic', 'drill'];
   return (
     <main className="page lab">
       <header className="page-head">
@@ -127,6 +161,7 @@ export function Lab() {
         {tab === 'laser' && <Suspense fallback={<div className="loading" role="status">{t('common.loading')}</div>}><LaserLab /></Suspense>}
         {tab === 'drive' && <DriveLab />}
         {tab === 'seismic' && <Suspense fallback={<div className="loading" role="status">{t('common.loading')}</div>}><SeismicLab /></Suspense>}
+        {tab === 'drill' && <Suspense fallback={<div className="loading" role="status">{t('common.loading')}</div>}><DrillLab /></Suspense>}
       </div>
       <p className="lab-note">{t('lab.simNote')}</p>
     </main>

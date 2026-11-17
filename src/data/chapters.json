@@ -37,7 +37,6 @@
         "config": {
           "world": "moon",
           "seed": 11,
-          "vehicle": "lrv",
           "start": { "x": 0, "z": 0 },
           "targets": [
             { "x": 0, "z": -26 },
@@ -55,7 +54,7 @@
         "focus": "echo"
       }
     ],
-    "arc": "archive"
+    "arc": "moon"
   },
   {
     "id": "ch1",
@@ -77,6 +76,7 @@
         "template": "classify",
         "config": {
           "visual": "craters",
+          "criterion": "safest",
           "rounds": 3,
           "seed": 42
         }
@@ -94,10 +94,11 @@
           "world": "moon",
           "vehicle": "surveyor",
           "objective": "touchdown",
-          "alt": 260,
-          "vel": -30,
-          "fuel": 30,
-          "safe": 3,
+          "alt": 340,
+          "vel": -38,
+          "fuel": 34,
+          "safe": 2.8,
+          "roughness": 5.5,
           "params": {
             "g": 1.62,
             "thrust": 4.2,
@@ -125,7 +126,7 @@
         "focus": "surveyor3"
       }
     ],
-    "arc": "archive"
+    "arc": "moon"
   },
   {
     "id": "ch2",
@@ -177,15 +178,18 @@
           "targets": [
             {
               "x": -24,
-              "z": -30
+              "z": -30,
+              "kind": "breccia"
             },
             {
               "x": 20,
-              "z": -46
+              "z": -46,
+              "kind": "anorthosite"
             },
             {
               "x": 40,
-              "z": -12
+              "z": -12,
+              "kind": "basalt"
             }
           ],
           "radius": 5,
@@ -211,10 +215,12 @@
           "world": "moon",
           "vehicle": "surveyor",
           "objective": "touchdown",
-          "alt": 260,
-          "vel": -25,
-          "fuel": 35,
+          "alt": 300,
+          "vel": -28,
+          "fuel": 42,
           "safe": 3,
+          "targetX": 20,
+          "targetRadius": 12,
           "params": {
             "g": 1.62,
             "thrust": 4.2,
@@ -231,14 +237,10 @@
       {
         "kind": "mission",
         "id": "ch2_alsep",
-        "template": "laser",
+        "template": "seismic",
         "config": {
-          "target": {
-            "lat": -3.0128,
-            "lon": -23.4219
-          },
-          "radiusDeg": 8,
-          "shots": 3
+          "captures": 3,
+          "speed": 1.5
         }
       },
       {
@@ -252,32 +254,11 @@
       {
         "kind": "mission",
         "id": "ch2_lrv_extra",
-        "template": "drive",
+        "template": "drill",
         "config": {
-          "world": "moon",
+          "targetDepth": 2.4,
           "seed": 16,
-          "start": {
-            "x": 0,
-            "z": 0
-          },
-          "targets": [
-            {
-              "x": 18,
-              "z": -28
-            },
-            {
-              "x": -22,
-              "z": -49
-            },
-            {
-              "x": 34,
-              "z": -78
-            }
-          ],
-          "radius": 5,
-          "tether": 86,
-          "vehicle": "lrv",
-          "cuoi": false
+          "maxJams": 3
         }
       },
       {
@@ -298,7 +279,7 @@
         "focus": "lrrr"
       }
     ],
-    "arc": "archive"
+    "arc": "moon"
   },
   {
     "id": "ch3",
@@ -401,10 +382,13 @@
           "world": "mars",
           "vehicle": "viking",
           "objective": "touchdown",
-          "alt": 1800,
+          "alt": 1900,
           "vel": -115,
-          "fuel": 34,
+          "fuel": 44,
           "safe": 3,
+          "roughness": 7,
+          "targetX": 22,
+          "targetRadius": 12,
           "hasChute": true,
           "params": {
             "g": 3.71,
@@ -481,19 +465,23 @@
           "targets": [
             {
               "x": 22,
-              "z": -24
+              "z": -24,
+              "kind": "mineral"
             },
             {
               "x": -18,
-              "z": -44
+              "z": -44,
+              "kind": "mineral"
             },
             {
               "x": 28,
-              "z": -66
+              "z": -66,
+              "kind": "mineral"
             },
             {
               "x": -8,
-              "z": -92
+              "z": -92,
+              "kind": "mineral"
             }
           ],
           "radius": 5,
@@ -528,15 +516,18 @@
           "targets": [
             {
               "x": 20,
-              "z": -22
+              "z": -22,
+              "kind": "mineral"
             },
             {
               "x": -18,
-              "z": -48
+              "z": -48,
+              "kind": "mineral"
             },
             {
               "x": 26,
-              "z": -75
+              "z": -75,
+              "kind": "mineral"
             }
           ],
           "radius": 5,
@@ -546,7 +537,8 @@
             "solLength": 48,
             "stormAt": 190
           },
-          "vehicle": "mer"
+          "vehicle": "mer",
+          "dusk": true
         }
       },
       {
@@ -560,23 +552,12 @@
       {
         "kind": "mission",
         "id": "ch5_newlanders",
-        "template": "landing",
+        "template": "drill",
         "config": {
           "world": "mars",
-          "vehicle": "viking",
-          "objective": "touchdown",
-          "alt": 1500,
-          "vel": -95,
-          "fuel": 34,
-          "safe": 3,
-          "hasChute": true,
-          "params": {
-            "g": 3.71,
-            "thrust": 7.5,
-            "burn": 1,
-            "drag": 2e-05,
-            "chuteDrag": 0.001
-          }
+          "targetDepth": 2.0,
+          "seed": 52,
+          "maxJams": 3
         }
       },
       {
@@ -642,6 +623,39 @@
       {
         "kind": "memory",
         "hardware": "perseverance"
+      },
+      {
+        "kind": "mission",
+        "id": "ch6_perseverance",
+        "template": "drive",
+        "config": {
+          "world": "mars",
+          "seed": 66,
+          "start": {
+            "x": 0,
+            "z": 0
+          },
+          "targets": [
+            {
+              "x": -18,
+              "z": -28,
+              "kind": "mineral"
+            },
+            {
+              "x": 20,
+              "z": -50,
+              "kind": "breccia"
+            },
+            {
+              "x": -6,
+              "z": -74,
+              "kind": "mineral"
+            }
+          ],
+          "radius": 5.5,
+          "vehicle": "curiosity",
+          "cuoi": false
+        }
       },
       {
         "kind": "quiz",
@@ -744,8 +758,10 @@
           "objective": "touchdown",
           "alt": 180,
           "vel": -18,
-          "fuel": 34,
+          "fuel": 42,
           "safe": 2,
+          "targetX": 14,
+          "targetRadius": 10,
           "params": {
             "g": 0.08,
             "thrust": 1.4,
@@ -874,22 +890,32 @@
           "targets": [
             {
               "x": -20,
-              "z": -26
+              "z": -26,
+              "kind": "basalt"
             },
             {
               "x": 14,
-              "z": -40
+              "z": -40,
+              "kind": "anorthosite"
             },
             {
               "x": 34,
-              "z": -18
+              "z": -18,
+              "kind": "breccia"
             },
             {
               "x": -6,
-              "z": -58
+              "z": -58,
+              "kind": "breccia"
             }
           ],
           "radius": 5.5,
+          "tether": 78,
+          "prop": {
+            "model": "descent",
+            "x": 9,
+            "z": 7
+          },
           "vehicle": "lrv"
         }
       },
@@ -948,6 +974,7 @@
         "template": "classify",
         "config": {
           "visual": "craters",
+          "criterion": "oldest",
           "rounds": 3,
           "seed": 33
         }
@@ -1000,14 +1027,25 @@
           "targets": [
             {
               "x": 26,
-              "z": -52
+              "z": -52,
+              "kind": "signal"
             }
           ],
           "radius": 6,
-          "vehicle": "lrv"
+          "vehicle": "lrv",
+          "dusk": true
         }
       },
       { "kind": "dialogue", "key": "afterSignal", "focus": "lrv" },
+      {
+        "kind": "mission",
+        "id": "m4_seismic",
+        "template": "seismic",
+        "config": {
+          "captures": 2,
+          "speed": 1
+        }
+      },
       {
         "kind": "archive",
         "key": "psep"
@@ -1040,6 +1078,19 @@
         "kind": "dialogue",
         "key": "intro",
         "focus": "rabbit"
+      },
+      {
+        "kind": "mission",
+        "id": "m5_laser",
+        "template": "laser",
+        "config": {
+          "target": {
+            "lat": 0.673,
+            "lon": 23.473
+          },
+          "radiusDeg": 6.5,
+          "shots": 3
+        }
       },
       {
         "kind": "quiz",
