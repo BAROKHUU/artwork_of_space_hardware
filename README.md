@@ -107,4 +107,4 @@ Photos, planetary maps, dates, distances, and status come from NASA, JPL, and US
 
 ## License
 
-Source code is released under the [MIT License](LICENSE). The story, characters, player-facing text and translations, and original artwork, audio, and video are © 2026 the Echo team, all rights reserved. Third-party material keeps its own license. See [COPYRIGHT.md](COPYRIGHT.md) for exactly what each covers.
+Source code is released under the [MIT License](LICENSE). The story, characters, player-facing text and translations, and original artwork, audio, and video are © 2026 the KaraokeNhacTre team, all rights reserved. Third-party material keeps its own license. See [COPYRIGHT.md](COPYRIGHT.md) for exactly what each covers.
