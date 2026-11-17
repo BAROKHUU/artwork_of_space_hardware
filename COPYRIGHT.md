@@ -1,6 +1,6 @@
 # Copyright and licensing
 
-Copyright (c) 2026 The Echo: Abandoned but Not Forgotten team and contributors.
+Copyright (c) 2026 The Moon Remembers team and contributors.
 
 This repository holds two kinds of material under different terms.
 
