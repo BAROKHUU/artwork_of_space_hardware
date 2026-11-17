@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { angularDistanceDeg, latLonToVec3, vec3ToLatLon } from './geo';
 import { distanceFromEcho, moonDriftMeters, roundTripSeconds } from './laser';
-import { initialLander, isDown, isSoftTouchdown, stepLander, type LanderParams } from './lander';
+import { initialLander, isDown, isOnTarget, isSoftTouchdown, stepLander, type LanderParams } from './lander';
 import { simulateFleet, simulateSlingshot } from './orbit';
 import { distanceAU, lightHours } from './ephemeris';
 import { makeTerrain } from './terrain';
@@ -34,6 +34,17 @@ describe('lander', () => {
     const s = stepLander(initialLander(0, 0, 90), { g: 3.71, thrust: 5, burn: 1, drag: 0.02, chuteDrag: 0 }, { throttle: false }, 1 / 60);
     expect(s.vel).toBe(0);
     expect(isDown(s)).toBe(false);
+  });
+  it('steers laterally toward an offset target pad and checks on-target touchdown', () => {
+    let s = initialLander(300, -28, 42);
+    for (let i = 0; i < 60 * 60 && !isDown(s); i++) {
+      const steer = s.x < 17 ? 1 : s.x > 23 ? -1 : 0;
+      const throttle = s.vel < -2 && s.alt < (s.vel * s.vel) / (2 * 2.2) + 8;
+      s = stepLander(s, SURVEYOR, { throttle, steer }, 1 / 60);
+    }
+    expect(isSoftTouchdown(s, 3)).toBe(true);
+    expect(isOnTarget(s, 20, 12)).toBe(true);
+    expect(isOnTarget(s, 100, 12)).toBe(false);
   });
 });
 

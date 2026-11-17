@@ -106,11 +106,11 @@
     "readerIntro": "Revisit story sections you've already encountered. New sections appear here as you discover them.",
     "empty": "No story sections have been discovered yet. Begin the mission to start the story.",
     "viewpoints": "Choose a camera view",
-    "pov": { "wide": "Wide view", "cuoi": "Cuội’s view", "rover": "Rover view" }, "tapToFinish": "Tap the speech box to finish"
+    "pov": { "wide": "Wide view", "cuoi": "Cuội’s view", "rover": "Rover view" }, "tapToFinish": "Tap or press Space to continue"
   },
   "map": {
     "heading": "The Moon remembers",
-    "sub": "Five chapters, one quiet mission.",
+    "sub": "Eight chapters across the Moon journey.",
     "locked": "Finish the previous chapter",
     "play": "Play",
     "replay": "Replay",
@@ -151,9 +151,21 @@
     "dust": "Dust",
     "sun": "Sun",
     "scanning": "Scanning",
+    "scanAnalyzing": "Analyzing sample…",
+    "scanLocked": "Type identified",
+    "scanKinds": {
+      "basalt": "Basalt",
+      "anorthosite": "Anorthosite",
+      "breccia": "Breccia",
+      "mineral": "Iron-rich rock",
+      "signal": "1969 Signal",
+      "beacon": "Marker"
+    },
     "keys": "Arrow keys or WASD to drive",
     "thrustKeys": "Space: engines",
+    "steerKeys": "A/D or ◀/▶: steer",
     "chuteKeys": "P: parachute",
+    "targetOffset": "Target pad",
     "left": "Left",
     "right": "Right",
     "forward": "Forward",
@@ -331,7 +343,37 @@
     "laserSub": "Bounce a laser off the Moon.",
     "moonDistance": "Moon distance",
     "seismic": "Seismic Catch",
-    "seismicSub": "Catch four signals at once."
+    "seismicSub": "Catch four signals at once.",
+    "drill": "Core Drill",
+    "drillSub": "Manage bit heat through soil layers.",
+    "targetPad": "Pinpoint target pad",
+    "padOffset": "Target pad offset",
+    "padRadius": "Target pad radius",
+    "missedPad": "Soft touchdown, but {{dist}} m off the target pad."
+  },
+  "drill": {
+    "eyebrow": "Core sampling lab",
+    "moonRig": "Apollo Lunar Surface Drill",
+    "marsRig": "Mars Polar Ice Core Drill",
+    "ready": "Ready",
+    "drilling": "Drilling",
+    "cooling": "Cooling down…",
+    "depthLabel": "Core depth",
+    "heatLabel": "Bit heat",
+    "jamsLabel": "Overheats",
+    "layerLabel": "Current layer: {{layer}}",
+    "drillBtn": "Hold to drill",
+    "controls": "Hold Space or button to drill · Release to cool",
+    "labDone": "Extracted {{depth}} m core with {{jams}} overheat(s).",
+    "labFail": "Drill bit jammed after {{jams}} overheats. Restart to try again.",
+    "targetDepth": "Target depth",
+    "maxJams": "Overheat limit",
+    "layers": {
+      "dust": "Surface dust",
+      "ejecta": "Ejecta gravel",
+      "dense": "Dense highlands",
+      "ice": "Subsurface ice"
+    }
   },
   "sources": {
     "heading": "Sources and honesty",
@@ -613,7 +655,7 @@
     },
     "archiveScreen": {
       "heading": "The Archive",
-      "sub": "Optional museum chapters from the original Echo survey. They are not part of the Moon story, and some text is only in English.",
+      "sub": "Optional Mars and deep-space chapters from the Echo survey (separate from the Moon story; some text is only in English).",
       "play": "Open chapter",
       "back": "Back to the Moon journey"
     }

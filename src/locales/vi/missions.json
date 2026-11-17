@@ -58,7 +58,8 @@
     "miss": "Không có phản hồi. Xung không trúng gương.",
     "distance": "Khoảng cách",
     "shots": "Tín hiệu phản hồi",
-    "drift": "Từ năm 1969, Mặt Trăng đã xa thêm khoảng {{m}} m."
+    "drift": "Từ năm 1969, Mặt Trăng đã xa thêm khoảng {{m}} m.",
+    "markerHint": "Gợi ý: Đã hiện vị trí gương! Hãy nhắm vào vòng tròn nhấp nháy ở phần giữa lệch phải Mặt Trăng."
   },
   "ch2_lrv": {
     "title": "Đi theo vệt xe",
@@ -194,6 +195,26 @@
     "fail_crash": "Hạ cánh mạnh ở {{speed}} m/s. Nhấn cánh quạt để giảm tốc gần mặt đất.",
     "fail_fuel": "Pin đã cạn. Hãy nhấn ngắn hơn."
   },
+  "ch6_perseverance": {
+    "title": "Khoan lõi lòng hồ cổ",
+    "goal": "Lái xe băng qua vùng châu thổ cổ của hố Jezero để lấy mẫu lõi tại ba trạm đá.",
+    "hint": "Perseverance chạy bằng nhiệt hạt nhân plutoni chứ không dùng pin mặt trời — hãy thong thả vượt qua bãi đá tảng.",
+    "success": "Ba ống mẫu lõi từ hố Jezero đã được niêm phong và lưu trữ chờ sứ mệnh thu hồi mẫu Sao Hỏa.",
+    "targets": [
+      {
+        "name": "Đáy hố va chạm (Séítah)",
+        "found": "Đá nền núi lửa từng bị nước ngầm cổ đại biến đổi từ lâu trước khi hồ khô cạn."
+      },
+      {
+        "name": "Rìa châu thổ (Wildcat Ridge)",
+        "found": "Đá bùn hạt mịn lắng đọng tại nơi một dòng sông cổ chảy vào hồ Jezero."
+      },
+      {
+        "name": "Kho mẫu (Three Forks)",
+        "found": "Ống mẫu titan đã niêm phong nằm an toàn trên nền đất phẳng chờ ngày thu hồi."
+      }
+    ]
+  },
   "ch7_golden": {
     "title": "Sắp xếp Đĩa Vàng",
     "goal": "Những nội dung nào thật sự có trên Đĩa Vàng? Hãy phân loại từng mục.",
@@ -231,32 +252,53 @@
     }
   },
   "ch2_apollo12": {
-    "title": "Set Down on the Moon",
-    "goal": "Control the descent and bring the lander to rest below {{safe}} m/s.",
-    "hint": "The Moon has no air to slow you. Use short engine burns before the surface gets close.",
-    "success": "A gentle touchdown. Apollo 12's descent stage stayed behind while its ascent stage carried the crew back to orbit.",
-    "fail_crash": "The lander hit at {{speed}} m/s. Burn earlier and use shorter taps.",
-    "fail_fuel": "The engines ran out before touchdown. Save fuel by starting the burn later."
+    "title": "Hạ cánh chính xác trên Mặt Trăng",
+    "goal": "Lái tàu vào vùng vòng sáng gần Surveyor 3 và hạ cánh dưới {{safe}} m/s.",
+    "hint": "Dùng phím A/D hoặc Trái/Phải để căn chỉnh theo phương ngang, rồi đốt động cơ ngắn trước khi chạm đất.",
+    "success": "Hạ cánh chuẩn xác ngay cạnh Surveyor 3, giống hệt Apollo 12 năm 1969.",
+    "fail_crash": "Tàu va chạm ở tốc độ {{speed}} m/s. Hãy đốt động cơ sớm hơn và nhấp ngắn.",
+    "fail_fuel": "Hết nhiên liệu trước khi chạm đất. Hãy tiết kiệm bằng cách đốt muộn hơn.",
+    "fail_target": "Bạn đáp lệch bãi đáp {{dist}} m. Hãy lái ngang vào vòng màu cam trước khi hạ cánh."
   },
   "ch2_alsep": {
-    "title": "Listen for the Moon",
-    "goal": "Find the Apollo 12 reflector site and return three laser pulses.",
-    "hint": "The marker appears after a few misses. The lunar experiment package also left instruments to collect data after the crew left.",
-    "success": "The reflected pulse came home. Apollo's surface experiments sent data for years after the astronauts departed."
+    "title": "Lắng nghe Mặt Trăng",
+    "goal": "Ghi lại {{captures}} cửa sổ địa chấn trên ALSEP khi cả bốn kênh cùng dao động giữa A và B.",
+    "hint": "Quan sát bốn đường sóng trôi sang trái. Nhấn Phím cách hoặc Chụp khi cả bốn kênh đều dao động trọn vẹn giữa A và B.",
+    "success": "Đã thu sóng địa chấn! Mạng lưới ALSEP của Apollo đã hé lộ cấu trúc vỏ, lớp phủ và lõi Mặt Trăng.",
+    "progress": "Tín hiệu đã thu",
+    "hit": "Thu thành công! Cả bốn kênh ALSEP đều lấp đầy cửa sổ.",
+    "miss": "Chưa đạt — ít nhất một kênh còn phẳng trong khoảng A và B."
   },
   "ch2_lrv_extra": {
-    "title": "Drive the Lunar Highlands",
-    "goal": "Reach all three geology stops before you run out of tether.",
-    "hint": "Take wide turns around the rocks and watch your distance from the lander.",
-    "success": "The rover made distant rock samples reachable on foot and on wheels."
+    "title": "Khoan lõi đất sâu Mặt Trăng",
+    "goal": "Khoan sâu {{targetDepth}} m xuống vùng cao nguyên Mặt Trăng để lấy lõi đất phân tầng mà không làm quá nhiệt mũi khoan.",
+    "hint": "Giữ Phím cách hoặc nút Khoan để đi sâu hơn, thả ra nghỉ ngắn khi nhiệt độ lên gần mức đỏ.",
+    "success": "Đã lấy được mẫu lõi! Những lõi khoan Apollo 15–17 lưu giữ lịch sử Mặt Trăng suốt hàng tỷ năm.",
+    "fail_jam": "Mũi khoan bị quá nhiệt và kẹt {{jams}} lần. Hãy thả nút khoan sớm hơn để làm nguội.",
+    "rigLabel": "Máy khoan bề mặt Apollo",
+    "ready": "Sẵn sàng",
+    "drilling": "Đang khoan",
+    "cooling": "Đang hạ nhiệt…",
+    "depthLabel": "Độ sâu lõi",
+    "heatLabel": "Nhiệt mũi khoan",
+    "jamsLabel": "Số lần kẹt",
+    "layerLabel": "Tầng hiện tại: {{layer}}",
+    "drillBtn": "Giữ để khoan",
+    "controls": "Giữ Phím cách hoặc nút để khoan · Thả để làm mát",
+    "layers": {
+      "dust": "Bụi bề mặt",
+      "ejecta": "Sỏi bắn văng",
+      "dense": "Lớp đất nén sâu"
+    }
   },
   "ch4_viking2": {
-    "title": "Land at Utopia Planitia",
-    "goal": "Open the parachute, then fire your engines. Land below {{safe}} m/s.",
-    "hint": "The atmosphere helps, but the rockets still have to finish the job.",
-    "success": "Viking 2 touched down safely and returned images from the Martian north.",
-    "fail_crash": "Touchdown at {{speed}} m/s was too hard. Open the parachute early, then brake.",
-    "fail_fuel": "The lander ran out of fuel. Let the parachute slow you first."
+    "title": "Hạ cánh chính xác tại Utopia Planitia",
+    "goal": "Mở dù, điều khiển vào bãi đáp phẳng ở Utopia Planitia và chạm đất dưới {{safe}} m/s.",
+    "hint": "Bật dù sớm, dùng A/D hoặc Trái/Phải để căn vào vòng hổ phách, rồi đốt động cơ hãm trước khi chạm đất.",
+    "success": "Viking 2 đã hạ cánh chuẩn xác xuống mục tiêu và gửi về những bức ảnh từ phương bắc Sao Hỏa.",
+    "fail_crash": "Va chạm ở tốc độ {{speed}} m/s quá mạnh. Hãy mở dù sớm hơn rồi đốt động cơ hãm.",
+    "fail_fuel": "Tàu đáp đã hết nhiên liệu. Hãy để dù làm chậm bạn trước.",
+    "fail_target": "Bạn đáp lệch bãi đáp {{dist}} m. Hãy lái ngang vào vòng màu cam trước khi hạ cánh."
   },
   "ch5_spirit": {
     "title": "Cross the Columbia Hills",
@@ -266,12 +308,11 @@
     "fail_storm": "The storm blocked the Sun. Spirit's twin Opportunity met a planet-wide storm years later."
   },
   "ch5_newlanders": {
-    "title": "Touch Down in the Martian North",
-    "goal": "Guide a lander through the thin atmosphere and settle below {{safe}} m/s.",
-    "hint": "The parachute slows the fall; use the engines near the ground.",
-    "success": "A soft landing leaves the instruments ready to study ice and marsquakes.",
-    "fail_crash": "The lander hit at {{speed}} m/s. Brake earlier near the surface.",
-    "fail_fuel": "The fuel ran out before touchdown. Let the parachute do more work."
+    "title": "Khoan tìm băng nước vùng cực",
+    "goal": "Khoan sâu {{targetDepth}} m xuống vùng đồng bằng bắc Sao Hỏa để chạm tới băng nước chôn vùi mà không làm quá nhiệt mũi khoan.",
+    "hint": "Giữ Phím cách hoặc nút Khoan để xuyên qua lớp bụi đóng băng và đá dăm, rồi thả ra trước khi nhiệt độ chạm mức đỏ.",
+    "success": "Đã chạm tới băng! Phoenix đã cạo và xác nhận lớp băng nước nằm ngay dưới đồng bằng bắc Sao Hỏa.",
+    "fail_jam": "Mũi khoan bị quá nhiệt và kẹt {{jams}} lần trong nền đất đóng băng. Hãy thả ra sớm hơn để làm nguội."
   },
   "ch7_dawn": {
     "title": "Borrow a Planet",
@@ -300,12 +341,13 @@
     "fail_hit": "Right into Jupiter! A little farther away, please."
   },
   "ch7_near": {
-    "title": "A Gentle Asteroid Touchdown",
-    "goal": "Use the thrusters to settle onto a low-gravity surface below {{safe}} m/s.",
-    "hint": "This is a simplified small-body landing exercise, not a reconstruction of NEAR's actual Eros approach.",
-    "success": "NEAR Shoemaker survived its touchdown on Eros and sent data from the surface.",
-    "fail_crash": "The touchdown at {{speed}} m/s was too hard. Start braking sooner.",
-    "fail_fuel": "You ran out of fuel before settling. Use short pulses."
+    "title": "Chạm nhẹ xuống tiểu hành tinh",
+    "goal": "Điều khiển vào vùng vòng sáng trên Eros và hạ xuống trong trọng lực siêu nhỏ dưới {{safe}} m/s.",
+    "hint": "Trọng lực trên Eros rất yếu. Dùng A/D để căn vào vòng hổ phách và đẩy những nhịp ngắn để hạ xuống nhẹ nhàng.",
+    "success": "NEAR Shoemaker đã sống sót sau cú hạ cánh xuống tiểu hành tinh Eros và gửi dữ liệu từ bề mặt.",
+    "fail_crash": "Chạm bề mặt ở {{speed}} m/s quá mạnh. Hãy hãm sớm hơn.",
+    "fail_fuel": "Bạn hết nhiên liệu trước khi hạ cánh. Hãy dùng những nhịp đẩy ngắn.",
+    "fail_target": "Bạn đáp lệch vùng mục tiêu {{dist}} m. Hãy lái vào vòng hổ phách trước khi chạm bề mặt."
   },
   "ch7_kepler": {
     "title": "Find a Planet in Starlight",
@@ -352,10 +394,11 @@
     ]
   },
   "m2_collect": {
-    "title": "Four sample sites",
-    "goal": "Drive to four sites and collect a rock from each. The rover was built to carry samples like these.",
-    "hint": "The arrow points to the next site. You have no time limit. Look around.",
-    "success": "Four samples secured. Now let us find out what they are.",
+    "title": "Bốn điểm lấy mẫu",
+    "goal": "Lái xe tới bốn địa điểm thu thập mẫu đá trong phạm vi có thể đi bộ quay lại tàu đáp.",
+    "hint": "Vòng đỏ là giới hạn đi bộ 78 m. Hãy đi theo mũi tên chỉ đường.",
+    "success": "Đã thu đủ bốn mẫu đá. Giờ hãy tìm hiểu xem chúng là đá gì.",
+    "tether": "Giới hạn đi bộ! Hãy ở trong bán kính 78 m quanh tàu đáp.",
     "targets": [
       {
         "name": "Dark patch",
@@ -409,15 +452,38 @@
     "note": "Choose one patch."
   },
   "m4_signal": {
-    "title": "Follow the old signal",
-    "goal": "Drive toward the faint signal. It is older than the rover, and much quieter.",
-    "hint": "The signal gets stronger as you get closer. Follow the arrow.",
-    "success": "The signal is coming from a small package half buried in the dust.",
+    "title": "Lần theo tín hiệu cũ",
+    "goal": "Lái xe qua bóng chiều dài trên Mặt Trăng để tiến về phía tín hiệu mờ từ năm 1969.",
+    "hint": "Chú ý bóng dài quanh miệng hố khi mũi tên dẫn bạn lại gần.",
+    "success": "Tín hiệu phát ra từ một hộp thiết bị nhỏ bị vùi nửa trong bụi.",
     "targets": [
       {
-        "name": "Faint signal",
-        "found": "A small instrument, silent since 1969."
+        "name": "Tín hiệu mờ",
+        "found": "Một thiết bị nhỏ bé, đã im lặng từ năm 1969."
       }
     ]
+  },
+  "m4_seismic": {
+    "title": "Bắt sóng động đất Mặt Trăng",
+    "goal": "Giúp PSEP ghi lại {{captures}} sự kiện địa chấn khi cả bốn kênh cùng rung mạnh trong cửa sổ A–B.",
+    "hint": "Chờ đến khi cả bốn đường sóng đều dao động giữa A và B rồi nhấn Chụp hoặc Phím cách.",
+    "success": "Bạn đã bắt được hai cơn địa chấn! Dù ngừng hoạt động từ 1969, dữ liệu của PSEP vẫn tiếp tục dạy chúng ta.",
+    "progress": "Cơn chấn động đã ghi",
+    "hit": "Đã ghi nhận động đất Mặt Trăng trên cả bốn kênh!",
+    "miss": "Vẫn còn đoạn phẳng trong cửa sổ — chờ cả bốn đường cùng rung mạnh nhé."
+  },
+  "m5_laser": {
+    "title": "Tia sáng mảnh mai",
+    "goal": "Ngắm vào Biển Tĩnh Lặng trên Mặt Trăng và dội lại {{shots}} xung laser từ chiếc gương của Apollo 11.",
+    "hint": "Hãy nhìn hơi lệch phải so với tâm Mặt Trăng gần đường xích đạo. Sau ba lần hụt, điểm đánh dấu sẽ hiện ra.",
+    "success": "Ánh sáng đã quay trở về! Ngay cả thiết bị im lặng vẫn trả lời khi ta gửi tới một tia sáng.",
+    "instruction": "Nhấp hoặc chạm vào Mặt Trăng để bắn tia laser.",
+    "fire": "Đã bắn xung laser",
+    "hit": "Nhận phản hồi sau {{t}} giây",
+    "miss": "Không có phản hồi. Tia sáng chưa trúng gương phản xạ.",
+    "distance": "Khoảng cách",
+    "shots": "Phản hồi",
+    "drift": "Từ năm 1969, Mặt Trăng đã trôi ra xa thêm khoảng {{m}} m.",
+    "markerHint": "Gợi ý: Đã hiện vị trí gương phản xạ! Hãy nhắm vào vòng tròn nhấp nháy trên Mặt Trăng."
   }
 }

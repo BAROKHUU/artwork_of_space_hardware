@@ -232,6 +232,21 @@ button:disabled { cursor: default; }
 .scanbar { position: absolute; left: 50%; bottom: 104px; transform: translateX(-50%); width: 240px; height: 26px; background: rgba(7, 8, 13, .8); border: 1px solid var(--teal); overflow: hidden; pointer-events: none; }
 .scanbar i { position: absolute; left: 0; top: 0; bottom: 0; background: rgba(55, 230, 192, .45); }
 .scanbar span { position: relative; z-index: 1; display: block; text-align: center; font: 400 13px/24px var(--mono); }
+.scan-holo { position: absolute; left: min(calc(50% + 115px), calc(100% - 292px)); top: 50%; transform: translateY(-50%); width: 276px; display: flex; align-items: center; gap: 12px; padding: 11px 13px; background: linear-gradient(155deg, rgba(8, 22, 27, .9), rgba(11, 16, 26, .88)); border: 1px solid rgba(55, 230, 192, .72); border-radius: 12px; box-shadow: 0 0 28px rgba(55, 230, 192, .22), inset 0 0 18px rgba(55, 230, 192, .12); backdrop-filter: blur(6px); pointer-events: none; animation: chat-open .18s ease-out; }
+.scan-holo::before { content: ''; position: absolute; inset: 0; border-radius: 12px; background: repeating-linear-gradient(180deg, rgba(55, 230, 192, .06) 0 1px, transparent 1px 4px); pointer-events: none; }
+.scan-holo__frame { position: relative; flex: none; width: 72px; height: 72px; display: grid; place-items: center; background: radial-gradient(circle, rgba(55, 230, 192, .16), rgba(7, 12, 18, .92)); border: 1px solid rgba(55, 230, 192, .42); border-radius: 8px; overflow: hidden; }
+.scan-holo__glyph { width: 64px; height: 64px; transition: filter 80ms linear, opacity 80ms linear; }
+.scan-holo__svg { width: 100%; height: 100%; filter: drop-shadow(0 0 6px rgba(55, 230, 192, .55)); }
+.scan-holo__sweep { position: absolute; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, #37e6c0, transparent); box-shadow: 0 0 8px #37e6c0; animation: holo-sweep 1.2s ease-in-out infinite; }
+@keyframes holo-sweep { 0%, 100% { top: 8%; } 50% { top: 88%; } }
+.scan-holo__info { position: relative; z-index: 1; min-width: 0; flex: 1; display: flex; flex-direction: column; gap: 4px; }
+.scan-holo__head { display: flex; justify-content: space-between; align-items: baseline; font: 600 11px/1.2 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--teal); }
+.scan-holo__type { font: 700 18px/1.15 var(--display); color: var(--ink); transition: filter 80ms linear, opacity 80ms linear; }
+.scan-holo__meta { font: 400 12px/1.3 var(--body); color: var(--dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.scan-holo__bar { height: 5px; margin-top: 3px; background: rgba(55, 230, 192, .16); border-radius: 999px; overflow: hidden; }
+.scan-holo__bar i { display: block; height: 100%; background: var(--teal); box-shadow: 0 0 8px rgba(55, 230, 192, .65); transition: width 80ms linear; }
+@media (max-width: 720px) { .scan-holo { left: 50%; top: auto; bottom: 118px; transform: translateX(-50%); width: min(276px, calc(100% - 24px)); } }
+@media (prefers-reduced-motion: reduce) { .scan-holo, .scan-holo__sweep { animation: none; } }
 .keys-hint { position: absolute; bottom: 16px; left: 16px; font: 400 13px var(--mono); color: var(--ink); background: rgba(7, 8, 13, .7); padding: 4px 9px; pointer-events: none; }
 .dpad { position: absolute; right: 18px; bottom: 18px; display: flex; gap: 6px; align-items: center; }
 /* Points back to the next target from the screen edge while it is out of view. */
@@ -240,7 +255,7 @@ button:disabled { cursor: default; }
 .edge-target__arrow { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; color: #190a03; background: #ff6a2b; box-shadow: 0 0 0 3px rgba(255, 106, 43, .3), 0 4px 14px rgba(0, 0, 0, .5); font-size: 17px; transform: rotate(var(--edge-angle, 0rad)); }
 .edge-target__label { padding: 2px 7px; color: var(--ink); background: rgba(7, 8, 13, .78); font: 600 12px var(--mono); white-space: nowrap; }
 /* While Cuội and the rabbit talk beside the rover, the driving HUD steps aside. */
-.stage.is-celebrating .hud-top, .stage.is-celebrating .dpad, .stage.is-celebrating .keys-hint, .stage.is-celebrating .toast, .stage.is-celebrating .scanbar { display: none; }
+.stage.is-celebrating .hud-top, .stage.is-celebrating .dpad, .stage.is-celebrating .keys-hint, .stage.is-celebrating .toast, .stage.is-celebrating .scanbar, .stage.is-celebrating .scan-holo { display: none; }
 .dpad-mid { display: flex; flex-direction: column; gap: 6px; }
 .hold { touch-action: none; user-select: none; -webkit-user-select: none; }
 .dpad .hold { width: 62px; height: 62px; background: rgba(17, 19, 28, .85); border: 1px solid var(--line); border-radius: 4px; font-size: 20px; }
@@ -409,11 +424,11 @@ dialog.record { width: min(1080px, calc(100% - 24px)); }
 .lab-tabs small { color: var(--dim); font-size: 14px; line-height: 1.25; }
 .lab-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 14px; }
 .lab-stage { position: relative; height: max(360px, calc(100dvh - 276px)); background: #04050b; border: 1px solid var(--line); }
-.page.lab { padding-top: 16px; padding-bottom: 24px; }
+.page.lab { padding-top: 16px; padding-bottom: 108px; }
 .lab .page-head { display: flex; align-items: baseline; gap: 16px; margin-bottom: 10px; }
 .lab .page-head h1 { font-size: 34px; }
 .lab .page-head p { margin-top: 0; }
-.lab-controls { display: flex; flex-direction: column; gap: 16px; background: var(--glass); border: 1px solid var(--line); padding: 16px; align-self: start; }
+.lab-controls { display: flex; flex-direction: column; gap: 12px; background: var(--glass); border: 1px solid var(--line); padding: 14px 16px; align-self: start; }
 .control-label { font-size: 16px; }
 .lab-result { position: absolute; inset: 0; margin: auto; width: min(360px, 90%); height: fit-content; background: var(--panel); border: 1px solid var(--orange); padding: 20px; display: flex; flex-direction: column; gap: 12px; text-align: center; align-items: center; font-size: 20px; }
 .lab-note { color: var(--dim); font-size: 15px; margin-top: 12px; }
@@ -445,6 +460,9 @@ dialog.settings { width: min(500px, calc(100% - 24px)); padding: 24px; }
   .keys-hint { display: none; }
 }
 .action-row.always { display: flex; }
+.steer-row { display: flex; gap: 8px; align-items: center; }
+.steer-row .hold { width: 58px; height: 58px; background: rgba(17, 19, 28, .85); border: 1px solid var(--line); border-radius: 8px; font-size: 20px; }
+.steer-row .hold:active { background: var(--teal); color: #071412; }
 
 /* Slingshot Lab */
 .sling-lab .orbit-canvas { position: absolute; inset: 0; cursor: default; touch-action: none !important; }
@@ -574,7 +592,13 @@ dialog.settings { width: min(500px, calc(100% - 24px)); padding: 24px; }
 .seismic-result { min-height: 3em; color: var(--dim); }
 .seismic-result.hit { color: var(--teal); }
 .seismic-result.miss { color: var(--amber); }
-@media (min-width: 701px) { .lab-tabs { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+.mission .seismic-mission { height: 100%; padding: 58px 18px 18px; }
+.drill-stage { display: flex; flex-direction: column; padding: clamp(12px, 2vw, 24px); overflow: hidden; }
+.drill-display { width: 100%; flex: 1; min-height: 0; margin-top: 12px; border: 1px solid var(--line); border-radius: 8px; }
+.drill-layer-label { fill: var(--ink); font: 600 12px var(--mono); }
+.drill-controls { gap: 10px; }
+.drill-divider { display: flex; flex-direction: column; gap: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
+@media (min-width: 701px) { .lab-tabs { grid-template-columns: repeat(7, minmax(0, 1fr)); } }
 
 /* Floating lunar companion */
 .chat-layer, .chat-layer:popover-open { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: transparent; overflow: visible; pointer-events: none; z-index: 2147483647; }

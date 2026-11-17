@@ -31,7 +31,7 @@
       "cuoi": "Góc nhìn của Cuội",
       "rover": "Góc nhìn xe rover"
     },
-    "tapToFinish": "Chạm vào hộp thoại để hiện hết câu"
+    "tapToFinish": "Chạm hoặc bấm Space để tiếp tục"
   },
   "nav": {
     "story": "Câu chuyện",
@@ -135,9 +135,21 @@
     "dust": "Bụi",
     "sun": "Mặt Trời",
     "scanning": "Đang quét",
+    "scanAnalyzing": "Đang phân tích mẫu…",
+    "scanLocked": "Đã nhận diện loại đá",
+    "scanKinds": {
+      "basalt": "Đá bazan",
+      "anorthosite": "Đá anorthosit",
+      "breccia": "Đá dăm kết",
+      "mineral": "Đá giàu sắt",
+      "signal": "Tín hiệu 1969",
+      "beacon": "Điểm mốc"
+    },
     "keys": "Dùng phím mũi tên hoặc WASD để lái",
     "thrustKeys": "Phím cách: động cơ",
+    "steerKeys": "A/D hoặc ◀/▶: lái ngang",
     "chuteKeys": "P: mở dù",
+    "targetOffset": "Độ lệch bãi đáp",
     "left": "Trái",
     "right": "Phải",
     "forward": "Tiến",
@@ -315,7 +327,37 @@
     "laserSub": "Phản xạ tia laser từ Mặt Trăng.",
     "moonDistance": "Khoảng cách Mặt Trăng",
     "seismic": "Bắt địa chấn",
-    "seismicSub": "Bắt đồng thời bốn tín hiệu."
+    "seismicSub": "Bắt đồng thời bốn tín hiệu.",
+    "drill": "Khoan lõi đất",
+    "drillSub": "Kiểm soát nhiệt mũi khoan qua từng tầng đất.",
+    "targetPad": "Bãi đáp mục tiêu",
+    "padOffset": "Độ lệch bãi đáp",
+    "padRadius": "Bán kính bãi đáp",
+    "missedPad": "Tiếp đất êm, nhưng lệch bãi đáp {{dist}} m."
+  },
+  "drill": {
+    "eyebrow": "Thí nghiệm khoan lõi",
+    "moonRig": "Máy khoan bề mặt Apollo",
+    "marsRig": "Máy khoan băng cực Sao Hỏa",
+    "ready": "Sẵn sàng",
+    "drilling": "Đang khoan",
+    "cooling": "Đang hạ nhiệt…",
+    "depthLabel": "Độ sâu lõi",
+    "heatLabel": "Nhiệt mũi khoan",
+    "jamsLabel": "Số lần kẹt",
+    "layerLabel": "Tầng hiện tại: {{layer}}",
+    "drillBtn": "Giữ để khoan",
+    "controls": "Giữ Phím cách hoặc nút để khoan · Thả để làm mát",
+    "labDone": "Đã lấy lõi {{depth}} m với {{jams}} lần quá nhiệt.",
+    "labFail": "Mũi khoan kẹt sau {{jams}} lần quá nhiệt. Khởi động lại để thử lại.",
+    "targetDepth": "Độ sâu mục tiêu",
+    "maxJams": "Giới hạn quá nhiệt",
+    "layers": {
+      "dust": "Bụi bề mặt",
+      "ejecta": "Sỏi bắn văng",
+      "dense": "Lớp đất nén sâu",
+      "ice": "Băng ngầm cực Bắc"
+    }
   },
   "sources": {
     "heading": "Nguồn và tính minh bạch",
@@ -613,7 +655,7 @@
     },
     "archiveScreen": {
       "heading": "The Archive",
-      "sub": "Optional museum chapters from the original Echo survey. They are not part of the Moon story, and some text is only in English.",
+      "sub": "Các chương mở rộng tùy chọn về Sao Hỏa và không gian sâu (tách biệt với hành trình Mặt Trăng; một số nội dung dùng tiếng Anh).",
       "play": "Open chapter",
       "back": "Back to the Moon journey"
     }

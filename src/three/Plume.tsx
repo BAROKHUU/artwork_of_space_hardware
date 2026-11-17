@@ -148,7 +148,8 @@ const DUST_COUNT = 320;
 const DUST_COLOR: Record<Surface, string> = { moon: '#b6b4b2', mars: '#c58a5e', earth: '#9d8a68' };
 
 /** Regolith thrown outward as the exhaust reaches the ground. */
-export function GroundDust({ world, fire, height }: { world: Surface; fire: RefObject<number>; height: RefObject<number> }) {
+export function GroundDust({ world, fire, height, x }: { world: Surface; fire: RefObject<number>; height: RefObject<number>; x?: RefObject<number> }) {
+  const pointsRef = useRef<THREE.Points>(null);
   const parts = useMemo(() => {
     const seeds = new Float32Array(DUST_COUNT * 4);
     for (let i = 0; i < DUST_COUNT * 4; i += 4) {
@@ -172,7 +173,7 @@ export function GroundDust({ world, fire, height }: { world: Surface; fire: RefO
           vec3 p = vec3(cos(aSeed.x) * reach, age * (1.0 - age * 0.72) * (0.5 + aSeed.w * 1.9), sin(aSeed.x) * reach);
           vAge = age;
           vec4 mv = modelViewMatrix * vec4(p, 1.0);
-          gl_PointSize = (0.28 + age * 1.5) * (0.6 + aSeed.w) * uScale / -mv.z;
+          gl_PointSize = clamp((0.28 + age * 1.5) * (0.6 + aSeed.w) * uScale / max(-mv.z, 0.5), 2.0, 96.0);
           gl_Position = projectionMatrix * mv;
         }
       `,
@@ -183,7 +184,9 @@ export function GroundDust({ world, fire, height }: { world: Surface; fire: RefO
         void main() {
           float d = length(gl_PointCoord - 0.5) * 2.0;
           float soft = smoothstep(1.0, 0.1, d);
-          gl_FragColor = vec4(uColor, soft * pow(1.0 - vAge, 1.5) * 0.38 * uStrength);
+          float alpha = soft * pow(1.0 - vAge, 1.5) * 0.38 * uStrength;
+          if (alpha < 0.004) discard;
+          gl_FragColor = vec4(uColor, alpha);
           #include <colorspace_fragment>
         }
       `,
@@ -205,7 +208,8 @@ export function GroundDust({ world, fire, height }: { world: Surface; fire: RefO
     const near = THREE.MathUtils.smoothstep(9 - height.current, 0, 7);
     u.uStrength.value += (fire.current * near - u.uStrength.value) * 0.12;
     u.uScale.value = (state.size.height * state.viewport.dpr * 0.5) / Math.tan(((state.camera as THREE.PerspectiveCamera).fov * Math.PI) / 360);
+    if (pointsRef.current && x) pointsRef.current.position.x = x.current;
   });
 
-  return <points geometry={parts.geometry} material={parts.material} position={[0, 0.12, 0]} frustumCulled={false} renderOrder={1} />;
+  return <points ref={pointsRef} geometry={parts.geometry} material={parts.material} position={[0, 0.12, 0]} frustumCulled={false} renderOrder={1} />;
 }

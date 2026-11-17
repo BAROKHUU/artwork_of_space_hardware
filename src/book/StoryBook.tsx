@@ -10,7 +10,7 @@ import { useGame } from '../state/store';
 import { play } from '../audio/sfx';
 import { HardwareModel } from '../three/models';
 import { MoonCuoi, MoonRabbit } from '../three/MoonCharacters';
-import { Rocks, TerrainMesh } from '../three/Scenery';
+import { DeepSpace, Lights, Rocks, Sky, TerrainMesh } from '../three/Scenery';
 import { makeTerrain } from '../sim/terrain';
 import { scatterRocks } from '../sim/obstacles';
 import type { StorySection } from './types';
@@ -70,15 +70,16 @@ function StoryStage({ viewpoint, model, chapter, imageAlt }: { viewpoint: Viewpo
 
   return <Canvas camera={{ position: [0, 4.8, 10], fov: 42 }} dpr={[1, 1.5]} role="img" aria-label={imageAlt}>
     <CameraView viewpoint={viewpoint} />
-    <ambientLight intensity={1.7} />
-    <directionalLight position={[-5, 8, 5]} intensity={3} castShadow />
-    {chapter.world === 'moon' ? <>
-      <TerrainMesh terrain={STAGE_TERRAIN} world="moon" />
-      <Rocks rocks={STAGE_ROCKS} world="moon" />
-    </> : <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.03, 0]} receiveShadow>
-      <planeGeometry args={[24, 24]} />
-      <meshStandardMaterial color="#77766e" roughness={1} />
-    </mesh>}
+    {chapter.world === 'deep' ? (
+      <DeepSpace />
+    ) : (
+      <>
+        {chapter.world === 'mars' && <Sky world="mars" />}
+        <Lights world={chapter.world} />
+        <TerrainMesh terrain={STAGE_TERRAIN} world={chapter.world} />
+        <Rocks rocks={STAGE_ROCKS} world={chapter.world} />
+      </>
+    )}
     {model && <FaceCamera position={[-1.35, 0, 0]} rotation={Math.PI}><group scale={0.62}><HardwareModel id={model} /></group></FaceCamera>}
     {chapter.world === 'moon' && <>
       <FaceCamera position={[1.65, 0, 0.1]}><MoonCuoi scale={0.95} /></FaceCamera>
@@ -222,6 +223,26 @@ export function StoryBook({ chapter, sections, mode, activeSectionId, onContinue
     if (event.key === 'ArrowRight' || event.key === 'PageDown') { event.preventDefault(); moveTo(pageIndex + 1); }
     if (event.key === 'ArrowLeft' || event.key === 'PageUp') { event.preventDefault(); moveTo(pageIndex - 1); }
   };
+
+  useEffect(() => {
+    const onWindowKey = (event: globalThis.KeyboardEvent) => {
+      if (event.repeat || event.altKey || event.ctrlKey || event.metaKey || document.querySelector('dialog[open]')) return;
+      const target = event.target;
+      if (target instanceof HTMLElement && (target.closest('input, textarea, select, button, a, [contenteditable]:not([contenteditable="false"])'))) return;
+      if (event.code === 'Space') {
+        event.preventDefault();
+        advanceDialogue();
+      } else if (event.key === 'ArrowRight' || event.key === 'PageDown') {
+        event.preventDefault();
+        moveTo(pageIndex + 1);
+      } else if (event.key === 'ArrowLeft' || event.key === 'PageUp') {
+        event.preventDefault();
+        moveTo(pageIndex - 1);
+      }
+    };
+    window.addEventListener('keydown', onWindowKey);
+    return () => window.removeEventListener('keydown', onWindowKey);
+  }, [advanceDialogue, moveTo, pageIndex]);
 
   if (!current) return <section className="story-book-fallback" aria-label={t('book.reading')}>
     <p>{t(`story:${chapter.id}.title`)}</p>{mode === 'game' && <button type="button" className="btn ghost" onClick={() => finish(true)}>{t('book.skip')}</button>}

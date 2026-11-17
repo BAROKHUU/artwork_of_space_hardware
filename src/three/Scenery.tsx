@@ -18,7 +18,7 @@ const SHADOW_HALF_SPAN = 38;
 export const SHADOW_TEXEL = (SHADOW_HALF_SPAN * 2) / SHADOW_MAP_SIZE;
 
 export const PALETTE = {
-  moon: { low: new THREE.Color('#626264'), high: new THREE.Color('#bdbdbd'), rock: '#777779', sky: '#04050a', sun: '#fff6e8', ambient: 0.12, sunIntensity: 3.1 },
+  moon: { low: new THREE.Color('#626264'), high: new THREE.Color('#bdbdbd'), rock: '#777779', sky: '#04050a', sun: '#fff6e8', ambient: 0.45, sunIntensity: 3.1 },
   earth: { low: new THREE.Color('#3c6a2c'), high: new THREE.Color('#9ab765'), rock: '#7d786f', sky: '#9fcdf0', sun: '#fff5e2', ambient: 0.62, sunIntensity: 2.7 },
   mars: { low: new THREE.Color('#8a4526'), high: new THREE.Color('#dc9a66'), rock: '#5a3122', sky: '#c99a6d', sun: '#ffe2c0', ambient: 0.75, sunIntensity: 2.1 },
 };
@@ -181,7 +181,7 @@ function MoonSky({ sun }: { sun: THREE.Vector3 }) {
 }
 
 const HEMISPHERE: Record<Surface, { sky: string; ground: string; strength: number }> = {
-  moon: { sky: '#8fa4c8', ground: '#232327', strength: 0.28 },
+  moon: { sky: '#b8c8e6', ground: '#4a4b52', strength: 0.58 },
   mars: { sky: '#ffd9b5', ground: '#70412a', strength: 0.7 },
   earth: { sky: '#c4e0ff', ground: '#587a44', strength: 0.85 },
 };
@@ -206,12 +206,12 @@ export function Lights({ world, sunRef, sun = SUN_OFFSET }: { world: Surface; su
   const color = useMemo(() => new THREE.Color(p.sun).lerp(new THREE.Color(world === 'mars' ? '#ffb889' : '#fff0dc'), 1 - day), [p.sun, world, day]);
   return (
     <>
-      <ambientLight intensity={p.ambient * (0.35 + 0.65 * day)} />
-      <hemisphereLight args={[HEMISPHERE[world].sky, HEMISPHERE[world].ground, HEMISPHERE[world].strength * (0.3 + 0.7 * day)]} />
+      <ambientLight intensity={p.ambient * (0.65 + 0.35 * day)} />
+      <hemisphereLight args={[HEMISPHERE[world].sky, HEMISPHERE[world].ground, HEMISPHERE[world].strength * (0.6 + 0.4 * day)]} />
       <directionalLight
         ref={sunRef}
         position={sun}
-        intensity={p.sunIntensity * (0.15 + 0.85 * day)}
+        intensity={p.sunIntensity * (0.35 + 0.65 * day)}
         color={color}
         castShadow
         shadow-mapSize={[SHADOW_MAP_SIZE, SHADOW_MAP_SIZE]}

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState, type MouseEvent as ReactMouseEven
 import { useFrame } from '@react-three/fiber';
 import { useTranslation } from 'react-i18next';
 import * as THREE from 'three';
-import type { DriveConfig } from '../data/types';
+import type { DriveConfig, ScanKind } from '../data/types';
 import { emptyContact, resolveCollisions, rockField, solidRocks, type Obstacle, type RockField } from '../sim/obstacles';
 import { makeTerrain, type Terrain } from '../sim/terrain';
 import { meshHeightAt, terrainSegments } from '../sim/terrainMesh';
@@ -19,7 +19,7 @@ import { play } from '../audio/sfx';
 import { useGame } from '../state/store';
 import { Gauge, HoldButton, Readout, useKeys, type HudChannel, type MissionProps } from './common';
 
-const SCAN_SECONDS = 0.9;
+const SCAN_SECONDS = 1.65;
 const WAKE_LEVEL = 12;
 
 export type LabVehicle = 'sojourner' | 'mer' | 'curiosity' | 'lrv';
@@ -66,8 +66,16 @@ interface Hud {
 
 type Pad = { forward: boolean; back: boolean; left: boolean; right: boolean };
 
-function Beacon({ x, z, y, state, quiet = false }: { x: number; z: number; y: number; state: 'next' | 'done' | 'later'; quiet?: boolean }) {
-  const color = state === 'done' ? '#37e6c0' : state === 'next' ? '#ff6a2b' : '#8b90a0';
+const ROCK_TINT: Record<'basalt' | 'anorthosite' | 'breccia' | 'mineral', string> = {
+  basalt: '#3e4048',
+  anorthosite: '#d5cfc0',
+  breccia: '#8d7564',
+  mineral: '#a65a3a',
+};
+
+function Beacon({ x, z, y, state, kind = 'beacon', quiet = false, scanning = false }: { x: number; z: number; y: number; state: 'next' | 'done' | 'later'; kind?: ScanKind; quiet?: boolean; scanning?: boolean }) {
+  const color = scanning ? '#37e6c0' : state === 'done' ? '#37e6c0' : state === 'next' ? '#ff6a2b' : '#8b90a0';
+  const emissive = scanning ? '#185449' : '#000000';
   return (
     <group position={[x, y, z]}>
       {/* Once the mission is won the beam and ring step aside for the conversation. */}
@@ -79,10 +87,44 @@ function Beacon({ x, z, y, state, quiet = false }: { x: number; z: number; y: nu
         <ringGeometry args={[3.2, 3.6, 40]} />
         <meshBasicMaterial color={color} transparent opacity={0.8} toneMapped={false} fog={false} />
       </mesh>
-      <mesh position={[0, 0.7, 0]} castShadow>
-        <dodecahedronGeometry args={[BEACON_ROCK_RADIUS, 0]} />
-        <meshStandardMaterial color={state === 'done' ? '#5ea99a' : '#8a6a4f'} flatShading roughness={1} />
-      </mesh>
+      {scanning && !quiet && (
+        <mesh position={[0, 1.35, 0]}>
+          <cylinderGeometry args={[1.35, 1.8, 2.5, 24, 1, true]} />
+          <meshBasicMaterial color="#37e6c0" transparent opacity={0.22} side={THREE.DoubleSide} depthWrite={false} toneMapped={false} fog={false} />
+        </mesh>
+      )}
+      {kind === 'beacon' ? (
+        <group>
+          <mesh position={[0, 0.75, 0]} castShadow>
+            <cylinderGeometry args={[0.1, 0.16, 1.5, 10]} />
+            <meshStandardMaterial color="#b6bac6" metalness={0.5} roughness={0.45} />
+          </mesh>
+          <mesh position={[0, 1.65, 0]}>
+            <octahedronGeometry args={[0.34, 0]} />
+            <meshStandardMaterial color={color} emissive={color} emissiveIntensity={scanning ? 1.1 : 0.45} roughness={0.3} />
+          </mesh>
+        </group>
+      ) : kind === 'signal' ? (
+        <group>
+          <mesh position={[0, 0.36, 0]} castShadow>
+            <boxGeometry args={[1.15, 0.72, 0.95]} />
+            <meshStandardMaterial color="#c9a84c" metalness={0.55} roughness={0.35} emissive={emissive} />
+          </mesh>
+          <mesh position={[0, 0.76, 0]} castShadow>
+            <boxGeometry args={[1.55, 0.08, 0.55]} />
+            <meshStandardMaterial color="#364b68" metalness={0.4} roughness={0.4} />
+          </mesh>
+          <mesh position={[0.32, 1.32, 0]}>
+            <cylinderGeometry args={[0.04, 0.04, 1.1, 8]} />
+            <meshStandardMaterial color="#d9dde6" metalness={0.6} roughness={0.3} />
+          </mesh>
+        </group>
+      ) : (
+        <mesh position={[0, 0.7, 0]} castShadow>
+          <dodecahedronGeometry args={[BEACON_ROCK_RADIUS, 0]} />
+          <meshStandardMaterial color={scanning ? '#6df5d8' : state === 'done' ? '#5ea99a' : ROCK_TINT[kind]} emissive={emissive} flatShading roughness={1} />
+        </mesh>
+      )}
     </group>
   );
 }
@@ -132,6 +174,8 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
   const camLook = useRef(new THREE.Vector3(config.start.x, 1, config.start.z - 4));
   const scratch = useRef({ wanted: new THREE.Vector3(), look: new THREE.Vector3(), contact: emptyContact(), pose: { y: 0, pitch: 0, roll: 0 } });
   const [progress, setProgress] = useState(0);
+  const [scanning, setScanning] = useState(false);
+  const scanActive = useRef(false);
   const cuoiWorking = useRef(false);
   const cuoiMoving = useRef(false);
   const cuoiRunning = useRef(false);
@@ -224,9 +268,15 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
 
       if (tgt && Math.hypot(tgt.x - s.x, tgt.z - s.z) < config.radius) {
         s.scan += dt;
+        if (!scanActive.current) {
+          scanActive.current = true;
+          setScanning(true);
+        }
         if (s.scan >= SCAN_SECONDS) {
           s.scan = 0;
           s.index += 1;
+          scanActive.current = false;
+          setScanning(false);
           play('ping');
           setProgress(s.index);
           if (s.index >= config.targets.length) {
@@ -234,7 +284,13 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
             onFinish('win');
           }
         }
-      } else s.scan = 0;
+      } else {
+        s.scan = 0;
+        if (scanActive.current) {
+          scanActive.current = false;
+          setScanning(false);
+        }
+      }
     }
 
     const { y, pitch, roll } = roverGroundPose(terrain.heightAt, s.x, s.z, s.heading, specs.track, specs.wheelbase / 2, specs.wheelRadius, scratch.current.pose);
@@ -385,7 +441,7 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
     }
 
     s.hudAt += dt;
-    if (s.hudAt > 0.12) {
+    if (s.hudAt > (s.scan > 0 ? 0.04 : 0.12)) {
       s.hudAt = 0;
       hud.current?.({
         index: s.index,
@@ -413,9 +469,97 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
       <Tracks motion={sim} terrain={terrain} halfWidth={specs.track} world={config.world} />
       <WheelDust motion={sim} terrain={terrain} halfWidth={specs.track} world={config.world} />
       {config.targets.map((t, i) => (
-        <Beacon key={i} x={t.x} z={t.z} y={terrain.heightAt(t.x, t.z)} state={i < progress ? 'done' : i === progress ? 'next' : 'later'} quiet={friendsCome} />
+        <Beacon key={i} x={t.x} z={t.z} y={terrain.heightAt(t.x, t.z)} state={i < progress ? 'done' : i === progress ? 'next' : 'later'} kind={t.kind ?? 'beacon'} quiet={friendsCome} scanning={scanning && i === progress} />
       ))}
     </>
+  );
+}
+
+function HoloGlyph({ kind }: { kind: ScanKind }) {
+  return (
+    <svg viewBox="0 0 80 80" className="scan-holo__svg" aria-hidden="true">
+      {kind === 'basalt' && (
+        <g fill="rgba(55,230,192,.14)" stroke="#37e6c0" strokeWidth="1.6" strokeLinejoin="round">
+          <polygon points="18,54 14,34 30,18 54,16 66,34 60,58 34,64" />
+          <polyline points="14,34 38,38 54,16" fill="none" opacity=".7" />
+          <line x1="38" y1="38" x2="34" y2="64" opacity=".7" />
+          <circle cx="28" cy="30" r="3" />
+          <circle cx="48" cy="44" r="3.5" />
+          <circle cx="44" cy="27" r="2.2" />
+        </g>
+      )}
+      {kind === 'anorthosite' && (
+        <g fill="rgba(244,234,215,.16)" stroke="#37e6c0" strokeWidth="1.6" strokeLinejoin="round">
+          <polygon points="16,52 22,22 46,14 64,28 58,56 32,62" />
+          <rect x="26" y="28" width="16" height="6" transform="rotate(-22 34 31)" />
+          <rect x="36" y="40" width="18" height="6" transform="rotate(28 45 43)" />
+          <rect x="24" y="44" width="14" height="5" transform="rotate(12 31 46)" />
+        </g>
+      )}
+      {kind === 'breccia' && (
+        <g fill="rgba(55,230,192,.14)" stroke="#37e6c0" strokeWidth="1.6" strokeLinejoin="round">
+          <polygon points="15,50 18,24 42,15 65,26 61,55 36,64" />
+          <polygon points="24,36 33,24 41,34 31,42" fill="rgba(255,178,90,.24)" />
+          <polygon points="44,30 56,33 52,46 42,42" fill="rgba(55,230,192,.26)" />
+          <polygon points="28,48 40,46 45,56 31,57" fill="rgba(255,178,90,.18)" />
+        </g>
+      )}
+      {kind === 'mineral' && (
+        <g fill="rgba(55,230,192,.14)" stroke="#37e6c0" strokeWidth="1.6" strokeLinejoin="round">
+          <polygon points="14,56 20,26 42,20 64,28 66,56" />
+          <path d="M18,40 Q40,34 62,40" fill="none" opacity=".75" />
+          <path d="M16,48 Q40,44 64,48" fill="none" opacity=".75" />
+          <circle cx="32" cy="30" r="3" fill="#ffb25a" />
+          <circle cx="48" cy="33" r="2.6" fill="#ffb25a" />
+        </g>
+      )}
+      {kind === 'signal' && (
+        <g fill="none" stroke="#37e6c0" strokeWidth="1.7" strokeLinecap="round">
+          <rect x="24" y="48" width="32" height="14" rx="2" fill="rgba(55,230,192,.14)" />
+          <line x1="40" y1="48" x2="40" y2="30" />
+          <circle cx="40" cy="28" r="3" fill="#37e6c0" />
+          <path d="M29,22 A16,16 0 0,1 51,22" />
+          <path d="M22,16 A25,25 0 0,1 58,16" opacity=".7" />
+        </g>
+      )}
+      {kind === 'beacon' && (
+        <g fill="rgba(55,230,192,.16)" stroke="#37e6c0" strokeWidth="1.6" strokeLinejoin="round">
+          <polygon points="40,14 62,40 40,66 18,40" />
+          <polygon points="40,24 52,40 40,56 28,40" fill="none" opacity=".7" />
+        </g>
+      )}
+    </svg>
+  );
+}
+
+function ScanHologram({ kind, name, progress }: { kind: ScanKind; name?: string; progress: number }) {
+  const { t } = useTranslation();
+  const p = Math.max(0, Math.min(1, progress));
+  const glyphBlur = ((1 - p) * 8.5).toFixed(1);
+  const labelBlur = (Math.max(0, 1 - p * 1.2) * 6.5).toFixed(1);
+  const clarity = Number((0.42 + p * 0.58).toFixed(2));
+  return (
+    <div className="scan-holo" role="status" aria-live="polite">
+      <div className="scan-holo__frame">
+        <div className="scan-holo__glyph" style={{ filter: `blur(${glyphBlur}px)`, opacity: clarity }}>
+          <HoloGlyph kind={kind} />
+        </div>
+        <div className="scan-holo__sweep" aria-hidden="true" />
+      </div>
+      <div className="scan-holo__info">
+        <div className="scan-holo__head">
+          <span className="scan-holo__eyebrow">{t('hud.scanning')}</span>
+          <span className="scan-holo__pct">{Math.round(p * 100)}%</span>
+        </div>
+        <strong className="scan-holo__type" style={{ filter: `blur(${labelBlur}px)`, opacity: clarity }}>
+          {t(`hud.scanKinds.${kind}`)}
+        </strong>
+        <span className="scan-holo__meta">
+          {p >= 0.85 ? t('hud.scanLocked') : name || t('hud.scanAnalyzing')}
+        </span>
+        <div className="scan-holo__bar"><i style={{ width: `${p * 100}%` }} /></div>
+      </div>
+    </div>
   );
 }
 
@@ -431,6 +575,7 @@ function DriveHud({ id, config, lab, channel, arrow, edge }: { id: string; confi
   }, [channel]);
   const facts = lab ? [] : (t(`missions:${id}.targets`, { returnObjects: true, defaultValue: [] }) as unknown as { name: string; found: string }[]);
   const current = hud ? facts[Math.min(hud.index, facts.length - 1)] : undefined;
+  const currentKind: ScanKind = hud ? config.targets[Math.min(hud.index, config.targets.length - 1)]?.kind ?? 'beacon' : 'beacon';
   const lastFound = hud && hud.index > 0 ? facts[hud.index - 1] : undefined;
   return (
     <>
@@ -467,7 +612,7 @@ function DriveHud({ id, config, lab, channel, arrow, edge }: { id: string; confi
           <span className="edge-target__label">{t('hud.backToTarget', { d: hud ? Math.round(hud.distance) : 0 })}</span>
         </div>
       )}
-      {hud && hud.scan > 0 && <div className="scanbar"><span>{t('hud.scanning')}</span><i style={{ width: `${hud.scan * 100}%` }} /></div>}
+      {hud && hud.scan > 0 && <ScanHologram kind={currentKind} name={current?.name} progress={hud.scan} />}
       {lastFound && <div className="toast" key={hud?.index} role="status">{lastFound.found}</div>}
       {hud?.tethered && config.tether && <div className="alert" role="alert">{t(`missions:${id}.tether`)}</div>}
       {hud?.asleep && <div className="alert" role="alert">{t(`missions:${id}.low`)}</div>}
@@ -475,7 +620,9 @@ function DriveHud({ id, config, lab, channel, arrow, edge }: { id: string; confi
   );
 }
 
-export function DriveMission({ id, config, onResult, lab, vehicle = 'lrv', sun = SUN_OFFSET, cameraMode = 'chase' }: MissionProps<DriveConfig> & { vehicle?: LabVehicle; sun?: THREE.Vector3; cameraMode?: LabCamera }) {
+const DUSK_SUN_OFFSET = new THREE.Vector3(56, 26, -32);
+
+export function DriveMission({ id, config, onResult, lab, vehicle = 'lrv', sun, cameraMode = 'chase' }: MissionProps<DriveConfig> & { vehicle?: LabVehicle; sun?: THREE.Vector3; cameraMode?: LabCamera }) {
   const { t } = useTranslation();
   const quality = useGame((s) => s.quality);
   const keys = useKeys();
@@ -511,7 +658,7 @@ export function DriveMission({ id, config, onResult, lab, vehicle = 'lrv', sun =
   const edge = useRef<HTMLDivElement>(null);
   const [finished, setFinished] = useState<'win' | 'storm' | null>(null);
   const sunLight = useRef<THREE.DirectionalLight>(null);
-  const sunVector = sun;
+  const sunVector = useMemo(() => sun ?? (config.dusk ? DUSK_SUN_OFFSET : SUN_OFFSET), [sun, config.dusk]);
   const clear = useMemo(() => [{ x: config.start.x, z: config.start.z, r: 5 }, ...config.targets.map((p) => ({ x: p.x, z: p.z, r: 6 })), ...(config.prop ? [{ x: config.prop.x, z: config.prop.z, r: 5 }] : [])], [config]);
   const terrain = useMemo(() => makeTerrain({ seed: config.seed, size: 260, amplitude: config.world === 'moon' ? 5.5 : 8, craterCount: config.world === 'moon' ? 58 : 14, sharpCraters: config.world === 'moon', flat: clear, endless: true }), [config, clear]);
   const groundTerrain = useMemo(() => ({ ...terrain, heightAt: meshHeightAt(terrain.heightAt, terrainSegments(quality === 'low')) }), [terrain, quality]);

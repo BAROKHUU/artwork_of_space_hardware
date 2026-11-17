@@ -120,26 +120,29 @@ function Quiz({ beat, onDone }: { beat: QuizBeat; onDone: () => void }) {
       </figure>}
       <div className="options">
         {q.options.map((o, n) => (
-          <button type="button" key={n} aria-pressed={picked === n} disabled={picked !== null && !ungraded} className={`option${!ungraded && picked !== null && n === answer ? ' right' : ''}${!ungraded && picked === n && n !== answer ? ' wrong' : ''}${ungraded && picked === n ? ' right' : ''}`} onClick={() => {
+          <button type="button" key={n} aria-pressed={picked === n} disabled={picked !== null} className={`option${picked !== null && n === answer ? ' right' : ''}${picked === n && n !== answer ? ' wrong' : ''}`} onClick={() => {
             setPicked(n);
+            const right = n === answer;
+            play(right ? 'ping' : 'fail');
             if (!ungraded) {
-              const right = n === answer;
-              play(right ? 'ping' : 'fail');
               if (right) useChatCue.getState().dismissFail();
               else useChatCue.getState().showPopup({ kind: 'fail', textKey: 'chat.popup.failQuiz', prefill: t('chat.popup.prefillQuiz', { question: q.q }) });
             }
           }}>{o}</button>
         ))}
       </div>
-      {picked !== null && !ungraded && (
+      {picked !== null && (
         <>
           <p className="lede" role="status"><b>{picked === answer ? t('quiz.correct') : t('quiz.incorrect')}</b> {q.why}</p>
-          <button type="button" autoFocus className="btn primary" onClick={advance}>
-            {i + 1 >= items.length ? t('quiz.finish') : t('quiz.next')}
-          </button>
+          <div className="row">
+            <button type="button" autoFocus className="btn primary" onClick={advance}>
+              {i + 1 >= items.length ? t('quiz.finish') : t('quiz.next')}
+            </button>
+            {beat.kind === 'precheck' && <button type="button" className="btn ghost" onClick={onDone}>{t('learn.precheck.skip')}</button>}
+          </div>
         </>
       )}
-      {ungraded && <div className="row"><button type="button" className="btn primary" disabled={picked === null} onClick={advance}>{i + 1 >= items.length ? t('quiz.finish') : t('quiz.next')}</button>{beat.kind === 'precheck' && <button type="button" className="btn ghost" onClick={onDone}>{t('learn.precheck.skip')}</button>}</div>}
+      {picked === null && beat.kind === 'precheck' && <div className="row"><button type="button" className="btn ghost" onClick={onDone}>{t('learn.precheck.skip')}</button></div>}
     </section>
   );
 }

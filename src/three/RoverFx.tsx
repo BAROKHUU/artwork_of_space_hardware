@@ -96,7 +96,7 @@ export function WheelDust({ motion, terrain, halfWidth, world }: { motion: RefOb
         void main() {
           vLife = aLife;
           vec4 mv = modelViewMatrix * vec4(position, 1.0);
-          gl_PointSize = (0.2 + (1.0 - aLife) * 0.75) * uScale / -mv.z;
+          gl_PointSize = clamp((0.2 + (1.0 - aLife) * 0.75) * uScale / max(-mv.z, 0.5), 2.0, 84.0);
           gl_Position = projectionMatrix * mv;
         }
       `,
@@ -104,6 +104,7 @@ export function WheelDust({ motion, terrain, halfWidth, world }: { motion: RefOb
         uniform vec3 uColor;
         varying float vLife;
         void main() {
+          if (vLife <= 0.005) discard;
           float soft = smoothstep(1.0, 0.15, length(gl_PointCoord - 0.5) * 2.0);
           gl_FragColor = vec4(uColor, soft * vLife * 0.5);
           #include <colorspace_fragment>
@@ -131,7 +132,7 @@ export function WheelDust({ motion, terrain, halfWidth, world }: { motion: RefOb
     const fade = world === 'mars' ? 0.42 : 0.72;
     const drag = world === 'mars' ? 1.1 : 0;
 
-    const emit = Math.min(1, Math.abs(m.speed) / 8) * 70 * dt + sim.current.carry;
+    const emit = Math.abs(m.speed) < 0.15 ? 0 : Math.min(1, Math.abs(m.speed) / 8) * 70 * dt + sim.current.carry;
     const count = Math.floor(emit);
     sim.current.carry = emit - count;
     const fwdX = -Math.sin(m.heading);
