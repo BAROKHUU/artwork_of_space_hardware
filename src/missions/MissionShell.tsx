@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { MissionBeat } from '../data/types';
+import { useChatCue } from '../state/chatCue';
 import { useGame } from '../state/store';
 import { play } from '../audio/sfx';
 import { ClassifyMission } from './ClassifyMission';
@@ -29,6 +30,7 @@ export function MissionShell({ beat, onDone, onSuccess }: { beat: MissionBeat; o
   }, []);
   const leave = () => {
     active.current = false;
+    useChatCue.getState().dismissFail();
     onDone();
   };
   const key = `missions:${beat.id}`;
@@ -43,18 +45,25 @@ export function MissionShell({ beat, onDone, onSuccess }: { beat: MissionBeat; o
         setEarned(stars);
         setStars(beat.id, stars);
         resetMissionFailures(beat.id);
+        useChatCue.getState().dismissFail();
         play('win');
         setPhase('win');
         onSuccess?.();
       } else {
         recordMissionFailure(beat.id);
+        useChatCue.getState().showPopup({
+          kind: 'fail',
+          textKey: attempt >= 2 ? 'chat.popup.failMissionAlt' : 'chat.popup.failMission',
+          prefill: t('chat.popup.prefillMission', { mission: t(`${key}.title`) }),
+        });
         setPhase('fail');
       }
     },
-    [attempt, beat.id, onSuccess, recordMissionFailure, resetMissionFailures, setStars],
+    [attempt, beat.id, key, onSuccess, recordMissionFailure, resetMissionFailures, setStars, t],
   );
 
   const retry = () => {
+    useChatCue.getState().dismissFail();
     setAttempt((a) => a + 1);
     setResult(null);
     setPhase('play');

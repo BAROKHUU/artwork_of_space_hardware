@@ -4,6 +4,7 @@ import type { SlingshotConfig } from '../data/types';
 import { JUPITER_ORBIT_AU, jupiterAt, simulateSlingshot, type SlingshotResult } from '../sim/orbit';
 import { prefersReducedMotion } from '../three/GameCanvas';
 import { play } from '../audio/sfx';
+import { useChatCue } from '../state/chatCue';
 import { Readout, type MissionProps } from './common';
 
 const VIEW_AU = 11.5;
@@ -21,7 +22,7 @@ function indexAt(path: SlingshotResult['path'], t: number): number {
   return lo;
 }
 
-export function SlingshotMission({ config, onResult, lab, jupiterMass = 1 }: MissionProps<SlingshotConfig> & { jupiterMass?: number }) {
+export function SlingshotMission({ id, config, onResult, lab, jupiterMass = 1 }: MissionProps<SlingshotConfig> & { jupiterMass?: number }) {
   const { t } = useTranslation();
   const [deg, setDeg] = useState(100);
   const [speed, setSpeed] = useState(38.8);
@@ -31,6 +32,7 @@ export function SlingshotMission({ config, onResult, lab, jupiterMass = 1 }: Mis
   const [note, setNote] = useState('');
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const timeRef = useRef(0);
+  const notifiedRun = useRef<SlingshotResult | null>(null);
   const [year, setYear] = useState(0);
 
   // A new Jupiter makes the old flight meaningless. Clear it without rebuilding the component.
@@ -176,16 +178,26 @@ export function SlingshotMission({ config, onResult, lab, jupiterMass = 1 }: Mis
     }
     if (run.outcome === 'boosted') {
       play('win');
+      useChatCue.getState().dismissFail();
       setNote(t('missions:ch3_slingshot.resultGain', { gain: gain.toFixed(1) }));
       const timer = window.setTimeout(() => onResult({ win: true, stars: attempts <= 2 ? 3 : attempts <= 5 ? 2 : 1 }), 1500);
       return () => window.clearTimeout(timer);
     }
     play('fail');
     setNote(t(`missions:ch3_slingshot.fail_${run.outcome}`));
-  }, [finished, run, lab, attempts, onResult, t]);
+    if (notifiedRun.current !== run) {
+      notifiedRun.current = run;
+      useChatCue.getState().showPopup({
+        kind: 'fail',
+        textKey: attempts >= 2 ? 'chat.popup.failMissionAlt' : 'chat.popup.failMission',
+        prefill: t('chat.popup.prefillMission', { mission: t(`missions:${id}.title`) }),
+      });
+    }
+  }, [finished, run, lab, attempts, onResult, t, id]);
 
   const launch = () => {
     play('blip');
+    useChatCue.getState().dismissFail();
     setFinished(false);
     setNote('');
     setAttempts((a) => a + 1);

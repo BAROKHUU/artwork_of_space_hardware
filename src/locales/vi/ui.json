@@ -413,7 +413,18 @@
     "expand": "Mở rộng cửa sổ chat",
     "shrink": "Thu nhỏ cửa sổ chat",
     "generalNote": "Câu trả lời này dựa trên kiến thức chung của AI, không dựa trên nguồn NASA trong trò chơi. Chỉ nên xem là tài liệu tham khảo và hãy kiểm chứng trước khi sử dụng.",
-    "mixedNote": "Một phần câu trả lời dựa trên kiến thức chung của AI thay vì các nguồn NASA bên dưới. Chỉ nên xem phần đó là tài liệu tham khảo."
+    "mixedNote": "Một phần câu trả lời dựa trên kiến thức chung của AI thay vì các nguồn NASA bên dưới. Chỉ nên xem phần đó là tài liệu tham khảo.",
+    "popup": {
+      "dismiss": "Đóng gợi ý",
+      "intro1": "Chào bạn! Mình là RISE BOT. Bí quá cứ hỏi nhé!",
+      "intro2": "Này—mình là RISE BOT! Cần giúp? Hỏi mình nhé!",
+      "intro3": "Mình là RISE BOT! Hỏi mình về nhiệm vụ nha.",
+      "failMission": "Bí ở bước này? Hỏi RISE BOT nhé!",
+      "failMissionAlt": "Nhiệm vụ khó? Hỏi RISE BOT mẹo nhỏ!",
+      "failQuiz": "Chưa đúng—nhờ RISE BOT giải thích nhé?",
+      "prefillMission": "Mình đang bí ở nhiệm vụ \"{{mission}}\". Cho mình gợi ý ngắn nhé!",
+      "prefillQuiz": "Giải thích giúp mình câu này nhé: \"{{question}}\""
+    }
   },
   "seismic": {
     "recorder": "Máy ghi địa chấn bốn kênh",

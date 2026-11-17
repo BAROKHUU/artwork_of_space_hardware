@@ -8,6 +8,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { chapterById, hardwareById, nextChapterInArc, photoUrl, sources } from '../data';
 import type { Beat, Chapter as ChapterData } from '../data/types';
+import { useChatCue } from '../state/chatCue';
 import { useGame } from '../state/store';
 import { MissionShell } from '../missions/MissionShell';
 import { Facts, FateBadge, Photo } from '../components/HardwareInfo';
@@ -119,7 +120,15 @@ function Quiz({ beat, onDone }: { beat: QuizBeat; onDone: () => void }) {
       </figure>}
       <div className="options">
         {q.options.map((o, n) => (
-          <button type="button" key={n} aria-pressed={picked === n} disabled={picked !== null && !ungraded} className={`option${!ungraded && picked !== null && n === answer ? ' right' : ''}${!ungraded && picked === n && n !== answer ? ' wrong' : ''}${ungraded && picked === n ? ' right' : ''}`} onClick={() => { setPicked(n); if (!ungraded) play(n === answer ? 'ping' : 'fail'); }}>{o}</button>
+          <button type="button" key={n} aria-pressed={picked === n} disabled={picked !== null && !ungraded} className={`option${!ungraded && picked !== null && n === answer ? ' right' : ''}${!ungraded && picked === n && n !== answer ? ' wrong' : ''}${ungraded && picked === n ? ' right' : ''}`} onClick={() => {
+            setPicked(n);
+            if (!ungraded) {
+              const right = n === answer;
+              play(right ? 'ping' : 'fail');
+              if (right) useChatCue.getState().dismissFail();
+              else useChatCue.getState().showPopup({ kind: 'fail', textKey: 'chat.popup.failQuiz', prefill: t('chat.popup.prefillQuiz', { question: q.q }) });
+            }
+          }}>{o}</button>
         ))}
       </div>
       {picked !== null && !ungraded && (
@@ -260,6 +269,7 @@ export function Chapter() {
     setFinished(false);
     setHeldMission(null);
     activeChapterId.current = id;
+    return () => useChatCue.getState().dismissFail();
   }, [id]);
 
   useEffect(() => {

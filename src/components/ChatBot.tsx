@@ -1,17 +1,43 @@
-import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from 'react';
+import { memo, useCallback, useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
-import { clampPosition, panelLayout } from './chatPosition';
+import { bubbleLayout, clampPosition, panelLayout } from './chatPosition';
 import { mediaUrl } from '../media';
+import { useChatCue } from '../state/chatCue';
 
 type Grounding = 'nasa' | 'mixed' | 'general';
 type Message = { role: 'user' | 'bot'; text: string; sources?: { title: string; url: string }[]; retrieval?: 'hybrid' | 'keyword' | 'none'; grounding?: Grounding };
 
 const EXPANDED_KEY = 'echo.chat.expanded';
+const INTRO_AT_KEY = 'echo.chat.introAt';
+const INTRO_COUNT_KEY = 'echo.chat.introCount';
+const INTRO_KEYS = ['chat.popup.intro1', 'chat.popup.intro2', 'chat.popup.intro3'] as const;
+const INTRO_COOLDOWN_MS = 180_000;
+const INTRO_MAX_PER_SESSION = 3;
+const INTRO_FAIL_GRACE_MS = 45_000;
+const AUTO_DISMISS_MS = { intro: 8_000, fail: 10_000 } as const;
 const supportsFieldSizing = typeof CSS !== 'undefined' && CSS.supports?.('field-sizing', 'content');
 
 function readExpanded() {
   try { return localStorage.getItem(EXPANDED_KEY) === '1'; } catch { return false; }
+}
+
+function readIntroMeta() {
+  try {
+    const at = Number(sessionStorage.getItem(INTRO_AT_KEY) || 0);
+    const count = Number(sessionStorage.getItem(INTRO_COUNT_KEY) || 0);
+    return { at: Number.isFinite(at) ? at : 0, count: Number.isFinite(count) ? count : 0 };
+  } catch {
+    return { at: 0, count: 0 };
+  }
+}
+
+function recordIntroShown() {
+  try {
+    const { count } = readIntroMeta();
+    sessionStorage.setItem(INTRO_AT_KEY, String(Date.now()));
+    sessionStorage.setItem(INTRO_COUNT_KEY, String(count + 1));
+  } catch { /* storage unavailable */ }
 }
 
 const MessageList = memo(function MessageList({ messages, pending, error }: { messages: Message[]; pending: boolean; error: string }) {
@@ -73,7 +99,13 @@ const Composer = memo(function Composer({ busy, onSend, onTyping, restore }: { b
 });
 
 export function ChatBot() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const popup = useChatCue((s) => s.popup);
+  const openReq = useChatCue((s) => s.openReq);
+  const dismissPopup = useChatCue((s) => s.dismissPopup);
+  const dismissFail = useChatCue((s) => s.dismissFail);
+  const openChat = useChatCue((s) => s.openChat);
+  const consumeOpenReq = useChatCue((s) => s.consumeOpenReq);
   const [position, setPosition] = useState(() => clampPosition({ x: window.innerWidth - 112, y: window.innerHeight - 112 }, window.innerWidth, window.innerHeight));
   const [viewport, setViewport] = useState(() => ({ width: window.innerWidth, height: window.innerHeight }));
   const [open, setOpen] = useState(false);
@@ -83,10 +115,14 @@ export function ChatBot() {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState('');
   const [restore, setRestore] = useState<{ text: string; id: number } | null>(null);
+  const [bubblePaused, setBubblePaused] = useState(false);
+  const [bubbleSize, setBubbleSize] = useState({ width: 228, height: 58 });
   const history = useRef<Message[]>([]);
   const busy = useRef(false);
   const [modal, setModal] = useState<HTMLDialogElement | null>(null);
   const layer = useRef<HTMLDivElement>(null);
+  const bubbleRef = useRef<HTMLDivElement>(null);
+  const lastFailAt = useRef(0);
   const drag = useRef<{ x: number; y: number; originX: number; originY: number; moved: boolean } | null>(null);
   const dragged = useRef(false);
   const transcript = useRef<HTMLDivElement>(null);
@@ -122,6 +158,79 @@ export function ChatBot() {
     const smooth = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     el.scrollTo({ top: el.scrollHeight, behavior: smooth ? 'smooth' : 'auto' });
   }, [messages, pending, open, expanded]);
+
+  useEffect(() => {
+    if (!openReq) return;
+    setOpen(true);
+    if (openReq.prefill) setRestore({ text: openReq.prefill, id: openReq.id });
+    consumeOpenReq(openReq.id);
+  }, [openReq, consumeOpenReq]);
+
+  useEffect(() => {
+    if (open) dismissPopup();
+    setBubblePaused(false);
+  }, [open, dismissPopup]);
+
+  useEffect(() => {
+    window.addEventListener('hashchange', dismissFail);
+    return () => window.removeEventListener('hashchange', dismissFail);
+  }, [dismissFail]);
+
+  useEffect(() => {
+    if (!popup) {
+      setBubblePaused(false);
+      return;
+    }
+    if (popup.kind === 'fail') lastFailAt.current = Date.now();
+    if (bubblePaused) return;
+    const timer = window.setTimeout(() => dismissPopup(popup.id), AUTO_DISMISS_MS[popup.kind]);
+    return () => window.clearTimeout(timer);
+  }, [popup, bubblePaused, dismissPopup]);
+
+  useLayoutEffect(() => {
+    const el = bubbleRef.current;
+    if (!el) return;
+    const next = { width: el.offsetWidth, height: el.offsetHeight };
+    setBubbleSize((prev) => (prev.width === next.width && prev.height === next.height ? prev : next));
+  }, [popup?.id, popup?.textKey, i18n.language, viewport.width, viewport.height]);
+
+  useEffect(() => {
+    let timer = 0;
+    let cancelled = false;
+
+    const schedule = (delayMs: number) => {
+      timer = window.setTimeout(tick, delayMs);
+    };
+
+    const tick = () => {
+      if (cancelled) return;
+      const { at, count } = readIntroMeta();
+      const now = Date.now();
+      const blocked =
+        open ||
+        modal !== null ||
+        document.hidden ||
+        document.querySelector('.intro-gate') !== null ||
+        useChatCue.getState().popup !== null ||
+        now - lastFailAt.current < INTRO_FAIL_GRACE_MS ||
+        count >= INTRO_MAX_PER_SESSION ||
+        (at > 0 && now - at < INTRO_COOLDOWN_MS);
+
+      const chance = count === 0 ? 0.85 : 0.4;
+      if (!blocked && Math.random() < chance) {
+        const key = count === 0 ? INTRO_KEYS[0] : INTRO_KEYS[Math.floor(Math.random() * INTRO_KEYS.length)];
+        const shown = useChatCue.getState().showPopup({ kind: 'intro', textKey: key });
+        if (shown !== null) recordIntroShown();
+      }
+      schedule(45_000 + Math.floor(Math.random() * 15_000));
+    };
+
+    schedule(12_000 + Math.floor(Math.random() * 6_000));
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [open, modal]);
 
   const move = (x: number, y: number) => setPosition(clampPosition({ x, y }, window.innerWidth, window.innerHeight));
   const pointerDown = (event: PointerEvent<HTMLButtonElement>) => {
@@ -182,10 +291,42 @@ export function ChatBot() {
   const sendMessage = useCallback((text: string) => { void send(text); }, [send]);
 
   const panel = panelLayout(position, viewport.width, viewport.height, expanded);
+  const bubble = bubbleLayout(position, viewport.width, viewport.height, bubbleSize);
   const mood = pending || typing ? 'thinking' : open ? 'greeting' : 'idle';
 
   return createPortal(
     <div ref={layer} popover="manual" className="chat-layer">
+      {!open && popup && (
+        <div
+          ref={bubbleRef}
+          className={`chat-bubble ${popup.kind} ${bubble.side}`}
+          style={{ left: bubble.x, top: bubble.y, maxWidth: bubble.maxWidth, '--tail-x': `${bubble.tailX}px` } as CSSProperties}
+          role="status"
+          aria-live="polite"
+          onMouseEnter={() => setBubblePaused(true)}
+          onMouseLeave={() => setBubblePaused(false)}
+          onFocus={() => setBubblePaused(true)}
+          onBlur={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget)) setBubblePaused(false);
+          }}
+        >
+          <button type="button" className="chat-bubble__btn" onClick={() => openChat(popup.prefill)}>
+            {t(popup.textKey)}
+          </button>
+          <button
+            type="button"
+            className="chat-bubble__close"
+            aria-label={t('chat.popup.dismiss')}
+            title={t('chat.popup.dismiss')}
+            onClick={(event) => {
+              event.stopPropagation();
+              dismissPopup(popup.id);
+            }}
+          >
+            ×
+          </button>
+        </div>
+      )}
       {open && <section className={`chat-panel${expanded ? ' expanded' : ''}`} aria-label={t('chat.title')} style={{ left: panel.x, top: panel.y, width: panel.width, height: panel.height }} onKeyDown={(event) => { if (event.key === 'Escape') setOpen(false); }}>
         <header className="chat-header">
           <div><span className="eyebrow">{t('chat.eyebrow')}</span><h2>{t('chat.title')}</h2></div>
@@ -205,7 +346,7 @@ export function ChatBot() {
         </div>
         <Composer busy={pending} onSend={sendMessage} onTyping={setTyping} restore={restore} />
       </section>}
-      <button type="button" className="chat-bot" style={{ left: position.x, top: position.y }} aria-label={t('chat.botLabel')} aria-expanded={open} onPointerDown={pointerDown} onPointerMove={pointerMove} onPointerUp={pointerUp} onPointerCancel={() => { drag.current = null; dragged.current = true; }} onClick={() => { if (!dragged.current) setOpen((value) => !value); dragged.current = false; }} onKeyDown={(event) => {
+      <button type="button" className="chat-bot" style={{ left: position.x, top: position.y }} aria-label={t('chat.botLabel')} aria-expanded={open} onPointerDown={pointerDown} onPointerMove={pointerMove} onPointerUp={pointerUp} onPointerCancel={() => { drag.current = null; dragged.current = true; }} onClick={() => { if (!dragged.current) { if (!open && popup?.kind === 'fail' && popup.prefill) openChat(popup.prefill); else setOpen((value) => !value); } dragged.current = false; }} onKeyDown={(event) => {
         const step = event.shiftKey ? 40 : 10;
         const direction: Record<string, [number, number]> = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] };
         const delta = direction[event.key];
