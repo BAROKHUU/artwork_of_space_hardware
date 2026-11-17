@@ -48,7 +48,8 @@ function plan(path, publicDir) {
 
 async function upload({ file, type, publicId, assetFolder, ext }) {
   const timestamp = Math.floor(Date.now() / 1000);
-  const params = { asset_folder: assetFolder, overwrite: 'true', public_id: publicId, timestamp: String(timestamp) };
+  // URLs carry no version, so a re-upload must also purge the CDN copy or browsers keep the old file.
+  const params = { asset_folder: assetFolder, invalidate: 'true', overwrite: 'true', public_id: publicId, timestamp: String(timestamp) };
   const toSign = Object.keys(params).sort().map((k) => `${k}=${params[k]}`).join('&');
   const signature = createHash('sha1').update(toSign + apiSecret).digest('hex');
   const form = new FormData();

@@ -13,7 +13,7 @@ import { MoonCuoi, MoonRabbit } from '../three/MoonCharacters';
 import { DeepSpace, Lights, Rocks, Sky, TerrainMesh } from '../three/Scenery';
 import { makeTerrain } from '../sim/terrain';
 import { scatterRocks } from '../sim/obstacles';
-import type { StorySection } from './types';
+import type { StoryPageSpec, StorySection } from './types';
 import './book.css';
 import { useDialogueCue } from '../state/dialogueCue';
 
@@ -88,6 +88,22 @@ function StoryStage({ viewpoint, model, chapter, imageAlt }: { viewpoint: Viewpo
   </Canvas>;
 }
 
+function resolveBookmarkIndex(
+  pages: { section: StorySection; page: StoryPageSpec }[],
+  mode: 'game' | 'reader',
+  activeSectionId: string | undefined,
+  chapterId: string,
+) {
+  const { gamePages, readerPages, readerSections } = useGame.getState().book;
+  const requestedSection = mode === 'game'
+    ? activeSectionId
+    : readerSections[chapterId] ?? pages.find(({ section }) => readerPages[section.id])?.section.id;
+  const requestedPage = requestedSection ? (mode === 'game' ? gamePages[requestedSection] : readerPages[requestedSection]) : undefined;
+  const found = pages.findIndex(({ section, page }) => section.id === requestedSection && page.id === requestedPage);
+  if (found >= 0) return found;
+  return Math.max(0, pages.findIndex(({ section }) => section.id === requestedSection));
+}
+
 export function StoryBook({ chapter, sections, mode, activeSectionId, onContinue, onSkip, inPlace = false }: StoryBookProps) {
   const { t } = useTranslation();
   const markBookOpened = useGame((state) => state.markBookOpened);
@@ -95,9 +111,6 @@ export function StoryBook({ chapter, sections, mode, activeSectionId, onContinue
   const enterStory = useGame((state) => state.enterStory);
   const setReaderChapter = useGame((state) => state.setReaderChapter);
   const clearGameBookPage = useGame((state) => state.clearGameBookPage);
-  const gamePages = useGame((state) => state.book.gamePages);
-  const readerPages = useGame((state) => state.book.readerPages);
-  const savedReaderSection = useGame((state) => state.book.readerSections[chapter.id]);
   const narration = useGame((state) => state.narration);
   const [viewpoint, setViewpoint] = useState<Viewpoint>('wide');
   const [lineIndex, setLineIndex] = useState(0);
@@ -113,17 +126,10 @@ export function StoryBook({ chapter, sections, mode, activeSectionId, onContinue
     const lines = t(`story:${section.chapterId}.${section.key}`, { returnObjects: true }) as unknown as StoryLine[];
     return section.pages.map((page) => ({ section, page, lines: lines.slice(page.start, page.end) }));
   }), [visibleSections, t]);
-  const startIndex = useMemo(() => {
-    const requestedSection = mode === 'game'
-      ? activeSectionId
-      : savedReaderSection ?? visibleSections.find((section) => readerPages[section.id])?.id;
-    const requestedPage = requestedSection ? (mode === 'game' ? gamePages[requestedSection] : readerPages[requestedSection]) : undefined;
-    const found = pages.findIndex(({ section, page }) => section.id === requestedSection && page.id === requestedPage);
-    if (found >= 0) return found;
-    return pages.findIndex(({ section }) => section.id === requestedSection);
-  }, [activeSectionId, gamePages, mode, pages, readerPages, savedReaderSection, visibleSections]);
-  const [pageIndex, setPageIndex] = useState(0);
-  useEffect(() => setPageIndex(Math.max(0, startIndex)), [chapter.id, activeSectionId, startIndex]);
+  const [pageIndex, setPageIndex] = useState(() => resolveBookmarkIndex(pages, mode, activeSectionId, chapter.id));
+  useEffect(() => {
+    setPageIndex(resolveBookmarkIndex(pages, mode, activeSectionId, chapter.id));
+  }, [chapter.id, mode, activeSectionId, pages]);
   const current = pages[pageIndex];
   const currentLine = current?.lines[lineIndex] ?? current?.lines[0];
   const backdrop = backdrops[chapter.world];

@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
-import { Environment, Lightformer } from '@react-three/drei';
-import { useFrame } from '@react-three/fiber';
+import { useEffect, useMemo, useRef, useState, type ComponentRef, type RefObject } from 'react';
+import { Environment, Lightformer, OrbitControls } from '@react-three/drei';
+import { useFrame, useThree } from '@react-three/fiber';
 import { useTranslation } from 'react-i18next';
 import * as THREE from 'three';
 import type { LandingConfig } from '../data/types';
@@ -11,7 +11,7 @@ import { GameCanvas } from '../three/GameCanvas';
 import { HardwareModel } from '../three/models';
 import { Engines, GroundDust } from '../three/Plume';
 import { EarthScenery, Lights, Rocks, Sky, TerrainMesh } from '../three/Scenery';
-import { play } from '../audio/sfx';
+import { createSoundLoop, play, playClip, preloadClip } from '../audio/sfx';
 import { Gauge, HoldButton, Readout, useKeys, type HudChannel, type MissionProps } from './common';
 
 const STEP = 1 / 120;
@@ -29,9 +29,13 @@ interface Hud {
 
 type LanderInputRef = { throttle: boolean; chute: boolean; left: boolean; right: boolean };
 
-function Flight({ config, input, keys, channel, onEnd }: { config: LandingConfig; input: RefObject<LanderInputRef>; keys: ReturnType<typeof useKeys>; channel: HudChannel<Hud>; onEnd: (s: LanderState, heldEnough: boolean) => void }) {
+function Flight({ config, input, keys, channel, freeCamera, onEnd }: { config: LandingConfig; input: RefObject<LanderInputRef>; keys: ReturnType<typeof useKeys>; channel: HudChannel<Hud>; freeCamera?: boolean; onEnd: (s: LanderState, heldEnough: boolean) => void }) {
   const hover = config.objective === 'hover';
   const hasTarget = config.targetX !== undefined;
+  const { camera } = useThree();
+  const orbit = useRef<ComponentRef<typeof OrbitControls>>(null);
+  const lastCraft = useRef<{ x: number; y: number } | null>(null);
+  const nextBeaconAt = useRef(0);
   const craft = useRef<THREE.Group>(null);
   const fire = useRef(0);
   const height = useRef(visualAlt(config.alt, hover));
@@ -40,6 +44,33 @@ function Flight({ config, input, keys, channel, onEnd }: { config: LandingConfig
   const canopy = useRef<THREE.Group>(null);
   const streaks = useRef<THREE.Group>(null);
   const sim = useRef({ s: initialLander(config.alt, config.vel, config.fuel), prevAlt: config.alt, prevX: 0, acc: 0, hudAt: 0, over: false, held: 0, tilt: 0 });
+  const engineLoop = useRef<ReturnType<typeof createSoundLoop> | null>(null);
+
+  useEffect(() => {
+    const clip = hover ? 'rotor_loop' : 'thruster_loop';
+    void preloadClip(clip);
+    void preloadClip('lander_touchdown');
+    if (config.hasChute) void preloadClip('lander_chute');
+    const loop = createSoundLoop(clip, hover ? 0.32 : 0.44);
+    engineLoop.current = loop;
+    return () => {
+      loop.stop();
+      engineLoop.current = null;
+    };
+  }, [hover, config.hasChute]);
+
+  useEffect(() => {
+    if (!freeCamera) {
+      lastCraft.current = null;
+      return;
+    }
+    const cx = craftX.current;
+    const cy = height.current;
+    camera.position.set(cx + 4.8, cy + 2.4, 7.5);
+    orbit.current?.target.set(cx, cy + 0.5, 0);
+    orbit.current?.update();
+    lastCraft.current = { x: cx, y: cy };
+  }, [freeCamera, camera]);
 
   useFrame((state, rawDt) => {
     const dt = Math.min(rawDt, 0.05);
@@ -85,6 +116,12 @@ function Flight({ config, input, keys, channel, onEnd }: { config: LandingConfig
     craftX.current = shownX;
     // Engines ramp up and cut off fast, but never pop.
     fire.current += ((firing && !hover ? 1 : 0) - fire.current) * (1 - Math.exp(-dt * 20));
+    if (hover) {
+      const rotorLoad = c.over ? 0 : (firing && s.fuel > 0 ? 0.92 : s.alt > 0.2 ? 0.25 : 0.14);
+      engineLoop.current?.set(rotorLoad, 0.85 + (firing ? 0.36 : 0));
+    } else {
+      engineLoop.current?.set(c.over ? 0 : fire.current, 0.86 + fire.current * 0.3);
+    }
     if (craft.current) {
       craft.current.position.set(shownX + Math.sin(state.clock.elapsedTime * 73) * 0.012 * fire.current, y, Math.cos(state.clock.elapsedTime * 59) * 0.012 * fire.current);
       const targetTilt = c.over ? c.tilt : -steer * 0.14;
@@ -96,10 +133,28 @@ function Flight({ config, input, keys, channel, onEnd }: { config: LandingConfig
       streaks.current.position.set(shownX, ((shownAlt * (hover ? 1.15 : 0.5)) % 12) + y - 6, 0);
       streaks.current.visible = !hover && s.alt > 6;
     }
-    const camY = hover ? 4.5 : Math.max(y + 3.4, 3.2);
-    const focusX = hasTarget ? shownX * 0.65 + (config.targetX ?? 0) * 0.35 : shownX;
-    state.camera.position.set(focusX + (hover ? 5 : 5.6), camY, hover ? 12 : hasTarget ? 18 : 10.5);
-    state.camera.lookAt(focusX, hover ? 3.4 : Math.max(y - 0.4, 1.1), 0);
+    if (hasTarget && config.targetX !== undefined && !c.over && s.alt > 0 && s.alt < 45) {
+      const aligned = Math.abs(s.x - config.targetX) <= (config.targetRadius ?? 12);
+      if (aligned && state.clock.elapsedTime >= nextBeaconAt.current) {
+        play('beacon');
+        nextBeaconAt.current = state.clock.elapsedTime + Math.max(0.28, (s.alt / 45) * 0.85);
+      }
+    }
+    if (freeCamera) {
+      if (lastCraft.current) {
+        const dx = shownX - lastCraft.current.x;
+        const dy = y - lastCraft.current.y;
+        state.camera.position.x += dx;
+        state.camera.position.y += dy;
+        orbit.current?.target.set(shownX, y + 0.5, 0);
+      }
+      lastCraft.current = { x: shownX, y };
+    } else {
+      const camY = hover ? 4.5 : Math.max(y + 3.4, 3.2);
+      const focusX = hasTarget ? shownX * 0.65 + (config.targetX ?? 0) * 0.35 : shownX;
+      state.camera.position.set(focusX + (hover ? 5 : 5.6), camY, hover ? 12 : hasTarget ? 18 : 10.5);
+      state.camera.lookAt(focusX, hover ? 3.4 : Math.max(y - 0.4, 1.1), 0);
+    }
 
     c.hudAt += dt;
     if (c.hudAt > 0.1) {
@@ -112,6 +167,7 @@ function Flight({ config, input, keys, channel, onEnd }: { config: LandingConfig
 
   return (
     <>
+      {freeCamera && <OrbitControls ref={orbit} makeDefault enablePan={false} enableDamping minDistance={2.2} maxDistance={42} maxPolarAngle={Math.PI * 0.48} />}
       <group ref={craft} position={[0, visualAlt(config.alt, hover), 0]}>
         <HardwareModel id={config.vehicle} />
         {config.vehicle === 'ingenuity' && (
@@ -122,7 +178,7 @@ function Flight({ config, input, keys, channel, onEnd }: { config: LandingConfig
             </mesh>
           </group>
         )}
-        {config.vehicle !== 'ingenuity' && <Engines vehicle={config.vehicle} fire={fire} height={height} />}
+        {config.vehicle !== 'ingenuity' && <Engines vehicle={config.vehicle} world={config.world} fire={fire} height={height} />}
         {config.hasChute && (
           <group ref={canopy} visible={false} position={[0, 9, 0]}>
             <mesh>
@@ -174,7 +230,7 @@ function Flight({ config, input, keys, channel, onEnd }: { config: LandingConfig
 }
 
 /** Holds its own state so readout updates never re-render the 3D scene. */
-function LandingHud({ config, channel, input, lab }: { config: LandingConfig; channel: HudChannel<Hud>; input: RefObject<LanderInputRef>; lab?: boolean }) {
+function LandingHud({ config, channel, input, lab, freeCamera }: { config: LandingConfig; channel: HudChannel<Hud>; input: RefObject<LanderInputRef>; lab?: boolean; freeCamera?: boolean }) {
   const { t } = useTranslation();
   const [hud, setHud] = useState<Hud>({ alt: config.alt, vel: config.vel, x: 0, fuel: config.fuel, chute: false, firing: false, held: 0 });
   useEffect(() => {
@@ -202,6 +258,7 @@ function LandingHud({ config, channel, input, lab }: { config: LandingConfig; ch
         {t('hud.thrustKeys')}
         {hasTarget ? ` · ${t('hud.steerKeys')}` : ''}
         {config.hasChute ? ` · ${t('hud.chuteKeys')}` : ''}
+        {freeCamera ? ` · ${t('hud.inspectKeys')}` : ''}
       </p>
       <div className={`action-row${lab ? ' always' : ''}`}>
         {hasTarget && (
@@ -211,7 +268,7 @@ function LandingHud({ config, channel, input, lab }: { config: LandingConfig; ch
           </div>
         )}
         {config.hasChute && (
-          <button type="button" className={`chute-btn${hud.chute ? ' done' : ''}`} disabled={hud.chute} onClick={() => { input.current.chute = true; play('blip'); }}>
+          <button type="button" className={`chute-btn${hud.chute ? ' done' : ''}`} disabled={hud.chute} onClick={() => { input.current.chute = true; play('blip'); playClip('lander_chute', 0.45); }}>
             {hud.chute ? t('hud.chuteOpen') : t('hud.chute')}
           </button>
         )}
@@ -223,7 +280,7 @@ function LandingHud({ config, channel, input, lab }: { config: LandingConfig; ch
   );
 }
 
-export function LandingMission({ config, onResult, lab }: MissionProps<LandingConfig>) {
+export function LandingMission({ config, onResult, lab, freeCamera }: MissionProps<LandingConfig> & { freeCamera?: boolean }) {
   const keys = useKeys();
   const input = useRef<LanderInputRef>({ throttle: false, chute: false, left: false, right: false });
   const channel = useRef<((h: Hud) => void) | null>(null);
@@ -234,6 +291,7 @@ export function LandingMission({ config, onResult, lab }: MissionProps<LandingCo
       if (e.code !== 'KeyP' || !config.hasChute || input.current.chute) return;
       input.current.chute = true;
       play('blip');
+      playClip('lander_chute', 0.45);
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
@@ -258,14 +316,21 @@ export function LandingMission({ config, onResult, lab }: MissionProps<LandingCo
     const soft = speed <= config.safe;
     const onTarget = isOnTarget(s, config.targetX, config.targetRadius);
     const win = soft && heldEnough && onTarget;
+    playClip('lander_touchdown', soft ? 0.34 : 0.56, soft ? 1.05 : 0.78);
     play(win ? 'win' : 'fail');
     const failKey = !soft
       ? (s.fuel <= 0 ? 'fail_fuel' : 'fail_crash')
       : !heldEnough
         ? 'fail_fuel'
         : 'fail_target';
-    const dist = config.targetX !== undefined ? Math.abs(s.x - config.targetX).toFixed(1) : '0';
-    window.setTimeout(() => onResult({ win, failKey, values: { speed: speed.toFixed(1), v: speed.toFixed(1), dist } }), 900);
+    const distNum = config.targetX !== undefined ? Math.abs(s.x - config.targetX) : 0;
+    const dist = distNum.toFixed(1);
+    const stars = win
+      ? config.targetX !== undefined
+        ? (distNum <= 3 && speed <= config.safe * 0.65 ? 3 : distNum <= (config.targetRadius ?? 12) * 0.7 ? 2 : 1)
+        : (speed <= config.safe * 0.55 ? 3 : speed <= config.safe * 0.85 ? 2 : 1)
+      : undefined;
+    window.setTimeout(() => onResult({ win, stars, failKey, values: { speed: speed.toFixed(1), v: speed.toFixed(1), dist } }), 900);
   };
 
   return (
@@ -281,9 +346,9 @@ export function LandingMission({ config, onResult, lab }: MissionProps<LandingCo
           <Lightformer form="rect" intensity={1.1} position={[-7, 2, -3]} scale={[6, 5, 1]} color="#8fa8d8" />
           <Lightformer form="rect" intensity={0.7} position={[0, -5, 0]} rotation={[Math.PI / 2, 0, 0]} scale={[12, 12, 1]} color={config.world === 'mars' ? '#b06b42' : config.world === 'earth' ? '#6d8a55' : '#8a8a8a'} />
         </Environment>
-        <Flight config={config} input={input} keys={keys} channel={channel} onEnd={end} />
+        <Flight config={config} input={input} keys={keys} channel={channel} freeCamera={freeCamera} onEnd={end} />
       </GameCanvas>
-      <LandingHud config={config} channel={channel} input={input} lab={lab} />
+      <LandingHud config={config} channel={channel} input={input} lab={lab} freeCamera={freeCamera} />
     </div>
   );
 }

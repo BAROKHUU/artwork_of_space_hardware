@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useRef, useState, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent, type RefObject } from 'react';
-import { useFrame } from '@react-three/fiber';
+import { useEffect, useMemo, useRef, useState, type ComponentRef, type MouseEvent as ReactMouseEvent, type PointerEvent as ReactPointerEvent, type RefObject } from 'react';
+import { Environment, Lightformer, OrbitControls } from '@react-three/drei';
+import { useFrame, useThree } from '@react-three/fiber';
 import { useTranslation } from 'react-i18next';
 import * as THREE from 'three';
 import type { DriveConfig, ScanKind } from '../data/types';
@@ -15,7 +16,7 @@ import { Lights, SHADOW_TEXEL, SUN_OFFSET, Sky } from '../three/Scenery';
 import { StreamedTerrain } from '../three/StreamedTerrain';
 import { TILE } from '../three/terrainTiles';
 import { useDialogueCue, type Speaker } from '../state/dialogueCue';
-import { play } from '../audio/sfx';
+import { createSoundLoop, play, preloadClip } from '../audio/sfx';
 import { useGame } from '../state/store';
 import { Gauge, HoldButton, Readout, useKeys, type HudChannel, type MissionProps } from './common';
 
@@ -23,7 +24,7 @@ const SCAN_SECONDS = 1.65;
 const WAKE_LEVEL = 12;
 
 export type LabVehicle = 'sojourner' | 'mer' | 'curiosity' | 'lrv';
-export type LabCamera = 'chase' | 'high' | 'cockpit';
+export type LabCamera = 'chase' | 'high' | 'cockpit' | 'inspect';
 const VEHICLES: Record<LabVehicle, { radius: number; track: number; wheelbase: number; wheelRadius: number; camera: number; eye: number }> = {
   sojourner: { radius: 1, track: 0.78, wheelbase: 1.8, wheelRadius: 0, camera: 0.85, eye: 1.5 },
   mer: { radius: 1.5, track: 0.95, wheelbase: 1.8, wheelRadius: 0, camera: 1.15, eye: 2.5 },
@@ -57,6 +58,10 @@ interface Hud {
   sun: number;
   dust: number;
   scan: number;
+  inTargetZone: boolean;
+  warnReason: 'later' | 'done' | 'empty' | null;
+  warnSeq: number;
+  warnActive: boolean;
   tethered: boolean;
   asleep: boolean;
   speed: number;
@@ -64,7 +69,7 @@ interface Hud {
   slope: number;
 }
 
-type Pad = { forward: boolean; back: boolean; left: boolean; right: boolean };
+type Pad = { forward: boolean; back: boolean; left: boolean; right: boolean; scan: boolean };
 
 const ROCK_TINT: Record<'basalt' | 'anorthosite' | 'breccia' | 'mineral', string> = {
   basalt: '#3e4048',
@@ -150,6 +155,7 @@ interface RoverProps {
   sun: THREE.Vector3;
   cameraMode: LabCamera;
   look: RefObject<LookOffset>;
+  lab?: boolean;
 }
 
 interface LookOffset {
@@ -165,23 +171,78 @@ const CHASE_DISTANCE = Math.hypot(5.2, 11);
 type View = 'wide' | 'friends' | 'rover';
 const viewFor = (speaker: Speaker | null): View => (speaker === 'cuoi' || speaker === 'rabbit' ? 'friends' : speaker === 'lrv' || speaker === 'echo' ? 'rover' : 'wide');
 
-function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arrow, edge, hud, onFinish, frozen, celebrate, vehicle, sun, cameraMode, look: lookOffset }: RoverProps) {
+const ROVER_PITCH: Record<LabVehicle, number> = {
+  sojourner: 1.18,
+  lrv: 1.0,
+  mer: 0.92,
+  curiosity: 0.82,
+};
+
+function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arrow, edge, hud, onFinish, frozen, celebrate, vehicle, sun, cameraMode, look: lookOffset, lab = false }: RoverProps) {
   const specs = VEHICLES[vehicle];
   const axes = useMemo(() => sunAxes(sun), [sun]);
+  const { camera: sceneCamera } = useThree();
+  const orbit = useRef<ComponentRef<typeof OrbitControls>>(null);
+  const lastRover = useRef<{ x: number; y: number; z: number } | null>(null);
+  const stormWarned = useRef(false);
   const ref = useRef<THREE.Group>(null);
   const sim = useRef({ x: config.start.x, z: config.start.z, heading: 0, speed: 0, index: 0, scan: 0, battery: 100, t: 0, asleep: false, hudAt: 0, done: false, tethered: false, odometer: 0 });
   const camPos = useRef(new THREE.Vector3(config.start.x, 8, config.start.z + 14));
   const camLook = useRef(new THREE.Vector3(config.start.x, 1, config.start.z - 4));
   const scratch = useRef({ wanted: new THREE.Vector3(), look: new THREE.Vector3(), contact: emptyContact(), pose: { y: 0, pitch: 0, roll: 0 } });
+
+  useEffect(() => {
+    if (cameraMode !== 'inspect') {
+      lastRover.current = null;
+      return;
+    }
+    const sx = sim.current.x;
+    const sz = sim.current.z;
+    const sy = terrain.heightAt(sx, sz);
+    sceneCamera.position.set(sx + 4.2, sy + 2.4, sz + 4.2);
+    orbit.current?.target.set(sx, sy + 0.7, sz);
+    orbit.current?.update();
+    lastRover.current = { x: sx, y: sy, z: sz };
+  }, [cameraMode, sceneCamera, terrain]);
   const [progress, setProgress] = useState(0);
   const [scanning, setScanning] = useState(false);
   const scanActive = useRef(false);
+  const prevScanHeld = useRef(false);
   const cuoiWorking = useRef(false);
   const cuoiMoving = useRef(false);
   const cuoiRunning = useRef(false);
   const cuoiRef = useRef<THREE.Group>(null);
+  const cheerRabbitRef = useRef<THREE.Group>(null);
+  const cheerRingMat = useRef<THREE.MeshBasicMaterial>(null);
+  const cheerTimer = useRef(0);
+  const rabbitWarnTimer = useRef(0);
+  const lastWarnReason = useRef<'later' | 'done' | 'empty' | null>(null);
+  const lastWarnSeq = useRef(0);
+  const lastWarnAt = useRef(-10);
+  const lastWrongZoneEntered = useRef(-1);
+  const roverLoop = useRef<ReturnType<typeof createSoundLoop> | null>(null);
+  const scanLoop = useRef<ReturnType<typeof createSoundLoop> | null>(null);
+
+  useEffect(() => {
+    void preloadClip('rover_loop');
+    const rLoop = createSoundLoop('rover_loop', 0.34);
+    roverLoop.current = rLoop;
+    let sLoop: ReturnType<typeof createSoundLoop> | null = null;
+    if (!lab) {
+      void preloadClip('scan_loop');
+      sLoop = createSoundLoop('scan_loop', 0.28);
+      scanLoop.current = sLoop;
+    }
+    return () => {
+      rLoop.stop();
+      sLoop?.stop();
+      roverLoop.current = null;
+      scanLoop.current = null;
+    };
+  }, [lab]);
   const withCuoi = config.world === 'moon' && vehicle === 'lrv' && config.cuoi !== false;
-  const friendsCome = celebrate && config.world === 'moon';
+  const friendsCome = celebrate && config.world === 'moon' && config.cuoi !== false;
+  const withRabbitCheer = config.world === 'moon' && !celebrate;
   const cuoiPosition = useRef(new THREE.Vector3(config.start.x + specs.radius + 1.1, terrain.heightAt(config.start.x + specs.radius + 1.1, config.start.z) + 0.08, config.start.z));
   const cuoiRotation = useRef(0);
   const rabbitRef = useRef<THREE.Group>(null);
@@ -198,6 +259,9 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
     const dt = Math.min(rawDt, 0.05);
     const s = sim.current;
     const maxSpeed = missionId === 'm2_collect' ? 12 : 11;
+    const activeMovement = frozen || s.done ? 0 : Math.min(1, Math.abs(s.speed) / maxSpeed);
+    roverLoop.current?.set(activeMovement > 0.03 ? 0.22 + activeMovement * 0.78 : 0, ROVER_PITCH[vehicle] * (0.76 + activeMovement * 0.48));
+    scanLoop.current?.set(!lab && !frozen && !s.done && scanActive.current ? 0.85 : 0, 0.9 + (s.scan / SCAN_SECONDS) * 0.45);
     cuoiWorking.current = withCuoi && s.scan > 0;
     if (!friendsCome) {
       const speed = Math.abs(s.speed);
@@ -208,6 +272,11 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
     }
     const k = keys.current;
     const p = pad.current;
+    const scanHeld = !lab && (k.has('Space') || k.has('KeyE') || p.scan);
+    const scanJustPressed = scanHeld && !prevScanHeld.current;
+    prevScanHeld.current = scanHeld;
+    const activeTarget = config.targets[s.index];
+    const inActiveNow = Boolean(activeTarget && Math.hypot(activeTarget.x - s.x, activeTarget.z - s.z) < config.radius);
     if (!frozen && !s.done) {
       s.t += dt;
       const forward = k.has('ArrowUp') || k.has('KeyW') || p.forward;
@@ -220,7 +289,12 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
         s.battery = stepBattery(s.battery, moving, s.t, config.battery, dt);
         if (s.battery <= 0) s.asleep = true;
         else if (s.asleep && s.battery >= WAKE_LEVEL) s.asleep = false;
-        if (dustLevel(s.t, config.battery.stormAt) >= 1) {
+        const dust = dustLevel(s.t, config.battery.stormAt);
+        if (dust >= 0.65 && !stormWarned.current) {
+          stormWarned.current = true;
+          play('storm');
+        }
+        if (dust >= 1) {
           s.done = true;
           onFinish('storm');
           return;
@@ -228,7 +302,8 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
       }
 
       const tgt = config.targets[s.index];
-      const atSample = missionId === 'm2_collect' && tgt && Math.hypot(tgt.x - s.x, tgt.z - s.z) < config.radius;
+      const inTargetZone = Boolean(tgt && Math.hypot(tgt.x - s.x, tgt.z - s.z) < config.radius);
+      const atSample = missionId === 'm2_collect' && inTargetZone && scanHeld;
       const drive = s.asleep || atSample ? 0 : forward ? 1 : back ? -0.55 : 0;
       s.speed = atSample ? 0 : s.speed + (drive * maxSpeed - s.speed) * damp(missionId === 'm2_collect' ? 3.4 : 2.6, dt);
       s.odometer += Math.abs(s.speed) * dt;
@@ -266,7 +341,35 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
       s.x = nx;
       s.z = nz;
 
-      if (tgt && Math.hypot(tgt.x - s.x, tgt.z - s.z) < config.radius) {
+      const inActiveAfterMove = Boolean(tgt && Math.hypot(tgt.x - s.x, tgt.z - s.z) < config.radius);
+      const wrongIdx = !lab
+        ? config.targets.findIndex((other, idx) => idx !== s.index && Math.hypot(other.x - s.x, other.z - s.z) < config.radius)
+        : -1;
+      if (wrongIdx === -1) lastWrongZoneEntered.current = -1;
+
+      const triggerWarn = (reason: 'later' | 'done' | 'empty') => {
+        if (s.t - lastWarnAt.current < 1.1 && lastWarnReason.current === reason) return;
+        lastWarnAt.current = s.t;
+        lastWarnSeq.current += 1;
+        lastWarnReason.current = reason;
+        rabbitWarnTimer.current = 4.2;
+        cheerTimer.current = 0;
+        s.hudAt = 999;
+        play('warn');
+      };
+
+      if (!lab && scanJustPressed && !inActiveAfterMove) {
+        if (wrongIdx > s.index) triggerWarn('later');
+        else if (wrongIdx >= 0 && wrongIdx < s.index) triggerWarn('done');
+        else triggerWarn('empty');
+      } else if (!lab && wrongIdx > s.index && lastWrongZoneEntered.current !== wrongIdx) {
+        lastWrongZoneEntered.current = wrongIdx;
+        triggerWarn('later');
+      }
+
+      if (inActiveAfterMove && scanHeld) {
+        rabbitWarnTimer.current = 0;
+        lastWarnReason.current = null;
         s.scan += dt;
         if (!scanActive.current) {
           scanActive.current = true;
@@ -278,6 +381,8 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
           scanActive.current = false;
           setScanning(false);
           play('ping');
+          if (withRabbitCheer) cheerTimer.current = 4.0;
+          s.hudAt = 999;
           setProgress(s.index);
           if (s.index >= config.targets.length) {
             s.done = true;
@@ -285,7 +390,7 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
           }
         }
       } else {
-        s.scan = 0;
+        s.scan = inActiveAfterMove ? Math.max(0, s.scan - dt * 1.6) : 0;
         if (scanActive.current) {
           scanActive.current = false;
           setScanning(false);
@@ -345,6 +450,33 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
       rabbitRotation.current = dampAngle(rabbitRotation.current, want, 6, dt);
       rabbitRef.current.position.copy(r);
       rabbitRef.current.rotation.y = rabbitRotation.current;
+    }
+    if (rabbitWarnTimer.current > 0) {
+      rabbitWarnTimer.current = Math.max(0, rabbitWarnTimer.current - dt);
+      if (rabbitWarnTimer.current <= 0) lastWarnReason.current = null;
+    }
+    if (cheerRabbitRef.current) {
+      const warnPop = rabbitWarnTimer.current > 0;
+      const timer = warnPop ? rabbitWarnTimer.current : cheerTimer.current;
+      if (timer > 0 && !friendsCome && config.world === 'moon') {
+        if (!warnPop) cheerTimer.current = Math.max(0, cheerTimer.current - dt);
+        const age = (warnPop ? 4.2 : 4.0) - timer;
+        const pop = Math.min(1, age * 6) * Math.min(1, timer * 3);
+        const cx = s.x + sideX * (specs.radius + 0.95) + fx * 0.65;
+        const cz = s.z + sideZ * (specs.radius + 0.95) + fz * 0.65;
+        const bob = warnPop ? Math.abs(Math.sin(state.clock.elapsedTime * 8.5)) * 0.16 : Math.sin(state.clock.elapsedTime * 5.2) * 0.14;
+        const cy = Math.max(y, terrain.heightAt(cx, cz)) + 1.18 + bob;
+        const baseYaw = Math.atan2(camera.x - cx, camera.z - cz) + Math.PI;
+        const headShake = warnPop ? Math.sin(state.clock.elapsedTime * 20) * 0.28 : 0;
+        const rollShake = warnPop ? Math.sin(state.clock.elapsedTime * 14) * 0.15 : Math.sin(state.clock.elapsedTime * 7.2) * 0.11;
+        cheerRabbitRef.current.visible = pop > 0.02;
+        cheerRabbitRef.current.position.set(cx, cy, cz);
+        cheerRabbitRef.current.scale.setScalar(0.56 * pop);
+        cheerRabbitRef.current.rotation.set(0, baseYaw + headShake, rollShake);
+        if (cheerRingMat.current) cheerRingMat.current.color.set(warnPop ? '#ff6a2b' : '#e9c77d');
+      } else {
+        cheerRabbitRef.current.visible = false;
+      }
     }
     if (ref.current) {
       ref.current.visible = cameraMode !== 'cockpit';
@@ -412,8 +544,18 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
       const lead = 7 * Math.max(0, 1 - Math.abs(yaw) / 0.9);
       camLook.current.lerp(look.set(s.x + fx * lead, y + 1.4, s.z + fz * lead), damp(active ? 16 : 6, dt));
     }
-    state.camera.position.copy(camPos.current);
-    state.camera.lookAt(camLook.current);
+    if (cameraMode === 'inspect' && !friendsCome) {
+      if (lastRover.current) {
+        state.camera.position.x += s.x - lastRover.current.x;
+        state.camera.position.y += y - lastRover.current.y;
+        state.camera.position.z += s.z - lastRover.current.z;
+        orbit.current?.target.set(s.x, y + 0.7, s.z);
+      }
+      lastRover.current = { x: s.x, y, z: s.z };
+    } else {
+      state.camera.position.copy(camPos.current);
+      state.camera.lookAt(camLook.current);
+    }
 
     const tgt = config.targets[Math.min(s.index, config.targets.length - 1)];
     const dx = tgt.x - s.x;
@@ -441,7 +583,7 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
     }
 
     s.hudAt += dt;
-    if (s.hudAt > (s.scan > 0 ? 0.04 : 0.12)) {
+    if (s.hudAt > (s.scan > 0 || rabbitWarnTimer.current > 0 ? 0.04 : 0.12)) {
       s.hudAt = 0;
       hud.current?.({
         index: s.index,
@@ -450,6 +592,10 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
         sun: config.battery ? sunlight(s.t, config.battery.solLength) : 0,
         dust: config.battery ? dustLevel(s.t, config.battery.stormAt) : 0,
         scan: s.scan / SCAN_SECONDS,
+        inTargetZone: inActiveNow,
+        warnReason: rabbitWarnTimer.current > 0 ? lastWarnReason.current : null,
+        warnSeq: lastWarnSeq.current,
+        warnActive: rabbitWarnTimer.current > 0,
         tethered: s.tethered,
         asleep: s.asleep,
         speed: Math.abs(s.speed),
@@ -461,11 +607,21 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
 
   return (
     <>
+      {cameraMode === 'inspect' && !friendsCome && <OrbitControls ref={orbit} makeDefault enablePan={false} enableDamping minDistance={2.2} maxDistance={26} maxPolarAngle={Math.PI * 0.48} />}
       <group ref={ref}>
         <HardwareModel id={vehicle} />
       </group>
       {(withCuoi || friendsCome) && <group ref={cuoiRef}><MoonCuoi scale={0.72} workingRef={cuoiWorking} movingRef={cuoiMoving} runningRef={cuoiRunning} /></group>}
       {friendsCome && <group ref={rabbitRef} position={rabbitPosition.current}><MoonRabbit scale={0.62} /></group>}
+      {config.world === 'moon' && (
+        <group ref={cheerRabbitRef} visible={false}>
+          <MoonRabbit />
+          <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]}>
+            <ringGeometry args={[0.38, 0.54, 24]} />
+            <meshBasicMaterial ref={cheerRingMat} color="#e9c77d" transparent opacity={0.45} side={THREE.DoubleSide} toneMapped={false} />
+          </mesh>
+        </group>
+      )}
       <Tracks motion={sim} terrain={terrain} halfWidth={specs.track} world={config.world} />
       <WheelDust motion={sim} terrain={terrain} halfWidth={specs.track} world={config.world} />
       {config.targets.map((t, i) => (
@@ -564,7 +720,7 @@ function ScanHologram({ kind, name, progress }: { kind: ScanKind; name?: string;
 }
 
 /** Holds its own state so readout updates never re-render the 3D scene. */
-function DriveHud({ id, config, lab, channel, arrow, edge }: { id: string; config: DriveConfig; lab?: boolean; channel: HudChannel<Hud>; arrow: RefObject<HTMLSpanElement | null>; edge: RefObject<HTMLDivElement | null> }) {
+function DriveHud({ id, config, lab, channel, arrow, edge, onScanHold }: { id: string; config: DriveConfig; lab?: boolean; channel: HudChannel<Hud>; arrow: RefObject<HTMLSpanElement | null>; edge: RefObject<HTMLDivElement | null>; onScanHold: (held: boolean) => void }) {
   const { t } = useTranslation();
   const [hud, setHud] = useState<Hud | null>(null);
   useEffect(() => {
@@ -577,6 +733,15 @@ function DriveHud({ id, config, lab, channel, arrow, edge }: { id: string; confi
   const current = hud ? facts[Math.min(hud.index, facts.length - 1)] : undefined;
   const currentKind: ScanKind = hud ? config.targets[Math.min(hud.index, config.targets.length - 1)]?.kind ?? 'beacon' : 'beacon';
   const lastFound = hud && hud.index > 0 ? facts[hud.index - 1] : undefined;
+  const rabbitCheers = config.world === 'moon' && !lab ? (t('hud.rabbitCheers', { returnObjects: true }) as unknown as string[]) : [];
+  const cheerLine = hud && hud.index > 0 && rabbitCheers.length ? rabbitCheers[(hud.index - 1) % rabbitCheers.length] : '';
+  const warnText = hud?.warnActive && hud.warnReason
+    ? hud.warnReason === 'later'
+      ? t('hud.rabbitWrongLater')
+      : hud.warnReason === 'done'
+        ? t('hud.rabbitWrongDone')
+        : t('hud.rabbitWrongEmpty')
+    : '';
   return (
     <>
       {hud && !lab && (
@@ -612,8 +777,62 @@ function DriveHud({ id, config, lab, channel, arrow, edge }: { id: string; confi
           <span className="edge-target__label">{t('hud.backToTarget', { d: hud ? Math.round(hud.distance) : 0 })}</span>
         </div>
       )}
+      {!lab && hud && hud.inTargetZone && hud.scan <= 0 && (
+        <div className="scan-prompt" role="status" aria-live="polite">{t('hud.scanPrompt')}</div>
+      )}
       {hud && hud.scan > 0 && <ScanHologram kind={currentKind} name={current?.name} progress={hud.scan} />}
-      {lastFound && <div className="toast" key={hud?.index} role="status">{lastFound.found}</div>}
+      {!lab && hud?.warnActive && warnText ? (
+        config.world === 'moon' ? (
+          <div className="toast toast-rabbit is-warn" key={`warn-${hud.warnSeq}`} role="status">
+            <svg viewBox="0 0 36 36" className="toast-rabbit__icon" aria-hidden="true">
+              <ellipse cx="13" cy="10" rx="3.2" ry="8" fill="#f0e9db" />
+              <ellipse cx="23" cy="10" rx="3.2" ry="8" fill="#f0e9db" />
+              <circle cx="18" cy="21" r="9.5" fill="#f0e9db" />
+              <circle cx="14.5" cy="20" r="1.4" fill="#211d1b" />
+              <circle cx="21.5" cy="20" r="1.4" fill="#211d1b" />
+              <path d="M15.8 23.8 Q18 22.2 20.2 23.8" fill="none" stroke="#ad4d4d" strokeWidth="1.4" strokeLinecap="round" />
+            </svg>
+            <div className="toast-rabbit__body">
+              <span className="toast-rabbit__who">{t('hud.rabbitWarnTitle')}</span>
+              <p>{warnText}</p>
+            </div>
+          </div>
+        ) : (
+          <div className="toast is-warn" key={`warn-${hud.warnSeq}`} role="status">{warnText}</div>
+        )
+      ) : lastFound && (
+        config.world === 'moon' && !lab ? (
+          <div className="toast toast-rabbit" key={hud?.index} role="status">
+            <svg viewBox="0 0 36 36" className="toast-rabbit__icon" aria-hidden="true">
+              <ellipse cx="13" cy="10" rx="3.2" ry="8" fill="#f0e9db" />
+              <ellipse cx="23" cy="10" rx="3.2" ry="8" fill="#f0e9db" />
+              <circle cx="18" cy="21" r="9.5" fill="#f0e9db" />
+              <circle cx="14.5" cy="20" r="1.4" fill="#211d1b" />
+              <circle cx="21.5" cy="20" r="1.4" fill="#211d1b" />
+              <ellipse cx="18" cy="22.8" rx="1.6" ry="1.1" fill="#ad6c70" />
+            </svg>
+            <div className="toast-rabbit__body">
+              <span className="toast-rabbit__who">{t('hud.rabbitCheerTitle')} · {cheerLine}</span>
+              <p>{lastFound.found}</p>
+            </div>
+          </div>
+        ) : (
+          <div className="toast" key={hud?.index} role="status">{lastFound.found}</div>
+        )
+      )}
+      {!lab && (
+        <div className="scan-action">
+          <HoldButton
+            label={t('hud.scanHoldBtn')}
+            className={`scan-hold-btn${hud?.inTargetZone ? ' ready' : ''}${hud && hud.scan > 0 ? ' scanning' : ''}`}
+            onChange={onScanHold}
+          >
+            <span className="scan-hold-btn__dot" aria-hidden="true" />
+            <span>{t('hud.scanHoldBtn')}</span>
+            <kbd aria-hidden="true">E</kbd>
+          </HoldButton>
+        </div>
+      )}
       {hud?.tethered && config.tether && <div className="alert" role="alert">{t(`missions:${id}.tether`)}</div>}
       {hud?.asleep && <div className="alert" role="alert">{t(`missions:${id}.low`)}</div>}
     </>
@@ -626,7 +845,7 @@ export function DriveMission({ id, config, onResult, lab, vehicle = 'lrv', sun, 
   const { t } = useTranslation();
   const quality = useGame((s) => s.quality);
   const keys = useKeys();
-  const pad = useRef<Pad>({ forward: false, back: false, left: false, right: false });
+  const pad = useRef<Pad>({ forward: false, back: false, left: false, right: false, scan: false });
   const channel = useRef<((h: Hud) => void) | null>(null);
   const lookOffset = useRef<LookOffset>({ yaw: 0, pitch: 0, active: false });
   const lastPointer = useRef({ x: 0, y: 0 });
@@ -684,18 +903,23 @@ export function DriveMission({ id, config, onResult, lab, vehicle = 'lrv', sun, 
       <GameCanvas camera={{ position: [0, 8, 14], fov: 55, far: 520 }}>
         <Sky world={config.world} sun={sunVector} />
         <Lights world={config.world} sunRef={sunLight} sun={sunVector} />
+        <Environment frames={1} resolution={64} environmentIntensity={0.32}>
+          <Lightformer form="rect" intensity={3.4} position={[6, 7, 4]} scale={[9, 9, 1]} color="#fff6e6" />
+          <Lightformer form="rect" intensity={1.0} position={[-7, 2, -3]} scale={[6, 5, 1]} color="#8fa8d8" />
+          <Lightformer form="rect" intensity={0.7} position={[0, -5, 0]} rotation={[Math.PI / 2, 0, 0]} scale={[12, 12, 1]} color={config.world === 'mars' ? '#b06b42' : '#8a8a8a'} />
+        </Environment>
         <StreamedTerrain terrain={terrain} world={config.world} rocks={field} />
         {config.prop && (
           <group position={[config.prop.x, groundTerrain.heightAt(config.prop.x, config.prop.z), config.prop.z]}>
             <HardwareModel id={config.prop.model} />
           </group>
         )}
-        <Rover missionId={id} config={config} terrain={groundTerrain} fixed={fixed} field={field} keys={keys} pad={pad} light={sunLight} arrow={arrow} edge={edge} hud={channel} onFinish={finish} frozen={finished !== null} celebrate={finished === 'win' && !lab} vehicle={vehicle} sun={sunVector} cameraMode={cameraMode} look={lookOffset} />
+        <Rover missionId={id} config={config} terrain={groundTerrain} fixed={fixed} field={field} keys={keys} pad={pad} light={sunLight} arrow={arrow} edge={edge} hud={channel} onFinish={finish} frozen={finished !== null} celebrate={finished === 'win' && !lab} vehicle={vehicle} sun={sunVector} cameraMode={cameraMode} look={lookOffset} lab={lab} />
       </GameCanvas>
 
-      <DriveHud id={id} config={config} lab={lab} channel={channel} arrow={arrow} edge={edge} />
+      <DriveHud id={id} config={config} lab={lab} channel={channel} arrow={arrow} edge={edge} onScanHold={(held) => { pad.current.scan = held; }} />
 
-      <p className="keys-hint">{t('hud.keys')}{lab ? ` · ${t('hud.lookKeys')}` : ''}</p>
+      <p className="keys-hint">{t('hud.keys')}{!lab ? ` · ${t('hud.scanKeys')}` : ''}{lab ? ` · ${cameraMode === 'inspect' ? t('hud.inspectKeys') : t('hud.lookKeys')}` : ''}</p>
       <div className="dpad">
         {hold('left', t('hud.left'), '◀')}
         <div className="dpad-mid">

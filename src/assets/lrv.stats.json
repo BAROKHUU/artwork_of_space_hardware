@@ -4,14 +4,14 @@
   "source_objects": 134,
   "source_triangles": 3607145,
   "triangle_target": 150000,
-  "triangle_target_met": false,
+  "triangle_target_met": true,
   "nodes": 5,
   "meshes": 5,
   "primitives": 54,
-  "triangles": 248082,
+  "triangles": 115364,
   "materials": 40,
   "embedded_images": 0,
-  "bytes": 4851744,
+  "bytes": 3152820,
   "units": "metres",
   "up": "+Y",
   "forward": "-Z",
@@ -1522,5 +1522,6 @@
       1.008156035578367
     ]
   },
-  "roundtrip_meshes": 5
+  "roundtrip_meshes": 5,
+  "post_process": "src/previews/fix_lrv_dish.py: antenna wire mesh (137182 tris) replaced by a fitted 4464-tri umbrella"
 }

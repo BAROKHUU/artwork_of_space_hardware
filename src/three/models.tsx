@@ -10,17 +10,20 @@ function foilBump(): THREE.CanvasTexture {
   const canvas = document.createElement('canvas');
   canvas.width = canvas.height = 256;
   const ctx = canvas.getContext('2d')!;
-  ctx.fillStyle = '#808080';
+  ctx.fillStyle = '#7c7c7c';
   ctx.fillRect(0, 0, 256, 256);
-  for (let i = 0; i < 420; i++) {
-    const v = 90 + Math.floor(Math.random() * 80);
+  for (let i = 0; i < 640; i++) {
+    const v = 72 + ((i * 53) % 128);
     ctx.fillStyle = `rgb(${v},${v},${v})`;
-    const x = Math.random() * 256;
-    const y = Math.random() * 256;
-    const r = 8 + Math.random() * 26;
+    const x = ((i * 97) % 256);
+    const y = ((i * 151) % 256);
+    const r = 6 + (i % 22);
     ctx.beginPath();
-    ctx.moveTo(x + Math.cos(0) * r, y);
-    for (let a = 1; a < 6; a++) ctx.lineTo(x + Math.cos(a * 1.05 + i) * r, y + Math.sin(a * 1.05 + i) * r);
+    ctx.moveTo(x + r, y);
+    for (let a = 1; a < 5; a++) {
+      const ang = a * 1.26 + (i % 7) * 0.4;
+      ctx.lineTo(x + Math.cos(ang) * r, y + Math.sin(ang) * r);
+    }
     ctx.closePath();
     ctx.fill();
   }
@@ -33,12 +36,77 @@ function solarCells(): THREE.CanvasTexture {
   const canvas = document.createElement('canvas');
   canvas.width = canvas.height = 256;
   const ctx = canvas.getContext('2d')!;
-  ctx.fillStyle = '#16305f';
+  ctx.fillStyle = '#0e1d3b';
   ctx.fillRect(0, 0, 256, 256);
   for (let y = 0; y < 8; y++) {
     for (let x = 0; x < 8; x++) {
-      ctx.fillStyle = `hsl(${216 + ((x * 7 + y * 13) % 9)} 62% ${20 + ((x * 3 + y * 5) % 7)}%)`;
-      ctx.fillRect(x * 32 + 1.5, y * 32 + 1.5, 29, 29);
+      const hue = 216 + ((x * 7 + y * 13) % 8);
+      const light = 17 + ((x * 3 + y * 5) % 6);
+      ctx.fillStyle = `hsl(${hue} 66% ${light}%)`;
+      ctx.fillRect(x * 32 + 2, y * 32 + 2, 28, 28);
+      // Metallic silver busbars and grid traces across each photovoltaic cell.
+      ctx.fillStyle = 'rgba(205, 224, 250, 0.35)';
+      ctx.fillRect(x * 32 + 15, y * 32 + 2, 1.5, 28);
+      ctx.fillStyle = 'rgba(180, 206, 240, 0.16)';
+      ctx.fillRect(x * 32 + 2, y * 32 + 9, 28, 1);
+      ctx.fillRect(x * 32 + 2, y * 32 + 20, 28, 1);
+    }
+  }
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  return texture;
+}
+
+function panelBump(): THREE.CanvasTexture {
+  const canvas = document.createElement('canvas');
+  canvas.width = canvas.height = 256;
+  const ctx = canvas.getContext('2d')!;
+  ctx.fillStyle = '#909090';
+  ctx.fillRect(0, 0, 256, 256);
+  for (let y = 0; y < 4; y++) {
+    for (let x = 0; x < 4; x++) {
+      ctx.fillStyle = '#a4a4a4';
+      ctx.fillRect(x * 64 + 2, y * 64 + 2, 60, 60);
+      ctx.fillStyle = '#686868';
+      ctx.fillRect(x * 64 + 5, y * 64 + 5, 3, 3);
+      ctx.fillRect(x * 64 + 56, y * 64 + 5, 3, 3);
+      ctx.fillRect(x * 64 + 5, y * 64 + 56, 3, 3);
+      ctx.fillRect(x * 64 + 56, y * 64 + 56, 3, 3);
+    }
+  }
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+  return texture;
+}
+
+function retroPrisms(): THREE.CanvasTexture {
+  const canvas = document.createElement('canvas');
+  canvas.width = canvas.height = 256;
+  const ctx = canvas.getContext('2d')!;
+  ctx.fillStyle = '#3c434f';
+  ctx.fillRect(0, 0, 256, 256);
+  const step = 25.6;
+  for (let y = 0; y < 10; y++) {
+    for (let x = 0; x < 10; x++) {
+      const px = x * step + 2;
+      const py = y * step + 2;
+      const w = step - 4;
+      ctx.fillStyle = '#203249';
+      ctx.fillRect(px, py, w, w);
+      ctx.fillStyle = '#7bb4d9';
+      ctx.beginPath();
+      ctx.moveTo(px + 2, py + 2);
+      ctx.lineTo(px + w - 2, py + 2);
+      ctx.lineTo(px + w * 0.5, py + w * 0.5);
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = '#48769b';
+      ctx.beginPath();
+      ctx.moveTo(px + 2, py + 2);
+      ctx.lineTo(px + w * 0.5, py + w * 0.5);
+      ctx.lineTo(px + 2, py + w - 2);
+      ctx.closePath();
+      ctx.fill();
     }
   }
   const texture = new THREE.CanvasTexture(canvas);
@@ -48,23 +116,27 @@ function solarCells(): THREE.CanvasTexture {
 
 const FOIL = foilBump();
 const CELLS = solarCells();
+const PANELS = panelBump();
+const RETRO = retroPrisms();
 
 const mat = (color: string, roughness = 0.5, metalness = 0.1, side: THREE.Side = THREE.FrontSide) => new THREE.MeshStandardMaterial({ color, roughness, metalness, side });
-const foil = (color: string) => new THREE.MeshStandardMaterial({ color, roughness: 0.34, metalness: 0.92, bumpMap: FOIL, bumpScale: 1.6 });
+const foil = (color: string) => new THREE.MeshStandardMaterial({ color, roughness: 0.28, metalness: 0.9, bumpMap: FOIL, bumpScale: 2.1 });
 
 const MAT = {
-  white: mat('#e7e4dc'),
-  grey: mat('#8d9096', 0.4, 0.6),
-  steel: mat('#b9bcc2', 0.28, 0.85),
-  dark: mat('#2a2c33', 0.75),
-  nozzle: mat('#3b3a3d', 0.45, 0.8),
-  gold: foil('#d6a23f'),
-  foil: foil('#c3913f'),
-  silver: foil('#c9ccd2'),
-  solar: new THREE.MeshStandardMaterial({ color: '#ffffff', map: CELLS, roughness: 0.2, metalness: 0.5 }),
-  copper: mat('#a86a3c', 0.4, 0.7),
-  glass: mat('#6d7a8c', 0.15, 0.8),
-  dish: mat('#d8d6d0', 0.5, 0.2, THREE.DoubleSide),
+  white: new THREE.MeshStandardMaterial({ color: '#e7e4dc', roughness: 0.44, metalness: 0.12, bumpMap: PANELS, bumpScale: 0.35 }),
+  grey: new THREE.MeshStandardMaterial({ color: '#8d9096', roughness: 0.38, metalness: 0.65, bumpMap: PANELS, bumpScale: 0.28 }),
+  steel: mat('#b9bcc2', 0.25, 0.88),
+  dark: mat('#25272e', 0.68, 0.22),
+  louver: mat('#1f242f', 0.42, 0.72),
+  nozzle: mat('#323039', 0.32, 0.88),
+  gold: foil('#dca842'),
+  foil: foil('#c5923d'),
+  silver: foil('#cdd1d8'),
+  solar: new THREE.MeshStandardMaterial({ color: '#ffffff', map: CELLS, roughness: 0.14, metalness: 0.65 }),
+  copper: mat('#b56e3e', 0.34, 0.78),
+  glass: mat('#1c3858', 0.08, 0.86),
+  retro: new THREE.MeshStandardMaterial({ color: '#ffffff', map: RETRO, roughness: 0.12, metalness: 0.75 }),
+  dish: new THREE.MeshStandardMaterial({ color: '#dcd9d2', roughness: 0.46, metalness: 0.25, bumpMap: PANELS, bumpScale: 0.22, side: THREE.DoubleSide }),
 };
 type M = keyof typeof MAT;
 type V3 = [number, number, number];
@@ -129,23 +201,37 @@ const Ranger = () => (
     <Cyl a={[0.62, 0.62, 0.36, 6]} m="gold" />
     {[0, 1, 2, 3, 4, 5].map((i) => {
       const a = (i * Math.PI) / 3 + Math.PI / 6;
-      return <Box key={i} s={[0.42, 0.26, 0.08]} p={[Math.cos(a) * 0.56, 0, Math.sin(a) * 0.56]} r={[0, -a + Math.PI / 2, 0]} m={i % 2 ? 'silver' : 'foil'} />;
+      return (
+        <group key={i}>
+          <Box s={[0.42, 0.26, 0.08]} p={[Math.cos(a) * 0.56, 0, Math.sin(a) * 0.56]} r={[0, -a + Math.PI / 2, 0]} m={i % 2 ? 'silver' : 'foil'} />
+          <Box s={[0.28, 0.03, 0.025]} p={[Math.cos(a) * 0.61, 0.06, Math.sin(a) * 0.61]} r={[0, -a + Math.PI / 2, 0]} m="louver" />
+          <Box s={[0.28, 0.03, 0.025]} p={[Math.cos(a) * 0.61, -0.05, Math.sin(a) * 0.61]} r={[0, -a + Math.PI / 2, 0]} m="louver" />
+        </group>
+      );
     })}
     <Cyl a={[0.56, 0.5, 0.05, 6]} p={[0, 0.2, 0]} m="steel" />
     <Cyl a={[0.2, 0.5, 1.15, 16]} p={[0, 0.78, 0]} m="silver" />
     <Cyl a={[0.2, 0.2, 0.42, 16]} p={[0, 1.55, 0]} m="white" />
-    {[0, 1.05, 2.1, 3.15, 4.2, 5.25].map((a) => <Cyl key={a} a={[0.05, 0.06, 0.14, 10]} p={[Math.cos(a) * 0.2, 1.38, Math.sin(a) * 0.2]} r={[Math.PI / 2 - 0.5, 0, -a + Math.PI / 2]} m="nozzle" />)}
-    <Strut from={[0, 1.76, 0]} to={[0, 2.25, 0]} w={0.014} />
+    {/* Six-camera TV aperture window & bezel */}
+    <Box s={[0.22, 0.24, 0.08]} p={[0, 1.05, 0.34]} r={[-0.25, 0, 0]} m="dark" />
+    <Cyl a={[0.045, 0.045, 0.06, 12]} p={[0, 1.05, 0.38]} r={[Math.PI / 2 - 0.25, 0, 0]} m="glass" />
+    {[0, 1.05, 2.1, 3.15, 4.2, 5.25].map((a) => <Cyl key={a} a={[0.045, 0.06, 0.14, 10]} p={[Math.cos(a) * 0.2, 1.38, Math.sin(a) * 0.2]} r={[Math.PI / 2 - 0.5, 0, -a + Math.PI / 2]} m="nozzle" />)}
+    <Strut from={[0, 1.76, 0]} to={[0, 2.28, 0]} w={0.014} m="steel" />
+    <Cyl a={[0.045, 0.045, 0.1, 10]} p={[0, 2.3, 0]} m="white" />
     {[-1, 1].map((s) => (
       <group key={s}>
         <Box s={[1.5, 0.03, 0.82]} p={[s * 1.42, 0, 0]} m="solar" />
-        <Box s={[1.52, 0.012, 0.84]} p={[s * 1.42, -0.024, 0]} m="grey" />
+        <Box s={[1.54, 0.014, 0.86]} p={[s * 1.42, -0.024, 0]} m="grey" />
         <Strut from={[s * 0.6, 0, 0.2]} to={[s * 0.8, 0, 0.3]} w={0.018} m="steel" />
         <Strut from={[s * 0.6, 0, -0.2]} to={[s * 0.8, 0, -0.3]} w={0.018} m="steel" />
       </group>
     ))}
     <Strut from={[0.2, -0.18, 0.2]} to={[0.42, -0.86, 0.34]} w={0.022} m="steel" />
-    <Dish radius={0.55} p={[0.42, -0.92, 0.34]} r={[Math.PI + 0.35, 0, 0.2]} />
+    <group position={[0.42, -0.92, 0.34]} rotation={[Math.PI + 0.35, 0, 0.2]}>
+      <Dish radius={0.55} />
+      <Strut from={[0, 0, 0]} to={[0, 0.42, 0]} w={0.012} m="steel" />
+      <Orb r={0.04} p={[0, 0.44, 0]} m="gold" />
+    </group>
     <Cyl a={[0.1, 0.15, 0.22, 14]} p={[0, -0.3, 0]} m="nozzle" />
   </group>
 );
@@ -213,29 +299,35 @@ const Surveyor = () => {
         </group>
       ))}
 
-      {/* Thermal compartments */}
+      {/* Thermal compartments with radiator louvers */}
       <group position={on(1.0, 0.56, 1.52)} rotation={[0, -1.0, 0]}>
         <Box s={[0.46, 0.26, 0.34]} m="foil" />
         <Box s={[0.48, 0.02, 0.36]} p={[0, 0.14, 0]} m="white" />
+        {[-0.12, 0, 0.12].map((dx) => <Box key={dx} s={[0.06, 0.025, 0.32]} p={[dx, 0.158, 0]} m="louver" />)}
       </group>
       <group position={on(4.1, 0.56, 1.52)} rotation={[0, -4.1, 0]}>
         <Box s={[0.46, 0.22, 0.34]} m="gold" />
         <Box s={[0.48, 0.02, 0.36]} p={[0, 0.12, 0]} m="white" />
+        {[-0.12, 0, 0.12].map((dx) => <Box key={dx} s={[0.06, 0.025, 0.32]} p={[dx, 0.138, 0]} m="louver" />)}
       </group>
 
-      {/* Television camera with its mirror hood */}
+      {/* Television camera with optical glass & mirror hood */}
       <group position={on(2.6, 0.5, 1.62)} rotation={[0.25, 0, -0.18]}>
         <Cyl a={[0.085, 0.085, 0.48, 14]} p={[0, 0.2, 0]} m="white" />
-        <Box s={[0.16, 0.12, 0.13]} p={[0.02, 0.48, 0.05]} r={[0.5, 0, 0]} m="silver" />
+        <Cyl a={[0.095, 0.095, 0.04, 14]} p={[0, 0.44, 0]} m="dark" />
+        <Box s={[0.16, 0.12, 0.13]} p={[0.02, 0.49, 0.05]} r={[0.5, 0, 0]} m="silver" />
+        <Cyl a={[0.052, 0.052, 0.04, 12]} p={[0.02, 0.52, 0.09]} r={[1.1, 0, 0]} m="glass" />
       </group>
 
-      {/* Mast, solar array, and flat antenna */}
+      {/* Mast, framed solar array, and flat high-gain array antenna */}
       <Strut from={[0, 1.0, 0]} to={[0, 3.15, 0]} w={0.042} m="steel" />
       <group position={[0, 3.15, 0]} rotation={[0.52, 0, 0]}>
         <Box s={[0.98, 0.025, 0.74]} m="solar" />
+        <Box s={[1.02, 0.015, 0.78]} p={[0, -0.018, 0]} m="steel" />
       </group>
       <group position={[0.34, 2.55, -0.08]} rotation={[-0.55, 0, 0.35]}>
         <Box s={[0.56, 0.018, 0.56]} m="dish" />
+        <Box s={[0.6, 0.012, 0.6]} p={[0, -0.012, 0]} m="steel" />
         <Strut from={[0, 0, 0]} to={[-0.32, 0.02, 0.08]} w={0.018} />
       </group>
       <Cyl a={[0.01, 0.01, 0.9, 6]} p={[-0.28, 2.0, 0.18]} />
@@ -251,27 +343,35 @@ const Surveyor = () => {
 const Descent = () => (
   <group>
     <Cyl a={[1.05, 1.05, 1.0, 8]} p={[0, 1.3, 0]} m="gold" />
+    <Cyl a={[1.08, 1.08, 0.14, 8]} p={[0, 0.85, 0]} m="foil" />
     <Box s={[1.6, 0.05, 1.6]} p={[0, 1.83, 0]} m="foil" />
-    {[0.78, 2.35, 3.93, 5.5].map((a) => <LanderLeg key={a} angle={a} top={1.05} foot={0} r={2.05} />)}
-    <Cyl a={[0.4, 0.6, 0.5, 14]} p={[0, 0.58, 0]} m="dark" />
+    {[0.78, 2.35, 3.93, 5.5].map((a) => (
+      <group key={a}>
+        <LanderLeg angle={a} top={1.05} foot={0} r={2.05} />
+        <Strut from={[Math.cos(a) * 0.9, 1.3, Math.sin(a) * 0.9]} to={[Math.cos(a) * 1.45, 0.65, Math.sin(a) * 1.45]} w={0.025} m="gold" />
+      </group>
+    ))}
+    <Cyl a={[0.38, 0.62, 0.54, 16]} p={[0, 0.58, 0]} m="nozzle" />
     <Box s={[0.44, 0.02, 0.28]} p={[1.05, 1.3, 0]} r={[0, 0, Math.PI / 2]} m="grey" />
+    <Strut from={[0.92, 0.05, -0.92]} to={[0.92, 0.98, -0.92]} w={0.018} m="silver" />
   </group>
 );
 
 const Lrrr = () => (
   <group scale={1.6} position={[0, 0.02, 0]}>
-    <Box s={[0.7, 0.04, 0.5]} p={[0, 0.03, 0]} m="foil" />
-    <Strut from={[-0.2, 0.05, -0.1]} to={[-0.2, 0.42, -0.1]} />
-    <Strut from={[0.2, 0.05, -0.1]} to={[0.2, 0.42, -0.1]} />
+    <Box s={[0.72, 0.04, 0.52]} p={[0, 0.03, 0]} m="foil" />
+    <Strut from={[-0.2, 0.05, -0.1]} to={[-0.2, 0.42, -0.1]} m="steel" />
+    <Strut from={[0.2, 0.05, -0.1]} to={[0.2, 0.42, -0.1]} m="steel" />
+    <Strut from={[0, 0.05, 0.12]} to={[0, 0.38, -0.04]} w={0.02} m="steel" />
+    {/* Sun-compass shadow gnomon & leveling dial */}
+    <Cyl a={[0.055, 0.065, 0.03, 12]} p={[-0.26, 0.06, 0.16]} m="gold" />
+    <Strut from={[-0.26, 0.075, 0.16]} to={[-0.26, 0.22, 0.16]} w={0.008} m="steel" />
     <group position={[0, 0.5, 0]} rotation={[-0.6, 0, 0]}>
-      <Box s={[0.84, 0.08, 0.84]} m="grey" />
-      {Array.from({ length: 10 }).flatMap((_, i) =>
-        Array.from({ length: 10 }).map((__, j) => (
-          <mesh key={`${i}-${j}`} position={[-0.36 + i * 0.08, 0.042, -0.36 + j * 0.08]} rotation={[-Math.PI / 2, 0, 0]} material={MAT.glass}>
-            <circleGeometry args={[0.034, 10]} />
-          </mesh>
-        )),
-      )}
+      <Box s={[0.88, 0.09, 0.88]} m="grey" />
+      <Box s={[0.8, 0.018, 0.8]} p={[0, 0.048, 0]} m="retro" />
+      <Strut from={[-0.44, 0, -0.44]} to={[-0.44, 0.14, -0.44]} w={0.014} m="steel" />
+      <Strut from={[0.44, 0, -0.44]} to={[0.44, 0.14, -0.44]} w={0.014} m="steel" />
+      <Strut from={[-0.44, 0.14, -0.44]} to={[0.44, 0.14, -0.44]} w={0.014} m="steel" />
     </group>
   </group>
 );
@@ -342,30 +442,33 @@ const Lrv = () => (
 const Pioneer = () => (
   <group position={[0, 1.3, 0]}>
     <Dish radius={1.35} p={[0, 0.2, 0]} />
+    {[0, 2.09, 4.18].map((a) => <Strut key={a} from={[Math.cos(a) * 0.9, 0.35, Math.sin(a) * 0.9]} to={[0, 1.2, 0]} w={0.018} m="steel" />)}
+    <Cyl a={[0.1, 0.14, 0.16, 12]} p={[0, 1.22, 0]} m="white" />
     <Cyl a={[0.45, 0.45, 0.4, 6]} p={[0, -0.25, 0]} m="foil" />
-    <Strut from={[0, 0.2, 0]} to={[0, 1.2, 0]} w={0.03} />
-    <Strut from={[0.3, -0.25, 0]} to={[1.9, -0.25, 0.6]} />
+    <Strut from={[0.3, -0.25, 0]} to={[1.9, -0.25, 0.6]} m="steel" />
     <Cyl a={[0.14, 0.14, 0.6, 10]} p={[1.9, -0.25, 0.6]} r={[0, 0, Math.PI / 2]} m="dark" />
-    <Strut from={[-0.3, -0.25, 0]} to={[-1.9, -0.25, 0.6]} />
+    <Strut from={[-0.3, -0.25, 0]} to={[-1.9, -0.25, 0.6]} m="steel" />
     <Cyl a={[0.14, 0.14, 0.6, 10]} p={[-1.9, -0.25, 0.6]} r={[0, 0, Math.PI / 2]} m="dark" />
-    <Strut from={[0, -0.25, -0.3]} to={[0, -0.25, -2.8]} w={0.02} />
+    <Strut from={[0, -0.25, -0.3]} to={[0, -0.25, -2.8]} w={0.02} m="steel" />
   </group>
 );
 
 const Voyager = () => (
   <group position={[0, 1.3, 0]}>
     <Dish radius={1.5} p={[0, 0.55, 0]} />
-    <Strut from={[0, 0.5, 0]} to={[0, 1.4, 0]} w={0.03} />
+    {[0, 2.09, 4.18].map((a) => <Strut key={a} from={[Math.cos(a) * 1.0, 0.72, Math.sin(a) * 1.0]} to={[0, 1.44, 0]} w={0.018} m="steel" />)}
+    <Cyl a={[0.11, 0.16, 0.14, 12]} p={[0, 1.46, 0]} m="white" />
     <Cyl a={[0.6, 0.6, 0.36, 10]} p={[0, 0, 0]} m="foil" />
     <mesh position={[0, 0, 0.61]} material={MAT.gold}>
       <circleGeometry args={[0.2, 24]} />
     </mesh>
-    <Strut from={[0.5, 0, 0]} to={[2.1, -0.1, 0.1]} />
+    <Strut from={[0.5, 0, 0]} to={[2.1, -0.1, 0.1]} m="steel" />
     {[1.6, 1.85, 2.1].map((x) => <Cyl key={x} a={[0.13, 0.13, 0.2, 10]} p={[x, -0.1, 0.1]} r={[0, 0, Math.PI / 2]} m="dark" />)}
-    <Strut from={[-0.5, 0, 0]} to={[-2.0, -0.2, 0]} />
+    <Strut from={[-0.5, 0, 0]} to={[-2.0, -0.2, 0]} m="steel" />
     <Box s={[0.3, 0.25, 0.3]} p={[-2.0, -0.2, 0]} m="white" />
-    <Strut from={[0, -0.1, -0.4]} to={[0, -0.8, -3.6]} w={0.016} />
-    <Strut from={[0, -0.2, 0]} to={[0, -2.1, 0.7]} w={0.012} />
+    <Cyl a={[0.04, 0.04, 0.12, 10]} p={[-2.16, -0.2, 0]} r={[0, 0, Math.PI / 2]} m="glass" />
+    <Strut from={[0, -0.1, -0.4]} to={[0, -0.8, -3.6]} w={0.016} m="steel" />
+    <Strut from={[0, -0.2, 0]} to={[0, -2.1, 0.7]} w={0.012} m="steel" />
   </group>
 );
 
@@ -406,16 +509,21 @@ const Sojourner = () => (
         <Strut from={[side * 0.5, 0.26, -0.3]} to={[side * 0.5, 0.14, 0]} w={0.014} m="steel" />
       </group>
     ))}
-    <Cyl a={[0.012, 0.012, 0.9, 8]} p={[0, 0.32, -0.1]} r={[0, 0, Math.PI / 2]} m="steel" />
-    <Box s={[0.66, 0.2, 0.86]} p={[0, 0.39, 0]} m="foil" />
+    <Cyl a={[0.014, 0.014, 0.9, 8]} p={[0, 0.32, -0.1]} r={[0, 0, Math.PI / 2]} m="steel" />
+    {/* Differential linkage */}
+    <Box s={[0.68, 0.22, 0.88]} p={[0, 0.39, 0]} m="foil" />
+    <Box s={[0.62, 0.18, 0.82]} p={[0, 0.4, 0]} m="gold" />
     <Box s={[0.94, 0.02, 1.22]} p={[0, 0.54, 0]} m="solar" />
-    <Box s={[0.96, 0.012, 1.24]} p={[0, 0.525, 0]} m="grey" />
-    <Strut from={[0.28, 0.55, 0.18]} to={[0.28, 0.98, 0.18]} w={0.008} />
-    <Orb r={0.018} p={[0.28, 0.99, 0.18]} m="white" />
-    <Box s={[0.26, 0.08, 0.08]} p={[0, 0.36, -0.46]} m="white" />
-    {[-0.08, 0.08].map((x) => <Cyl key={x} a={[0.022, 0.022, 0.05, 10]} p={[x, 0.36, -0.52]} r={[Math.PI / 2, 0, 0]} m="glass" />)}
+    <Box s={[0.97, 0.014, 1.25]} p={[0, 0.525, 0]} m="steel" />
+    <Strut from={[0.28, 0.55, 0.18]} to={[0.28, 1.02, 0.18]} w={0.008} m="steel" />
+    <Orb r={0.02} p={[0.28, 1.03, 0.18]} m="white" />
+    {/* Stereo Hazcams */}
+    <Box s={[0.28, 0.08, 0.08]} p={[0, 0.36, -0.46]} m="white" />
+    {[-0.08, 0.08].map((x) => <Cyl key={x} a={[0.024, 0.024, 0.05, 10]} p={[x, 0.36, -0.52]} r={[Math.PI / 2, 0, 0]} m="glass" />)}
+    {/* Rear APXS head */}
     <Strut from={[0, 0.34, 0.44]} to={[0, 0.2, 0.68]} w={0.014} m="steel" />
-    <Cyl a={[0.045, 0.045, 0.1, 12]} p={[0, 0.17, 0.72]} m="white" />
+    <Cyl a={[0.05, 0.05, 0.1, 12]} p={[0, 0.17, 0.72]} m="gold" />
+    <Cyl a={[0.036, 0.036, 0.04, 12]} p={[0, 0.12, 0.72]} m="dark" />
   </group>
 );
 
@@ -525,11 +633,14 @@ function NasaModel({ id, variant }: { id: ModelId; variant?: 'home' }) {
     copy.traverse((o) => {
       const mesh = o as THREE.Mesh;
       if (!mesh.isMesh) return;
-      mesh.castShadow = true;
+      mesh.geometry.computeBoundingBox();
+      const msize = mesh.geometry.boundingBox ? mesh.geometry.boundingBox.getSize(new THREE.Vector3()) : null;
+      // Micro-screws and thin harnesses don't cast visible 1024px shadows; skipping them keeps frame times fast.
+      mesh.castShadow = !msize || Math.max(msize.x, msize.y, msize.z) >= 0.08;
       mesh.receiveShadow = true;
       // Without a reflection map, fully metallic surfaces would render nearly black.
       const material = mesh.material as THREE.MeshStandardMaterial;
-      if (material.isMeshStandardMaterial && material.metalness > 0.6) material.metalness = 0.6;
+      if (material.isMeshStandardMaterial && material.metalness > 0.65) material.metalness = 0.65;
     });
     if (asset.turnY) copy.rotation.y = asset.turnY;
     copy.updateMatrixWorld(true);

@@ -100,7 +100,29 @@
     "replay": "Chơi lại",
     "resume": "Tiếp tục",
     "chapter": "Chương {{n}}",
-    "progress": "{{done}} / {{total}} chương"
+    "progress": "{{done}} / {{total}} chương",
+    "enter": "Vào sứ mệnh",
+    "nextLabel": "Tiếp theo:",
+    "portalMode": "Cổng không gian",
+    "gridMode": "Tất cả trạm",
+    "telemetryWorld": "Thiên thể",
+    "telemetryEra": "Thời kỳ",
+    "telemetryMissions": "Nhiệm vụ",
+    "telemetryStatus": "Trạng thái",
+    "tabMoon": "Mặt Trăng",
+    "tabExpansions": "Phần mở rộng",
+    "tabCompleted": "Đã hoàn thành",
+    "expansionsHeading": "Phần mở rộng",
+    "expansionsSub": "Các bản đồ thưởng ngoài Mặt Trăng — Sao Hỏa & Không gian sâu.",
+    "completedHeading": "Bản đồ đã hoàn thành",
+    "completedSub": "Đã hoàn thành {{done}} / {{total}} chương trên mọi hành trình.",
+    "emptyCompleted": "Chưa có bản đồ nào hoàn thành. Hãy chinh phục một chương ở Mặt Trăng hoặc Phần mở rộng.",
+    "backToMoon": "Khám phá Mặt Trăng",
+    "tagBonus": "Mở rộng",
+    "eyebrowWorld": "{{world}} · Trạm {{n}} / {{total}}",
+    "prevPlanet": "Bản đồ trước",
+    "nextPlanet": "Bản đồ tiếp",
+    "keyHint": "A / D hoặc ← / → để đổi map · Space hoặc Enter để vào"
   },
   "dialogue": {
     "next": "Tiếp",
@@ -156,7 +178,22 @@
     "backward": "Lùi",
     "toTarget": "{{name}}: {{d}} m", "backToTarget": "Mục tiêu {{d}} m",
     "slope": "Độ dốc",
-    "lookKeys": "Giữ chuột phải và kéo để nhìn quanh"
+    "lookKeys": "Giữ chuột phải và kéo để nhìn quanh",
+    "inspectKeys": "Kéo để xoay · Cuộn để thu phóng",
+    "scanHoldBtn": "Giữ Quét",
+    "scanPrompt": "Đã vào vòng mục tiêu — Nhấn GIỮ [Space / E] hoặc nút Quét",
+    "scanKeys": "Phím cách / E: giữ để quét",
+    "rabbitWarnTitle": "Thỏ Ngọc",
+    "rabbitWrongLater": "Khoan đã! Chỗ này chưa được phép quét đâu — hãy tới điểm màu cam trước nhé!",
+    "rabbitWrongDone": "Điểm này đã quét rồi mà! Hãy đi về phía điểm cam tiếp theo nhé!",
+    "rabbitWrongEmpty": "Chỗ này chưa có mục tiêu quét — hãy lái vào vòng tròn cam rồi nhấn giữ Quét!",
+    "rabbitCheerTitle": "Thỏ Ngọc",
+    "rabbitCheers": [
+      "Hay quá! Quét chuẩn lắm!",
+      "Tuyệt vời Echo ơi!",
+      "Làm tốt lắm! Tiếp tục nào!",
+      "Ồ! Phát hiện thú vị quá!"
+    ]
   },
   "memory": {
     "unlocked": "Đã mở ký ức",
@@ -226,7 +263,10 @@
     "photo": "Ảnh",
     "model": "Mô hình 3D",
     "credit": "Ảnh: {{credit}} ({{id}})",
-    "sources": "Nguồn"
+    "sources": "Nguồn",
+    "mastered": "Thành thạo",
+    "stars": "{{n}} / 3 sao",
+    "masteredCount": "Đã thành thạo {{n}} / {{total}}"
   },
   "atlas": {
     "heading": "Bản đồ",
@@ -291,8 +331,10 @@
     "cameras": {
       "chase": "Theo sau",
       "high": "Từ trên cao",
-      "cockpit": "Người lái"
+      "cockpit": "Người lái",
+      "inspect": "Quan sát 3D"
     },
+    "followCamera": "Theo tàu",
     "sunHeight": "Độ cao Mặt Trời",
     "heading": "Phòng thí nghiệm",
     "sub": "Không có mục tiêu. Hãy thay đổi quy luật không gian và xem điều gì xảy ra.",

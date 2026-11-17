@@ -116,7 +116,29 @@
     "replay": "Replay",
     "resume": "Resume",
     "chapter": "Chapter {{n}}",
-    "progress": "{{done}} of {{total}} chapters"
+    "progress": "{{done}} of {{total}} chapters",
+    "enter": "Enter",
+    "nextLabel": "Next:",
+    "portalMode": "Portal",
+    "gridMode": "All stops",
+    "telemetryWorld": "World",
+    "telemetryEra": "Era",
+    "telemetryMissions": "Missions",
+    "telemetryStatus": "Status",
+    "tabMoon": "Moon",
+    "tabExpansions": "Expansions",
+    "tabCompleted": "Completed",
+    "expansionsHeading": "Expansions",
+    "expansionsSub": "Bonus maps beyond the Moon — Mars & Deep Space.",
+    "completedHeading": "Completed maps",
+    "completedSub": "{{done}} of {{total}} chapters completed across all worlds.",
+    "emptyCompleted": "No completed maps yet. Finish a chapter in Moon or Expansions to unlock it here.",
+    "backToMoon": "Explore Moon",
+    "tagBonus": "Bonus",
+    "eyebrowWorld": "{{world}} · Stop {{n}} of {{total}}",
+    "prevPlanet": "Previous map",
+    "nextPlanet": "Next map",
+    "keyHint": "A / D or ← / → to switch · Space or Enter to launch"
   },
   "dialogue": {
     "next": "Next",
@@ -172,7 +194,22 @@
     "backward": "Reverse",
     "toTarget": "{{name}}: {{d}} m", "backToTarget": "Target {{d}} m",
     "slope": "Slope",
-    "lookKeys": "Hold right mouse and drag to look around"
+    "lookKeys": "Hold right mouse and drag to look around",
+    "inspectKeys": "Drag to orbit · Scroll to zoom",
+    "scanHoldBtn": "Hold Scan",
+    "scanPrompt": "Inside target ring — HOLD [Space / E] or Hold Scan",
+    "scanKeys": "Space / E: hold to scan",
+    "rabbitWarnTitle": "Moon Rabbit",
+    "rabbitWrongLater": "Hold on! This spot can't be scanned yet — follow the orange beacon first!",
+    "rabbitWrongDone": "We already scanned this spot! Head toward the orange beacon next!",
+    "rabbitWrongEmpty": "Nothing to scan right here — drive inside the orange ring and hold Scan!",
+    "rabbitCheerTitle": "Moon Rabbit",
+    "rabbitCheers": [
+      "Yay! Spot-on scan!",
+      "Woohoo! Great find, Echo!",
+      "Nice work! Keep rolling!",
+      "Ooh, what a cool discovery!"
+    ]
   },
   "memory": {
     "unlocked": "Memory unlocked",
@@ -242,7 +279,10 @@
     "photo": "Photo",
     "model": "3D model",
     "credit": "Image: {{credit}} ({{id}})",
-    "sources": "Sources"
+    "sources": "Sources",
+    "mastered": "Mastered",
+    "stars": "{{n}} / 3 stars",
+    "masteredCount": "{{n}} of {{total}} mastered"
   },
   "atlas": {
     "heading": "Atlas",
@@ -307,8 +347,10 @@
     "cameras": {
       "chase": "Chase",
       "high": "From above",
-      "cockpit": "Driver"
+      "cockpit": "Driver",
+      "inspect": "Inspect 3D"
     },
+    "followCamera": "Follow",
     "sunHeight": "Sun height",
     "heading": "Lab",
     "sub": "No goals here. Change the rules of space and see what happens.",
