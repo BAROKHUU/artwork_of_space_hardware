@@ -25,6 +25,7 @@ export function DrillMission({ id, config, onResult, lab, extraControls, stageOv
   const holding = useRef(false);
   const sim = useRef<DrillState>(initialDrill());
   const prevJams = useRef(0);
+  const warnedHeat = useRef(false);
   const activeRef = useRef(false);
   const ended = useRef(false);
   const endTimer = useRef<number | null>(null);
@@ -47,6 +48,12 @@ export function DrillMission({ id, config, onResult, lab, extraControls, stageOv
         if (activeRef.current !== isDrilling) {
           activeRef.current = isDrilling;
           setActive(isDrilling);
+        }
+        if (next.heat >= 75 && !next.locked && !warnedHeat.current) {
+          warnedHeat.current = true;
+          play('warn');
+        } else if (next.heat < 60) {
+          warnedHeat.current = false;
         }
         if (next.jams > prevJams.current) {
           prevJams.current = next.jams;

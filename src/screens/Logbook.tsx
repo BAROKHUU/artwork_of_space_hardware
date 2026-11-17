@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { hardware, hardwareById, photoUrl, sources } from '../data';
+import { hardwareMastery } from '../data/mastery';
 import type { Fate, World } from '../data/types';
 import { useGame } from '../state/store';
 import { GameCanvas } from '../three/GameCanvas';
@@ -10,6 +11,7 @@ import { useDismissibleDialog } from '../components/useDismissibleDialog';
 
 export function HardwareDialog({ id, onClose }: { id: string | null; onClose: () => void }) {
   const { t } = useTranslation();
+  const stars = useGame((s) => s.stars);
   const [view, setView] = useState<'photo' | 'model'>('photo');
   const close = useCallback(onClose, [onClose]);
   const dialog = useDismissibleDialog(Boolean(id), close);
@@ -17,6 +19,7 @@ export function HardwareDialog({ id, onClose }: { id: string | null; onClose: ()
     setView('photo');
   }, [id]);
   const item = id ? hardwareById[id] : null;
+  const mastery = item ? hardwareMastery(item.id, stars) : { stars: 0, mastered: false };
   return (
     <dialog {...dialog} className="record" onClose={close} aria-label={item ? t(`hardware:${item.id}.name`) : undefined}>
       {item && (
@@ -37,7 +40,14 @@ export function HardwareDialog({ id, onClose }: { id: string | null; onClose: ()
           <div className="record-body">
             <button type="button" className="btn ghost close" onClick={close}>{t('logbook.close')}</button>
             <h2>{t(`hardware:${item.id}.name`)}</h2>
-            <p className="where">{t(`hardware:${item.id}.where`)} <FateBadge fate={item.fate} /></p>
+            <p className="where">
+              {t(`hardware:${item.id}.where`)} <FateBadge fate={item.fate} />
+              {mastery.stars > 0 && (
+                <span className={`mastery${mastery.mastered ? ' mastered' : ''}`} aria-label={t('logbook.stars', { n: mastery.stars })}>
+                  {'★'.repeat(mastery.stars)}{mastery.mastered ? ` ${t('logbook.mastered')}` : ''}
+                </span>
+              )}
+            </p>
             <Facts item={item} />
             <p className="checked">{t('fate.checked')}</p>
             <h3>{t('logbook.sources')}</h3>
@@ -53,11 +63,12 @@ export function HardwareDialog({ id, onClose }: { id: string | null; onClose: ()
 
 export function Logbook() {
   const { t } = useTranslation();
-  const { unlocked, explorer } = useGame();
+  const { unlocked, stars, explorer } = useGame();
   const [world, setWorld] = useState<World | 'all'>('all');
   const [fate, setFate] = useState<Fate | 'all'>('all');
   const [open, setOpen] = useState<string | null>(null);
   const found = hardware.filter((h) => unlocked[h.id]).length;
+  const masteredCount = hardware.filter((h) => hardwareMastery(h.id, stars).mastered).length;
   const shown = hardware.filter((h) => (world === 'all' || h.world === world) && (fate === 'all' || h.fate === fate));
   const worlds: (World | 'all')[] = ['all', 'moon', 'mars', 'deep'];
   const fates: (Fate | 'all')[] = ['all', 'operating', 'silent', 'retired', 'drifting'];
@@ -65,7 +76,7 @@ export function Logbook() {
     <main className="page">
       <header className="page-head">
         <h1>{t('logbook.heading')}</h1>
-        <p>{t('logbook.sub', { n: found, total: hardware.length })}</p>
+        <p>{t('logbook.sub', { n: found, total: hardware.length })} · {t('logbook.masteredCount', { n: masteredCount, total: hardware.length })}</p>
       </header>
       <div className="filters">
         <div className="choice">{worlds.map((w) => <button type="button" key={w} className={world === w ? 'on' : ''} onClick={() => setWorld(w)}>{t(`world.${w}`)}</button>)}</div>
@@ -74,13 +85,23 @@ export function Logbook() {
       <ul className="cards">
         {shown.map((h) => {
           const known = unlocked[h.id] || explorer;
+          const mastery = hardwareMastery(h.id, stars);
           return (
             <li key={h.id} className={known ? '' : 'unknown'}>
               <button type="button" disabled={!known} onClick={() => setOpen(h.id)}>
                 <span className="card-img" style={{ backgroundImage: known ? `url(${photoUrl(h.photo)})` : undefined }} aria-hidden="true" />
                 <span className="card-body">
                   <strong>{known ? t(`hardware:${h.id}.name`) : t('logbook.lockedName')}</strong>
-                  {known && <FateBadge fate={h.fate} />}
+                  {known && (
+                    <span className="card-badges">
+                      <FateBadge fate={h.fate} />
+                      {mastery.stars > 0 && (
+                        <span className={`mastery${mastery.mastered ? ' mastered' : ''}`} aria-label={t('logbook.stars', { n: mastery.stars })}>
+                          {'★'.repeat(mastery.stars)}{mastery.mastered ? ` ${t('logbook.mastered')}` : ''}
+                        </span>
+                      )}
+                    </span>
+                  )}
                 </span>
               </button>
             </li>

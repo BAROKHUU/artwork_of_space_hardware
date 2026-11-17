@@ -26,6 +26,7 @@ function LandingLab() {
   const [padEnabled, setPadEnabled] = useState(true);
   const [targetX, setTargetX] = useState(18);
   const [targetRadius, setTargetRadius] = useState(12);
+  const [freeCamera, setFreeCamera] = useState(false);
   const [run, setRun] = useState(0);
   const [result, setResult] = useState<MissionResult | null>(null);
   const world = g > 6.5 ? 'earth' : g > 2.5 ? 'mars' : 'moon';
@@ -50,7 +51,7 @@ function LandingLab() {
   return (
     <div className="lab-grid">
       <div className="lab-stage">
-        <LandingMission key={run} id="lab" lab config={config} onResult={setResult} />
+        <LandingMission key={run} id="lab" lab config={config} freeCamera={freeCamera} onResult={setResult} />
         {result && (
           <div className="lab-result">
             <p>
@@ -83,6 +84,11 @@ function LandingLab() {
             <Slider label={t('lab.padRadius')} value={targetRadius} min={6} max={18} step={1} unit="m" onChange={(v) => { setTargetRadius(v); restart(); }} />
           </>
         )}
+        <span className="control-label">{t('lab.camera')}</span>
+        <div className="choice">
+          <button type="button" className={!freeCamera ? 'on' : ''} onClick={() => setFreeCamera(false)}>{t('lab.followCamera')}</button>
+          <button type="button" className={freeCamera ? 'on' : ''} onClick={() => setFreeCamera(true)}>{t('lab.cameras.inspect')}</button>
+        </div>
         <button type="button" className="btn" onClick={restart}>{t('lab.reset')}</button>
       </aside>
     </div>
@@ -103,7 +109,7 @@ function DriveLab() {
     return new THREE.Vector3(Math.cos(el) * Math.sin(az), Math.sin(el), Math.cos(el) * Math.cos(az)).multiplyScalar(63);
   }, [elevation, azimuth]);
   const vehicles: LabVehicle[] = ['lrv', 'sojourner', 'mer', 'curiosity'];
-  const cameras: LabCamera[] = ['chase', 'high', 'cockpit'];
+  const cameras: LabCamera[] = ['chase', 'high', 'cockpit', 'inspect'];
   return (
     <div className="lab-grid">
       <div className="lab-stage">

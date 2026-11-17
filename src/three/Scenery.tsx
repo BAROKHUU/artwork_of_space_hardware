@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, type ReactNode, type RefObject } from 'react';
-import { OrbitControls, Stars, useTexture } from '@react-three/drei';
+import { Environment, Lightformer, OrbitControls, Stars, useTexture } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import { scatterRocks, type Rock } from '../sim/obstacles';
@@ -406,6 +406,11 @@ export function Diorama({ world, model, home }: { world: World; model: ModelId |
     <>
       <Sky world={world} />
       <Lights world={world} />
+      <Environment frames={1} resolution={64} environmentIntensity={0.34}>
+        <Lightformer form="rect" intensity={3.4} position={[6, 7, 4]} scale={[9, 9, 1]} color="#fff6e6" />
+        <Lightformer form="rect" intensity={1.1} position={[-7, 2, -3]} scale={[6, 5, 1]} color="#8fa8d8" />
+        <Lightformer form="rect" intensity={0.7} position={[0, -5, 0]} rotation={[Math.PI / 2, 0, 0]} scale={[12, 12, 1]} color={world === 'mars' ? '#b06b42' : '#8a8a8a'} />
+      </Environment>
       <TerrainMesh terrain={terrain!} world={world} />
       <Rocks rocks={rocks} world={world} />
       <SlowOrbit radius={model ? 10.5 : 8.4} height={model ? 3.2 : 2.8} target={model ? 0.3 : 0.6} />

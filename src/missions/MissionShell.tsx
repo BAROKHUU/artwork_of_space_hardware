@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 import type { MissionBeat } from '../data/types';
 import { useChatCue } from '../state/chatCue';
 import { useGame } from '../state/store';
-import { play } from '../audio/sfx';
+import { play, playClip, preloadClip } from '../audio/sfx';
+import { prefersReducedMotion } from '../three/GameCanvas';
 import { ClassifyMission } from './ClassifyMission';
 import { DrillMission } from './DrillMission';
 import { DriveMission } from './DriveMission';
@@ -22,14 +23,35 @@ export function MissionShell({ beat, onDone, onSuccess }: { beat: MissionBeat; o
   const resetMissionFailures = useGame((s) => s.resetMissionFailures);
   const assisted = useGame((s) => Boolean(s.assistedMissions[beat.id]));
   const [phase, setPhase] = useState<Phase>('brief');
+  const [launching, setLaunching] = useState(false);
   const [attempt, setAttempt] = useState(1);
   const [result, setResult] = useState<MissionResult | null>(null);
   const [earned, setEarned] = useState(0);
   const active = useRef(true);
+  const launchTimer = useRef<number | null>(null);
   useEffect(() => {
     active.current = true;
-    return () => { active.current = false; };
+    void preloadClip('map_warp');
+    return () => {
+      active.current = false;
+      if (launchTimer.current !== null) window.clearTimeout(launchTimer.current);
+    };
   }, []);
+  const startMission = () => {
+    if (launching) return;
+    play('ping');
+    playClip('map_warp', 0.34, 1.15);
+    if (prefersReducedMotion()) {
+      setPhase('play');
+      return;
+    }
+    setLaunching(true);
+    launchTimer.current = window.setTimeout(() => {
+      if (!active.current) return;
+      setLaunching(false);
+      setPhase('play');
+    }, 380);
+  };
   const leave = () => {
     active.current = false;
     useChatCue.getState().dismissFail();
@@ -94,13 +116,16 @@ export function MissionShell({ beat, onDone, onSuccess }: { beat: MissionBeat; o
       )}
 
       {phase === 'brief' && (
-        <section className="panel brief">
-          <p className="eyebrow">{t('mission.objective')}</p>
+        <section className={`panel brief brief-portal${launching ? ' brief-launching' : ''}`}>
+          <div className="brief-portal__portal" aria-hidden="true">
+            <span className="eyebrow">{t('mission.objective')}</span>
+            <span className="brief-portal__dot" />
+          </div>
           <h1>{t(`${key}.title`)}</h1>
           <p className="lede">{t(`${key}.goal`, interpolation)}</p>
           <p className="hint"><b>{t('mission.hint')}</b> {t(`${key}.hint`)}</p>
           <div className="row">
-            <button type="button" autoFocus className="btn primary" onClick={() => { play('blip'); setPhase('play'); }}>{t('mission.start')}</button>
+            <button type="button" autoFocus className="btn primary" onClick={startMission}>{t('mission.start')}</button>
             <button type="button" className="btn ghost" onClick={leave}>{t('mission.skip')}</button>
           </div>
         </section>

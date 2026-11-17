@@ -21,7 +21,7 @@ export interface MissionProps<C> {
 /** Lets the 3D loop push readouts to a HUD component without re-rendering the scene around it. */
 export type HudChannel<T> = RefObject<((value: T) => void) | null>;
 
-const GAME_KEYS = new Set(['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'KeyW', 'KeyA', 'KeyS', 'KeyD', 'KeyP']);
+const GAME_KEYS = new Set(['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'KeyW', 'KeyA', 'KeyS', 'KeyD', 'KeyP', 'KeyE']);
 
 /** Live set of held keys. Stops arrows and Space from scrolling or re-pressing focused buttons. */
 export function useKeys() {
