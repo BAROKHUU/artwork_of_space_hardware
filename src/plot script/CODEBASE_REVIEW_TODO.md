@@ -87,6 +87,17 @@ Scope: `artwork_of_space_hardware`; sibling watercolor files are source referenc
 
 ### Implementation and verification — 2026-11-16
 - User approved terrain and rover integration, sharper realistic craters and fast loading. High graphics loads the community rover GLB; low graphics uses the procedural fallback without downloading it.
-- `public/assets/models/lrv.glb`: 4,851,744 bytes, 248,082 triangles, 54 primitives and 40 materials; no external textures or decoder. The asset is untracked and must be included when deploying.
+- `public/assets/models/lrv.glb`: 4,851,744 bytes, 248,082 triangles, 54 primitives and 40 materials; no external textures or decoder. The asset is tracked and included in static builds.
 - Production build passed; 18 simulation and rover tests passed. The production GLB returned HTTP 200 with identical hashes. Browser driving reached 134 m.
 - QA remains partial: hosted Vercel loading, FPS and exact crater/wheel contact are unverified. Reference comparison and remaining gameplay acceptance above still apply.
+
+### Current gameplay scope — 2026-11-16
+- Keep the existing Cuội and Thỏ Ngọc runtime models unchanged. Earlier character refinement plans are superseded; preserve historical preview files.
+- Continue only lunar rover, Moon terrain streaming and dialogue at the mission completion location.
+- [x] Verify streamed terrain coverage and resource bounds: 49 reusable detail tiles, at most one recycled tile per frame, shared boundary normals and a 2048 m background horizon. Tests cover 24 far-corner scenarios across diagonal headings and portrait/16:9/32:9 views.
+- [x] Remove the default invisible 118 m driving boundary. Untethered missions now allow free roaming; explicit mission tethers remain. Production-browser m2 driving continued beyond the old boundary, with target distance increasing from 128 m to 275 m and continuous terrain visible.
+- Latest checks: 115 tests across 23 files passed; TypeScript and production build passed. Independent boundary review found no blocking issue.
+- [ ] Verify dialogue transitions at the mission completion location in the browser. Hosted Vercel loading and device FPS remain unverified.
+- Distant terrain continues with rolling surface noise; rocks and craters remain concentrated around the initial 260 m area.
+
+Local deployment fix completed: restored LRV registration and Moon surface; bundled hashed GLB. 129 tests passed; normal and Cloudinary-enabled production builds passed; local production browser verified detailed rover, driving and terrain. Commit c30b447 pushed; PR #36 merged as 7aed6653. Branch Vercel deployment succeeded but hosted verification is blocked by Vercel login protection. Vercel reports production deployment completed successfully: CQA21PebRjVZST23Ach1iEqkkLb7. Hosted rendering remains unverified; preview requires Vercel login. Detailed GLB requires high graphics; low graphics retains procedural fallback. Device FPS remains unmeasured.

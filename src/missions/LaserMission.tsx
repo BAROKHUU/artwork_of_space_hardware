@@ -9,6 +9,7 @@ import { angularDistanceDeg, latLonToVec3, vec3ToLatLon } from '../sim/geo';
 import { MOON_DISTANCE_KM, distanceFromEcho, moonDriftMeters, roundTripSeconds } from '../sim/laser';
 import { GameCanvas } from '../three/GameCanvas';
 import { play } from '../audio/sfx';
+import { useChatCue } from '../state/chatCue';
 import { Readout, type MissionProps } from './common';
 
 export const MOON_R = 3;
@@ -84,7 +85,7 @@ export function Moon({ onShoot, marker, pulse, onPulseEnd, children }: { onShoot
   );
 }
 
-export function LaserMission({ config, onResult, lab, distanceKm = MOON_DISTANCE_KM }: MissionProps<LaserConfig> & { distanceKm?: number }) {
+export function LaserMission({ id, config, onResult, lab, distanceKm = MOON_DISTANCE_KM }: MissionProps<LaserConfig> & { distanceKm?: number }) {
   const { t } = useTranslation();
   const [pulse, setPulse] = useState<Pulse | null>(null);
   const [echoes, setEchoes] = useState(0);
@@ -111,6 +112,7 @@ export function LaserMission({ config, onResult, lab, distanceKm = MOON_DISTANCE
     setPulse(null);
     if (hit) {
       play('ping');
+      useChatCue.getState().dismissFail();
       setLastEcho(echoSeconds);
       setMessage(t('missions:ch2_laser.hit', { t: echoSeconds.toFixed(2) }));
       const next = echoes + 1;
@@ -118,8 +120,16 @@ export function LaserMission({ config, onResult, lab, distanceKm = MOON_DISTANCE
       if (!lab && next >= config.shots) window.setTimeout(() => onResult({ win: true, stars: misses === 0 ? 3 : misses <= 3 ? 2 : 1 }), 1100);
     } else {
       play('fail');
-      setMisses((m) => m + 1);
+      const nextMisses = misses + 1;
+      setMisses(nextMisses);
       setMessage(t('missions:ch2_laser.miss'));
+      if (!lab && nextMisses >= 2) {
+        useChatCue.getState().showPopup({
+          kind: 'fail',
+          textKey: 'chat.popup.failMission',
+          prefill: t('chat.popup.prefillMission', { mission: t(`missions:${id}.title`) }),
+        });
+      }
     }
   };
 

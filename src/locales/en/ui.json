@@ -429,7 +429,18 @@
     "expand": "Expand chat",
     "shrink": "Shrink chat",
     "generalNote": "This answer comes from the AI's general knowledge, not from the game's NASA sources. Treat it as a reference only and check it before relying on it.",
-    "mixedNote": "Part of this answer comes from the AI's general knowledge rather than the NASA sources below. Treat that part as a reference only."
+    "mixedNote": "Part of this answer comes from the AI's general knowledge rather than the NASA sources below. Treat that part as a reference only.",
+    "popup": {
+      "dismiss": "Dismiss tip",
+      "intro1": "Hi! I'm RISE BOT. Stuck? Ask me anything!",
+      "intro2": "Psst—I'm RISE BOT! Need a hand? Ask me!",
+      "intro3": "I'm RISE BOT! Ask me about any mission.",
+      "failMission": "Stuck on this step? Ask RISE BOT!",
+      "failMissionAlt": "Tricky mission? Ask RISE BOT for a tip!",
+      "failQuiz": "Not quite—want RISE BOT to explain?",
+      "prefillMission": "I'm stuck on \"{{mission}}\". Give me a quick hint!",
+      "prefillQuiz": "Can you explain this question? \"{{question}}\""
+    }
   },
   "seismic": {
     "recorder": "Four channel seismic recorder",

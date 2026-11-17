@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { BOT_SIZE, clampPosition, panelLayout } from './chatPosition';
+import { BOT_SIZE, bubbleLayout, clampPosition, panelLayout } from './chatPosition';
 
 describe('chat position', () => {
   it('keeps the bot inside the viewport, including small screens', () => {
@@ -24,5 +24,24 @@ describe('chat position', () => {
     const phone = panelLayout({ x: 280, y: 730 }, 390, 844, true);
     expect(phone.width).toBe(374);
     expect(phone.x).toBe(8);
+  });
+  it('places the pop-up bubble above a low bot and below a high one inside viewport bounds', () => {
+    const low = bubbleLayout({ x: 1700, y: 840 }, 1846, 946, { width: 220, height: 56 });
+    expect(low.side).toBe('above');
+    expect(low.y + 56).toBeLessThanOrEqual(840);
+    expect(low.x + 220).toBeLessThanOrEqual(1846 - 8);
+    expect(low.tailX).toBeGreaterThanOrEqual(18);
+    expect(low.tailX).toBeLessThanOrEqual(220 - 18);
+
+    const high = bubbleLayout({ x: 20, y: 40 }, 1846, 946, { width: 220, height: 56 });
+    expect(high.side).toBe('below');
+    expect(high.y).toBeGreaterThanOrEqual(40 + BOT_SIZE);
+    expect(high.x).toBeGreaterThanOrEqual(8);
+
+    const phone = bubbleLayout({ x: 278, y: 732 }, 390, 844, { width: 220, height: 56 });
+    expect(phone.side).toBe('above');
+    expect(phone.maxWidth).toBe(244);
+    expect(phone.x).toBeGreaterThanOrEqual(8);
+    expect(phone.x + 220).toBeLessThanOrEqual(390 - 8);
   });
 });
