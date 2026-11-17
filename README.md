@@ -1,6 +1,6 @@
-# Echo: Abandoned but Not Forgotten
+# The Moon Remembers: Abandoned but Not Forgotten
 
-A browser game for the NASA Space Apps challenge *Abandoned but not Forgotten*. Players are Echo, a small rover tracing the signals of 15 machines NASA left on the Moon, on Mars, and in deep space, across eight chapters from 1964 to today.
+A browser game for the NASA Space Apps challenge *Abandoned but not Forgotten*. Players are Lunar, a small rover tracing the signals of 15 machines NASA left on the Moon, on Mars, and in deep space, across eight chapters from 1964 to today.
 
 ## Run it
 
@@ -72,7 +72,7 @@ After sending, ROVER shows the letter back with a "Received" stamp and a thank-y
    ```
 
    Deploy and copy the final Vercel production URL.
-5. Return to Render, change `CORS_ORIGIN` from `*` to the exact Vercel origin (for example `https://echo-nasa.vercel.app`, without a trailing slash), then choose **Save, rebuild, and deploy**. Multiple allowed origins can be comma-separated.
+5. Return to Render, change `CORS_ORIGIN` from `*` to the exact Vercel origin (for example `[https://nasalongjourney.vercel.app/](https://nasalongjourney.vercel.app/)`, without a trailing slash), then choose **Save, rebuild, and deploy**. Multiple allowed origins can be comma-separated.
 
 Do not upload or commit `.env`; add the values through each provider's Environment dashboard. `VITE_API_URL` is public and may be exposed to the browser, but API keys must never use the `VITE_` prefix. For an all-in-one Vercel deployment, leave `VITE_API_URL` unset and add the five server-side keys to Vercel; the frontend will use the included `/api/chat` function instead of Render.
 
@@ -87,7 +87,7 @@ Do not upload or commit `.env`; add the values through each provider's Environme
 | `src/locales/en/` | All on-screen text |
 | `src/sim/` | Physics and terrain, as pure tested functions |
 | `src/missions/` | The five mission templates |
-| `src/three/` | Echo, hardware models, terrain, and scenery |
+| `src/three/` | Hardware models, terrain, and scenery |
 | `src/screens/` | Title, Missions, Chapter, Logbook, Atlas, Lab, Sources |
 | `public/assets/` | NASA photos and Moon and Mars maps |
 
@@ -103,7 +103,7 @@ Do not upload or commit `.env`; add the values through each provider's Environme
 
 ## What is real and what is not
 
-Photos, planetary maps, dates, distances, and status come from NASA, JPL, and USGS, and are listed on the in-game Sources page. Echo and Archive Control are fictional. Most 3D spacecraft are NASA's published models (compressed in `public/assets/models/`); Ranger, Surveyor, the laser mirror, and Sojourner are hand-built. The Lunar Rover uses community mesh and materials by Hameed / DeviantArt, released under CC0 1.0 (bundled `NASA_Lunar_Rover.pdf`, page 2); texture maps with uncertain rights are omitted. Terrain is generated client-side; the rover ships as a static GLB exported locally with Blender. The simulations shorten real distances and times. This is an independent project and is not endorsed by NASA.
+Photos, planetary maps, dates, distances, and status come from NASA, JPL, and USGS, and are listed on the in-game Sources page. Archive Control are fictional. Most 3D spacecraft are NASA's published models (compressed in `public/assets/models/`); Ranger, Surveyor, the laser mirror, and Sojourner are hand-built. The Lunar Rover uses community mesh and materials by Hameed / DeviantArt, released under CC0 1.0 (bundled `NASA_Lunar_Rover.pdf`, page 2); texture maps with uncertain rights are omitted. Terrain is generated client-side; the rover ships as a static GLB exported locally with Blender. The simulations shorten real distances and times. This is an independent project and is not endorsed by NASA.
 
 ## License
 
