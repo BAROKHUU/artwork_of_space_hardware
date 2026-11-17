@@ -108,3 +108,14 @@ Photos, planetary maps, dates, distances, and status come from NASA, JPL, and US
 ## License
 
 Source code is released under the [MIT License](LICENSE). The story, characters, player-facing text and translations, and original artwork, audio, and video are © 2026 the KaraokeNhacTre team, all rights reserved. Third-party material keeps its own license. See [COPYRIGHT.md](COPYRIGHT.md) for exactly what each covers.
+
+## Contributors
+
+The Moon Remembers was created by team **KaraokeNhacTre**.
+
+- [Bao Khuu Gia](https://github.com/BAROKHUU) — Fullstack Development
+- [Quan Hac Minh](https://github.com/hacminhquan) — Storytelling + UI designer
+- [Quan Dinh Hoang](https://github.com/HoangQuan28) — UI/UX Design
+- [Thuyen Bui Vinh Ha](https://github.com/hathuyenontheway) — 3D models & Storytelling
+- [Tin Ngo Trung](https://github.com/tinngotrung-dedicate) — RAG-powered chatbot
+- [Le Duc Huy] — Storytelling ideas
