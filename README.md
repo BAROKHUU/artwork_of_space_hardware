@@ -14,7 +14,9 @@ npm run preview   # serve the built site
 
 `dist/` is plain static files and runs on GitHub Pages, Netlify, Vercel, or any web server. Routes use `#/`, so no rewrite rules are needed.
 
-High graphics loads the tracked community lunar rover from `src/assets/lrv.glb`, emitted as a content-hashed, same-origin build asset even when Cloudinary is enabled; low graphics uses a procedural rover and skips that download. The 4,851,744-byte model has 248,082 triangles, 54 primitives and 40 materials, with no external textures or decoder. A local production build served it successfully; hosted Vercel performance remains unverified.
+High graphics loads the tracked community lunar rover from `src/assets/lrv.glb` on every screen (home, chapters, Logbook and Lab), emitted as a content-hashed, same-origin build asset even when Cloudinary is enabled; low graphics uses a procedural rover and skips that download. `npm run rover:optimize` builds it from the full-detail Blender export `src/assets/lrv-home.glb` (22,898,980 bytes, not shipped): the four wheels share one mesh placed by node transforms, positions and normals use `KHR_mesh_quantization`, and texture coordinates are kept only where a material has a texture. The result is 4,895,784 bytes with the same shape (805,414 rendered triangles, 41 materials, one embedded wire-mesh texture, no decoder); a test fails if the shipped file drifts from the script's output. On a throttled 12 Mbit/s connection it loaded in 3.8 s instead of 16.8 s. Frame rate on phones and older laptops in the drive missions has not been measured.
+
+Scene textures (Earth in the sky, Cuội's scarf, planet and Moon maps) load through `src/three/optionalTexture.ts`: the scene appears at once in plain colours and the images fade in, and a texture that fails to load no longer blanks the mission.
 
 ### Story media
 
@@ -102,3 +104,7 @@ Do not upload or commit `.env`; add the values through each provider's Environme
 ## What is real and what is not
 
 Photos, planetary maps, dates, distances, and status come from NASA, JPL, and USGS, and are listed on the in-game Sources page. Echo and Archive Control are fictional. Most 3D spacecraft are NASA's published models (compressed in `public/assets/models/`); Ranger, Surveyor, the laser mirror, and Sojourner are hand-built. The Lunar Rover uses community mesh and materials by Hameed / DeviantArt, released under CC0 1.0 (bundled `NASA_Lunar_Rover.pdf`, page 2); texture maps with uncertain rights are omitted. Terrain is generated client-side; the rover ships as a static GLB exported locally with Blender. The simulations shorten real distances and times. This is an independent project and is not endorsed by NASA.
+
+## License
+
+Source code is released under the [MIT License](LICENSE). The story, characters, player-facing text and translations, and original artwork, audio, and video are © 2026 the Echo team, all rights reserved. Third-party material keeps its own license. See [COPYRIGHT.md](COPYRIGHT.md) for exactly what each covers.
