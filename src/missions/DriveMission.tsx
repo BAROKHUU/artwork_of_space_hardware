@@ -12,7 +12,7 @@ import { Tracks, WheelDust } from '../three/RoverFx';
 import { GameCanvas } from '../three/GameCanvas';
 import { HardwareModel } from '../three/models';
 import { MoonCuoi, MoonRabbit } from '../three/MoonCharacters';
-import { DARK_SIDE_SUN_OFFSET, Lights, SHADOW_TEXEL, SUN_OFFSET, Sky } from '../three/Scenery';
+import { Lights, SHADOW_TEXEL, SUN_OFFSET, Sky } from '../three/Scenery';
 import { StreamedTerrain } from '../three/StreamedTerrain';
 import { TILE } from '../three/terrainTiles';
 import { useDialogueCue, type Speaker } from '../state/dialogueCue';
@@ -807,9 +807,6 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
       {cameraMode === 'inspect' && !friendsCome && <OrbitControls ref={orbit} makeDefault enablePan={false} enableDamping minDistance={2.2} maxDistance={26} maxPolarAngle={Math.PI * 0.48} />}
       <group ref={ref}>
         <HardwareModel id={vehicle} />
-        {!lab && config.world === 'moon' && (
-          <pointLight position={[0, 1.35, -1.75]} color="#fff3d6" intensity={2.8} distance={26} decay={1.7} />
-        )}
       </group>
       {(withCuoi || friendsCome) && (
         <group ref={cuoiRef}>
@@ -933,8 +930,32 @@ function ScanHologram({ kind, name, progress }: { kind: ScanKind; name?: string;
   );
 }
 
+function makeAlphaShadowMaterial(color: string) {
+  return new THREE.ShaderMaterial({
+    transparent: true,
+    depthWrite: false,
+    side: THREE.DoubleSide,
+    uniforms: { uColor: { value: new THREE.Color(color) } },
+    vertexShader: /* glsl */ `
+      attribute float aAlpha;
+      varying float vAlpha;
+      void main() {
+        vAlpha = aAlpha;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+    fragmentShader: /* glsl */ `
+      uniform vec3 uColor;
+      varying float vAlpha;
+      void main() {
+        gl_FragColor = vec4(uColor, vAlpha);
+      }
+    `,
+  });
+}
+
 function SectorBoundary({ cx, cz, radius, terrain, moon }: { cx: number; cz: number; radius: number; terrain: Terrain; moon: boolean }) {
-  const { strip, beacons } = useMemo(() => {
+  const { strip, beacons, shroud, wall } = useMemo(() => {
     const segs = 96;
     const pos = new Float32Array((segs + 1) * 2 * 3);
     const indices: number[] = [];
@@ -944,10 +965,10 @@ function SectorBoundary({ cx, cz, radius, terrain, moon }: { cx: number; cz: num
       const z = cz + Math.sin(a) * radius;
       const y = terrain.heightAt(x, z);
       pos[i * 6] = x;
-      pos[i * 6 + 1] = y + 0.02;
+      pos[i * 6 + 1] = y + 0.04;
       pos[i * 6 + 2] = z;
       pos[i * 6 + 3] = x;
-      pos[i * 6 + 4] = y + 0.55;
+      pos[i * 6 + 4] = y + 0.42;
       pos[i * 6 + 5] = z;
       if (i < segs) {
         const b = i * 2;
@@ -964,19 +985,90 @@ function SectorBoundary({ cx, cz, radius, terrain, moon }: { cx: number; cz: num
       const z = cz + Math.sin(a) * radius;
       return [x, terrain.heightAt(x, z), z] as [number, number, number];
     });
-    return { strip: geo, beacons: posts };
-  }, [cx, cz, radius, terrain]);
 
-  useEffect(() => () => strip.dispose(), [strip]);
+    // Outer unlit Lunar Dark Zone blanket + soft shadow curtain surrounding the lit sector.
+    const rings: readonly [number, number][] = moon
+      ? [[-2.5, 0.0], [1.2, 0.42], [7, 0.88], [18, 0.96], [48, 0.985], [105, 0.995], [200, 1.0]]
+      : [[-2.0, 0.0], [2.5, 0.28], [14, 0.58], [45, 0.78], [120, 0.88]];
+    const sPos = new Float32Array(rings.length * (segs + 1) * 3);
+    const sAlpha = new Float32Array(rings.length * (segs + 1));
+    const sIdx: number[] = [];
+    for (let rIdx = 0; rIdx < rings.length; rIdx++) {
+      const [dr, alpha] = rings[rIdx];
+      const rr = Math.max(4, radius + dr);
+      for (let i = 0; i <= segs; i++) {
+        const a = (i / segs) * Math.PI * 2;
+        const x = cx + Math.cos(a) * rr;
+        const z = cz + Math.sin(a) * rr;
+        const vi = rIdx * (segs + 1) + i;
+        sPos[vi * 3] = x;
+        sPos[vi * 3 + 1] = terrain.heightAt(x, z) + 0.16;
+        sPos[vi * 3 + 2] = z;
+        sAlpha[vi] = alpha;
+      }
+    }
+    for (let rIdx = 0; rIdx < rings.length - 1; rIdx++) {
+      for (let i = 0; i < segs; i++) {
+        const a = rIdx * (segs + 1) + i;
+        const b = a + 1;
+        const c = a + segs + 1;
+        const d = c + 1;
+        sIdx.push(a, c, b, b, c, d);
+      }
+    }
+    const shroudGeo = new THREE.BufferGeometry();
+    shroudGeo.setAttribute('position', new THREE.BufferAttribute(sPos, 3));
+    shroudGeo.setAttribute('aAlpha', new THREE.BufferAttribute(sAlpha, 1));
+    shroudGeo.setIndex(sIdx);
+
+    const wPos = new Float32Array((segs + 1) * 2 * 3);
+    const wAlpha = new Float32Array((segs + 1) * 2);
+    const wIdx: number[] = [];
+    for (let i = 0; i <= segs; i++) {
+      const a = (i / segs) * Math.PI * 2;
+      const x = cx + Math.cos(a) * (radius + 2);
+      const z = cz + Math.sin(a) * (radius + 2);
+      const y = terrain.heightAt(x, z);
+      const b = i * 2;
+      wPos[b * 3] = x;
+      wPos[b * 3 + 1] = y - 1;
+      wPos[b * 3 + 2] = z;
+      wAlpha[b] = moon ? 0.78 : 0.42;
+      wPos[(b + 1) * 3] = x;
+      wPos[(b + 1) * 3 + 1] = y + (moon ? 17 : 12);
+      wPos[(b + 1) * 3 + 2] = z;
+      wAlpha[b + 1] = 0;
+      if (i < segs) wIdx.push(b, b + 2, b + 1, b + 1, b + 2, b + 3);
+    }
+    const wallGeo = new THREE.BufferGeometry();
+    wallGeo.setAttribute('position', new THREE.BufferAttribute(wPos, 3));
+    wallGeo.setAttribute('aAlpha', new THREE.BufferAttribute(wAlpha, 1));
+    wallGeo.setIndex(wIdx);
+
+    return { strip: geo, beacons: posts, shroud: shroudGeo, wall: wallGeo };
+  }, [cx, cz, radius, terrain, moon]);
+
+  const shroudMat = useMemo(() => makeAlphaShadowMaterial(moon ? '#020308' : '#7a4a2b'), [moon]);
+  const wallMat = useMemo(() => makeAlphaShadowMaterial(moon ? '#03050d' : '#9c633b'), [moon]);
+
+  useEffect(() => () => {
+    strip.dispose();
+    shroud.dispose();
+    wall.dispose();
+    shroudMat.dispose();
+    wallMat.dispose();
+  }, [strip, shroud, wall, shroudMat, wallMat]);
   const tint = moon ? '#79adff' : '#ffb25a';
   return (
     <group>
-      <mesh geometry={strip}>
-        <meshBasicMaterial color={tint} transparent opacity={0.22} side={THREE.DoubleSide} depthWrite={false} toneMapped={false} fog={false} />
+      <mesh geometry={shroud} material={shroudMat} renderOrder={2} />
+      <mesh geometry={wall} material={wallMat} renderOrder={3} />
+      <mesh geometry={strip} renderOrder={4}>
+        <meshBasicMaterial color={tint} transparent opacity={0.28} side={THREE.DoubleSide} depthWrite={false} toneMapped={false} fog={false} />
       </mesh>
       {beacons.map(([x, y, z], i) => (
-        <mesh key={i} position={[x, y + 0.45, z]}>
-          <octahedronGeometry args={[0.16, 0]} />
+        <mesh key={i} position={[x, y + 0.4, z]}>
+          <octahedronGeometry args={[0.15, 0]} />
           <meshBasicMaterial color={tint} toneMapped={false} fog={false} />
         </mesh>
       ))}
@@ -1149,12 +1241,8 @@ export function DriveMission({ id, config, onResult, lab, vehicle = 'lrv', sun, 
   const edge = useRef<HTMLDivElement>(null);
   const [finished, setFinished] = useState<'win' | 'storm' | null>(null);
   const sunLight = useRef<THREE.DirectionalLight>(null);
-  const darkSide = !lab && config.world === 'moon';
   const mapLimit = useMemo(() => missionMapLimit(config, Boolean(lab)), [config, lab]);
-  const sunVector = useMemo(
-    () => sun ?? (config.dusk ? DUSK_SUN_OFFSET : darkSide ? DARK_SIDE_SUN_OFFSET : SUN_OFFSET),
-    [sun, config.dusk, darkSide],
-  );
+  const sunVector = useMemo(() => sun ?? (config.dusk ? DUSK_SUN_OFFSET : SUN_OFFSET), [sun, config.dusk]);
   const clear = useMemo(() => [{ x: config.start.x, z: config.start.z, r: 5 }, ...config.targets.map((p) => ({ x: p.x, z: p.z, r: 6 })), ...(config.prop ? [{ x: config.prop.x, z: config.prop.z, r: 5 }] : [])], [config]);
   const terrain = useMemo(() => makeTerrain({ seed: config.seed, size: 260, amplitude: config.world === 'moon' ? 5.5 : 8, craterCount: config.world === 'moon' ? 58 : 14, sharpCraters: config.world === 'moon', flat: clear, endless: true }), [config, clear]);
   const groundTerrain = useMemo(() => ({ ...terrain, heightAt: meshHeightAt(terrain.heightAt, terrainSegments(quality === 'low')) }), [terrain, quality]);
@@ -1178,10 +1266,10 @@ export function DriveMission({ id, config, onResult, lab, vehicle = 'lrv', sun, 
   return (
     <div className={`stage${finished === 'win' ? ' is-celebrating' : ''}`} {...lookHandlers}>
       <GameCanvas camera={{ position: [0, 8, 14], fov: 55, far: 520 }}>
-        <Sky world={config.world} sun={sunVector} darkSide={darkSide} />
-        <Lights world={config.world} sunRef={sunLight} sun={sunVector} darkSide={darkSide} />
-        <Environment frames={1} resolution={64} environmentIntensity={darkSide ? 0.16 : 0.32}>
-          <Lightformer form="rect" intensity={3.4} position={[6, 7, 4]} scale={[9, 9, 1]} color={darkSide ? '#d4e2ff' : '#fff6e6'} />
+        <Sky world={config.world} sun={sunVector} />
+        <Lights world={config.world} sunRef={sunLight} sun={sunVector} />
+        <Environment frames={1} resolution={64} environmentIntensity={0.32}>
+          <Lightformer form="rect" intensity={3.4} position={[6, 7, 4]} scale={[9, 9, 1]} color="#fff6e6" />
           <Lightformer form="rect" intensity={1.0} position={[-7, 2, -3]} scale={[6, 5, 1]} color="#8fa8d8" />
           <Lightformer form="rect" intensity={0.7} position={[0, -5, 0]} rotation={[Math.PI / 2, 0, 0]} scale={[12, 12, 1]} color={config.world === 'mars' ? '#b06b42' : '#8a8a8a'} />
         </Environment>

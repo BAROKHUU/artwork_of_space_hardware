@@ -13,7 +13,6 @@ import { HardwareModel } from './models';
 import { prefersReducedMotion } from './GameCanvas';
 
 export const SUN_OFFSET = new THREE.Vector3(38, 46, 22);
-export const DARK_SIDE_SUN_OFFSET = new THREE.Vector3(64, 15, -36);
 const SHADOW_MAP_SIZE = 1024;
 const SHADOW_HALF_SPAN = 38;
 export const SHADOW_TEXEL = (SHADOW_HALF_SPAN * 2) / SHADOW_MAP_SIZE;
@@ -157,19 +156,9 @@ function SkyDome({ sun, world }: { sun: THREE.Vector3; world: Surface }) {
   );
 }
 
-function MoonSky({ sun, darkSide = false }: { sun: THREE.Vector3; darkSide?: boolean }) {
+function MoonSky({ sun }: { sun: THREE.Vector3 }) {
   const earthMap = useTexture(planetMapUrl('earth'));
-  const halo = useMemo(
-    () =>
-      new THREE.SpriteMaterial({
-        map: radialGlow(darkSide ? 'rgba(220,234,255,0.85)' : 'rgba(255,250,235,1)', darkSide ? 'rgba(130,165,235,.18)' : 'rgba(255,230,190,.26)'),
-        blending: THREE.AdditiveBlending,
-        depthWrite: false,
-        toneMapped: false,
-        fog: false,
-      }),
-    [darkSide],
-  );
+  const halo = useMemo(() => new THREE.SpriteMaterial({ map: radialGlow('rgba(255,250,235,1)', 'rgba(255,230,190,.26)'), blending: THREE.AdditiveBlending, depthWrite: false, toneMapped: false, fog: false }), []);
   useEffect(
     () => () => {
       halo.map?.dispose();
@@ -180,15 +169,13 @@ function MoonSky({ sun, darkSide = false }: { sun: THREE.Vector3; darkSide?: boo
   const dir = useMemo(() => sun.clone().normalize().multiplyScalar(300), [sun]);
   return (
     <>
-      <color attach="background" args={[darkSide ? '#020308' : PALETTE.moon.sky]} />
-      <Stars radius={190} depth={40} count={darkSide ? 3200 : 2600} factor={darkSide ? 5.2 : 5} saturation={0} fade speed={0.3} />
-      <sprite material={halo} position={dir} scale={darkSide ? 34 : 46} />
-      {!darkSide && (
-        <mesh position={[-90, 62, -150]} rotation={[0.3, 2.2, 0.2]}>
-          <sphereGeometry args={[11, 48, 32]} />
-          <meshStandardMaterial map={earthMap} roughness={0.7} emissive="#123a7a" emissiveIntensity={0.14} fog={false} />
-        </mesh>
-      )}
+      <color attach="background" args={[PALETTE.moon.sky]} />
+      <Stars radius={190} depth={40} count={2600} factor={5} saturation={0} fade speed={0.3} />
+      <sprite material={halo} position={dir} scale={46} />
+      <mesh position={[-90, 62, -150]} rotation={[0.3, 2.2, 0.2]}>
+        <sphereGeometry args={[11, 48, 32]} />
+        <meshStandardMaterial map={earthMap} roughness={0.7} emissive="#123a7a" emissiveIntensity={0.14} fog={false} />
+      </mesh>
     </>
   );
 }
@@ -199,7 +186,7 @@ const HEMISPHERE: Record<Surface, { sky: string; ground: string; strength: numbe
   earth: { sky: '#c4e0ff', ground: '#587a44', strength: 0.85 },
 };
 
-export function Sky({ world, sun = SUN_OFFSET, darkSide = false }: { world: Surface; sun?: THREE.Vector3; darkSide?: boolean }) {
+export function Sky({ world, sun = SUN_OFFSET }: { world: Surface; sun?: THREE.Vector3 }) {
   const fogColor = useMemo(() => (world === 'moon' ? '' : `#${skyColors(world, sun).horizon.getHexString()}`), [world, sun]);
   if (world !== 'moon') {
     return (
@@ -210,33 +197,21 @@ export function Sky({ world, sun = SUN_OFFSET, darkSide = false }: { world: Surf
       </>
     );
   }
-  return <MoonSky sun={sun} darkSide={darkSide} />;
+  return <MoonSky sun={sun} />;
 }
 
-export function Lights({ world, sunRef, sun = SUN_OFFSET, darkSide = false }: { world: Surface; sunRef?: RefObject<THREE.DirectionalLight | null>; sun?: THREE.Vector3; darkSide?: boolean }) {
+export function Lights({ world, sunRef, sun = SUN_OFFSET }: { world: Surface; sunRef?: RefObject<THREE.DirectionalLight | null>; sun?: THREE.Vector3 }) {
   const p = PALETTE[world];
   const day = THREE.MathUtils.smoothstep(sunElevation(sun), -0.02, 0.32);
-  const darkMoon = darkSide && world === 'moon';
-  const color = useMemo(
-    () =>
-      darkMoon
-        ? new THREE.Color('#dce6ff')
-        : new THREE.Color(p.sun).lerp(new THREE.Color(world === 'mars' ? '#ffb889' : '#fff0dc'), 1 - day),
-    [p.sun, world, day, darkMoon],
-  );
-  const ambient = darkMoon ? 0.28 : p.ambient * (0.65 + 0.35 * day);
-  const hemiSky = darkMoon ? '#6f84b6' : HEMISPHERE[world].sky;
-  const hemiGround = darkMoon ? '#1e2029' : HEMISPHERE[world].ground;
-  const hemiStrength = darkMoon ? 0.48 : HEMISPHERE[world].strength * (0.6 + 0.4 * day);
-  const sunPower = darkMoon ? 2.15 : p.sunIntensity * (0.35 + 0.65 * day);
+  const color = useMemo(() => new THREE.Color(p.sun).lerp(new THREE.Color(world === 'mars' ? '#ffb889' : '#fff0dc'), 1 - day), [p.sun, world, day]);
   return (
     <>
-      <ambientLight intensity={ambient} />
-      <hemisphereLight args={[hemiSky, hemiGround, hemiStrength]} />
+      <ambientLight intensity={p.ambient * (0.65 + 0.35 * day)} />
+      <hemisphereLight args={[HEMISPHERE[world].sky, HEMISPHERE[world].ground, HEMISPHERE[world].strength * (0.6 + 0.4 * day)]} />
       <directionalLight
         ref={sunRef}
         position={sun}
-        intensity={sunPower}
+        intensity={p.sunIntensity * (0.35 + 0.65 * day)}
         color={color}
         castShadow
         shadow-mapSize={[SHADOW_MAP_SIZE, SHADOW_MAP_SIZE]}
