@@ -396,9 +396,9 @@
   "m2_collect": {
     "title": "Bốn điểm lấy mẫu",
     "goal": "Lái xe tới bốn địa điểm thu thập mẫu đá trong phạm vi có thể đi bộ quay lại tàu đáp.",
-    "hint": "Vòng đỏ là giới hạn đi bộ 78 m. Hãy đi theo mũi tên chỉ đường.",
+    "hint": "Vòng đỏ là giới hạn đi bộ 390 m. Hãy đi theo mũi tên chỉ đường.",
     "success": "Đã thu đủ bốn mẫu đá. Giờ hãy tìm hiểu xem chúng là đá gì.",
-    "tether": "Giới hạn đi bộ! Hãy ở trong bán kính 78 m quanh tàu đáp.",
+    "tether": "Giới hạn đi bộ! Hãy ở trong bán kính 390 m quanh tàu đáp.",
     "targets": [
       {
         "name": "Mảng đất sẫm màu",

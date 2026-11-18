@@ -24,8 +24,8 @@ const SCAN_SECONDS = 1.65;
 const WAKE_LEVEL = 12;
 const SPRINT_MULT = 1.75;
 const CUOI_FLIGHT_MULT = 1.95;
-const MOON_MISSION_LIMIT = 86;
-const MARS_MISSION_LIMIT = 112;
+const MOON_MISSION_LIMIT = 430;
+const MARS_MISSION_LIMIT = 560;
 
 function missionMapLimit(config: DriveConfig, lab: boolean): number {
   if (lab) return Infinity;
@@ -93,9 +93,9 @@ function Beacon({ x, z, y, state, kind = 'beacon', quiet = false, scanning = fal
   return (
     <group position={[x, y, z]}>
       {/* Once the mission is won the beam and ring step aside for the conversation. */}
-      <mesh position={[0, 16, 0]} visible={!quiet}>
-        <cylinderGeometry args={[0.32, 0.32, 32, 8, 1, true]} />
-        <meshBasicMaterial color={color} transparent opacity={state === 'later' ? 0.12 : 0.42} depthWrite={false} toneMapped={false} fog={false} />
+      <mesh position={[0, 23, 0]} visible={!quiet}>
+        <cylinderGeometry args={[0.42, 0.42, 46, 8, 1, true]} />
+        <meshBasicMaterial color={color} transparent opacity={state === 'later' ? 0.14 : 0.46} depthWrite={false} toneMapped={false} fog={false} />
       </mesh>
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.16, 0]} visible={!quiet}>
         <ringGeometry args={[3.2, 3.6, 40]} />
@@ -956,7 +956,7 @@ function makeAlphaShadowMaterial(color: string) {
 
 function SectorBoundary({ cx, cz, radius, terrain, moon }: { cx: number; cz: number; radius: number; terrain: Terrain; moon: boolean }) {
   const { strip, beacons, shroud, wall } = useMemo(() => {
-    const segs = 96;
+    const segs = 128;
     const pos = new Float32Array((segs + 1) * 2 * 3);
     const indices: number[] = [];
     for (let i = 0; i <= segs; i++) {
@@ -968,7 +968,7 @@ function SectorBoundary({ cx, cz, radius, terrain, moon }: { cx: number; cz: num
       pos[i * 6 + 1] = y + 0.04;
       pos[i * 6 + 2] = z;
       pos[i * 6 + 3] = x;
-      pos[i * 6 + 4] = y + 0.42;
+      pos[i * 6 + 4] = y + 0.65;
       pos[i * 6 + 5] = z;
       if (i < segs) {
         const b = i * 2;
@@ -979,8 +979,8 @@ function SectorBoundary({ cx, cz, radius, terrain, moon }: { cx: number; cz: num
     geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
     geo.setIndex(indices);
     geo.computeVertexNormals();
-    const posts = Array.from({ length: 16 }, (_, i) => {
-      const a = (i / 16) * Math.PI * 2;
+    const posts = Array.from({ length: 32 }, (_, i) => {
+      const a = (i / 32) * Math.PI * 2;
       const x = cx + Math.cos(a) * radius;
       const z = cz + Math.sin(a) * radius;
       return [x, terrain.heightAt(x, z), z] as [number, number, number];
@@ -988,8 +988,8 @@ function SectorBoundary({ cx, cz, radius, terrain, moon }: { cx: number; cz: num
 
     // Outer unlit Lunar Dark Zone blanket + soft shadow curtain surrounding the lit sector.
     const rings: readonly [number, number][] = moon
-      ? [[-2.5, 0.0], [1.2, 0.42], [7, 0.88], [18, 0.96], [48, 0.985], [105, 0.995], [200, 1.0]]
-      : [[-2.0, 0.0], [2.5, 0.28], [14, 0.58], [45, 0.78], [120, 0.88]];
+      ? [[-4, 0.0], [2, 0.42], [12, 0.88], [32, 0.96], [80, 0.985], [170, 0.995], [320, 1.0]]
+      : [[-4, 0.0], [4, 0.28], [24, 0.58], [80, 0.78], [220, 0.88]];
     const sPos = new Float32Array(rings.length * (segs + 1) * 3);
     const sAlpha = new Float32Array(rings.length * (segs + 1));
     const sIdx: number[] = [];
@@ -1033,9 +1033,9 @@ function SectorBoundary({ cx, cz, radius, terrain, moon }: { cx: number; cz: num
       wPos[b * 3] = x;
       wPos[b * 3 + 1] = y - 1;
       wPos[b * 3 + 2] = z;
-      wAlpha[b] = moon ? 0.78 : 0.42;
+      wAlpha[b] = moon ? 0.86 : 0.48;
       wPos[(b + 1) * 3] = x;
-      wPos[(b + 1) * 3 + 1] = y + (moon ? 17 : 12);
+      wPos[(b + 1) * 3 + 1] = y + (moon ? 36 : 24);
       wPos[(b + 1) * 3 + 2] = z;
       wAlpha[b + 1] = 0;
       if (i < segs) wIdx.push(b, b + 2, b + 1, b + 1, b + 2, b + 3);
@@ -1067,8 +1067,8 @@ function SectorBoundary({ cx, cz, radius, terrain, moon }: { cx: number; cz: num
         <meshBasicMaterial color={tint} transparent opacity={0.28} side={THREE.DoubleSide} depthWrite={false} toneMapped={false} fog={false} />
       </mesh>
       {beacons.map(([x, y, z], i) => (
-        <mesh key={i} position={[x, y + 0.4, z]}>
-          <octahedronGeometry args={[0.15, 0]} />
+        <mesh key={i} position={[x, y + 1.1, z]}>
+          <octahedronGeometry args={[0.45, 0]} />
           <meshBasicMaterial color={tint} toneMapped={false} fog={false} />
         </mesh>
       ))}
@@ -1265,7 +1265,7 @@ export function DriveMission({ id, config, onResult, lab, vehicle = 'lrv', sun, 
 
   return (
     <div className={`stage${finished === 'win' ? ' is-celebrating' : ''}`} {...lookHandlers}>
-      <GameCanvas camera={{ position: [0, 8, 14], fov: 55, far: 520 }}>
+      <GameCanvas camera={{ position: [0, 8, 14], fov: 55, far: 1400 }}>
         <Sky world={config.world} sun={sunVector} />
         <Lights world={config.world} sunRef={sunLight} sun={sunVector} />
         <Environment frames={1} resolution={64} environmentIntensity={0.32}>

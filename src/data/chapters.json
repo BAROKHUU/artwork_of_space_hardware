@@ -37,11 +37,23 @@
         "config": {
           "world": "moon",
           "seed": 11,
-          "start": { "x": 0, "z": 0 },
+          "start": {
+            "x": 0,
+            "z": 0
+          },
           "targets": [
-            { "x": 0, "z": -26 },
-            { "x": 24, "z": -48 },
-            { "x": -14, "z": -66 }
+            {
+              "x": 0,
+              "z": -78
+            },
+            {
+              "x": 72,
+              "z": -144
+            },
+            {
+              "x": -42,
+              "z": -198
+            }
           ],
           "radius": 5,
           "vehicle": "lrv",
@@ -177,23 +189,23 @@
           },
           "targets": [
             {
-              "x": -24,
-              "z": -30,
+              "x": -72,
+              "z": -90,
               "kind": "breccia"
             },
             {
-              "x": 20,
-              "z": -46,
+              "x": 60,
+              "z": -138,
               "kind": "anorthosite"
             },
             {
-              "x": 40,
-              "z": -12,
+              "x": 120,
+              "z": -36,
               "kind": "basalt"
             }
           ],
           "radius": 5,
-          "tether": 72,
+          "tether": 360,
           "prop": {
             "model": "descent",
             "x": 9,
@@ -464,32 +476,32 @@
           },
           "targets": [
             {
-              "x": 22,
-              "z": -24,
+              "x": 66,
+              "z": -72,
               "kind": "mineral"
             },
             {
-              "x": -18,
-              "z": -44,
+              "x": -54,
+              "z": -132,
               "kind": "mineral"
             },
             {
-              "x": 28,
-              "z": -66,
+              "x": 84,
+              "z": -198,
               "kind": "mineral"
             },
             {
-              "x": -8,
-              "z": -92,
+              "x": -24,
+              "z": -276,
               "kind": "mineral"
             }
           ],
           "radius": 5,
           "battery": {
-            "drainPerSecond": 7,
+            "drainPerSecond": 5,
             "chargePerSecond": 5,
             "solLength": 44,
-            "stormAt": 130
+            "stormAt": 260
           },
           "vehicle": "mer"
         }
@@ -515,27 +527,27 @@
           },
           "targets": [
             {
-              "x": 20,
-              "z": -22,
+              "x": 60,
+              "z": -66,
               "kind": "mineral"
             },
             {
-              "x": -18,
-              "z": -48,
+              "x": -54,
+              "z": -144,
               "kind": "mineral"
             },
             {
-              "x": 26,
-              "z": -75,
+              "x": 78,
+              "z": -225,
               "kind": "mineral"
             }
           ],
           "radius": 5,
           "battery": {
-            "drainPerSecond": 6,
+            "drainPerSecond": 4.5,
             "chargePerSecond": 5,
             "solLength": 48,
-            "stormAt": 190
+            "stormAt": 340
           },
           "vehicle": "mer",
           "dusk": true
@@ -637,18 +649,18 @@
           },
           "targets": [
             {
-              "x": -18,
-              "z": -28,
+              "x": -54,
+              "z": -84,
               "kind": "mineral"
             },
             {
-              "x": 20,
-              "z": -50,
+              "x": 60,
+              "z": -150,
               "kind": "breccia"
             },
             {
-              "x": -6,
-              "z": -74,
+              "x": -18,
+              "z": -222,
               "kind": "mineral"
             }
           ],
@@ -843,15 +855,15 @@
           "targets": [
             {
               "x": 0,
-              "z": -24
+              "z": -72
             },
             {
-              "x": 18,
-              "z": -44
+              "x": 54,
+              "z": -132
             },
             {
-              "x": -4,
-              "z": -66
+              "x": -12,
+              "z": -198
             }
           ],
           "radius": 5.5,
@@ -889,28 +901,28 @@
           },
           "targets": [
             {
-              "x": -20,
-              "z": -26,
+              "x": -60,
+              "z": -78,
               "kind": "basalt"
             },
             {
-              "x": 14,
-              "z": -40,
+              "x": 42,
+              "z": -120,
               "kind": "anorthosite"
             },
             {
-              "x": 34,
-              "z": -18,
+              "x": 102,
+              "z": -54,
               "kind": "breccia"
             },
             {
-              "x": -6,
-              "z": -58,
+              "x": -18,
+              "z": -174,
               "kind": "breccia"
             }
           ],
           "radius": 5.5,
-          "tether": 78,
+          "tether": 390,
           "prop": {
             "model": "descent",
             "x": 9,
@@ -919,7 +931,11 @@
           "vehicle": "lrv"
         }
       },
-      { "kind": "dialogue", "key": "afterCollect", "focus": "rabbit" },
+      {
+        "kind": "dialogue",
+        "key": "afterCollect",
+        "focus": "rabbit"
+      },
       {
         "kind": "mission",
         "id": "m2_samples",
@@ -930,7 +946,11 @@
           "seed": 202
         }
       },
-      { "kind": "dialogue", "key": "afterSamples", "focus": "lrv" },
+      {
+        "kind": "dialogue",
+        "key": "afterSamples",
+        "focus": "lrv"
+      },
       {
         "kind": "reflect",
         "key": "r1"
@@ -979,7 +999,11 @@
           "seed": 33
         }
       },
-      { "kind": "dialogue", "key": "afterCraters", "focus": "rabbit" },
+      {
+        "kind": "dialogue",
+        "key": "afterCraters",
+        "focus": "rabbit"
+      },
       {
         "kind": "quiz",
         "key": "m3",
@@ -1026,8 +1050,8 @@
           },
           "targets": [
             {
-              "x": 26,
-              "z": -52,
+              "x": 78,
+              "z": -156,
               "kind": "signal"
             }
           ],
@@ -1036,7 +1060,11 @@
           "dusk": true
         }
       },
-      { "kind": "dialogue", "key": "afterSignal", "focus": "lrv" },
+      {
+        "kind": "dialogue",
+        "key": "afterSignal",
+        "focus": "lrv"
+      },
       {
         "kind": "mission",
         "id": "m4_seismic",

@@ -396,9 +396,9 @@
   "m2_collect": {
     "title": "Cuatro sitios de muestreo",
     "goal": "Conduce a cuatro sitios y recoge una roca de cada uno sin alejarte más allá del alcance a pie del módulo.",
-    "hint": "El anillo rojo es tu límite de regreso a pie de 78 m. Sigue la flecha hasta cada sitio de muestreo.",
+    "hint": "El anillo rojo es tu límite de regreso a pie de 390 m. Sigue la flecha hasta cada sitio de muestreo.",
     "success": "Cuatro muestras aseguradas. Ahora descubramos qué son.",
-    "tether": "¡Límite de regreso a pie! Mantente a menos de 78 m del módulo.",
+    "tether": "¡Límite de regreso a pie! Mantente a menos de 390 m del módulo.",
     "targets": [
       {
         "name": "Mancha oscura",
