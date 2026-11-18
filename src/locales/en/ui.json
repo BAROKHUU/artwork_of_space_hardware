@@ -197,7 +197,6 @@
     "scanPrompt": "Inside target ring — HOLD [Space / E] or Hold Scan",
     "scanKeys": "Space / E: hold to scan",
     "sprintKeys": "Shift: sprint",
-    "darkSideSector": "Lit zone · Dark Side at {{r}} m",
     "darkSideBoundary": "Edge of the Moon's Dark Zone — rover cannot enter unlit terrain!",
     "marsBoundary": "Mission sector limit — head back toward the beacon zone.",
     "rabbitWarnTitle": "Moon Rabbit",

@@ -201,7 +201,6 @@
     "scanPrompt": "目標リング内です — [Space / E] または「長押しでスキャン」を押し続けてください",
     "scanKeys": "Space / E：長押しでスキャン",
     "sprintKeys": "Shift：ダッシュ",
-    "darkSideSector": "日照エリア · 暗黒帯まで {{r}} m",
     "darkSideBoundary": "月の暗黒帯の境界です — 光の届かない先へは進めません！",
     "marsBoundary": "ミッションエリアの境界です — ビーコンのほうへ戻ってください。",
     "rabbitWarnTitle": "月のウサギ",

@@ -1112,9 +1112,6 @@ function DriveHud({ id, config, lab, mapLimit, channel, arrow, edge, onScanHold 
               </div>
             </div>
           </div>
-          {config.world === 'moon' && Number.isFinite(mapLimit) && (
-            <div className="sector-badge">{t('hud.darkSideSector', { r: mapLimit })}</div>
-          )}
           {config.battery && (
             <div className="gauges">
               <Gauge label={t('hud.battery')} value={hud.battery} max={100} warn={hud.battery < 20} />

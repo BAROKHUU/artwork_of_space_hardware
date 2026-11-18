@@ -219,7 +219,6 @@ button:disabled { cursor: default; }
 .waypoint { display: flex; gap: 12px; align-items: center; background: rgba(7, 8, 13, .8); border: 1px solid var(--line); padding: 10px 14px; font-size: 16px; }
 .waypoint strong { font-weight: 700; }
 .waypoint .pips { margin-top: 6px; }
-.sector-badge { align-self: flex-start; padding: 5px 10px; font: 600 12px/1.2 var(--mono); letter-spacing: .04em; color: #b8d2ff; background: rgba(6, 10, 22, .82); border: 1px solid rgba(121, 173, 255, .36); border-radius: 6px; }
 .arrow { display: inline-block; color: var(--orange); font-size: 26px; line-height: 1; }
 .gauges { display: flex; flex-direction: column; gap: 8px; background: rgba(7, 8, 13, .8); border: 1px solid var(--line); padding: 10px 14px; }
 .gauge-head { display: flex; justify-content: space-between; font: 400 13px var(--mono); margin-bottom: 4px; }

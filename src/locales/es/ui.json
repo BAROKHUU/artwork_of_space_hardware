@@ -201,7 +201,6 @@
     "scanPrompt": "Dentro del anillo objetivo — MANTÉN [Espacio / E] o Escanear",
     "scanKeys": "Espacio / E: mantén para escanear",
     "sprintKeys": "Shift: acelerar",
-    "darkSideSector": "Zona iluminada · zona oscura a {{r}} m",
     "darkSideBoundary": "Borde de la zona oscura lunar — ¡el rover no puede entrar sin luz!",
     "marsBoundary": "Límite del sector de misión — vuelve hacia las balizas.",
     "rabbitWarnTitle": "Conejo Lunar",
