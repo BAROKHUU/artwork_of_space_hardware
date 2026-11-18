@@ -1,31 +1,489 @@
 {
-  "ch0_landing": {"title":"降落月球车","goal":"引导月球车下降，并以低于 {{safe}} 米/秒的速度轻轻着陆。","hint":"等地面靠近后再短促点火。安全着陆将开启这段旅程。","success":"着陆成功！月球车已安全抵达月面。","fail_crash":"着陆速度太快：{{speed}} 米/秒。试试更轻柔的点火。","fail_fuel":"着陆前燃料耗尽。节省燃料并晚一点点火。"},
-  "ch0_boot": {"title":"车轮检查","goal":"驾驶到全部三个测试信标。","hint":"跟随远处的橙色光。屏幕箭头会指向下一个信标。","success":"所有系统正常，Echo 可以出发了。","targets":[{"name":"信标 1","found":"转向系统正常。"},{"name":"信标 2","found":"悬挂系统正常。"},{"name":"信标 3","found":"天线正在接收信号。"}]},
-  "ch1_sites": {"title":"选择着陆点","goal":"观察三个区域的照片，在每个区域选择最安全的着陆位置。","hint":"大陨石坑和巨石都很危险。选择两者都最少的区域。","success":"选择得很好。科学家分析徘徊者号和勘测者号照片时也做过同样的工作。","question":"第 {{n}} / {{total}} 轮：哪个地点最安全？","site":"地点 {{letter}}","right":"最安全的选择：这里的危险最少。","wrong":"有风险！地点 {{letter}} 的危险更少。","next":"下一个区域","note":"为本游戏生成的练习图像。"},
-  "ch1_landing": {"title":"软着陆","goal":"以低于 {{safe}} 米/秒的速度着陆。按住推进器减缓下降。","hint":"先等待，再点火。点火太早会在高空耗尽燃料。","success":"着陆成功！比勘测者号真实的两次弹跳平稳多了。","fail_crash":"以 {{speed}} 米/秒撞击。再早一点开始点火。","fail_fuel":"燃料耗尽。再多等一会儿再点火。"},
-  "ch2_laser": {"title":"捕捉光线","goal":"在月球中央附近找到静海，向反射器发射 {{shots}} 次激光。","hint":"寻找中心右侧的大块暗区。目标靠近赤道。","success":"你刚刚用光测量了月球距离。","instruction":"点击或轻触月球发射激光。","fire":"脉冲已发射","hit":"{{t}} 秒后收到回波","miss":"没有回波。脉冲没有击中反射器。","distance":"距离","shots":"回波","drift":"自 1969 年以来，月球又远离了约 {{m}} 米。","markerHint":"提示：已显示反射镜位置！请瞄准月球中右方闪烁的光环。"},
-  "ch2_lrv": {"title":"沿着月球车轨迹","goal":"访问三个地质站点，并始终处于可步行返回着陆器的距离内。","hint":"雷达上的红圈是极限。阿波罗宇航员也遵守同一规则：必须能步行返回。","success":"三个站点，没有月球车被困。","tether":"已到步行返回极限！请掉头。","targets":[{"name":"肘形陨石坑","found":"站点 1：撞击形成陨石坑时抛出的岩石。"},{"name":"山脚","found":"站点 2：来自月球高地的古老岩石。"},{"name":"哈德利月溪","found":"站点 3：一条可能由熔岩切出的长沟。"}]},
-  "ch3_slingshot": {"title":"借一颗行星","goal":"选择发射日期和速度，让木星为探测器至少增加 1 千米/秒。","hint":"探测器必须在木星经过后不久抵达，从行星后方通过。","success":"木星不消耗燃料就把探测器甩向了外行星。","launchDay":"发射时木星的位置","speed":"发射速度","launch":"发射","relaunch":"再次发射","suggest":"询问任务控制中心","suggested":"任务控制中心设置了合适的窗口。","resultGain":"在木星获得的速度：{{gain}} 千米/秒","closest":"最近距离：{{km}} 百万千米","years":"第 {{y}} 年","withoutJupiter":"没有木星","earth":"地球","jupiter":"木星","saturnOrbit":"土星轨道","yearLabel":"发射后年数","closestLabel":"最接近木星","diagram":"包含太阳、地球、木星和探测器路径的轨道图","fail_short":"速度不足，探测器没能到达木星那么远。请提高发射速度。","fail_missed":"抵达时离木星太远。改变木星的初始位置。","fail_bound":"很接近，但飞越增加的速度太少。调整几度，从木星后方近距离通过。","fail_hit":"直接撞上木星了！请再远一点。"},
-  "ch4_landing": {"title":"穿过稀薄大气","goal":"打开降落伞，再启动发动机，以低于 {{safe}} 米/秒的速度着陆。","hint":"立刻打开降落伞。在离地几百米时开始点火。","success":"着陆成功！美国首次成功登陆火星发生在 1976 年 7 月 20 日。","fail_crash":"以 {{speed}} 米/秒撞击。你在点火前打开降落伞了吗？","fail_fuel":"燃料耗尽。先让降落伞多工作一会儿。"},
-  "ch4_lr": {"title":"有人在家吗？","goal":"阅读海盗号土壤实验并判断它们意味着什么。","hint":"科学家不会匆忙下结论。把三个结果放在一起看。","success":"这就是真实答案：奇特的化学现象，但没有明确生命证据。","note":"图表展示结果的大致形状，并非原始数据。","next":"下一个实验","axisX":"天数","axisY":"释放的气体","none":"检测到有机分子","noneLabel":"没有峰值的平坦仪器曲线","rounds":[{"chart":"fresh","title":"实验 1：新鲜土壤 + 营养物","q":"加入营养物后发生了什么？","options":["土壤突然释放出气体","什么都没发生"],"explain":"放射性气体很快释放出来，可能意味着某种东西正在摄取营养物。"},{"chart":"heated","title":"实验 2：先烘烤土壤","q":"加热后的土壤没有反应，为什么这很重要？","options":["这证明烤箱坏了","热量停止了反应，生命或某些化学物质都可能有这种表现"],"explain":"烘烤改变了结果。生命可以解释这一点，被热分解的化学物质也可以。"},{"chart":"organics","title":"实验 3：寻找有机分子","q":"没有检测到有机分子。最佳结论是什么？","options":["火星肯定到处是微生物","化学现象奇特，但没有明确生命证据","所有仪器都坏了"],"explain":"海盗号发现了令人意外的化学现象，却没有明确生命证据。科学家仍在研究其含义。"}]},
-  "ch5_opportunity": {"title":"追寻水的痕迹","goal":"在沙尘暴遮住太阳前扫描全部四处岩层。","hint":"阳光为你充电，驾驶会消耗电力。电量低时停下等待太阳。","success":"你像机遇号一样找到了水的迹象。","fail_storm":"沙尘暴已经遮住太阳。这正是 2018 年 6 月机遇号经历的事。","low":"电池耗尽，正在等待太阳。","targets":[{"name":"蓝莓石原","found":"这些小球含有赤铁矿，这种矿物通常和水一起形成。"},{"name":"层状露头","found":"这样的岩层可以由水沉积形成。"},{"name":"鹰撞击坑边缘","found":"撞击会露出下方更古老的岩石。"},{"name":"坚忍撞击坑","found":"证据表明这里很久以前曾经湿润。"}]},
-  "ch6_ingenuity": {"title":"稀薄空气","goal":"轻点旋翼，在绿色区域内悬停 {{hold}} 秒，然后轻柔着陆。","hint":"不要一直按住。短暂轻点可以保持稳定。","success":"在火星实现动力飞行！机智号做到了 72 次。","fail_crash":"以 {{speed}} 米/秒重重着陆。接近地面时轻点旋翼减速。","fail_fuel":"电池耗尽。每次按得更短一些。"},
-  "ch6_perseverance": {"title":"在古老湖床取芯","goal":"驾驶漫游车穿过耶泽罗撞击坑的古老河流三角洲，采集三处岩层岩芯。","hint":"毅力号由核能钚电池供能而非太阳能板 — 请稳妥绕过石块前进。","success":"三支耶泽罗岩芯采样管已封存，等待未来火星采样返回任务回收。","targets":[{"name":"撞击坑底 (Séítah)","found":"湖泊干涸前曾受古老地下水改造的火山基岩。"},{"name":"三角洲前缘 (Wildcat Ridge)","found":"古老河流注入耶泽罗湖时沉积下来的细粒泥岩。"},{"name":"采样管库 (Three Forks)","found":"封存完好的钛合金采样管安放在平坦月壤般地表，等待未来取回。"}]},
-  "ch7_golden": {"title":"装填金唱片","goal":"以下哪些真的在金唱片上？逐一分类。","hint":"它在 1977 年被制成一张留声机唱片，可保存声音和图片数据。","success":"你知道了我们选择如何介绍自己。","on":"唱片上有","off":"唱片上没有","note":"唱片包含 115 张图片、55 种语言的问候、自然声音和许多文化的音乐。","next":"下一项","items":{"whales":{"name":"鲸鱼的歌声","why":"有。自然声音包括海浪、风、雷、鸟和鲸鱼。"},"video":{"name":"火箭发射视频","why":"没有。唱片携带声音和静态图片，不是视频。"},"greetings":{"name":"55 种语言的问候","why":"有。从古代阿卡德语到现代汉语方言吴语。"},"thunder":{"name":"雷声","why":"有。地球的天气也登上了唱片。"},"map":{"name":"每座城市的街道地图","why":"没有。唱片展示了地球的位置，但没有城市地图。"},"music":{"name":"多种文化的音乐","why":"有。音乐选段来自不同文化与时代。"}}},
-  "ch2_apollo12": {"title":"精确着陆月球","goal":"横向微调对准勘测者 3 号旁的发光着陆区，并以低于 {{safe}} 米/秒的速度降落。","hint":"使用 A/D 或左右方向键对齐目标区，在接近地面时短促点火减速。","success":"就像 1969 年的阿波罗 12 号一样，在勘测者 3 号旁精准着陆。","fail_crash":"着陆器以 {{speed}} 米/秒撞击。请更早开始短促点火。","fail_fuel":"着陆前燃料耗尽。请晚一点开始点火以节省燃料。","fail_target":"你偏离目标着陆区 {{dist}} 米。请在着陆前横向对准橙色光环。"},
-  "ch2_alsep": {"title":"倾听月球","goal":"在 ALSEP 四路通道同时在 A 和 B 之间振荡时捕捉 {{captures}} 次月震窗口。","hint":"观察四路波形向左移动，当所有波形都在红线 A–B 内振动时按捕捉或空格键。","success":"捕捉成功！阿波罗的 ALSEP 地震网揭示了月壳、月幔和月核。","progress":"已捕捉信号","hit":"捕捉成功！四路 ALSEP 通道均覆盖窗口。","miss":"未命中窗口 — A 和 B 之间至少有一路仍为平直段。"},
-  "ch2_lrv_extra": {"title":"月球深层取芯钻探","goal":"向月球高地钻探 {{targetDepth}} 米提取分层岩芯样本，同时防止钻头过热。","hint":"按住空格键或钻探按钮向下推进，热量接近红色警告时松开散热。","success":"岩芯提取成功！阿波罗 15–17 号的深层岩芯封存了数十亿年的月球历史。","fail_jam":"钻头过热卡住 {{jams}} 次。请更早松开按钮散热。","rigLabel":"阿波罗月面钻机","ready":"准备就绪","drilling":"正在钻探","cooling":"冷却中…","depthLabel":"取芯深度","heatLabel":"钻头温度","jamsLabel":"过热卡顿","layerLabel":"当前岩层：{{layer}}","drillBtn":"按住钻探","controls":"按住空格键或按钮钻探 · 松开散热","layers":{"dust":"表层月尘","ejecta":"溅射碎石","dense":"致密高地岩层"}},
-  "ch4_viking2": {"title":"精准着陆乌托邦平原","goal":"打开降落伞并横向对准乌托邦平原平坦着陆区，以低于 {{safe}} 米/秒的速度降落。","hint":"尽早开伞，使用 A/D 或左右键对准琥珀色着陆环，随后用发动机减速。","success":"海盗 2 号精准安全着陆，并传回了火星北方的影像。","fail_crash":"以 {{speed}} 米/秒着陆太重。请尽早开伞并减速。","fail_fuel":"着陆前燃料耗尽。先让降落伞帮你减速。","fail_target":"你偏离目标着陆区 {{dist}} 米。着陆前请横向对准琥珀色光环。"},
-  "ch5_spirit": {"title":"Cross the Columbia Hills","goal":"Drive to each rock stop while managing the rover's solar battery.","hint":"Park when the battery is low. Sunlight recharges it, but dust can dim the sky.","success":"Spirit reached the hills and found rocks altered by water.","fail_storm":"The storm blocked the Sun. Spirit's twin Opportunity met a planet-wide storm years later."},
-  "ch5_newlanders": {"title":"钻探极地水冰","goal":"向火星北部平原钻探 {{targetDepth}} 米，触及埋藏的水冰层且防止钻头过热。","hint":"按住空格键或钻探按钮向下穿过冻尘与碎石，钻头温度接近红区时及时松开冷却。","success":"触及水冰！凤凰号刮取并确认了火星北部平原下方埋藏的水冰。","fail_jam":"钻头在冻土中过热卡顿了 {{jams}} 次。请更早松开按钮散热。"},
-  "ch7_dawn": {"title":"Borrow a Planet","goal":"Adjust the probe's path so a planet's gravity changes its course.","hint":"The simulator uses Jupiter's moving gravity well to demonstrate a flyby.","success":"A planet can bend a spacecraft's path. Dawn's real journey used ion propulsion and a Mars gravity assist; this shortened simulation teaches the shared orbital idea.","launchDay":"Jupiter's position at launch","speed":"Launch speed","launch":"Launch","relaunch":"Launch again","suggest":"Ask Mission Control","suggested":"Mission Control set a good window.","resultGain":"Speed gained at Jupiter: {{gain}} km/s","closest":"Closest approach: {{km}} million km","years":"Year {{y}}","withoutJupiter":"Without Jupiter","earth":"Earth","jupiter":"Jupiter","saturnOrbit":"Saturn's orbit","yearLabel":"Years since launch","closestLabel":"Closest to Jupiter","diagram":"Orbit diagram with the Sun, Earth, Jupiter, and your probe's path","fail_short":"Not enough speed. The probe never got as far as Jupiter. Launch faster.","fail_missed":"Too far from Jupiter when you got there. Change Jupiter's starting position.","fail_bound":"Close, but the flyby added too little speed. Adjust by a few degrees to pass just behind Jupiter.","fail_hit":"Right into Jupiter! A little farther away, please."},
-  "ch7_near": {"title":"轻柔触碰小行星","goal":"横向对准爱神星上的发光目标区，并在微重力下以低于 {{safe}} 米/秒的速度着陆。","hint":"爱神星引力极弱。用 A/D 对准琥珀色光环，并用短促脉冲缓缓下降。","success":"NEAR-舒梅克号在爱神星表面着陆后依然存活，并传回了地表数据。","fail_crash":"以 {{speed}} 米/秒着陆太重。请更早开始制动。","fail_fuel":"着陆前燃料耗尽。请使用短促脉冲。","fail_target":"你偏离目标区域 {{dist}} 米。着陆前请移入琥珀色光环内。"},
-  "ch7_kepler": {"title":"Find a Planet in Starlight","goal":"Read the brightness curve and identify the dip caused by a planet crossing its star.","hint":"A repeating, shallow dip can reveal a planet that is too small and far away to see directly.","success":"You found a transit. Kepler used repeated dips in starlight to discover thousands of planets.","note":"This curve is an illustration of the transit method, not raw Kepler data.","next":"Continue","axisX":"Time","axisY":"Star brightness","none":"small dip during transit","noneLabel":"Illustrative star brightness curve with a shallow dip","rounds":[{"chart":"transit","title":"A planet crosses its star","q":"Which signal is evidence that a planet passed in front of the star?","options":["A small, repeated dip in brightness","A sudden permanent increase in brightness"],"explain":"A planet blocks a little starlight as it crosses its star. Repeated dips reveal its orbit."}]},
-  "m1_drive": {"title":"Under the banyan tree","goal":"Drive the lunar rover to the three markers beneath the old tree. Use the arrow keys, WASD, or the buttons.","hint":"The arrow at the top left points to the next marker. Drive slowly over the ridges.","success":"The wheels remember the way. Cuội and the rabbit are waiting under the tree.","targets":[{"name":"Old tracks","found":"Tracks from 1971, still sharp in the dust."},{"name":"The banyan roots","found":"Roots stretch across the regolith like roads."},{"name":"The shade of the tree","found":"Here the dust is cool. Someone has been sitting here."}]},
-  "m2_collect": {"title":"四个采样点","goal":"驾驶月球车前往四个采样点收集岩石，同时保持在着陆器步行返回范围内。","hint":"红圈是 78 米步行返回极限，跟随箭头前往每个采样点。","success":"四份样本已收集完毕，现在让我们来辨认它们吧。","tether":"已接近步行返回极限！请保持在着陆器 78 米范围内。","targets":[{"name":"深色区域","found":"一块光滑的深色岩石，看起来像冷却的熔岩。"},{"name":"明亮斜坡","found":"一块浅色粉状岩石，比周围的月尘更亮。"},{"name":"破碎地面","found":"由许多碎块压合在一起的岩石。"},{"name":"小陨石坑边缘","found":"裂缝中记录着故事的岩石。"}]},
-  "m2_samples": {"title":"Read the rocks","goal":"Look at each sample and choose its type. A wrong guess is a clue, not a failure: look again.","hint":"Colour and texture are the best clues. Dark and smooth, pale and chalky, or pieces pressed together.","success":"You read six samples like a field geologist.","question":"Sample {{n}} of {{total}}: which rock is this?","names":{"basalt":"Basalt","anorthosite":"Anorthosite","breccia":"Breccia"},"props":{"basalt":"Dark, smooth, and heavy. Formed from cooled lava.","anorthosite":"Pale and chalky. Part of the Moon's bright highlands.","breccia":"Many broken pieces pressed together by an impact."},"right":"Yes. That is {{name}}.","wrong":"Not quite. Look at the colour and the texture again.","next":"Next sample","note":"Choose the rock type that matches what you see."},
-  "m3_craters": {"title":"Which ground is older?","goal":"Compare four patches of the lunar surface. Pick the patch that looks older and more weathered.","hint":"Older ground has more craters, softer edges, and fewer sharp boulders.","success":"You read the surface like a map of time.","question":"Patch {{n}} of {{total}}: which ground has been exposed longer?","site":"Patch {{letter}}","right":"Yes. More craters and softer edges mean an older surface.","wrong":"Look again: count the craters and check how sharp their edges are. The older patch is {{letter}}.","next":"Next patch","note":"Choose one patch."},
-  "m4_signal": {"title":"追踪古老信号","goal":"穿过黄昏长影，驶向来自 1969 年的微弱信号。","hint":"留意陨石坑旁的漫长暮影，跟随箭头靠近。","success":"信号来自半埋在月尘中的一个小型仪器包。","targets":[{"name":"微弱信号","found":"一台自 1969 年以来沉寂的小型仪器。"}]},
-  "m4_seismic": {"title":"捕捉月震","goal":"帮助 PSEP 在四路通道同时在 A–B 窗口内剧烈振荡时记录 {{captures}} 次月震。","hint":"等到四条波形同时在 A 和 B 之间振荡时，按下捕捉或空格键。","success":"捕捉到两次月震！尽管在 1969 年只工作了三周，PSEP 的记录至今仍在教导地球。","progress":"已记录月震","hit":"四路通道均成功记录月震！","miss":"窗口内仍有平直段 — 请等四路同时振荡。"},
-  "m5_laser": {"title":"一束微光","goal":"瞄准月球静海基地，向阿波罗 11 号反射镜发射并回收 {{shots}} 次激光脉冲。","hint":"寻找月球中心偏右、靠近赤道的位置。未命中三次后会显示标记。","success":"光束回家了！只要我们向沉寂的仪器发出光芒，它依然会回应。","instruction":"点击或轻触月球发射激光。","fire":"脉冲已发射","hit":"{{t}} 秒后收到回波","miss":"没有回波，脉冲未击中反射镜。","distance":"距离","shots":"回波","drift":"自 1969 年以来，月球又远离了约 {{m}} 米。","markerHint":"提示：已标出反射镜位置！请瞄准月球上闪烁的光环。"}
+  "ch0_landing": {
+    "title": "降落月球车",
+    "goal": "引导月球车下降，并以低于 {{safe}} 米/秒的速度轻轻着陆。",
+    "hint": "等地面靠近后再短促点火。安全着陆将开启这段旅程。",
+    "success": "着陆成功！月球车已安全抵达月面。",
+    "fail_crash": "着陆速度太快：{{speed}} 米/秒。试试更轻柔的点火。",
+    "fail_fuel": "着陆前燃料耗尽。节省燃料并晚一点点火。"
+  },
+  "ch0_boot": {
+    "title": "车轮检查",
+    "goal": "驾驶到全部三个测试信标。",
+    "hint": "跟随远处的橙色光。屏幕箭头会指向下一个信标。",
+    "success": "所有系统正常，Echo 可以出发了。",
+    "targets": [
+      {
+        "name": "信标 1",
+        "found": "转向系统正常。"
+      },
+      {
+        "name": "信标 2",
+        "found": "悬挂系统正常。"
+      },
+      {
+        "name": "信标 3",
+        "found": "天线正在接收信号。"
+      }
+    ]
+  },
+  "ch1_sites": {
+    "title": "选择着陆点",
+    "goal": "观察三个区域的照片，在每个区域选择最安全的着陆位置。",
+    "hint": "大陨石坑和巨石都很危险。选择两者都最少的区域。",
+    "success": "选择得很好。科学家分析徘徊者号和勘测者号照片时也做过同样的工作。",
+    "question": "第 {{n}} / {{total}} 轮：哪个地点最安全？",
+    "site": "地点 {{letter}}",
+    "right": "最安全的选择：这里的危险最少。",
+    "wrong": "有风险！地点 {{letter}} 的危险更少。",
+    "next": "下一个区域",
+    "note": "为本游戏生成的练习图像。"
+  },
+  "ch1_landing": {
+    "title": "软着陆",
+    "goal": "以低于 {{safe}} 米/秒的速度着陆。按住推进器减缓下降。",
+    "hint": "先等待，再点火。点火太早会在高空耗尽燃料。",
+    "success": "着陆成功！比勘测者号真实的两次弹跳平稳多了。",
+    "fail_crash": "以 {{speed}} 米/秒撞击。再早一点开始点火。",
+    "fail_fuel": "燃料耗尽。再多等一会儿再点火。"
+  },
+  "ch2_laser": {
+    "title": "捕捉光线",
+    "goal": "在月球中央附近找到静海，向反射器发射 {{shots}} 次激光。",
+    "hint": "寻找中心右侧的大块暗区。目标靠近赤道。",
+    "success": "你刚刚用光测量了月球距离。",
+    "instruction": "点击或轻触月球发射激光。",
+    "fire": "脉冲已发射",
+    "hit": "{{t}} 秒后收到回波",
+    "miss": "没有回波。脉冲没有击中反射器。",
+    "distance": "距离",
+    "shots": "回波",
+    "drift": "自 1969 年以来，月球又远离了约 {{m}} 米。",
+    "markerHint": "提示：已显示反射镜位置！请瞄准月球中右方闪烁的光环。"
+  },
+  "ch2_lrv": {
+    "title": "沿着月球车轨迹",
+    "goal": "访问三个地质站点，并始终处于可步行返回着陆器的距离内。",
+    "hint": "雷达上的红圈是极限。阿波罗宇航员也遵守同一规则：必须能步行返回。",
+    "success": "三个站点，没有月球车被困。",
+    "tether": "已到步行返回极限！请掉头。",
+    "targets": [
+      {
+        "name": "肘形陨石坑",
+        "found": "站点 1：撞击形成陨石坑时抛出的岩石。"
+      },
+      {
+        "name": "山脚",
+        "found": "站点 2：来自月球高地的古老岩石。"
+      },
+      {
+        "name": "哈德利月溪",
+        "found": "站点 3：一条可能由熔岩切出的长沟。"
+      }
+    ]
+  },
+  "ch3_slingshot": {
+    "title": "借一颗行星",
+    "goal": "选择发射日期和速度，让木星为探测器至少增加 1 千米/秒。",
+    "hint": "探测器必须在木星经过后不久抵达，从行星后方通过。",
+    "success": "木星不消耗燃料就把探测器甩向了外行星。",
+    "launchDay": "发射时木星的位置",
+    "speed": "发射速度",
+    "launch": "发射",
+    "relaunch": "再次发射",
+    "suggest": "询问任务控制中心",
+    "suggested": "任务控制中心设置了合适的窗口。",
+    "resultGain": "在木星获得的速度：{{gain}} 千米/秒",
+    "closest": "最近距离：{{km}} 百万千米",
+    "years": "第 {{y}} 年",
+    "withoutJupiter": "没有木星",
+    "earth": "地球",
+    "jupiter": "木星",
+    "saturnOrbit": "土星轨道",
+    "yearLabel": "发射后年数",
+    "closestLabel": "最接近木星",
+    "diagram": "包含太阳、地球、木星和探测器路径的轨道图",
+    "fail_short": "速度不足，探测器没能到达木星那么远。请提高发射速度。",
+    "fail_missed": "抵达时离木星太远。改变木星的初始位置。",
+    "fail_bound": "很接近，但飞越增加的速度太少。调整几度，从木星后方近距离通过。",
+    "fail_hit": "直接撞上木星了！请再远一点。"
+  },
+  "ch4_landing": {
+    "title": "穿过稀薄大气",
+    "goal": "打开降落伞，再启动发动机，以低于 {{safe}} 米/秒的速度着陆。",
+    "hint": "立刻打开降落伞。在离地几百米时开始点火。",
+    "success": "着陆成功！美国首次成功登陆火星发生在 1976 年 7 月 20 日。",
+    "fail_crash": "以 {{speed}} 米/秒撞击。你在点火前打开降落伞了吗？",
+    "fail_fuel": "燃料耗尽。先让降落伞多工作一会儿。"
+  },
+  "ch4_lr": {
+    "title": "有人在家吗？",
+    "goal": "阅读海盗号土壤实验并判断它们意味着什么。",
+    "hint": "科学家不会匆忙下结论。把三个结果放在一起看。",
+    "success": "这就是真实答案：奇特的化学现象，但没有明确生命证据。",
+    "note": "图表展示结果的大致形状，并非原始数据。",
+    "next": "下一个实验",
+    "axisX": "天数",
+    "axisY": "释放的气体",
+    "none": "检测到有机分子",
+    "noneLabel": "没有峰值的平坦仪器曲线",
+    "rounds": [
+      {
+        "chart": "fresh",
+        "title": "实验 1：新鲜土壤 + 营养物",
+        "q": "加入营养物后发生了什么？",
+        "options": [
+          "土壤突然释放出气体",
+          "什么都没发生"
+        ],
+        "explain": "放射性气体很快释放出来，可能意味着某种东西正在摄取营养物。"
+      },
+      {
+        "chart": "heated",
+        "title": "实验 2：先烘烤土壤",
+        "q": "加热后的土壤没有反应，为什么这很重要？",
+        "options": [
+          "这证明烤箱坏了",
+          "热量停止了反应，生命或某些化学物质都可能有这种表现"
+        ],
+        "explain": "烘烤改变了结果。生命可以解释这一点，被热分解的化学物质也可以。"
+      },
+      {
+        "chart": "organics",
+        "title": "实验 3：寻找有机分子",
+        "q": "没有检测到有机分子。最佳结论是什么？",
+        "options": [
+          "火星肯定到处是微生物",
+          "化学现象奇特，但没有明确生命证据",
+          "所有仪器都坏了"
+        ],
+        "explain": "海盗号发现了令人意外的化学现象，却没有明确生命证据。科学家仍在研究其含义。"
+      }
+    ]
+  },
+  "ch5_opportunity": {
+    "title": "追寻水的痕迹",
+    "goal": "在沙尘暴遮住太阳前扫描全部四处岩层。",
+    "hint": "阳光为你充电，驾驶会消耗电力。电量低时停下等待太阳。",
+    "success": "你像机遇号一样找到了水的迹象。",
+    "fail_storm": "沙尘暴已经遮住太阳。这正是 2018 年 6 月机遇号经历的事。",
+    "low": "电池耗尽，正在等待太阳。",
+    "targets": [
+      {
+        "name": "蓝莓石原",
+        "found": "这些小球含有赤铁矿，这种矿物通常和水一起形成。"
+      },
+      {
+        "name": "层状露头",
+        "found": "这样的岩层可以由水沉积形成。"
+      },
+      {
+        "name": "鹰撞击坑边缘",
+        "found": "撞击会露出下方更古老的岩石。"
+      },
+      {
+        "name": "坚忍撞击坑",
+        "found": "证据表明这里很久以前曾经湿润。"
+      }
+    ]
+  },
+  "ch6_ingenuity": {
+    "title": "稀薄空气",
+    "goal": "轻点旋翼，在绿色区域内悬停 {{hold}} 秒，然后轻柔着陆。",
+    "hint": "不要一直按住。短暂轻点可以保持稳定。",
+    "success": "在火星实现动力飞行！机智号做到了 72 次。",
+    "fail_crash": "以 {{speed}} 米/秒重重着陆。接近地面时轻点旋翼减速。",
+    "fail_fuel": "电池耗尽。每次按得更短一些。"
+  },
+  "ch6_perseverance": {
+    "title": "在古老湖床取芯",
+    "goal": "驾驶漫游车穿过耶泽罗撞击坑的古老河流三角洲，采集三处岩层岩芯。",
+    "hint": "毅力号由核能钚电池供能而非太阳能板 — 请稳妥绕过石块前进。",
+    "success": "三支耶泽罗岩芯采样管已封存，等待未来火星采样返回任务回收。",
+    "targets": [
+      {
+        "name": "撞击坑底 (Séítah)",
+        "found": "湖泊干涸前曾受古老地下水改造的火山基岩。"
+      },
+      {
+        "name": "三角洲前缘 (Wildcat Ridge)",
+        "found": "古老河流注入耶泽罗湖时沉积下来的细粒泥岩。"
+      },
+      {
+        "name": "采样管库 (Three Forks)",
+        "found": "封存完好的钛合金采样管安放在平坦月壤般地表，等待未来取回。"
+      }
+    ]
+  },
+  "ch7_golden": {
+    "title": "装填金唱片",
+    "goal": "以下哪些真的在金唱片上？逐一分类。",
+    "hint": "它在 1977 年被制成一张留声机唱片，可保存声音和图片数据。",
+    "success": "你知道了我们选择如何介绍自己。",
+    "on": "唱片上有",
+    "off": "唱片上没有",
+    "note": "唱片包含 115 张图片、55 种语言的问候、自然声音和许多文化的音乐。",
+    "next": "下一项",
+    "items": {
+      "whales": {
+        "name": "鲸鱼的歌声",
+        "why": "有。自然声音包括海浪、风、雷、鸟和鲸鱼。"
+      },
+      "video": {
+        "name": "火箭发射视频",
+        "why": "没有。唱片携带声音和静态图片，不是视频。"
+      },
+      "greetings": {
+        "name": "55 种语言的问候",
+        "why": "有。从古代阿卡德语到现代汉语方言吴语。"
+      },
+      "thunder": {
+        "name": "雷声",
+        "why": "有。地球的天气也登上了唱片。"
+      },
+      "map": {
+        "name": "每座城市的街道地图",
+        "why": "没有。唱片展示了地球的位置，但没有城市地图。"
+      },
+      "music": {
+        "name": "多种文化的音乐",
+        "why": "有。音乐选段来自不同文化与时代。"
+      }
+    }
+  },
+  "ch2_apollo12": {
+    "title": "精确着陆月球",
+    "goal": "横向微调对准勘测者 3 号旁的发光着陆区，并以低于 {{safe}} 米/秒的速度降落。",
+    "hint": "使用 A/D 或左右方向键对齐目标区，在接近地面时短促点火减速。",
+    "success": "就像 1969 年的阿波罗 12 号一样，在勘测者 3 号旁精准着陆。",
+    "fail_crash": "着陆器以 {{speed}} 米/秒撞击。请更早开始短促点火。",
+    "fail_fuel": "着陆前燃料耗尽。请晚一点开始点火以节省燃料。",
+    "fail_target": "你偏离目标着陆区 {{dist}} 米。请在着陆前横向对准橙色光环。"
+  },
+  "ch2_alsep": {
+    "title": "倾听月球",
+    "goal": "在 ALSEP 四路通道同时在 A 和 B 之间振荡时捕捉 {{captures}} 次月震窗口。",
+    "hint": "观察四路波形向左移动，当所有波形都在红线 A–B 内振动时按捕捉或空格键。",
+    "success": "捕捉成功！阿波罗的 ALSEP 地震网揭示了月壳、月幔和月核。",
+    "progress": "已捕捉信号",
+    "hit": "捕捉成功！四路 ALSEP 通道均覆盖窗口。",
+    "miss": "未命中窗口 — A 和 B 之间至少有一路仍为平直段。"
+  },
+  "ch2_lrv_extra": {
+    "title": "月球深层取芯钻探",
+    "goal": "向月球高地钻探 {{targetDepth}} 米提取分层岩芯样本，同时防止钻头过热。",
+    "hint": "按住空格键或钻探按钮向下推进，热量接近红色警告时松开散热。",
+    "success": "岩芯提取成功！阿波罗 15–17 号的深层岩芯封存了数十亿年的月球历史。",
+    "fail_jam": "钻头过热卡住 {{jams}} 次。请更早松开按钮散热。",
+    "rigLabel": "阿波罗月面钻机",
+    "ready": "准备就绪",
+    "drilling": "正在钻探",
+    "cooling": "冷却中…",
+    "depthLabel": "取芯深度",
+    "heatLabel": "钻头温度",
+    "jamsLabel": "过热卡顿",
+    "layerLabel": "当前岩层：{{layer}}",
+    "drillBtn": "按住钻探",
+    "controls": "按住空格键或按钮钻探 · 松开散热",
+    "layers": {
+      "dust": "表层月尘",
+      "ejecta": "溅射碎石",
+      "dense": "致密高地岩层"
+    }
+  },
+  "ch4_viking2": {
+    "title": "精准着陆乌托邦平原",
+    "goal": "打开降落伞并横向对准乌托邦平原平坦着陆区，以低于 {{safe}} 米/秒的速度降落。",
+    "hint": "尽早开伞，使用 A/D 或左右键对准琥珀色着陆环，随后用发动机减速。",
+    "success": "海盗 2 号精准安全着陆，并传回了火星北方的影像。",
+    "fail_crash": "以 {{speed}} 米/秒着陆太重。请尽早开伞并减速。",
+    "fail_fuel": "着陆前燃料耗尽。先让降落伞帮你减速。",
+    "fail_target": "你偏离目标着陆区 {{dist}} 米。着陆前请横向对准琥珀色光环。"
+  },
+  "ch5_spirit": {
+    "title": "翻越哥伦比亚丘陵",
+    "goal": "规划电量与路线，驾驶勇气号巡视每一处目标岩层。",
+    "hint": "电量低时不妨先停下休息；阳光会替你蓄能，只是扬起的火星沙尘会遮暗天空。",
+    "success": "勇气号成功登上群山，发现了曾受流水浸润改变的岩石。",
+    "fail_storm": "遮天蔽日的沙尘暴吞没了阳光。多年后，勇气号的双胞胎姐妹“机遇号”正是消失在一场席卷全球的风暴里。"
+  },
+  "ch5_newlanders": {
+    "title": "钻探极地水冰",
+    "goal": "向火星北部平原钻探 {{targetDepth}} 米，触及埋藏的水冰层且防止钻头过热。",
+    "hint": "按住空格键或钻探按钮向下穿过冻尘与碎石，钻头温度接近红区时及时松开冷却。",
+    "success": "触及水冰！凤凰号刮取并确认了火星北部平原下方埋藏的水冰。",
+    "fail_jam": "钻头在冻土中过热卡顿了 {{jams}} 次。请更早松开按钮散热。"
+  },
+  "ch7_dawn": {
+    "title": "借一颗行星的引力",
+    "goal": "调整探测器的飞行轨迹，巧借行星引力改变航向。",
+    "hint": "本模拟器借木星移动的引力井来演示引力弹弓效应。",
+    "success": "行星的引力就像宇宙中的无形甩手！现实中黎明号依靠离子推进器与火星引力弹弓奔向深空，这段浓缩模拟带你体验同样的轨道巧思。",
+    "launchDay": "发射时木星的位置",
+    "speed": "发射速度",
+    "launch": "点火发射",
+    "relaunch": "再次发射",
+    "suggest": "请教任务控制中心",
+    "suggested": "任务控制中心已为你选好理想窗口。",
+    "resultGain": "借木星提速：{{gain}} 千米/秒",
+    "closest": "最近掠过距离：{{km}} 万千米",
+    "years": "第 {{y}} 年",
+    "withoutJupiter": "若没有木星",
+    "earth": "地球",
+    "jupiter": "木星",
+    "saturnOrbit": "土星轨道",
+    "yearLabel": "发射至今历时",
+    "closestLabel": "距木星最近点",
+    "diagram": "包含太阳、地球、木星与探测器飞行轨迹的轨道示意图",
+    "fail_short": "初速度还不够，探测器飞不到木星轨道就力竭折返了。试着再加速发射吧！",
+    "fail_missed": "抵达时距离木星太远啦！微调一下木星出发时的角度试试。",
+    "fail_bound": "差一点就成功了！略微调整几度，让探测器从木星身后的顺风区擦肩而过。",
+    "fail_hit": "一头撞进木星啦！请稍微留出多一点安全距离。"
+  },
+  "ch7_near": {
+    "title": "轻柔触碰小行星",
+    "goal": "横向对准爱神星上的发光目标区，并在微重力下以低于 {{safe}} 米/秒的速度着陆。",
+    "hint": "爱神星引力极弱。用 A/D 对准琥珀色光环，并用短促脉冲缓缓下降。",
+    "success": "NEAR-舒梅克号在爱神星表面着陆后依然存活，并传回了地表数据。",
+    "fail_crash": "以 {{speed}} 米/秒着陆太重。请更早开始制动。",
+    "fail_fuel": "着陆前燃料耗尽。请使用短促脉冲。",
+    "fail_target": "你偏离目标区域 {{dist}} 米。着陆前请移入琥珀色光环内。"
+  },
+  "ch7_kepler": {
+    "title": "在星光微颤中寻星",
+    "goal": "细读恒星亮度曲线，找出行星凌日时留下的微妙暗影。",
+    "hint": "规律而浅浅的亮度下凹，往往藏着一颗遥远得肉眼看不见的行星。",
+    "success": "你捕捉到了一次凌星信号！开普勒望远镜正是靠着捕捉无数次这样微妙的星光眨眼，发现了数千颗系外行星。",
+    "note": "此曲线用于直观展示凌星观测原理，并非开普勒原始科学数据。",
+    "next": "继续",
+    "axisX": "Time",
+    "axisY": "恒星亮度",
+    "none": "行星凌日时的微弱变暗",
+    "noneLabel": "带有浅凹谷的恒星亮度变化示意图",
+    "rounds": [
+      {
+        "chart": "transit",
+        "title": "当行星从恒星前走过",
+        "q": "以下哪种光变信号，能证明有一颗行星正巧从恒星前方经过？",
+        "options": [
+          "恒星亮度出现微小且周期重复的下凹",
+          "恒星亮度突然永久变得更亮"
+        ],
+        "explain": "行星掠过恒星表面时，会轻柔地挡住一小缕星光。每隔一圈都准时变暗，就暴露了它的公转轨道。"
+      }
+    ]
+  },
+  "m1_drive": {
+    "title": "月宫古榕下",
+    "goal": "驾着月球车驶向老榕树荫下的三处信标。可用方向键、WASD 或屏幕按钮驾驶。",
+    "hint": "左上角的箭头总是指向下一站。翻越月脊时记得放慢车速哦。",
+    "success": "车轮仿佛记得回家的路。Cuội 叔叔和玉兔早已在老树下迎候你啦。",
+    "targets": [
+      {
+        "name": "旧日轮辙",
+        "found": "这是 1971 年留下的车辙，历经半世纪依然清晰印在月尘里。"
+      },
+      {
+        "name": "榕树长根",
+        "found": "古老的榕树根须如银色小路般铺展在月壤之上。"
+      },
+      {
+        "name": "老榕树荫",
+        "found": "这里的月尘格外清凉，显然一直有人静坐在此守候。"
+      }
+    ]
+  },
+  "m2_collect": {
+    "title": "四个采样点",
+    "goal": "驾驶月球车前往四个采样点收集岩石，同时保持在着陆器步行返回范围内。",
+    "hint": "红圈是 390 米步行返回极限，跟随箭头前往每个采样点。",
+    "success": "四份样本已收集完毕，现在让我们来辨认它们吧。",
+    "tether": "已接近步行返回极限！请保持在着陆器 390 米范围内。",
+    "targets": [
+      {
+        "name": "深色区域",
+        "found": "一块光滑的深色岩石，看起来像冷却的熔岩。"
+      },
+      {
+        "name": "明亮斜坡",
+        "found": "一块浅色粉状岩石，比周围的月尘更亮。"
+      },
+      {
+        "name": "破碎地面",
+        "found": "由许多碎块压合在一起的岩石。"
+      },
+      {
+        "name": "小陨石坑边缘",
+        "found": "裂缝中记录着故事的岩石。"
+      }
+    ]
+  },
+  "m2_samples": {
+    "title": "聆听月岩的故事",
+    "goal": "端详每一块月球样本，辨认它的岩石身份。猜错了也只是线索，重新看看纹理和色泽就行。",
+    "hint": "颜色深浅和颗粒纹理是最好的向导：墨黑光滑、洁白如粉，还是碎石挤压成块？",
+    "success": "你已经能像真正的地质科学家一样读懂六块月岩啦。",
+    "question": "第 {{n}} / {{total}} 块样本：这是哪种月岩？",
+    "names": {
+      "basalt": "玄武岩",
+      "anorthosite": "斜长岩",
+      "breccia": "角砾岩"
+    },
+    "props": {
+      "basalt": "色泽沉黑、质地光滑又沉重，源自远古冷却的月球熔岩海。",
+      "anorthosite": "色泽洁白如粉笔，构成月球明亮高原的古老基石。",
+      "breccia": "无数碎石经由剧烈陨石撞击挤压胶结在一起的岁月拼图。"
+    },
+    "right": "没错，这正是{{name}}。",
+    "wrong": "还差一点点，再仔细瞧瞧它的成色和纹路吧。",
+    "next": "下一块样本",
+    "note": "根据你观察到的质感选择对应的岩石。"
+  },
+  "m3_craters": {
+    "title": "哪一片月地更古老？",
+    "goal": "对比四块月表区域，挑出看起来经历岁月最久、沧桑斑驳的一片。",
+    "hint": "越古老的月面，撞击坑越多，坑缘被磨得更圆润柔和，尖锐碎石反而较少。",
+    "success": "你把荒凉的月表，读成了一张写满岁月年轮的时间地图。",
+    "question": "第 {{n}} / {{total}} 组地表：哪一处历经的岁月更漫长？",
+    "site": "{{letter}} 区",
+    "right": "答对啦！陨石坑密布、坑缘越圆缓，就说明地表暴露在太空中的年岁更长。",
+    "wrong": "再比一比陨石坑的数量和边缘锋利度：更古老的是 {{letter}} 区。",
+    "next": "下一组区域",
+    "note": "点选其中一片区域。"
+  },
+  "m4_signal": {
+    "title": "追踪古老信号",
+    "goal": "穿过黄昏长影，驶向来自 1969 年的微弱信号。",
+    "hint": "留意陨石坑旁的漫长暮影，跟随箭头靠近。",
+    "success": "信号来自半埋在月尘中的一个小型仪器包。",
+    "targets": [
+      {
+        "name": "微弱信号",
+        "found": "一台自 1969 年以来沉寂的小型仪器。"
+      }
+    ]
+  },
+  "m4_seismic": {
+    "title": "捕捉月震",
+    "goal": "帮助 PSEP 在四路通道同时在 A–B 窗口内剧烈振荡时记录 {{captures}} 次月震。",
+    "hint": "等到四条波形同时在 A 和 B 之间振荡时，按下捕捉或空格键。",
+    "success": "捕捉到两次月震！尽管在 1969 年只工作了三周，PSEP 的记录至今仍在教导地球。",
+    "progress": "已记录月震",
+    "hit": "四路通道均成功记录月震！",
+    "miss": "窗口内仍有平直段 — 请等四路同时振荡。"
+  },
+  "m5_laser": {
+    "title": "一束微光",
+    "goal": "瞄准月球静海基地，向阿波罗 11 号反射镜发射并回收 {{shots}} 次激光脉冲。",
+    "hint": "寻找月球中心偏右、靠近赤道的位置。未命中三次后会显示标记。",
+    "success": "光束回家了！只要我们向沉寂的仪器发出光芒，它依然会回应。",
+    "instruction": "点击或轻触月球发射激光。",
+    "fire": "脉冲已发射",
+    "hit": "{{t}} 秒后收到回波",
+    "miss": "没有回波，脉冲未击中反射镜。",
+    "distance": "距离",
+    "shots": "回波",
+    "drift": "自 1969 年以来，月球又远离了约 {{m}} 米。",
+    "markerHint": "提示：已标出反射镜位置！请瞄准月球上闪烁的光环。"
+  }
 }

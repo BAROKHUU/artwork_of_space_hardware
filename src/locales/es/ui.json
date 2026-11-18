@@ -1,0 +1,756 @@
+{
+  "app": {
+    "brand": "Cuentos de la Luna",
+    "title": "La Luna Recuerda",
+    "subtitle": "Un viaje lunar con Cuội y el rover olvidado",
+    "hook": "Cuando una misión termina, la historia no se acaba. Un pequeño rover, un leñador de un cuento muy antiguo y un mensaje que tardó cincuenta años en llegar.",
+    "begin": "Comenzar el viaje lunar",
+    "continue": "Continuar el viaje",
+    "challenge": "Un proyecto del NASA Space Apps Challenge"
+  },
+  "nav": {
+    "story": "Historia",
+    "map": "Misiones",
+    "logbook": "Bitácora",
+    "atlas": "Atlas",
+    "lab": "Laboratorio",
+    "sources": "Fuentes",
+    "settings": "Ajustes",
+    "home": "Inicio",
+    "main": "Navegación principal",
+    "more": "Más páginas",
+    "progress": "Aprendizaje",
+    "archive": "Archivo"
+  },
+  "roverMail": {
+    "open": "Abrir el buzón lunar de ROVER",
+    "bubble": "¡Pst! ¿Quieres enviar un mensaje a la Luna?",
+    "title": "Enviar un mensaje a la Luna",
+    "intro": "ROVER transmitirá tus palabras hasta la Luna. ¿Cómo te sientes hoy? ¿Con qué sueñas? ¿Qué te gustaría contarle a la Luna?",
+    "label": "Tu mensaje para la Luna",
+    "placeholder": "Querida Luna, …",
+    "remaining": "Quedan {{n}} caracteres",
+    "safety": "Por favor, no escribas tu nombre completo, dirección, teléfono ni escuela. Una persona adulta del equipo de Echo leerá tu mensaje.",
+    "send": "Enviar a la Luna",
+    "sending": "ROVER está transmitiendo…",
+    "sent": "¡Bip bup! ROVER envió tu carta hasta la Luna. 🌕",
+    "sentTitle": "¡Tu carta llegó a la Luna!",
+    "stamp": "Recibida",
+    "yourLetter": "Tu carta",
+    "received": "La Luna guardará tus palabras a salvo entre las estrellas. ¡Gracias por escribir! ROVER espera con ilusión tu próxima carta. 💌",
+    "another": "Escribir otra",
+    "cancel": "Ahora no",
+    "close": "Cerrar",
+    "error": {
+      "not_configured": "El buzón lunar aún no está abierto. Pide a una persona adulta que lo intente más tarde.",
+      "too_many": "La antena de ROVER necesita descansar un poco. Inténtalo de nuevo en unos minutos.",
+      "failed": "Oh, no, se perdió la señal. Inténtalo de nuevo."
+    }
+  },
+  "storyModes": {
+    "kicker": "Una historia, dos formas de verla",
+    "title": "Elige tu modo de historia",
+    "sub": "Tío Cuội, Conejo Lunar y ROVER cuentan la misma historia de la Luna en ambos modos. Elige el que prefieras esta noche.",
+    "watercolor": {
+      "tag": "Ilustrado · lee a tu ritmo",
+      "name": "Libro de Acuarela",
+      "desc": "Recorre 22 páginas pintadas a mano con textos grandes y fáciles de leer."
+    },
+    "lantern": {
+      "tag": "Animado · con música",
+      "name": "Teatro de Linterna",
+      "desc": "Como una linterna giratoria de Medio Otoño: 22 escenas en movimiento con música, para leer junto al diálogo."
+    },
+    "start": "Empezar a leer",
+    "switch": "Cambiar de modo",
+    "exit": "Salir de la historia",
+    "musicOn": "Activar música de lectura",
+    "musicOff": "Silenciar música de lectura"
+  },
+  "cuoiPreview": {
+    "link": "Conoce a Cuội",
+    "title": "Tío Cuội",
+    "description": "Arrastra para girar y usa la rueda o pellizca para acercar. Este es un estudio estilizado inicial del personaje.",
+    "face": "Rostro",
+    "full": "Cuerpo entero",
+    "scrollCue": "Desplázate hacia abajo para leer la leyenda",
+    "legend": {
+      "eyebrow": "Cuento popular vietnamita",
+      "title": "La leyenda de Tío Cuội en la Luna",
+      "p1": "Érase una vez un bondadoso leñador llamado Cuội que encontró un baniano mágico en lo profundo del bosque. ¡Descubrió su secreto al ver a una madre tigre masticar las hojas del árbol para curar a su cachorro herido! Cuội desenterró el árbol mágico, lo plantó en su jardín y usó sus hojas para salvar a muchas personas y animales enfermos, incluida una joven amable que se convirtió en su esposa.",
+      "p2": "El árbol mágico solo tenía una regla importante: únicamente podía beber agua limpia de pozo. ¡Si alguna vez agua sucia tocaba sus raíces, el árbol saldría volando directo hacia el cielo!",
+      "p3": "Tiempo después, la esposa de Cuội sufrió un terrible accidente. Cuội le salvó la vida usando las hojas mágicas y un poco de arcilla, lo cual funcionó, salvo porque la dejó muy olvidadiza. Una tarde, mientras Cuội había salido a recoger leña, su esposa olvidó por completo la regla de oro y vertió agua sucia sobre las raíces del árbol.",
+      "p4": "¡Zas! La tierra tembló y el árbol mágico arrancó sus raíces del suelo y comenzó a flotar hacia las nubes. Cuội corrió de regreso justo a tiempo y se agarró de las raíces para jalarlo hacia abajo, negándose a soltarlo. ¡El árbol era demasiado fuerte y se llevó a Cuội hasta la Luna! Por eso, cada vez que miras una luna llena y brillante, todavía puedes ver la silueta sombreada de Cuội sentado bajo su árbol mágico."
+    }
+  },
+  "book": {
+    "previous": "Página anterior",
+    "next": "Página siguiente",
+    "continue": "Continuar historia",
+    "skip": "Saltar historia",
+    "cover": "Historia",
+    "open": "Abrir historia",
+    "close": "Cerrar libro",
+    "reading": "Lector de historia",
+    "bookTitle": "Libro de cuentos",
+    "noImage": "No hay ilustración disponible",
+    "fact": "¿Sabías que…?",
+    "section": "Sección",
+    "chapters": "Capítulos disponibles",
+    "locked": "Aún no has llegado a esta parte",
+    "readerIntro": "Vuelve a visitar las secciones de la historia que ya descubriste. Las nuevas aparecerán aquí a medida que las encuentres.",
+    "empty": "Aún no se ha descubierto ninguna sección de la historia. Comienza la misión para empezar el relato.",
+    "viewpoints": "Elige una vista de cámara",
+    "pov": {
+      "wide": "Vista amplia",
+      "cuoi": "Vista de Cuội",
+      "rover": "Vista del rover"
+    },
+    "tapToFinish": "Toca o pulsa Espacio para continuar"
+  },
+  "map": {
+    "heading": "La Luna recuerda",
+    "sub": "Ocho capítulos a lo largo del viaje lunar.",
+    "locked": "Termina el capítulo anterior",
+    "play": "Jugar",
+    "replay": "Volver a jugar",
+    "resume": "Reanudar",
+    "chapter": "Capítulo {{n}}",
+    "progress": "{{done}} de {{total}} capítulos",
+    "enter": "Entrar",
+    "nextLabel": "Siguiente:",
+    "portalMode": "Portal",
+    "gridMode": "Todas las paradas",
+    "telemetryWorld": "Mundo",
+    "telemetryEra": "Época",
+    "telemetryMissions": "Misiones",
+    "telemetryStatus": "Estado",
+    "tabMoon": "Luna",
+    "tabExpansions": "Expansiones",
+    "tabCompleted": "Completados",
+    "expansionsHeading": "Expansiones",
+    "expansionsSub": "Mapas extra más allá de la Luna: Marte y el espacio profundo.",
+    "completedHeading": "Mapas completados",
+    "completedSub": "{{done}} de {{total}} capítulos completados en todos los mundos.",
+    "emptyCompleted": "Aún no hay mapas completados. Termina un capítulo en la Luna o en Expansiones para desbloquearlo aquí.",
+    "backToMoon": "Explorar la Luna",
+    "tagBonus": "Extra",
+    "eyebrowWorld": "{{world}} · Parada {{n}} de {{total}}",
+    "prevPlanet": "Mapa anterior",
+    "nextPlanet": "Mapa siguiente",
+    "keyHint": "A / D o ← / → para cambiar · Espacio o Enter para despegar"
+  },
+  "dialogue": {
+    "next": "Siguiente",
+    "back": "Atrás",
+    "skip": "Saltar escena"
+  },
+  "mission": {
+    "start": "Comenzar misión",
+    "retry": "Intentar de nuevo",
+    "skip": "Saltar misión",
+    "continue": "Continuar",
+    "objective": "Misión",
+    "hint": "Pista",
+    "failed": "Esta vez no pudo ser",
+    "complete": "Misión completada",
+    "no3d": "Esta misión necesita gráficos 3D, que están desactivados o no disponibles en este dispositivo. Puedes activarlos en Ajustes o seguir adelante.",
+    "assist": "Cuội ha añadido una pequeña ayuda extra para este intento."
+  },
+  "hud": {
+    "altitude": "Altitud",
+    "odometer": "Recorrido",
+    "speed": "Velocidad",
+    "fuel": "Combustible",
+    "battery": "Batería",
+    "power": "Batería del rotor",
+    "hold": "Mantener",
+    "thrust": "Impulso",
+    "rotor": "Rotores",
+    "chute": "Paracaídas",
+    "chuteOpen": "Paracaídas abierto",
+    "safe": "Seguro por debajo de {{v}} m/s",
+    "dust": "Polvo",
+    "sun": "Sol",
+    "scanning": "Escaneando",
+    "scanAnalyzing": "Analizando muestra…",
+    "scanLocked": "Tipo identificado",
+    "scanKinds": {
+      "basalt": "Basalto",
+      "anorthosite": "Anortosita",
+      "breccia": "Brecha",
+      "mineral": "Roca rica en hierro",
+      "signal": "Señal de 1969",
+      "beacon": "Baliza"
+    },
+    "keys": "Flechas o WASD para conducir",
+    "thrustKeys": "Espacio: motores",
+    "steerKeys": "A/D o ◀/▶: dirigir",
+    "chuteKeys": "P: paracaídas",
+    "targetOffset": "Zona objetivo",
+    "left": "Izquierda",
+    "right": "Derecha",
+    "forward": "Adelante",
+    "backward": "Reversa",
+    "toTarget": "{{name}}: {{d}} m",
+    "backToTarget": "Objetivo a {{d}} m",
+    "slope": "Pendiente",
+    "lookKeys": "Mantén clic derecho y arrastra para mirar alrededor",
+    "inspectKeys": "Arrastra para orbitar · Rueda para acercar",
+    "scanHoldBtn": "Mantén Escanear",
+    "scanPrompt": "Dentro del anillo objetivo — MANTÉN [Espacio / E] o Escanear",
+    "scanKeys": "Espacio / E: mantén para escanear",
+    "sprintKeys": "Shift: acelerar",
+    "darkSideBoundary": "Borde de la zona oscura lunar — ¡el rover no puede entrar sin luz!",
+    "marsBoundary": "Límite del sector de misión — vuelve hacia las balizas.",
+    "rabbitWarnTitle": "Conejo Lunar",
+    "rabbitWrongLater": "¡Espera! Este punto aún no se puede escanear: ¡sigue primero la baliza naranja!",
+    "rabbitWrongDone": "¡Ya escaneamos este punto! ¡Dirígete ahora hacia la baliza naranja!",
+    "rabbitWrongEmpty": "Aquí no hay nada que escanear: ¡entra en el anillo naranja y mantén Escanear!",
+    "rabbitCheerTitle": "Conejo Lunar",
+    "rabbitCheers": [
+      "¡Genial! ¡Escaneo perfecto!",
+      "¡Hurra! ¡Gran hallazgo, Echo!",
+      "¡Buen trabajo! ¡Sigue rodando!",
+      "¡Oh, qué descubrimiento tan increíble!"
+    ]
+  },
+  "memory": {
+    "unlocked": "Recuerdo desbloqueado",
+    "job": "Qué hizo",
+    "learned": "Qué aprendimos",
+    "now": "Dónde está ahora",
+    "continue": "Añadir a la bitácora"
+  },
+  "quiz": {
+    "heading": "Comprobación de campo",
+    "correct": "¡Correcto!",
+    "incorrect": "Casi.",
+    "next": "Siguiente",
+    "finish": "Finalizar",
+    "nasaPhoto": "Foto de la NASA: {{name}} · {{credit}} · {{id}}",
+    "psepName": "Experimento Sísmico Pasivo del Apollo 11",
+    "nasaSource": "Consultar fuente de {{source}}"
+  },
+  "signal": {
+    "heading": "Aún escuchando",
+    "intro": "Estas cifras proceden de las predicciones de seguimiento del JPL.",
+    "distance": "Distancia desde la Tierra",
+    "light": "Tiempo de señal en un sentido",
+    "lightValue": "{{h}} horas",
+    "billionKm": "mil millones de km",
+    "reached": "Se alcanzó un día luz",
+    "countdown": "Faltan {{d}} días para un día luz",
+    "lost": "Sin señal desde 2003",
+    "continue": "Continuar"
+  },
+  "complete": {
+    "heading": "Capítulo completado",
+    "stars": "{{n}} de {{max}} estrellas",
+    "next": "Siguiente capítulo",
+    "map": "Volver a misiones",
+    "finale": "La historia continúa",
+    "finaleSub": "Terminaste el viaje lunar. Abre la página de Aprendizaje para ver lo que descubriste, o vuelve a visitar cualquier capítulo."
+  },
+  "fate": {
+    "operating": "Sigue funcionando",
+    "silent": "En silencio",
+    "retired": "Retirada según lo previsto",
+    "drifting": "Alejándose a la deriva",
+    "checked": "Estado verificado en noviembre de 2026"
+  },
+  "dates": {
+    "launched": "Lanzamiento",
+    "landed": "Llegada",
+    "deployed": "Despliegue",
+    "interstellar": "Espacio interestelar",
+    "lastContact": "Último contacto",
+    "ended": "Fin de la misión"
+  },
+  "world": {
+    "moon": "Luna",
+    "mars": "Marte",
+    "deep": "Espacio profundo",
+    "all": "Todos los mundos"
+  },
+  "logbook": {
+    "heading": "Bitácora",
+    "sub": "{{n}} de {{total}} recuerdos recuperados. Completa misiones para reunir el resto.",
+    "lockedName": "Señal aún sin rastrear",
+    "allFates": "Todos los estados",
+    "open": "Abrir registro",
+    "close": "Cerrar",
+    "photo": "Foto",
+    "model": "Modelo 3D",
+    "credit": "Imagen: {{credit}} ({{id}})",
+    "sources": "Fuentes",
+    "mastered": "Dominado",
+    "stars": "{{n}} / 3 estrellas",
+    "masteredCount": "{{n}} de {{total}} dominados"
+  },
+  "atlas": {
+    "heading": "Atlas",
+    "sub": "Todo lo que aparece en este juego, ubicado donde realmente está. Arrastra para girar. Selecciona un marcador para leer más.",
+    "deepNote": "Distancia desde la Tierra, a escala comprimida. Datos de JPL Horizons.",
+    "au": "{{v}} UA",
+    "reading": "Seleccionado"
+  },
+  "solar": {
+    "period": "Una órbita de {{name}} dura {{y}} años terrestres. Los planetas cercanos al Sol se mueven más rápido.",
+    "play": "Reproducir",
+    "pause": "Pausa",
+    "today": "Hoy",
+    "timeSpeed": "Velocidad del tiempo",
+    "daysPerSecond": "{{n}} días / s",
+    "yearsPerSecond": "{{n}} años / s",
+    "tour": "Repetir el recorrido de Voyager 2 desde 1977",
+    "note": "Tamaños ampliados. Órbitas: JPL. Mapas: USGS y misiones de la NASA (Venus es un mapa de radar). Después de 2049, las sondas siguen en línea recta.",
+    "follow": "Seguir a {{name}}",
+    "unfollow": "Volver al Sol",
+    "names": {
+      "mercury": "Mercurio",
+      "venus": "Venus",
+      "earth": "Tierra",
+      "mars": "Marte",
+      "jupiter": "Júpiter",
+      "saturn": "Saturno",
+      "uranus": "Urano",
+      "neptune": "Neptuno"
+    },
+    "planet": "Planeta",
+    "distance": "UA",
+    "speed": "km/s",
+    "notLaunched": "sin lanzar",
+    "reverse": "Retroceder tiempo",
+    "forward": "Avanzar",
+    "scale": "Escala de distancias",
+    "compressed": "Ajustar a pantalla",
+    "true": "Distancias reales",
+    "orbits": "Órbitas",
+    "trails": "Estelas",
+    "probes": "Sondas"
+  },
+  "slinglab": {
+    "fleet": "Lanzar {{n}} sondas",
+    "position": "Posición de Júpiter",
+    "dragHint": "Arrastra a Júpiter y luego lanza. La línea discontinua muestra adónde irá la sonda.",
+    "boosted": "¡Júpiter le dio a tu sonda un impulso de velocidad sin gastar combustible!",
+    "noBoost": "Esta vez no hubo impulso. Mueve un poco a Júpiter e inténtalo de nuevo.",
+    "fleetResult": "{{n}} de {{total}} sondas recibieron impulso. Un cambio diminuto marca una gran diferencia."
+  },
+  "lab": {
+    "vehicle": "Vehículo",
+    "vehicles": {
+      "echo": "Echo",
+      "sojourner": "Sojourner",
+      "mer": "Opportunity",
+      "curiosity": "Curiosity",
+      "lrv": "Rover Lunar"
+    },
+    "camera": "Cámara",
+    "cameras": {
+      "chase": "Persecución",
+      "high": "Desde arriba",
+      "cockpit": "Conductor",
+      "inspect": "Inspeccionar 3D"
+    },
+    "followCamera": "Seguir",
+    "sunHeight": "Altura del Sol",
+    "heading": "Laboratorio",
+    "sub": "Aquí no hay objetivos. Cambia las reglas del espacio y observa qué pasa.",
+    "landing": "Laboratorio de Aterrizaje",
+    "landingSub": "Cambia la gravedad, los motores y el aire.",
+    "slingshot": "Laboratorio de Impulso Gravitatorio",
+    "slingshotSub": "Deja que Júpiter impulse tu sonda.",
+    "solar": "Laboratorio del Sistema Solar",
+    "solarSub": "Acelera el tiempo y observa cada órbita.",
+    "drive": "Laboratorio de Rovers",
+    "driveSub": "Conduce libremente bajo distintos cielos.",
+    "thrust": "Potencia del motor",
+    "moon": "Luna",
+    "mars": "Marte",
+    "jupiterMass": "Masa de Júpiter",
+    "echoTime": "Tiempo de eco",
+    "world": "Mundo",
+    "reset": "Reiniciar",
+    "landed": "Aterrizaje suave a {{v}} m/s",
+    "crashed": "Estrellado a {{v}} m/s",
+    "simNote": "Simulación simplificada para aprender. Las misiones reales son mucho más complejas.",
+    "gravity": "Gravedad",
+    "startAlt": "Altura inicial",
+    "air": "Densidad del aire",
+    "chute": "Usar paracaídas",
+    "preset": "Preajuste",
+    "earth": "Tierra",
+    "battery": "Reglas de batería solar",
+    "result": "Resultado",
+    "sunDirection": "Dirección del Sol",
+    "laser": "Laboratorio Láser",
+    "laserSub": "Haz rebotar un láser en la Luna.",
+    "moonDistance": "Distancia a la Luna",
+    "seismic": "Captura Sísmica",
+    "seismicSub": "Atrapa cuatro señales a la vez.",
+    "drill": "Perforadora de Núcleos",
+    "drillSub": "Controla el calor de la broca entre capas de suelo.",
+    "targetPad": "Plataforma objetivo precisa",
+    "padOffset": "Desplazamiento del objetivo",
+    "padRadius": "Radio del objetivo",
+    "missedPad": "Aterrizaje suave, pero a {{dist}} m de la plataforma objetivo."
+  },
+  "drill": {
+    "eyebrow": "Laboratorio de muestreo de núcleos",
+    "moonRig": "Perforadora Lunar de Superficie Apollo",
+    "marsRig": "Perforadora Polar de Hielo Marciano",
+    "ready": "Lista",
+    "drilling": "Perforando",
+    "cooling": "Enfriando…",
+    "depthLabel": "Profundidad del núcleo",
+    "heatLabel": "Calor de la broca",
+    "jamsLabel": "Sobrecalentamientos",
+    "layerLabel": "Capa actual: {{layer}}",
+    "drillBtn": "Mantén para perforar",
+    "controls": "Mantén Espacio o el botón para perforar · Suelta para enfriar",
+    "labDone": "Núcleo de {{depth}} m extraído con {{jams}} sobrecalentamiento(s).",
+    "labFail": "La broca se atascó tras {{jams}} sobrecalentamientos. Reinicia para volver a intentarlo.",
+    "targetDepth": "Profundidad objetivo",
+    "maxJams": "Límite de sobrecalentamientos",
+    "layers": {
+      "dust": "Polvo superficial",
+      "ejecta": "Grava de eyección",
+      "dense": "Tierras altas densas",
+      "ice": "Hielo subterráneo"
+    }
+  },
+  "sources": {
+    "heading": "Fuentes y honestidad",
+    "sub": "Cada dato de este juego proviene de una fuente pública. Aquí te explicamos cómo comprobarlo.",
+    "real": "Qué es real",
+    "realBody": "Las fotos, los mapas de la Luna y Marte, las fechas, las distancias, los datos de las misiones y el estado de los equipos provienen de la NASA, el JPL y el USGS.",
+    "simplified": "Qué está simplificado",
+    "simplifiedBody": "Echo y Control del Archivo son ficticios. La mayoría de las naves en 3D son modelos oficiales publicados por la NASA; Ranger, Surveyor, el espejo láser, el Rover Lunar y Sojourner son aproximaciones construidas a mano. Las simulaciones de aterrizaje, conducción, órbita y batería usan ideas físicas reales con distancias y tiempos acortados. Los acertijos de lugares de aterrizaje y los gráficos de suelo son ilustraciones, no datos reales.",
+    "date": "Los datos se verificaron en noviembre de 2026. Las misiones cambian, así que visita la NASA para conocer las novedades.",
+    "listHeading": "Referencias",
+    "software": "Licencias de software y avisos",
+    "noticeLink": "aviso de terceros",
+    "mplLink": "texto de la licencia MPL 2.0",
+    "wrapperSource": "código del envoltorio",
+    "coreSource": "código del núcleo",
+    "mplOfficial": "Texto oficial de la Mozilla Public License 2.0",
+    "images": "Créditos de las fotografías",
+    "backgrounds": "Imágenes de fondo",
+    "backdrop": {
+      "map": "Puesta de la Tierra vista desde la nave Orion",
+      "logbook": "El centro de la Vía Láctea brillando con polvo cósmico (Spitzer)",
+      "atlas": "Salida de la Tierra desde el Lunar Reconnaissance Orbiter",
+      "lab": "Acantilados Cósmicos en la Nebulosa de Carina (Webb)",
+      "sources": "Una antena de la Red de Espacio Profundo en Goldstone",
+      "moon": "Visualización de la salida de la Tierra a partir de datos del Lunar Reconnaissance Orbiter",
+      "mars": "Geología marciana frente a Curiosity",
+      "deep": "Galaxias en un campo profundo colorido del Hubble"
+    },
+    "notEndorsed": "Este es un proyecto estudiantil independiente. No está respaldado por la NASA.",
+    "jump": "Ir a la sección",
+    "groups": {
+      "moon": "La Luna",
+      "mars": "Marte",
+      "deep": "Espacio profundo, asteroides y telescopios",
+      "data": "Mapas, modelos y datos"
+    }
+  },
+  "settings": {
+    "heading": "Ajustes",
+    "language": "Idioma",
+    "languageNote": "Se pueden añadir más idiomas. Lo que aún no esté traducido aparecerá en inglés.",
+    "quality": "Gráficos",
+    "high": "Alta",
+    "low": "Baja (para dispositivos antiguos)",
+    "off": "Sin 3D",
+    "sound": "Efectos de sonido",
+    "volume": "Volumen",
+    "volumeNote": "Controla la música, la narración y los efectos de sonido.",
+    "explorer": "Modo explorador",
+    "explorerNote": "Abre todos los capítulos de inmediato.",
+    "reset": "Borrar mi progreso",
+    "resetConfirm": "¿Borrar todo el progreso? Esta acción no se puede deshacer.",
+    "cancel": "Cancelar",
+    "erase": "Borrar",
+    "close": "Cerrar",
+    "on": "Activado",
+    "off2": "Desactivado",
+    "privacy": "Tu progreso se guarda en este dispositivo. Si envías un mensaje a ROVER, se envía por correo electrónico al equipo de Echo; no se envía ningún otro dato sobre ti.",
+    "narration": "Leer en voz alta",
+    "narrationNote": "Usa la voz de tu dispositivo. Está desactivado por defecto."
+  },
+  "common": {
+    "loading": "Recibiendo señal…",
+    "error": "Algo salió mal con esta escena.",
+    "backToMap": "Volver a misiones",
+    "notFound": "Señal perdida. Esa página no existe."
+  },
+  "laserlab": {
+    "about": "Los astronautas dejaron espejos en la Luna. Haz rebotar un láser en uno y el tiempo que tarda en volver te dice a qué distancia está la Luna.",
+    "site": "Espejo",
+    "sites": {
+      "a11": "Apollo 11",
+      "a14": "Apollo 14",
+      "a15": "Apollo 15"
+    },
+    "fire": "Disparar láser",
+    "fired": "La luz está en camino…",
+    "miss": "Sin eco. Solo los espejos devuelven la luz directamente.",
+    "result": "La luz tardó {{t}} segundos en ir y volver, así que la Luna está a {{km}} km de distancia."
+  },
+  "chat": {
+    "title": "RISE BOT",
+    "eyebrow": "Tu compañero lunar",
+    "close": "Cerrar chat",
+    "history": "Conversación",
+    "greeting": "¡Hola! Hazme una pregunta sobre las misiones.",
+    "input": "Escribe tu pregunta…",
+    "send": "Enviar",
+    "botLabel": "Abrir el chat de RISE BOT. Arrastra o usa las flechas para moverlo.",
+    "sources": "Fuentes de la NASA",
+    "keywordFallback": "Se usó búsqueda por palabras clave; la búsqueda semántica no está disponible.",
+    "pending": "Pensando…",
+    "inputLimit": "Tu pregunta es demasiado larga. Mantenla por debajo de 512 tokens.",
+    "error": "No se pudo conectar con el servicio de chat. Inténtalo de nuevo.",
+    "expand": "Ampliar chat",
+    "shrink": "Reducir chat",
+    "generalNote": "Esta respuesta procede del conocimiento general de la IA, no de las fuentes de la NASA del juego. Úsala solo como referencia y compruébala antes de confiar en ella.",
+    "mixedNote": "Parte de esta respuesta procede del conocimiento general de la IA y no de las fuentes de la NASA de abajo. Toma esa parte solo como referencia.",
+    "popup": {
+      "dismiss": "Ocultar aviso",
+      "intro1": "¡Hola! Soy RISE BOT. ¿Atascado? ¡Pregúntame lo que quieras!",
+      "intro2": "¡Pst, soy RISE BOT! ¿Necesitas una mano? ¡Pregúntame!",
+      "intro3": "¡Soy RISE BOT! Pregúntame sobre cualquier misión.",
+      "failMission": "¿Atascado en este paso? ¡Pregunta a RISE BOT!",
+      "failMissionAlt": "¿Misión difícil? ¡Pídele un consejo a RISE BOT!",
+      "failQuiz": "Casi… ¿quieres que RISE BOT te lo explique?",
+      "prefillMission": "Estoy atascado en \"{{mission}}\". ¡Dame una pista rápida!",
+      "prefillQuiz": "¿Puedes explicar esta pregunta? \"{{question}}\""
+    }
+  },
+  "seismic": {
+    "recorder": "Registrador sísmico de cuatro canales",
+    "ready": "Listo",
+    "running": "Registrando",
+    "graph": "Cuatro trazos sísmicos se desplazan a la izquierda entre los marcadores rojos fijos A y B.",
+    "direction": "← Flujo de señal",
+    "eyebrow": "Experimento lunar de campo",
+    "title": "Captura Sísmica",
+    "instructions": "Pulsa Capturar cuando las cuatro señales oscilen a lo largo de toda la ventana entre A y B. Las zonas planas no cuentan. Pulsa Espacio para capturar.",
+    "speed": "Velocidad",
+    "normal": "Normal",
+    "fast": "Rápida",
+    "start": "Iniciar",
+    "restart": "Reiniciar",
+    "capture": "Capturar",
+    "hit": "Captura lograda: los cuatro canales llenaron la ventana.",
+    "miss": "Aún no: al menos un canal tuvo una zona plana en la ventana.",
+    "waiting": "Observa las señales y calcula el momento de capturar."
+  },
+  "learn": {
+    "precheck": {
+      "heading": "Antes de empezar",
+      "sub": "Tres suposiciones rápidas. No llevan nota. Solo nos ayudan a ver qué aprendes.",
+      "start": "Empezar",
+      "skip": "Saltar las preguntas",
+      "done": "Gracias. Ahora puede comenzar la historia."
+    },
+    "interlude": {
+      "kicker": "La historia de Cuội",
+      "title": "La primera vez que trepé al árbol",
+      "line1": "Cuando era joven, intentaba trepar al baniano cada mañana. Durante mucho tiempo, me caía en la misma rama.",
+      "line2": "Pensé que el árbol me estaba diciendo que me detuviera. Entonces mi madre me dijo: el árbol te está diciendo dónde poner las manos.",
+      "line3": "La tercera vez que me caí, miré la rama en lugar del suelo. A la mañana siguiente, logré superarla.",
+      "line4": "No estás fallando. Estás aprendiendo dónde está la rama. Volvamos a mirar juntos.",
+      "hint": "Ahora hay una pista activada. La Luna es paciente, y nosotros también.",
+      "continue": "Intentémoslo de nuevo"
+    },
+    "assist": "La pista de Cuội está activada. Tómate tu tiempo.",
+    "reflect": {
+      "heading": "Piénsalo",
+      "submit": "Enviar mi respuesta",
+      "thinking": "Cuội está pensando en tu respuesta…",
+      "skip": "Saltar y seguir adelante",
+      "continue": "Continuar",
+      "ai": "Cuội leyó tu respuesta.",
+      "fallback": "Cuội revisó tu respuesta en este dispositivo.",
+      "unavailable": "El asistente de reflexión está sin conexión, así que tu respuesta se guardó para más tarde. Puedes continuar.",
+      "pending": "Guardada para más tarde.",
+      "missing": "Algo que añadir",
+      "followUp": "Prueba esto ahora",
+      "wordBank": "Palabras que puedes usar",
+      "minLength": "Basta con unas pocas palabras. Escribe lo que piensas.",
+      "score": "{{score}} de {{max}}",
+      "prompts": {
+        "r1": {
+          "question": "Si el rover lunar nunca hubiera estado allí, ¿qué habría sido más difícil para los astronautas?",
+          "context": "Piensa en la distancia, las herramientas y las rocas. No hay una única respuesta correcta.",
+          "starters": [
+            "Sin el rover, los astronautas habrían…",
+            "El rover ayudó porque…",
+            "Algo que habría sido más difícil es…"
+          ],
+          "placeholder": "Escribe tu idea con tus propias palabras…",
+          "words": [
+            "más lejos",
+            "cargar",
+            "muestras",
+            "herramientas",
+            "caminar",
+            "explorar"
+          ]
+        },
+        "r2": {
+          "question": "El sismómetro dejó de funcionar en 1969. ¿Por qué puede seguir siendo importante hoy?",
+          "context": "Piensa en lo que registró y en quién podría usar ese registro.",
+          "starters": [
+            "Aunque se detuvo…",
+            "Los científicos aún pueden…",
+            "Sus datos nos ayudan a…"
+          ],
+          "placeholder": "Escribe tu idea con tus propias palabras…",
+          "words": [
+            "datos",
+            "registro",
+            "aprender",
+            "lunamotos",
+            "estudiar",
+            "recordar"
+          ]
+        }
+      }
+    },
+    "progress": {
+      "heading": "Tu viaje lunar",
+      "sub": "Esta página muestra lo que has aprendido. No es una calificación y nadie compite.",
+      "overall": "Puntuación de Aprendizaje de la Misión Lunar",
+      "empty": "Juega un capítulo para empezar a reunir ideas.",
+      "components": {
+        "quiz": "Datos lunares",
+        "open": "Explicar ideas",
+        "apply": "Usar lo que sabes"
+      },
+      "chapters": "Capítulo por capítulo",
+      "concepts": "Ideas que has encontrado",
+      "understood": "Puedes explicar esto",
+      "practice": "Vale la pena mirarlo otra vez",
+      "pending": "Esperando revisión",
+      "grownups": "Para personas adultas",
+      "bands": {
+        "starting": "Recién empezando",
+        "exploring": "Explorando",
+        "steady": "Encontrando tu camino",
+        "strong": "Con confianza",
+        "keeper": "Guardián de la historia"
+      }
+    },
+    "grownups": {
+      "heading": "Registro de aprendizaje",
+      "sub": "Local, anónimo y nunca clasificado.",
+      "mmls": "Puntuación de Aprendizaje de la Misión Lunar",
+      "quiz": "Conocimiento de cuestionarios (40%)",
+      "open": "Comprensión abierta (40%)",
+      "apply": "Aplicación del conocimiento (20%)",
+      "gain": "Ganancia de aprendizaje (post − pre)",
+      "pre": "Prueba previa",
+      "post": "Prueba posterior",
+      "responses": "Respuestas abiertas y rúbricas",
+      "none": "Aún no hay respuestas.",
+      "score": "{{score}} / {{max}}",
+      "source": {
+        "ai": "Revisado por Gemini",
+        "fallback": "Rúbrica local",
+        "pending": "Pendiente",
+        "unavailable": "Servicio no disponible"
+      },
+      "weights": "Los pesos son parámetros de diseño configurables, no constantes validadas.",
+      "privacy": "Sin nombres, sin cuentas, sin almacenamiento en servidor. El progreso permanece en este navegador.",
+      "reset": "Reiniciar todo el progreso",
+      "back": "Volver a la historia",
+      "missing": "Falta o no queda claro",
+      "understood": "Comprendido"
+    },
+    "archive": {
+      "kicker": "Archivo de recuerdos",
+      "title": "El instrumento que escuchaba",
+      "intro": "Cuội coloca la hoja de baniano junto al paquete silencioso. La hoja brilla y el polvo comienza a recordar.",
+      "disclaimer": "Este archivo de recuerdos es imaginado. La hoja es un símbolo del relato: no reparó ni reinició nada.",
+      "next": "Descubrir el siguiente recuerdo",
+      "finish": "Llevar la historia adelante",
+      "source": "Datos verificados con fuentes de la NASA y el LPI.",
+      "cards": [
+        {
+          "title": "Un paquete pequeño",
+          "body": "Apollo 11 dejó el Early Apollo Scientific Experiments Package, EASEP, en 1969. Su paquete sísmico, PSEP, formaba parte de él. En el mismo sitio se desplegó un reflector láser, aunque no estaba unido al EASEP."
+        },
+        {
+          "title": "Lo que escuchó",
+          "body": "El PSEP llevaba sismómetros de período largo y corto. Escuchaba lunamotos, impactos de meteoroides y movimientos en el interior de la Luna."
+        },
+        {
+          "title": "Tres semanas escuchando",
+          "body": "Se encendió por comando desde tierra el 21 de julio de 1969. Envió datos durante unas tres semanas de día lunar y luego perdió su enlace de comandos a finales de agosto de 1969. Se dio por terminado formalmente el 27 de agosto de 1969, antes de concluir su fase de soporte prevista."
+        },
+        {
+          "title": "Los datos permanecieron",
+          "body": "El instrumento está en silencio, pero su registro se sigue usando. Una máquina puede dejar de operar mientras lo que midió continúa enseñando."
+        }
+      ]
+    },
+    "archiveScreen": {
+      "heading": "El Archivo",
+      "sub": "Capítulos opcionales de Marte y el espacio profundo del sondeo de Echo (separados de la historia lunar).",
+      "play": "Abrir capítulo",
+      "back": "Volver al viaje lunar"
+    }
+  },
+  "introStory": {
+    "exit": "Salir de la historia",
+    "exitLabel": "Salir de la historia y volver a la página principal",
+    "kicker": "Una historia de las máquinas olvidadas de la NASA",
+    "heroEm": "EN EL YOUNIVERSE",
+    "chooseHow": "Elige cómo leer",
+    "quote": "«Las viejas raíces se aferran con fuerza; los nuevos sueños alzan el vuelo»",
+    "copy": "Un viaje de inspiración vietnamita a través de las máquinas olvidadas de la NASA, los descubrimientos científicos y los sueños de los exploradores del mañana.",
+    "closeModal": "Cerrar introducción",
+    "legendKicker": "Antes de que comience la historia lunar",
+    "legendTitle": "La leyenda de Cuội en la Luna",
+    "legendP1": "Érase una vez un leñador llamado Cuội. Un día, mientras caminaba por el bosque, se encontró de repente con un cachorro de tigre que se lanzaba hacia él. Sin tiempo para escapar, alzó con valentía su hacha y luchó contra el tigre. Como el cachorro aún era joven y más débil que un humano, Cuội lo golpeó con su hacha y cayó al suelo.",
+    "legendP2": "Justo entonces regresó la madre tigre. Cuội soltó rápidamente el hacha y trepó a un árbol cercano. Desde arriba, vio a la madre tigre correr hacia un arbusto cercano, arrancar unas hojas y masticarlas antes de dárselas a su cachorro. Al poco rato, el cachorro empezó a moverse, agitó la cola y volvió milagrosamente a la vida.",
+    "legendP3": "Después de que la madre tigre se llevara a su cachorro, Cuội se acercó al arbusto, lo desenterró con sus raíces y se lo llevó a casa.",
+    "legendHint": "Una leyenda vietnamita sobre la memoria, el asombro y las raíces que llegan hasta la Luna.",
+    "keepExploring": "Seguir explorando",
+    "scenes": [
+      {
+        "title": "ESCENA 1. APERTURA",
+        "text": "En la Luna. Oscuridad. Un sonido diminuto.\n\nNARRADOR: Todas las noches, Tío Cuội se sienta bajo su baniano. Todo el mundo sabe dos cosas sobre él: le encanta contar historias y aparece en cada luna llena.\n\nEn la noche del Festival de Medio Otoño, la Luna brillaba más que nunca.\n\nBajo su antiguo baniano, Tío Cuội le contaba una vieja historia al Conejo Lunar.\n\nDe repente, un sonido diminuto rompió el silencio.\n\nCONEJO LUNAR: ¡Tío! ¿Qué es ese sonido?\n\nTÍO CUỘI: (susurrando) Tic... tic... Conejo, creo que hay algo vivo ahí fuera.\n\nCONEJO LUNAR: ¿Es otro de tus cuentos fantásticos?\n\nTÍO CUỘI: Esta vez no. ¡Ven!"
+      },
+      {
+        "title": "ESCENA 2. EL PEQUEÑO EN EL POLVO",
+        "text": "Mar de la Tranquilidad. Un pequeño paquete metálico yace semienterrado en polvo gris.\n\nNARRADOR: En 1969, dos astronautas caminaron aquí: Neil Armstrong y Buzz Aldrin. Un tercero, Michael, esperaba en órbita. Antes de marcharse, dejaron un pequeño paquete de instrumentos.\n\nROVER: ¿Hola? ¿Son... reales?\n\nCONEJO LUNAR: (saltando hacia atrás) ¡Habla!\n\nROVER: Soy ROVER. Tenía un trabajo. Tenía un oído para escuchar temblar la Luna y un pequeño espejo. Y luego todos se fueron. ¿Me olvidaron?\n\nTÍO CUỘI: ¿Por qué te dejarían?\n\nNARRADOR: Los astronautas recogieron rocas lunares y desplegaron instrumentos científicos diseñados para permanecer en la superficie lunar y enviar sus descubrimientos a la Tierra."
+      },
+      {
+        "title": "ESCENA 3. EL ROVER QUE SE QUEDÓ EN SILENCIO",
+        "text": "Bajo el baniano. Las raíces brillan suavemente.\n\nBANIANO: Dime, ROVER. ¿Qué escuchó tu oído?\n\nROVER:\n\n«Escuchaba lunamotos y rocas espaciales golpeando la Luna. Trabajé unas tres semanas. Luego, un día, mis señales se detuvieron».\n\nCONEJO LUNAR:\n\n«¿Solo tres semanas? ¿Eso fue todo?»\n\nBANIANO:\n\n«Tres semanas bastaron para comenzar algo extraordinario. Tus descubrimientos ayudaron a los científicos a construir mejores instrumentos para futuras misiones».\n\n(Pausa. La luz de ROVER parpadea.)\n\nROVER: Pero ahora todo está en silencio. Nadie llama, nadie responde. Creo que me han olvidado."
+      },
+      {
+        "title": "ESCENA 4. LA NOCHE MÁS FRÍA (clímax)",
+        "text": "La larga noche de la Luna. Las estrellas brillan con filo. Cuội y Conejo Lunar se acurrucan junto a ROVER.\n\nCONEJO LUNAR: (en voz baja) ROVER... ¿el espejo sigue funcionando?\n\nROVER: Es solo vidrio. No tiene batería ni cables. No puede llamar a nadie. Solo puede esperar.\n\nTÍO CUỘI: (en voz baja, por primera vez sin bromas) Conozco esa sensación. Digo la verdad y nadie me cree. Tal vez todos estemos solo esperando.\n\nSilencio. La luz de ROVER se atenúa casi hasta desaparecer."
+      },
+      {
+        "title": "ESCENA 5. EL GIRO: UN HILO FINO DE LUZ",
+        "text": "Un tenue rayo verde cruza desde la Tierra e impacta en el espejo de ROVER. Destella de vuelta.\n\nCONEJO LUNAR:\n\n«¡Mira! ¡Una luz desde la Tierra!»\n\nBANIANO:\n\n«¡Eso es un láser! Los científicos están enviando luz hacia tu pequeño espejo».\n\nROVER:\n\n«¿Mi espejo? ¿Después de todos estos años?»\n\nBANIANO:\n\n«¡Sí! Refleja la luz hacia la Tierra y ayuda a los científicos a medir la distancia a la Luna».\n\nROVER:\n\n«Entonces... ¿sigo ayudándolos a descubrir algo?»\n\nBANIANO:\n\n«Por supuesto. Nunca fuiste olvidado, pequeño».\n\nROVER:\n\n«¡Entonces mi historia no ha terminado!»"
+      },
+      {
+        "title": "ESCENA 6. ENCONTRARTE",
+        "text": "BANIANO: «Mira, pequeño. Tus descubrimientos han llegado más lejos de lo que puedes imaginar».\n\nLa hoja dorada revela a una niña o un niño en Vietnam dibujando la Luna.\n\nEASEP: «¿Alguien sueña con explorar la Luna?»\n\nTÍO CUỘI: «Sí. Y quizá algún día descubra algo que jamás hemos imaginado».\n\nCONEJO LUNAR: «¡Quizá el próximo gran explorador esté justo ahí!»\n\nQuien dibuja se vuelve lentamente hacia el público.\n\nNIÑO: «Quizá ese explorador pueda ser yo...»\n\n(Pausa)\n\n«O quizá... ¡TÚ!»\n\nNARRADOR: «Cada gran descubrimiento comienza con una mente curiosa. Y cada sueño comienza con alguien que se atreve a imaginar».\n\nTODOS LOS PERSONAJES:\n\n«¡FIND U IN THE YOUNIVERSE!»"
+      },
+      {
+        "title": "ESCENA FINAL",
+        "text": "Tus raíces te recuerdan de dónde vienes. Tus sueños deciden hasta dónde puedes llegar."
+      }
+    ]
+  }
+}

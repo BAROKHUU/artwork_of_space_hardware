@@ -2,9 +2,9 @@
   "speakers": {
     "echo": "Echo",
     "control": "Trung tâm Lưu trữ",
-    "lrv": "Lunar Roving Vehicle",
+    "lrv": "Xe tự hành Mặt Trăng",
     "cuoi": "Cuội",
-    "rabbit": "Moon Rabbit"
+    "rabbit": "Thỏ Ngọc"
   },
   "ch0": {
     "title": "Thức dậy nào, Echo",
@@ -337,266 +337,302 @@
     ]
   },
   "m1": {
-    "title": "A Forgotten Explorer",
-    "tagline": "After the astronauts leave, a rover waits under an old banyan tree.",
+    "title": "Nhà thám hiểm bị lãng quên",
+    "tagline": "Sau khi các phi hành gia rời đi, một chiếc xe tự hành chờ đợi dưới gốc cây đa cổ thụ.",
     "intro": [
       {
         "who": "echo",
-        "text": "Every machine in the Archive has a story. This one is told by the Moon itself."
+        "text": "Mỗi cỗ máy trong Kho lưu trữ đều có một câu chuyện. Câu chuyện này do chính Mặt Trăng kể lại."
       },
       {
         "who": "lrv",
-        "text": "I am the Lunar Roving Vehicle. Apollo 15. I have been parked for a very long time."
+        "text": "Tôi là Xe tự hành Mặt Trăng của sứ mệnh Apollo 15. Tôi đã đậu ở đây rất lâu rồi."
       },
       {
         "who": "lrv",
-        "text": "In real life, astronauts drove me. In this story, the Moon lets me remember."
+        "text": "Ngoài đời thực, các phi hành gia đã lái tôi. Trong câu chuyện này, Mặt Trăng cho phép tôi được nhớ lại."
       },
       {
         "who": "lrv",
-        "text": "The astronauts left. The dust stayed. I used to count the stars, but I always get the same number."
+        "text": "Các phi hành gia đã rời đi. Lớp bụi ở lại. Tôi từng đếm những vì sao, nhưng lần nào cũng ra đúng một con số."
       },
       {
         "who": "cuoi",
-        "text": "Then count something new. I am Cuội. I came up here with a banyan tree, long ago."
+        "text": "Vậy thì hãy đếm một điều mới mẻ đi. Ta là Cuội. Ta lên đây cùng một cây đa từ rất lâu rồi."
       },
       {
         "who": "rabbit",
-        "text": "And I came with him. The tree is still here. So are we."
+        "text": "Và tôi cũng lên cùng chú ấy. Cây đa vẫn ở đây. Chúng tôi cũng vậy."
       },
       {
         "who": "lrv",
-        "text": "Are you real?"
+        "text": "Các bạn có thật không?"
       },
       {
         "who": "cuoi",
-        "text": "The Moon has room for more than one kind of real."
+        "text": "Mặt Trăng có chỗ cho nhiều hơn một kiểu thật."
       },
       {
         "who": "lrv",
-        "text": "I used to drive. Astronauts sat where you are sitting. I carried their tools and their rocks."
+        "text": "Tôi từng lăn bánh. Các phi hành gia ngồi ngay chỗ bạn đang ngồi. Tôi chở dụng cụ và đá mẫu cho họ."
       },
       {
         "who": "cuoi",
-        "text": "Then let us go and look at what you carried. My legs are tired. Your wheels are not."
+        "text": "Vậy chúng ta cùng đi xem những gì bạn từng chở nhé. Chân ta mỏi rồi, còn bánh xe của bạn thì chưa."
       },
       {
         "who": "echo",
-        "text": "Drive to the three markers under the banyan tree."
+        "text": "Hãy lái đến ba điểm đánh dấu dưới tán cây đa."
       }
     ],
     "outro": [
       {
         "who": "cuoi",
-        "text": "You stopped at the end of your mission. That does not mean you stopped being part of the story."
+        "text": "Bạn dừng lại khi sứ mệnh kết thúc. Điều đó không có nghĩa là bạn ngừng thuộc về câu chuyện."
       },
       {
         "who": "lrv",
-        "text": "It feels like the story ended without me."
+        "text": "Tôi cứ thấy như câu chuyện đã khép lại mà không có mình."
       },
       {
         "who": "cuoi",
-        "text": "Then we will find the parts that are still happening. Tomorrow, we collect samples."
+        "text": "Vậy ta sẽ tìm những phần vẫn đang tiếp diễn. Ngày mai, chúng ta đi thu thập mẫu đá."
       },
       {
         "who": "rabbit",
-        "text": "I will carry the snacks."
+        "text": "Tôi sẽ mang đồ ăn nhẹ."
       }
     ]
   },
   "m2": {
-    "title": "The First Journey",
-    "tagline": "Cuội asks for rocks. Every rock has something to say.",
+    "title": "Chuyến đi đầu tiên",
+    "tagline": "Chú Cuội hỏi tìm những viên đá. Mỗi viên đá đều có điều muốn kể.",
     "intro": [
       {
         "who": "cuoi",
-        "text": "Lunar rocks are letters. Scientists on Earth have been reading them for more than fifty years."
+        "text": "Đá Mặt Trăng là những bức thư. Các nhà khoa học trên Trái Đất đã đọc chúng suốt hơn năm mươi năm nay."
       },
       {
         "who": "lrv",
-        "text": "I carried them. I never got to read them."
+        "text": "Tôi từng chở chúng, nhưng chưa bao giờ được đọc chúng."
       },
       {
         "who": "cuoi",
-        "text": "Today you will. Four sample sites. Drive carefully."
+        "text": "Hôm nay bạn sẽ được đọc. Bốn địa điểm lấy mẫu. Hãy lái xe cẩn thận nhé."
       },
       {
         "who": "lrv",
-        "text": "What if I bring back the wrong rock?"
+        "text": "Nếu tôi mang về nhầm viên đá thì sao?"
       },
       {
         "who": "cuoi",
-        "text": "Then we look again. A wrong guess is not the end of a journey."
+        "text": "Thì chúng ta xem lại. Một lần đoán nhầm không phải là kết thúc của hành trình."
       }
     ],
     "afterCollect": [
-      {"who":"rabbit","text":"Four sites, four rocks. Your basket is heavy now!"},
-      {"who":"lrv","text":"I drove slowly this time. Every sample is still in one piece."},
-      {"who":"cuoi","text":"Good. Now comes the part you never got to do: reading them."}
+      {
+        "who": "rabbit",
+        "text": "Bốn địa điểm, bốn viên đá. Giỏ của bạn nặng rồi đấy!"
+      },
+      {
+        "who": "lrv",
+        "text": "Lần này tôi lái rất chậm. Mẫu đá nào cũng còn nguyên vẹn."
+      },
+      {
+        "who": "cuoi",
+        "text": "Tốt lắm. Giờ đến phần mà trước đây bạn chưa từng được làm: đọc chúng."
+      }
     ],
     "afterSamples": [
-      {"who":"lrv","text":"Some were dark and smooth. Some were full of broken pieces."},
-      {"who":"cuoi","text":"Different rocks keep different stories. You sorted them like a field geologist."},
-      {"who":"rabbit","text":"I only sorted the snacks. Yours was harder."}
+      {
+        "who": "lrv",
+        "text": "Có viên sẫm màu và mịn. Có viên lại đầy những mảnh vỡ."
+      },
+      {
+        "who": "cuoi",
+        "text": "Những loại đá khác nhau lưu giữ những câu chuyện khác nhau. Bạn phân loại chúng chẳng khác nào một nhà địa chất thực thụ."
+      },
+      {
+        "who": "rabbit",
+        "text": "Tôi chỉ phân loại đồ ăn nhẹ thôi. Việc của bạn khó hơn nhiều."
+      }
     ],
     "outro": [
       {
         "who": "lrv",
-        "text": "Six samples. I remember the weight of them."
+        "text": "Sáu mẫu đá. Tôi nhớ sức nặng của chúng."
       },
       {
         "who": "cuoi",
-        "text": "Each one is a page of the Moon's history. Some are older than the oldest rock on Earth."
+        "text": "Mỗi mẫu là một trang lịch sử của Mặt Trăng. Có mẫu còn cổ hơn cả những tảng đá lâu đời nhất trên Trái Đất."
       },
       {
         "who": "lrv",
-        "text": "The astronauts could only walk so far. I took them farther."
+        "text": "Các phi hành gia chỉ có thể đi bộ đến một quãng nhất định. Tôi đã đưa họ đi xa hơn."
       },
       {
         "who": "cuoi",
-        "text": "And because they went farther, we know more. That is not nothing."
+        "text": "Và nhờ họ đi xa hơn, chúng ta biết nhiều hơn. Điều đó không hề nhỏ bé chút nào."
       }
     ]
   },
   "m3": {
-    "title": "What the Moon Tells Us",
-    "tagline": "Craters are a record of everything that ever arrived.",
+    "title": "Điều Mặt Trăng kể với chúng ta",
+    "tagline": "Các hố va chạm là cuốn nhật ký ghi lại mọi thứ từng rơi xuống đây.",
     "intro": [
       {
         "who": "rabbit",
-        "text": "Look at the craters. They are not all the same age."
+        "text": "Nhìn các hố va chạm kìa. Chúng không có cùng độ tuổi đâu."
       },
       {
         "who": "lrv",
-        "text": "Big ones, small ones. I drove around them for three days."
+        "text": "Hố lớn, hố nhỏ. Tôi đã lái vòng quanh chúng suốt ba ngày."
       },
       {
         "who": "rabbit",
-        "text": "Which patch looks older? What would you look for?"
+        "text": "Vùng đất nào trông cổ hơn? Bạn sẽ quan sát dấu hiệu gì?"
       },
       {
         "who": "lrv",
-        "text": "More craters. Softer edges. A surface that has been hit again and again."
+        "text": "Nhiều hố va chạm hơn. Mép hố mềm hơn. Một bề mặt đã bị va đập hết lần này đến lần khác."
       },
       {
         "who": "rabbit",
-        "text": "Good. Observation is science too. Point, look, and write it down."
+        "text": "Giỏi lắm. Quan sát cũng là khoa học. Chỉ ra, nhìn kỹ và ghi chép lại."
       }
     ],
     "afterCraters": [
-      {"who":"rabbit","text":"You found the older ground!"},
-      {"who":"lrv","text":"More craters, softer edges. I looked a little longer this time."},
-      {"who":"cuoi","text":"Then the map of time is clearer. Let us see what you remember."}
+      {
+        "who": "rabbit",
+        "text": "Bạn tìm đúng vùng đất cổ hơn rồi!"
+      },
+      {
+        "who": "lrv",
+        "text": "Nhiều hố hơn, miệng hố cũng mòn mềm hơn. Lần này tôi đã đứng ngắm kỹ hơn một chút."
+      },
+      {
+        "who": "cuoi",
+        "text": "Thế là bản đồ thời gian đã hiện rõ dần rồi. Thử xem cháu còn nhớ được những gì nhé."
+      }
     ],
     "outro": [
       {
         "who": "cuoi",
-        "text": "You noticed something today."
+        "text": "Hôm nay bạn nhỏ đã tự mình phát hiện ra một điều thật hay đấy."
       },
       {
         "who": "lrv",
-        "text": "It was only looking."
+        "text": "Tôi chỉ chịu khó ngắm nhìn thôi mà."
       },
       {
         "who": "cuoi",
-        "text": "That is how every discovery starts. Someone looks longer than everybody else."
+        "text": "Mọi khám phá vĩ đại đều khởi đầu như thế: từ một người chịu nán lại nhìn lâu hơn một nhịp."
       }
     ]
   },
   "m4": {
-    "title": "The Last Leaf",
-    "tagline": "One more signal, from an instrument nobody came back for.",
+    "title": "Chiếc lá cuối cùng",
+    "tagline": "Thêm một nhịp tín hiệu xa xưa, từ cỗ máy chưa từng có chuyến tàu quay lại đón.",
     "intro": [
       {
         "who": "cuoi",
-        "text": "Do you hear that? A signal, very faint. Older than your wheels."
+        "text": "Bạn có nghe thấy gì không? Một tín hiệu rất mảnh, còn xưa hơn cả vệt bánh xe của bạn nữa đấy."
       },
       {
         "who": "lrv",
-        "text": "It is not a voice. It is a heartbeat of instruments."
+        "text": "Chẳng phải tiếng người nói đâu. Đó là nhịp tim khe khẽ của những thiết bị đo đạc."
       },
       {
         "who": "cuoi",
-        "text": "Something else was left here in 1969. It listened to the Moon, and then it went quiet."
+        "text": "Năm 1969, có một bạn nhỏ nữa cũng ở lại nơi đây. Nó lắng nghe Mặt Trăng suốt nhiều đêm, rồi dần chìm vào yên lặng."
       },
       {
         "who": "lrv",
-        "text": "Can we help it?"
+        "text": "Mình có thể giúp nó tỉnh lại không?"
       },
       {
         "who": "cuoi",
-        "text": "Not by fixing it. Nobody can do that. But we can find out what it did."
+        "text": "Chẳng ai sửa chữa lại được đâu. Nhưng mình có thể tìm hiểu xem nó từng làm điều phi thường gì."
       },
       {
         "who": "rabbit",
-        "text": "Follow the signal. We will bring a leaf."
+        "text": "Cứ lần theo tín hiệu thôi! Mình sẽ mang tặng nó một chiếc lá đa."
       }
     ],
     "afterSignal": [
-      {"who":"lrv","text":"There it is. A small package, half buried in the dust."},
-      {"who":"rabbit","text":"It is so quiet. Can I put the leaf here?"},
-      {"who":"cuoi","text":"Yes. Now let us open the archive and learn what it listened to."}
+      {
+        "who": "lrv",
+        "text": "Kia rồi. Một hộp thiết bị nhỏ bé, nằm vùi một nửa giữa bụi trăng."
+      },
+      {
+        "who": "rabbit",
+        "text": "Yên ắng quá chừng. Mình đặt chiếc lá ở đây cho ấm áp nhé?"
+      },
+      {
+        "who": "cuoi",
+        "text": "Ừ. Giờ ta mở kho ký ức ra xem nó đã lắng nghe được những thanh âm nào của Mặt Trăng."
+      }
     ],
     "outro": [
       {
         "who": "lrv",
-        "text": "It stopped sending after only a few weeks. I thought a mission like that would be a failure."
+        "text": "Nó ngừng phát chỉ sau vài tuần lễ. Trước đây tôi cứ ngỡ một sứ mệnh ngắn ngủi thế là thất bại."
       },
       {
         "who": "cuoi",
-        "text": "Its data is still being studied. A short mission can leave a long lesson."
+        "text": "Dữ liệu nó gửi về vẫn được nghiên cứu tới tận hôm nay. Một chuyến đi ngắn ngủi vẫn có thể gieo một bài học dài lâu."
       },
       {
         "who": "lrv",
-        "text": "So it is not forgotten."
+        "text": "Vậy là nó chưa bao giờ bị lãng quên cả."
       },
       {
         "who": "cuoi",
-        "text": "No. It is remembered by people who were not even born when it listened."
+        "text": "Chẳng hề đâu. Ngay cả những bạn nhỏ sinh ra rất lâu sau ngày nó ngừng lắng nghe vẫn còn nhắc nhớ tới nó đấy."
       }
     ]
   },
   "m5": {
-    "title": "Find U in the Youniverse",
-    "tagline": "A message takes more than fifty years to reach a child's window.",
+    "title": "Tìm thấy bạn giữa ngân hà",
+    "tagline": "Lời nhắn mất hơn năm mươi năm băng qua đêm tối để chạm tới khung cửa sổ của một em nhỏ.",
     "intro": [
       {
         "who": "rabbit",
-        "text": "The banyan leaf is glowing."
+        "text": "Ôi kìa, chiếc lá đa đang tỏa sáng rực rỡ!"
       },
       {
         "who": "lrv",
-        "text": "There is a message in it. Not for me."
+        "text": "Trong tia sáng ấy có một bức thư gửi đi… nhưng không phải cho tôi."
       },
       {
         "who": "cuoi",
-        "text": "A last burst of data, drifting for more than fifty years. Tonight it reaches a window on Earth."
+        "text": "Một luồng dữ liệu cuối cùng lênh đênh suốt hơn nửa thế kỷ. Đêm nay nó vừa ghé qua bên khung cửa sổ nơi Trái Đất."
       },
       {
         "who": "lrv",
-        "text": "A child is drawing a rover. I think I know that feeling."
+        "text": "Có một em nhỏ đang cặm cụi vẽ chiếc xe tự hành… tôi nghĩ mình hiểu cảm giác rung động ấy."
       },
       {
         "who": "rabbit",
-        "text": "What would you tell them?"
+        "text": "Bạn muốn nhắn nhủ điều gì với em ấy nào?"
       },
       {
         "who": "lrv",
-        "text": "That it was worth it. Even the quiet part."
+        "text": "Rằng từng giây phút chờ đợi đều chẳng hề uổng phí. Kể cả những tháng ngày lặng im."
       }
     ],
     "outro": [
       {
         "who": "echo",
-        "text": "The Moon keeps what we leave behind. The story keeps what it taught us."
+        "text": "Mặt Trăng gìn giữ những gì ta để lại; còn câu chuyện cất giữ bao điều nó dạy ta."
       },
       {
         "who": "cuoi",
-        "text": "Do not worry about the end of a mission. Worry about the end of the remembering."
+        "text": "Đừng buồn khi một sứ mệnh khép lại; chỉ tiếc nếu ta để ký ức ngủ quên thôi."
       },
       {
         "who": "lrv",
-        "text": "Then I will remember. To the end of the wheels."
+        "text": "Thế thì tôi sẽ nhớ mãi. Cho tới tận ngày bốn bánh xe này chẳng còn lăn nữa."
       }
     ]
   }

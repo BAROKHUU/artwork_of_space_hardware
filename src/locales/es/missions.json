@@ -1,0 +1,489 @@
+{
+  "ch0_landing": {
+    "title": "Aterriza el Rover Lunar",
+    "goal": "Guía el vehículo lunar hacia abajo y posa sobre la Luna suavemente a menos de {{safe}} m/s.",
+    "hint": "Espera hasta que la superficie esté cerca y luego usa encendidos cortos del motor. Tu primer aterrizaje seguro comienza el viaje.",
+    "success": "¡Contacto! El vehículo lunar llegó sano y salvo a la Luna.",
+    "fail_crash": "El vehículo aterrizó demasiado rápido a {{speed}} m/s. Intenta frenar con un encendido más suave.",
+    "fail_fuel": "Los motores se quedaron sin combustible antes de tocar el suelo. Ahorra combustible y enciende más tarde."
+  },
+  "ch0_boot": {
+    "title": "Revisión de ruedas",
+    "goal": "Conduce hasta las tres balizas de prueba.",
+    "hint": "Sigue la luz naranja a lo lejos. La flecha en tu pantalla apunta hacia la siguiente baliza.",
+    "success": "Todos los sistemas listos. Echo está preparado para rodar.",
+    "targets": [
+      {
+        "name": "Baliza 1",
+        "found": "La dirección funciona."
+      },
+      {
+        "name": "Baliza 2",
+        "found": "La suspensión funciona."
+      },
+      {
+        "name": "Baliza 3",
+        "found": "La antena está captando una señal."
+      }
+    ]
+  },
+  "ch1_sites": {
+    "title": "Elige un sitio de aterrizaje",
+    "goal": "Examina las fotos de tres zonas. Elige el lugar más seguro para aterrizar en cada una.",
+    "hint": "Los cráteres grandes son peligrosos, y también las rocas grandes. Elige la zona con menos obstáculos.",
+    "success": "Buenas elecciones. Este es el mismo tipo de trabajo que hicieron los científicos con las imágenes de Ranger y Surveyor.",
+    "question": "Ronda {{n}} de {{total}}: ¿qué sitio es más seguro?",
+    "site": "Sitio {{letter}}",
+    "right": "Elección más segura: este sitio tiene la menor cantidad de peligros.",
+    "wrong": "¡Arriesgado! El sitio {{letter}} tiene menos peligros.",
+    "next": "Siguiente zona",
+    "note": "Estudia las imágenes reales de la superficie lunar y elige el lugar más seguro para aterrizar."
+  },
+  "ch1_landing": {
+    "title": "Aterrizaje suave",
+    "goal": "Aterriza a menos de {{safe}} m/s. Mantén pulsado el propulsor para frenar la caída.",
+    "hint": "Espera el momento y luego frena. Si enciendes demasiado pronto, te quedarás sin combustible muy por encima del suelo.",
+    "success": "¡Aterrizaje logrado! Mucho más suave que los dos rebotes reales de Surveyor.",
+    "fail_crash": "Choque a {{speed}} m/s. Empieza a frenar un poco antes.",
+    "fail_fuel": "Sin combustible. Espera un poco más antes de encender el motor."
+  },
+  "ch2_laser": {
+    "title": "Atrapa la luz",
+    "goal": "Encuentra el Mar de la Tranquilidad cerca del centro de la Luna y dispara el láser al reflector {{shots}} veces.",
+    "hint": "Busca la gran mancha oscura justo a la derecha del centro. El objetivo está cerca del ecuador.",
+    "success": "Acabas de medir la distancia a la Luna usando luz.",
+    "instruction": "Haz clic o toca la Luna para disparar el láser.",
+    "fire": "Pulso disparado",
+    "hit": "Eco recibido tras {{t}} s",
+    "miss": "Sin eco. El pulso no dio en el reflector.",
+    "distance": "Distancia",
+    "shots": "Ecos",
+    "drift": "Desde 1969, la Luna se ha alejado unos {{m}} m más.",
+    "markerHint": "Pista: ¡Baliza objetivo revelada! Apunta al anillo pulsante cerca del centro-derecha de la Luna."
+  },
+  "ch2_lrv": {
+    "title": "Sigue las huellas del rover",
+    "goal": "Visita tres paradas geológicas. Mantente dentro de la distancia de regreso a pie hasta el módulo.",
+    "hint": "El anillo rojo del radar muestra tu límite. Las tripulaciones del Apollo tenían la misma regla: debían poder volver caminando.",
+    "success": "Tres paradas, cero rovers varados.",
+    "tether": "¡Límite de regreso a pie! Da la vuelta.",
+    "targets": [
+      {
+        "name": "Cráter Elbow",
+        "found": "Parada 1: rocas lanzadas hacia afuera cuando un impacto formó el cráter."
+      },
+      {
+        "name": "Base de la montaña",
+        "found": "Parada 2: roca antigua procedente de las montañas de la Luna."
+      },
+      {
+        "name": "Grieta Hadley",
+        "found": "Parada 3: un largo canal que probablemente fue excavado por lava."
+      }
+    ]
+  },
+  "ch3_slingshot": {
+    "title": "Pide prestado un planeta",
+    "goal": "Elige el día y la velocidad de lanzamiento para que Júpiter dé a tu sonda al menos 1 km/s adicional.",
+    "hint": "Tu sonda debe llegar justo después de que pase Júpiter, por detrás del planeta.",
+    "success": "Júpiter acaba de lanzar tu sonda hacia los planetas exteriores sin gastar combustible.",
+    "launchDay": "Posición de Júpiter al lanzamiento",
+    "speed": "Velocidad de lanzamiento",
+    "launch": "Lanzar",
+    "relaunch": "Lanzar de nuevo",
+    "suggest": "Consultar a Control de Misión",
+    "suggested": "Control de Misión eligió una buena ventana.",
+    "resultGain": "Velocidad ganada en Júpiter: {{gain}} km/s",
+    "closest": "Máximo acercamiento: {{km}} millones de km",
+    "years": "Año {{y}}",
+    "withoutJupiter": "Sin Júpiter",
+    "earth": "Tierra",
+    "jupiter": "Júpiter",
+    "saturnOrbit": "Órbita de Saturno",
+    "yearLabel": "Años desde el lanzamiento",
+    "closestLabel": "Distancia mínima a Júpiter",
+    "diagram": "Diagrama orbital con el Sol, la Tierra, Júpiter y la trayectoria de tu sonda",
+    "fail_short": "No hay suficiente velocidad. La sonda no llegó hasta Júpiter. Lanza más rápido.",
+    "fail_missed": "Demasiado lejos de Júpiter al llegar allí. Cambia la posición inicial de Júpiter.",
+    "fail_bound": "Cerca, pero el sobrevuelo añadió muy poca velocidad. Ajusta unos grados para pasar justo detrás de Júpiter.",
+    "fail_hit": "¡Directo contra Júpiter! Un poco más lejos, por favor."
+  },
+  "ch4_landing": {
+    "title": "Descenso en aire tenue",
+    "goal": "Abre el paracaídas y luego enciende los motores. Aterriza a menos de {{safe}} m/s.",
+    "hint": "Abre el paracaídas de inmediato. Empieza a frenar con motores cuando estés a unos cientos de metros de altura.",
+    "success": "¡En el suelo! El primer aterrizaje exitoso de EE. UU. en Marte ocurrió el 20 de julio de 1976.",
+    "fail_crash": "Choque a {{speed}} m/s. ¿Abriste el paracaídas antes de encender los motores?",
+    "fail_fuel": "Sin combustible. Deja que el paracaídas haga más trabajo primero."
+  },
+  "ch4_lr": {
+    "title": "¿Hay alguien en casa?",
+    "goal": "Analiza los experimentos de suelo de Viking y decide qué significan.",
+    "hint": "Los científicos no sacan conclusiones apresuradas. Observa los tres resultados juntos.",
+    "success": "Esa es la respuesta real: química extraña y ninguna prueba clara de vida.",
+    "note": "Los gráficos muestran la forma general de los resultados, no los datos en bruto.",
+    "next": "Siguiente prueba",
+    "axisX": "Días",
+    "axisY": "Gas liberado",
+    "none": "moléculas orgánicas detectadas",
+    "noneLabel": "Un trazo plano del instrumento sin picos",
+    "rounds": [
+      {
+        "chart": "fresh",
+        "title": "Prueba 1: Suelo fresco + nutrientes",
+        "q": "¿Qué ocurrió después de añadir los nutrientes?",
+        "options": [
+          "El suelo liberó una ráfaga de gas",
+          "No ocurrió nada"
+        ],
+        "explain": "Salió gas radiactivo rápidamente. Eso podía significar que algo estaba consumiendo los nutrientes."
+      },
+      {
+        "chart": "heated",
+        "title": "Prueba 2: Suelo horneado primero",
+        "q": "El suelo calentado permaneció inactivo. ¿Por qué importa esto?",
+        "options": [
+          "Demuestra que el horno se estropeó",
+          "El calor detuvo la reacción, algo que esperarías tanto de seres vivos como de ciertas sustancias químicas"
+        ],
+        "explain": "Hornear el suelo cambió el resultado. Los seres vivos explicarían eso, pero también sustancias químicas descompuestas por el calor."
+      },
+      {
+        "chart": "organics",
+        "title": "Prueba 3: Búsqueda de moléculas orgánicas",
+        "q": "No se detectaron moléculas orgánicas. ¿Cuál es la mejor conclusión?",
+        "options": [
+          "Marte está definitivamente lleno de microbios",
+          "Química extraña, sin pruebas claras de vida",
+          "Todos los instrumentos estaban averiados"
+        ],
+        "explain": "Viking halló una química sorprendente, pero ninguna prueba clara de vida. Los científicos aún estudian qué significa."
+      }
+    ]
+  },
+  "ch5_opportunity": {
+    "title": "Sigue el rastro del agua",
+    "goal": "Escanea los cuatro afloramientos rocosos antes de que la tormenta de polvo tape el sol.",
+    "hint": "Cargas con la luz solar y gastas energía al conducir. Cuando la batería esté baja, detente y espera al sol.",
+    "success": "Encontraste las señales de agua, igual que hizo Opportunity.",
+    "fail_storm": "La tormenta de polvo bloqueó el sol. Eso fue exactamente lo que le ocurrió a Opportunity en junio de 2018.",
+    "low": "Batería vacía. Esperando al sol.",
+    "targets": [
+      {
+        "name": "Campo de arándanos",
+        "found": "Estas pequeñas esferas contienen hematita, un mineral que suele formarse con agua."
+      },
+      {
+        "name": "Afloramiento en capas",
+        "found": "Capas como estas pueden ser depositadas por el agua."
+      },
+      {
+        "name": "Borde del cráter Eagle",
+        "found": "Los impactos dejan expuesta roca más antigua del subsuelo."
+      },
+      {
+        "name": "Cráter Endurance",
+        "found": "Evidencia de que este lugar estuvo húmedo hace mucho tiempo."
+      }
+    ]
+  },
+  "ch6_ingenuity": {
+    "title": "Aire muy fino",
+    "goal": "Da toques a los rotores para mantenerte en la banda verde durante {{hold}} segundos y luego aterriza suavemente.",
+    "hint": "No lo mantengas pulsado sin parar. Toques cortos te mantienen estable.",
+    "success": "¡Vuelo propulsado en Marte! Ingenuity lo hizo 72 veces.",
+    "fail_crash": "Aterrizaje brusco a {{speed}} m/s. Da toques a los rotores para frenar cerca del suelo.",
+    "fail_fuel": "La batería se agotó. Usa toques más cortos."
+  },
+  "ch6_perseverance": {
+    "title": "Perfora el antiguo lago",
+    "goal": "Conduce por el antiguo delta fluvial del cráter Jezero para extraer muestras de núcleo en tres estaciones rocosas.",
+    "hint": "Perseverance funciona con calor nuclear de plutonio, no con paneles solares: tómate tu tiempo al sortear el campo de rocas.",
+    "success": "Tres tubos de núcleo de Jezero sellados y depositados para una futura misión de retorno de muestras de Marte.",
+    "targets": [
+      {
+        "name": "Fondo del cráter (Séítah)",
+        "found": "Roca volcánica alterada por antiguas aguas subterráneas mucho antes de que el lago se secara."
+      },
+      {
+        "name": "Frente del delta (Wildcat Ridge)",
+        "found": "Lutita de grano fino depositada donde un antiguo río desembocaba en el lago Jezero."
+      },
+      {
+        "name": "Depósito de muestras (Three Forks)",
+        "found": "Tubo de muestra de titanio sellado descansando seguro sobre regolito plano para su futura recogida."
+      }
+    ]
+  },
+  "ch7_golden": {
+    "title": "Prepara el Disco de Oro",
+    "goal": "¿Cuáles de estos elementos están realmente en el Disco de Oro? Clasifica cada uno.",
+    "hint": "Se fabricó en 1977 como un disco fonográfico que guarda datos de sonido e imagen.",
+    "success": "Ya sabes lo que elegimos contar sobre nosotros.",
+    "on": "En el disco",
+    "off": "No está en él",
+    "note": "El disco contiene 115 imágenes, saludos en 55 idiomas, sonidos naturales y música de muchas culturas.",
+    "next": "Siguiente elemento",
+    "items": {
+      "whales": {
+        "name": "El canto de las ballenas",
+        "why": "Sí. Los sonidos naturales incluyen oleaje, viento, truenos, aves y ballenas."
+      },
+      "video": {
+        "name": "Un video del lanzamiento de un cohete",
+        "why": "No. El disco lleva sonidos e imágenes, no video."
+      },
+      "greetings": {
+        "name": "Saludos en 55 idiomas",
+        "why": "Sí. Van desde el antiguo acadio hasta el wu, una variante china moderna."
+      },
+      "thunder": {
+        "name": "El sonido del trueno",
+        "why": "Sí. El clima de la Tierra también llegó al disco."
+      },
+      "map": {
+        "name": "Un mapa callejero de cada ciudad",
+        "why": "No. Muestra dónde está la Tierra, pero no incluye mapas de ciudades."
+      },
+      "music": {
+        "name": "Música de muchas culturas",
+        "why": "Sí. Las piezas musicales proceden de distintas culturas y épocas."
+      }
+    }
+  },
+  "ch2_apollo12": {
+    "title": "Aterrizaje lunar de precisión",
+    "goal": "Dirígete hacia la plataforma luminosa junto a Surveyor 3 y posa por debajo de {{safe}} m/s.",
+    "hint": "Usa A/D o Izquierda/Derecha para alinearte sobre la plataforma y guarda pulsos cortos de motor para frenar antes de tocar el suelo.",
+    "success": "Un aterrizaje de precisión justo junto a Surveyor 3, igual que Apollo 12 en 1969.",
+    "fail_crash": "El módulo impactó a {{speed}} m/s. Frena antes y usa toques más cortos.",
+    "fail_fuel": "Los motores se quedaron sin combustible antes de tocar el suelo. Ahorra empezando a frenar más tarde.",
+    "fail_target": "Aterrizaste a {{dist}} m de la plataforma objetivo. Sitúate sobre el anillo ámbar antes de posarte."
+  },
+  "ch2_alsep": {
+    "title": "Escucha a la Luna",
+    "goal": "Registra {{captures}} ventanas sísmicas lunares en el ALSEP cuando los cuatro canales oscilen entre A y B.",
+    "hint": "Observa los cuatro trazos desplazarse a la izquierda. Pulsa Espacio o Capturar cuando todas las líneas estén activas dentro de la ventana roja A–B.",
+    "success": "¡Ondas sísmicas capturadas! La red ALSEP del Apollo reveló la corteza, el manto y el núcleo de la Luna.",
+    "progress": "Señales capturadas",
+    "hit": "¡Señal capturada! Los cuatro canales del ALSEP llenaron la ventana.",
+    "miss": "Ventana perdida: al menos un canal estuvo plano entre A y B."
+  },
+  "ch2_lrv_extra": {
+    "title": "Perforación lunar profunda",
+    "goal": "Perfora {{targetDepth}} m en las tierras altas lunares para extraer una muestra estratificada sin sobrecalentar la broca.",
+    "hint": "Mantén Espacio o Perforar para avanzar más hondo y suelta brevemente cada vez que el calor de la broca se acerque al rojo.",
+    "success": "¡Núcleo extraído! Las perforaciones profundas de Apollo 15–17 conservaron capas de historia lunar intactas durante miles de millones de años.",
+    "fail_jam": "La broca se sobrecalentó y se atascó {{jams}} veces. Suelta la perforadora antes para dejarla enfriar.",
+    "rigLabel": "Perforadora Lunar de Superficie Apollo",
+    "ready": "Lista",
+    "drilling": "Perforando",
+    "cooling": "Enfriando…",
+    "depthLabel": "Profundidad del núcleo",
+    "heatLabel": "Calor de la broca",
+    "jamsLabel": "Sobrecalentamientos",
+    "layerLabel": "Capa actual: {{layer}}",
+    "drillBtn": "Mantén para perforar",
+    "controls": "Mantén Espacio o el botón para perforar · Suelta para enfriar",
+    "layers": {
+      "dust": "Polvo superficial",
+      "ejecta": "Grava de eyección",
+      "dense": "Tierras altas densas"
+    }
+  },
+  "ch4_viking2": {
+    "title": "Precisión en Utopia Planitia",
+    "goal": "Abre el paracaídas, dirígete hacia la zona lisa de Utopia Planitia y aterriza por debajo de {{safe}} m/s.",
+    "hint": "Despliega el paracaídas pronto, usa A/D o Izquierda/Derecha para alinearte sobre la zona ámbar y frena con los cohetes.",
+    "success": "Viking 2 aterrizó a salvo en el objetivo y envió imágenes desde el norte marciano.",
+    "fail_crash": "El descenso a {{speed}} m/s fue demasiado duro. Abre el paracaídas pronto y luego frena.",
+    "fail_fuel": "El módulo se quedó sin combustible. Deja que el paracaídas te frene primero.",
+    "fail_target": "Aterrizaste a {{dist}} m de la plataforma objetivo. Sitúate sobre el anillo ámbar antes de posarte."
+  },
+  "ch5_spirit": {
+    "title": "Cruza las colinas Columbia",
+    "goal": "Conduce hasta cada parada rocosa administrando la batería solar del rover.",
+    "hint": "Detente cuando la batería esté baja. La luz del sol la recarga, pero el polvo puede oscurecer el cielo.",
+    "success": "Spirit alcanzó las colinas y encontró rocas alteradas por el agua.",
+    "fail_storm": "La tormenta bloqueó el Sol. Años después, su gemelo Opportunity enfrentó una tormenta global."
+  },
+  "ch5_newlanders": {
+    "title": "Excava en busca de hielo polar",
+    "goal": "Perfora {{targetDepth}} m en las llanuras del norte marciano para alcanzar hielo de agua enterrado sin sobrecalentarte.",
+    "hint": "Mantén Espacio o Perforar para atravesar el polvo helado y la grava rocosa, y suelta antes de que el calor llegue al rojo.",
+    "success": "¡Hielo alcanzado! Phoenix raspó y confirmó hielo de agua enterrado bajo las llanuras del norte de Marte.",
+    "fail_jam": "La broca se sobrecalentó y se atascó {{jams}} veces en suelo helado. Suelta antes para dejarla enfriar."
+  },
+  "ch7_dawn": {
+    "title": "Pide prestado un planeta",
+    "goal": "Ajusta la trayectoria de la sonda para que la gravedad de un planeta cambie su rumbo.",
+    "hint": "El simulador usa el pozo gravitatorio móvil de Júpiter para demostrar un sobrevuelo.",
+    "success": "Un planeta puede curvar la trayectoria de una nave. El viaje real de Dawn usó propulsión iónica y una asistencia gravitatoria de Marte; esta simulación acortada enseña esa misma idea orbital.",
+    "launchDay": "Posición de Júpiter al lanzamiento",
+    "speed": "Velocidad de lanzamiento",
+    "launch": "Lanzar",
+    "relaunch": "Lanzar de nuevo",
+    "suggest": "Consultar a Control de Misión",
+    "suggested": "Control de Misión eligió una buena ventana.",
+    "resultGain": "Velocidad ganada en Júpiter: {{gain}} km/s",
+    "closest": "Máximo acercamiento: {{km}} millones de km",
+    "years": "Año {{y}}",
+    "withoutJupiter": "Sin Júpiter",
+    "earth": "Tierra",
+    "jupiter": "Júpiter",
+    "saturnOrbit": "Órbita de Saturno",
+    "yearLabel": "Años desde el lanzamiento",
+    "closestLabel": "Distancia mínima a Júpiter",
+    "diagram": "Diagrama orbital con el Sol, la Tierra, Júpiter y la trayectoria de tu sonda",
+    "fail_short": "No hay suficiente velocidad. La sonda no llegó hasta Júpiter. Lanza más rápido.",
+    "fail_missed": "Demasiado lejos de Júpiter al llegar allí. Cambia la posición inicial de Júpiter.",
+    "fail_bound": "Cerca, pero el sobrevuelo añadió muy poca velocidad. Ajusta unos grados para pasar justo detrás de Júpiter.",
+    "fail_hit": "¡Directo contra Júpiter! Un poco más lejos, por favor."
+  },
+  "ch7_near": {
+    "title": "Un posado suave en un asteroide",
+    "goal": "Dirígete hacia la zona luminosa en Eros y pósate en baja gravedad por debajo de {{safe}} m/s.",
+    "hint": "La gravedad en Eros es minúscula. Usa A/D para alinearte sobre el anillo ámbar y pulsos cortos hacia arriba para descender con suavidad.",
+    "success": "NEAR Shoemaker sobrevivió a su posado en Eros y envió datos desde la superficie.",
+    "fail_crash": "El contacto a {{speed}} m/s fue demasiado duro. Empieza a frenar antes.",
+    "fail_fuel": "Te quedaste sin combustible antes de posarte. Usa pulsos cortos.",
+    "fail_target": "Te posaste a {{dist}} m de la zona objetivo. Sitúate sobre el anillo ámbar antes de descender."
+  },
+  "ch7_kepler": {
+    "title": "Encuentra un planeta en la luz estelar",
+    "goal": "Lee la curva de brillo e identifica la caída provocada por un planeta al cruzar frente a su estrella.",
+    "hint": "Una caída pequeña y repetida puede revelar un planeta demasiado pequeño y lejano para verlo directamente.",
+    "success": "Encontraste un tránsito. Kepler usó caídas repetidas en la luz estelar para descubrir miles de planetas.",
+    "note": "Esta curva es una ilustración del método de tránsito, no datos reales de Kepler.",
+    "next": "Continuar",
+    "axisX": "Tiempo",
+    "axisY": "Brillo de la estrella",
+    "none": "pequeña caída durante el tránsito",
+    "noneLabel": "Curva ilustrativa de brillo estelar con una caída suave",
+    "rounds": [
+      {
+        "chart": "transit",
+        "title": "Un planeta cruza frente a su estrella",
+        "q": "¿Qué señal es evidencia de que un planeta pasó delante de la estrella?",
+        "options": [
+          "Una caída pequeña y repetida en el brillo",
+          "Un aumento repentino y permanente del brillo"
+        ],
+        "explain": "Un planeta bloquea un poco de luz estelar al cruzar frente a su estrella. Las caídas repetidas revelan su órbita."
+      }
+    ]
+  },
+  "m1_drive": {
+    "title": "Bajo el baniano",
+    "goal": "Conduce el rover lunar hasta los tres marcadores bajo el viejo árbol. Usa las flechas, WASD o los botones.",
+    "hint": "La flecha arriba a la izquierda apunta hacia el siguiente marcador. Conduce despacio sobre las crestas.",
+    "success": "Las ruedas recuerdan el camino. Cuội y el conejo esperan bajo el árbol.",
+    "targets": [
+      {
+        "name": "Huellas antiguas",
+        "found": "Huellas de 1971, aún nítidas en el polvo."
+      },
+      {
+        "name": "Las raíces del baniano",
+        "found": "Las raíces se extienden por el regolito como caminos."
+      },
+      {
+        "name": "La sombra del árbol",
+        "found": "Aquí el polvo está fresco. Alguien ha estado sentado aquí."
+      }
+    ]
+  },
+  "m2_collect": {
+    "title": "Cuatro sitios de muestreo",
+    "goal": "Conduce a cuatro sitios y recoge una roca de cada uno sin alejarte más allá del alcance a pie del módulo.",
+    "hint": "El anillo rojo es tu límite de regreso a pie de 390 m. Sigue la flecha hasta cada sitio de muestreo.",
+    "success": "Cuatro muestras aseguradas. Ahora descubramos qué son.",
+    "tether": "¡Límite de regreso a pie! Mantente a menos de 390 m del módulo.",
+    "targets": [
+      {
+        "name": "Mancha oscura",
+        "found": "Una roca oscura y lisa. Parece lava enfriada."
+      },
+      {
+        "name": "Ladera brillante",
+        "found": "Una roca pálida y yesosa, más clara que el polvo alrededor."
+      },
+      {
+        "name": "Terreno quebrado",
+        "found": "Una roca formada por muchos fragmentos pegados entre sí."
+      },
+      {
+        "name": "Borde de cráter pequeño",
+        "found": "Una roca con una historia escrita en sus grietas."
+      }
+    ]
+  },
+  "m2_samples": {
+    "title": "Lee las rocas",
+    "goal": "Observa cada muestra y elige su tipo. Una suposición equivocada es una pista, no un fracaso: vuelve a mirar.",
+    "hint": "El color y la textura son las mejores pistas. Oscura y lisa, pálida y yesosa, o fragmentos prensados juntos.",
+    "success": "Leíste seis muestras como un geólogo de campo.",
+    "question": "Muestra {{n}} de {{total}}: ¿qué roca es esta?",
+    "names": {
+      "basalt": "Basalto",
+      "anorthosite": "Anortosita",
+      "breccia": "Brecha"
+    },
+    "props": {
+      "basalt": "Oscura, lisa y pesada. Formada a partir de lava enfriada.",
+      "anorthosite": "Pálida y yesosa. Parte de las brillantes tierras altas de la Luna.",
+      "breccia": "Muchos fragmentos rotos prensados juntos por un impacto."
+    },
+    "right": "Sí. Eso es {{name}}.",
+    "wrong": "No del todo. Mira otra vez el color y la textura.",
+    "next": "Siguiente muestra",
+    "note": "Elige el tipo de roca que coincide con lo que ves."
+  },
+  "m3_craters": {
+    "title": "¿Qué suelo es más antiguo?",
+    "goal": "Compara cuatro zonas de la superficie lunar. Elige la zona que parezca más antigua y desgastada.",
+    "hint": "El terreno más antiguo tiene más cráteres, bordes más suaves y menos rocas afiladas.",
+    "success": "Leíste la superficie como un mapa del tiempo.",
+    "question": "Zona {{n}} de {{total}}: ¿qué suelo ha estado expuesto más tiempo?",
+    "site": "Zona {{letter}}",
+    "right": "Sí. Más cráteres y bordes más suaves significan una superficie más antigua.",
+    "wrong": "Mira de nuevo: cuenta los cráteres y fíjate en lo afilados que son sus bordes. La zona más antigua es la {{letter}}.",
+    "next": "Siguiente zona",
+    "note": "Elige una zona."
+  },
+  "m4_signal": {
+    "title": "Sigue la antigua señal",
+    "goal": "Conduce a través de las largas sombras del crepúsculo lunar hacia la tenue señal de 1969.",
+    "hint": "Observa las sombras alrededor de los cráteres mientras la flecha te guía más cerca.",
+    "success": "La señal proviene de un pequeño paquete semienterrado en el polvo.",
+    "targets": [
+      {
+        "name": "Señal tenue",
+        "found": "Un pequeño instrumento, en silencio desde 1969."
+      }
+    ]
+  },
+  "m4_seismic": {
+    "title": "Atrapa un lunamoto",
+    "goal": "Ayuda al PSEP a registrar {{captures}} eventos sísmicos cuando los cuatro canales vibren en toda la ventana A–B.",
+    "hint": "Espera hasta que todos los trazos oscilen juntos entre A y B, y luego pulsa Capturar o Espacio.",
+    "success": "¡Atrapaste dos lunamotos! Incluso tras tres semanas en 1969, el registro del PSEP siguió enseñando a la Tierra.",
+    "progress": "Sismos capturados",
+    "hit": "¡Lunamoto registrado en los cuatro canales!",
+    "miss": "Trazo plano dentro de la ventana: espera hasta que las cuatro líneas vibren juntas."
+  },
+  "m5_laser": {
+    "title": "Un hilo fino de luz",
+    "goal": "Apunta a la Base de la Tranquilidad en la Luna y haz rebotar {{shots}} pulsos láser en el espejo del Apollo 11.",
+    "hint": "Mira justo a la derecha del centro, cerca del ecuador lunar. Tras tres fallos, un marcador revelará el espejo.",
+    "success": "¡La luz regresó! Incluso los instrumentos silenciosos siguen respondiendo cuando les enviamos luz.",
+    "instruction": "Haz clic o toca la Luna para disparar el láser.",
+    "fire": "Pulso disparado",
+    "hit": "Eco recibido tras {{t}} s",
+    "miss": "Sin eco. El pulso no dio en el retrorreflector.",
+    "distance": "Distancia",
+    "shots": "Ecos",
+    "drift": "Desde 1969, la Luna se ha alejado unos {{m}} m más.",
+    "markerHint": "Pista: ¡Baliza del reflector revelada! Apunta al anillo pulsante en la Luna."
+  }
+}

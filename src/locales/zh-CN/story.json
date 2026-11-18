@@ -1,249 +1,639 @@
 {
-  "speakers": {"echo":"Echo","control":"档案控制中心","lrv":"Lunar Roving Vehicle","cuoi":"Cuội","rabbit":"Moon Rabbit"},
+  "speakers": {
+    "echo": "Echo",
+    "control": "档案控制中心",
+    "lrv": "阿波罗月球车",
+    "cuoi": "Cuội",
+    "rabbit": "玉兔"
+  },
   "ch0": {
     "title": "醒来吧，Echo",
     "tagline": "一辆小小的探测车听到了不该存在的声音。",
     "intro": [
-      {"who":"control","text":"早上好，Echo。你是档案库里最小的探测车，你有一项任务。"},
-      {"who":"echo","text":"哔！任务是吃零食吗？"},
-      {"who":"control","text":"不是。自 20 世纪 60 年代以来，人们把机器留在了太阳系各处。除了制造它们的工程师，大多数人都忘了它们。"},
-      {"who":"echo","text":"忘了？可我能听到它们。我的天线现在正收到一个微弱信号。"},
-      {"who":"control","text":"那就看看你的车轮能不能工作。开到三个测试信标那里。"}
+      {
+        "who": "control",
+        "text": "早上好，Echo。你是档案库里最小的探测车，你有一项任务。"
+      },
+      {
+        "who": "echo",
+        "text": "哔！任务是吃零食吗？"
+      },
+      {
+        "who": "control",
+        "text": "不是。自 20 世纪 60 年代以来，人们把机器留在了太阳系各处。除了制造它们的工程师，大多数人都忘了它们。"
+      },
+      {
+        "who": "echo",
+        "text": "忘了？可我能听到它们。我的天线现在正收到一个微弱信号。"
+      },
+      {
+        "who": "control",
+        "text": "那就看看你的车轮能不能工作。开到三个测试信标那里。"
+      }
     ],
     "outro": [
-      {"who":"echo","text":"车轮正常！天线正常！那个信号也更强了。"},
-      {"who":"control","text":"我们追踪到了。它指向 1964 年，来自一艘被设计成撞击月球的航天器。"},
-      {"who":"echo","text":"专门设计来撞毁？！谁会这么做？"},
-      {"who":"control","text":"那些需要近距离了解月球样子的人。我们去见见它吧。"}
+      {
+        "who": "echo",
+        "text": "车轮正常！天线正常！那个信号也更强了。"
+      },
+      {
+        "who": "control",
+        "text": "我们追踪到了。它指向 1964 年，来自一艘被设计成撞击月球的航天器。"
+      },
+      {
+        "who": "echo",
+        "text": "专门设计来撞毁？！谁会这么做？"
+      },
+      {
+        "who": "control",
+        "text": "那些需要近距离了解月球样子的人。我们去见见它吧。"
+      }
     ]
   },
   "ch1": {
     "title": "月球侦察兵",
     "tagline": "在人类着陆前，机器人必须先行。",
     "intro": [
-      {"who":"control","text":"20 世纪 60 年代初，没有人真正了解月球表面。有些人担心着陆器会陷入厚厚的尘土。"},
-      {"who":"echo","text":"所以他们派机器人去看？"},
-      {"who":"control","text":"他们派出了徘徊者 7 号。它有相机，却没有着陆装置，一直拍照到最后一秒。"}
+      {
+        "who": "control",
+        "text": "20 世纪 60 年代初，没有人真正了解月球表面。有些人担心着陆器会陷入厚厚的尘土。"
+      },
+      {
+        "who": "echo",
+        "text": "所以他们派机器人去看？"
+      },
+      {
+        "who": "control",
+        "text": "他们派出了徘徊者 7 号。它有相机，却没有着陆装置，一直拍照到最后一秒。"
+      }
     ],
     "middle": [
-      {"who":"echo","text":"那些照片帮助他们选择安全着陆点，对吧？"},
-      {"who":"control","text":"没错。接着是勘测者 3 号，它必须轻柔着陆。发动机没及时关闭，所以弹跳了两次！"},
-      {"who":"echo","text":"让我试试。我保证少弹几下。"}
+      {
+        "who": "echo",
+        "text": "那些照片帮助他们选择安全着陆点，对吧？"
+      },
+      {
+        "who": "control",
+        "text": "没错。接着是勘测者 3 号，它必须轻柔着陆。发动机没及时关闭，所以弹跳了两次！"
+      },
+      {
+        "who": "echo",
+        "text": "让我试试。我保证少弹几下。"
+      }
     ],
     "outro": [
-      {"who":"echo","text":"宇航员特地回来探望勘测者 3 号？这是我听过最温暖的事。"},
-      {"who":"control","text":"地面承受住了，月球可以安全着陆。这意味着接下来人类也能前往。"},
-      {"who":"echo","text":"人类！等等，我收到了新信号。它很微弱，几乎像反射回来的光。"}
+      {
+        "who": "echo",
+        "text": "宇航员特地回来探望勘测者 3 号？这是我听过最温暖的事。"
+      },
+      {
+        "who": "control",
+        "text": "地面承受住了，月球可以安全着陆。这意味着接下来人类也能前往。"
+      },
+      {
+        "who": "echo",
+        "text": "人类！等等，我收到了新信号。它很微弱，几乎像反射回来的光。"
+      }
     ]
   },
   "ch2": {
     "title": "留下来的伙伴",
     "tagline": "宇航员回家了，他们的设备没有。",
     "intro": [
-      {"who":"control","text":"1969 年 7 月，两个人在月球上行走了约两个半小时，然后回家。"},
-      {"who":"echo","text":"他们把这些东西全留下了？"},
-      {"who":"control","text":"所有重物都必须留下，小小的上升级才能起飞。但有一样东西是故意留下的，而且现在仍能工作。"},
-      {"who":"echo","text":"快给我看看！"}
+      {
+        "who": "control",
+        "text": "1969 年 7 月，两个人在月球上行走了约两个半小时，然后回家。"
+      },
+      {
+        "who": "echo",
+        "text": "他们把这些东西全留下了？"
+      },
+      {
+        "who": "control",
+        "text": "所有重物都必须留下，小小的上升级才能起飞。但有一样东西是故意留下的，而且现在仍能工作。"
+      },
+      {
+        "who": "echo",
+        "text": "快给我看看！"
+      }
     ],
     "middle": [
-      {"who":"echo","text":"没有电池也没有电脑，科学家却仍在使用。它是月球上最酷的遗留物。"},
-      {"who":"control","text":"两年后，阿波罗 15 号带来了一辆车。宇航员终于可以远离着陆器。"},
-      {"who":"echo","text":"我能开吗？"},
-      {"who":"control","text":"你可以沿着它的路线走。只有一条和当年一样的规则：绝不要远到无法步行返回。"}
+      {
+        "who": "echo",
+        "text": "没有电池也没有电脑，科学家却仍在使用。它是月球上最酷的遗留物。"
+      },
+      {
+        "who": "control",
+        "text": "两年后，阿波罗 15 号带来了一辆车。宇航员终于可以远离着陆器。"
+      },
+      {
+        "who": "echo",
+        "text": "我能开吗？"
+      },
+      {
+        "who": "control",
+        "text": "你可以沿着它的路线走。只有一条和当年一样的规则：绝不要远到无法步行返回。"
+      }
     ],
     "outro": [
-      {"who":"echo","text":"我一直想着那面镜子。所有人都走了，它却一直等待光线。"},
-      {"who":"control","text":"正因为它，我们才知道月球每年远离我们几厘米。"},
-      {"who":"echo","text":"还有另一个信号，远得多，微弱得几乎听不见。"}
+      {
+        "who": "echo",
+        "text": "我一直想着那面镜子。所有人都走了，它却一直等待光线。"
+      },
+      {
+        "who": "control",
+        "text": "正因为它，我们才知道月球每年远离我们几厘米。"
+      },
+      {
+        "who": "echo",
+        "text": "还有另一个信号，远得多，微弱得几乎听不见。"
+      }
     ]
   },
   "ch3": {
     "title": "遥远的外行之路",
     "tagline": "怎样抵达太阳系边缘？借一颗行星的力量。",
     "intro": [
-      {"who":"control","text":"先驱者 10 号于 1972 年发射，原定工作 21 个月。"},
-      {"who":"echo","text":"它实际坚持了多久？"},
-      {"who":"control","text":"30 多年。它是第一艘抵达木星的探测器。后来旅行者团队找到了把木星当作巨型弹弓的方法。"}
+      {
+        "who": "control",
+        "text": "先驱者 10 号于 1972 年发射，原定工作 21 个月。"
+      },
+      {
+        "who": "echo",
+        "text": "它实际坚持了多久？"
+      },
+      {
+        "who": "control",
+        "text": "30 多年。它是第一艘抵达木星的探测器。后来旅行者团队找到了把木星当作巨型弹弓的方法。"
+      }
     ],
     "outro": [
-      {"who":"echo","text":"所以木星把你甩出去，你甚至不用碰到它？"},
-      {"who":"control","text":"这就是引力。旅行者 2 号一次次这样做，至今仍是天王星和海王星唯一的访客。"},
-      {"who":"echo","text":"现在我在火星上收到一个信号。它非常安静，也非常古老。"}
+      {
+        "who": "echo",
+        "text": "所以木星把你甩出去，你甚至不用碰到它？"
+      },
+      {
+        "who": "control",
+        "text": "这就是引力。旅行者 2 号一次次这样做，至今仍是天王星和海王星唯一的访客。"
+      },
+      {
+        "who": "echo",
+        "text": "现在我在火星上收到一个信号。它非常安静，也非常古老。"
+      }
     ]
   },
   "ch4": {
     "title": "火星第一步",
     "tagline": "机器人在火星着陆，并提出最重大的问题。",
     "intro": [
-      {"who":"control","text":"在火星着陆比月球更难。空气很稀薄，但它确实存在，也确实挡路。"},
-      {"who":"echo","text":"所以空气是好还是坏？"},
-      {"who":"control","text":"都是。足够让降落伞起作用，却太稀薄而无法让你停下。海盗 1 号需要降落伞和火箭。轮到你了。"}
+      {
+        "who": "control",
+        "text": "在火星着陆比月球更难。空气很稀薄，但它确实存在，也确实挡路。"
+      },
+      {
+        "who": "echo",
+        "text": "所以空气是好还是坏？"
+      },
+      {
+        "who": "control",
+        "text": "都是。足够让降落伞起作用，却太稀薄而无法让你停下。海盗 1 号需要降落伞和火箭。轮到你了。"
+      }
     ],
     "outro": [
-      {"who":"echo","text":"所以到底有没有生命？"},
-      {"who":"control","text":"土壤发生了奇怪反应，但没有发现明确的生命证据。人们至今仍在争论。"},
-      {"who":"echo","text":"我喜欢没人知道答案。这说明还有更多东西可以发现。"},
-      {"who":"control","text":"海盗 1 号工作了六年多。然后在 1982 年的一天，它不再回应。"}
+      {
+        "who": "echo",
+        "text": "所以到底有没有生命？"
+      },
+      {
+        "who": "control",
+        "text": "土壤发生了奇怪反应，但没有发现明确的生命证据。人们至今仍在争论。"
+      },
+      {
+        "who": "echo",
+        "text": "我喜欢没人知道答案。这说明还有更多东西可以发现。"
+      },
+      {
+        "who": "control",
+        "text": "海盗 1 号工作了六年多。然后在 1982 年的一天，它不再回应。"
+      }
     ]
   },
   "ch5": {
     "title": "了不起的小小火星车",
     "tagline": "原本只能坚持几天，却工作了许多年。",
     "intro": [
-      {"who":"echo","text":"车轮！我听到火星上的车轮了！是家人！"},
-      {"who":"control","text":"那是你的老祖辈旅居者号。它只有微波炉大小，是第一辆火星车。"}
+      {
+        "who": "echo",
+        "text": "车轮！我听到火星上的车轮了！是家人！"
+      },
+      {
+        "who": "control",
+        "text": "那是你的老祖辈旅居者号。它只有微波炉大小，是第一辆火星车。"
+      }
     ],
     "middle": [
-      {"who":"control","text":"接着是机遇号，原计划工作 90 个火星日。只要阳光照得到，太阳能板就能供电。"},
-      {"who":"echo","text":"我看到一条车辙，还有到处都是的小圆石。它们是什么？"},
-      {"who":"control","text":"科学家称它们为蓝莓石。沿着车辙走，注意电量，也要留意天空。"}
+      {
+        "who": "control",
+        "text": "接着是机遇号，原计划工作 90 个火星日。只要阳光照得到，太阳能板就能供电。"
+      },
+      {
+        "who": "echo",
+        "text": "我看到一条车辙，还有到处都是的小圆石。它们是什么？"
+      },
+      {
+        "who": "control",
+        "text": "科学家称它们为蓝莓石。沿着车辙走，注意电量，也要留意天空。"
+      }
     ],
     "outro": [
-      {"who":"echo","text":"它本来只能坚持 90 天，却工作了近 15 年。"},
-      {"who":"control","text":"2018 年 6 月，沙尘暴覆盖整个星球，阳光逐渐消失。团队持续呼叫了八个月。"},
-      {"who":"echo","text":"它回应了吗？"},
-      {"who":"control","text":"没有。但每个曾与它共事的人都还记得。这就是你来这里的原因。"}
+      {
+        "who": "echo",
+        "text": "它本来只能坚持 90 天，却工作了近 15 年。"
+      },
+      {
+        "who": "control",
+        "text": "2018 年 6 月，沙尘暴覆盖整个星球，阳光逐渐消失。团队持续呼叫了八个月。"
+      },
+      {
+        "who": "echo",
+        "text": "它回应了吗？"
+      },
+      {
+        "who": "control",
+        "text": "没有。但每个曾与它共事的人都还记得。这就是你来这里的原因。"
+      }
     ]
   },
   "ch6": {
     "title": "仍在远方",
     "tagline": "并非每台机器都被遗弃，有些此刻还在忙碌。",
     "intro": [
-      {"who":"echo","text":"这些信号好响！它们在回应！"},
-      {"who":"control","text":"那是好奇号。它从 2012 年一直工作到现在，还在爬山。"},
-      {"who":"control","text":"不过往下看。毅力号带了一个非常小的朋友到火星，它原本并不需要做很多事。"}
+      {
+        "who": "echo",
+        "text": "这些信号好响！它们在回应！"
+      },
+      {
+        "who": "control",
+        "text": "那是好奇号。它从 2012 年一直工作到现在，还在爬山。"
+      },
+      {
+        "who": "control",
+        "text": "不过往下看。毅力号带了一个非常小的朋友到火星，它原本并不需要做很多事。"
+      }
     ],
     "outro": [
-      {"who":"echo","text":"计划飞五次，结果飞了七十二次。为什么大家总能做到这样？"},
-      {"who":"control","text":"优秀工程师造出的东西会超过承诺，而机器总能继续带来惊喜。"},
-      {"who":"echo","text":"还剩最后一个信号。它最遥远，要花好几个小时才能传到我这里。"}
+      {
+        "who": "echo",
+        "text": "计划飞五次，结果飞了七十二次。为什么大家总能做到这样？"
+      },
+      {
+        "who": "control",
+        "text": "优秀工程师造出的东西会超过承诺，而机器总能继续带来惊喜。"
+      },
+      {
+        "who": "echo",
+        "text": "还剩最后一个信号。它最遥远，要花好几个小时才能传到我这里。"
+      }
     ]
   },
   "ch7": {
     "title": "留给发现者的信息",
     "tagline": "我们制造的最遥远物体仍在通信。",
     "intro": [
-      {"who":"control","text":"这是旅行者 1 号。它于 1977 年发射，人类制造的任何物体都没有走得更远。"},
-      {"who":"echo","text":"这里太安静了。它侧面那个金色东西是什么？"},
-      {"who":"control","text":"一封信。收信人是很久以后、在我们离开后可能发现它的任何人。"}
+      {
+        "who": "control",
+        "text": "这是旅行者 1 号。它于 1977 年发射，人类制造的任何物体都没有走得更远。"
+      },
+      {
+        "who": "echo",
+        "text": "这里太安静了。它侧面那个金色东西是什么？"
+      },
+      {
+        "who": "control",
+        "text": "一封信。收信人是很久以后、在我们离开后可能发现它的任何人。"
+      }
     ],
     "outro": [
-      {"who":"echo","text":"我找到全部伙伴了：撞毁的、沉默的，还有仍在工作的。"},
-      {"who":"control","text":"那你说，它们被遗弃了吗？"},
-      {"who":"echo","text":"没有。每一个都改变了我们的知识。教会你这么多的东西，不可能被忘记。"},
-      {"who":"control","text":"那么档案库完成了，Echo。做得好。"},
-      {"who":"echo","text":"等等。人们还在发射新机器，对吧？也得有人记住它们。"}
+      {
+        "who": "echo",
+        "text": "我找到全部伙伴了：撞毁的、沉默的，还有仍在工作的。"
+      },
+      {
+        "who": "control",
+        "text": "那你说，它们被遗弃了吗？"
+      },
+      {
+        "who": "echo",
+        "text": "没有。每一个都改变了我们的知识。教会你这么多的东西，不可能被忘记。"
+      },
+      {
+        "who": "control",
+        "text": "那么档案库完成了，Echo。做得好。"
+      },
+      {
+        "who": "echo",
+        "text": "等等。人们还在发射新机器，对吧？也得有人记住它们。"
+      }
     ]
   },
   "m1": {
-    "title": "A Forgotten Explorer",
-    "tagline": "After the astronauts leave, a rover waits under an old banyan tree.",
+    "title": "被时光停泊的旅人",
+    "tagline": "宇航员归航之后，一辆老式月球车在古榕树下默默等了半个世纪。",
     "intro": [
-      {"who":"echo","text":"Every machine in the Archive has a story. This one is told by the Moon itself."},
-      {"who":"lrv","text":"I am the Lunar Roving Vehicle. Apollo 15. I have been parked for a very long time."},
-      {"who":"lrv","text":"In real life, astronauts drove me. In this story, the Moon lets me remember."},
-      {"who":"lrv","text":"The astronauts left. The dust stayed. I used to count the stars, but I always get the same number."},
-      {"who":"cuoi","text":"Then count something new. I am Cuội. I came up here with a banyan tree, long ago."},
-      {"who":"rabbit","text":"And I came with him. The tree is still here. So are we."},
-      {"who":"lrv","text":"Are you real?"},
-      {"who":"cuoi","text":"The Moon has room for more than one kind of real."},
-      {"who":"lrv","text":"I used to drive. Astronauts sat where you are sitting. I carried their tools and their rocks."},
-      {"who":"cuoi","text":"Then let us go and look at what you carried. My legs are tired. Your wheels are not."},
-      {"who":"echo","text":"Drive to the three markers under the banyan tree."}
+      {
+        "who": "echo",
+        "text": "档案馆里的每一台机器都有自己的记忆。而这一段故事，是月亮亲口讲出来的。"
+      },
+      {
+        "who": "lrv",
+        "text": "我是阿波罗 15 号的月球车。我已经在这里静静停泊了很久、很久。"
+      },
+      {
+        "who": "lrv",
+        "text": "当年真实的历史里，宇航员曾驾着我翻山越岭；而在这个故事里，温柔的月亮借给了我一段回忆。"
+      },
+      {
+        "who": "lrv",
+        "text": "后来人们回了家，只剩灰尘留了下来。我曾经靠数星星消磨时光，可天上的星星永远不会变数。"
+      },
+      {
+        "who": "cuoi",
+        "text": "那今天起就换点数些新鲜事吧。我叫 Cuội，很久以前就跟着一棵老榕树落在了月宫里。"
+      },
+      {
+        "who": "rabbit",
+        "text": "还有我陪着他呢！老树一直在，我们也一直在。"
+      },
+      {
+        "who": "lrv",
+        "text": "你们……都是真实存在的吗？"
+      },
+      {
+        "who": "cuoi",
+        "text": "清冷的月亮这么大，容得下不止一种真实。"
+      },
+      {
+        "who": "lrv",
+        "text": "从前我总是风尘仆仆地赶路。宇航员就坐在你现在的位置，我帮他们驮着铁锤和珍贵的石头。"
+      },
+      {
+        "who": "cuoi",
+        "text": "那正巧，领我们再去看看你当年走过的路吧！我这两条老腿走不动啦，你的四个轮子可还精神着呢。"
+      },
+      {
+        "who": "echo",
+        "text": "驶向老榕树荫下的三处信标。"
+      }
     ],
     "outro": [
-      {"who":"cuoi","text":"You stopped at the end of your mission. That does not mean you stopped being part of the story."},
-      {"who":"lrv","text":"It feels like the story ended without me."},
-      {"who":"cuoi","text":"Then we will find the parts that are still happening. Tomorrow, we collect samples."},
-      {"who":"rabbit","text":"I will carry the snacks."}
+      {
+        "who": "cuoi",
+        "text": "任务收官停下脚步，不代表你的名字就从故事里退场了。"
+      },
+      {
+        "who": "lrv",
+        "text": "可有时我真觉得，故事在我睡着之后就已经大结局了。"
+      },
+      {
+        "who": "cuoi",
+        "text": "那我们就一起把还在继续的那几页找出来！明天，咱们出发去捡几块会说话的月岩。"
+      },
+      {
+        "who": "rabbit",
+        "text": "太好了，零食包就归我背！"
+      }
     ]
   },
   "m2": {
-    "title": "The First Journey",
-    "tagline": "Cuội asks for rocks. Every rock has something to say.",
+    "title": "初踏寻石之旅",
+    "tagline": "Cuội 叔叔想要几块石头——原来每块月岩都在悄悄讲述历史。",
     "intro": [
-      {"who":"cuoi","text":"Lunar rocks are letters. Scientists on Earth have been reading them for more than fifty years."},
-      {"who":"lrv","text":"I carried them. I never got to read them."},
-      {"who":"cuoi","text":"Today you will. Four sample sites. Drive carefully."},
-      {"who":"lrv","text":"What if I bring back the wrong rock?"},
-      {"who":"cuoi","text":"Then we look again. A wrong guess is not the end of a journey."}
+      {
+        "who": "cuoi",
+        "text": "月岩其实是月亮寄往地球的信笺。地球上的科学家整整读了五十多年呢。"
+      },
+      {
+        "who": "lrv",
+        "text": "那些石头全是我背回去的……但我自己还一次都没仔细读过。"
+      },
+      {
+        "who": "cuoi",
+        "text": "那今天就由你亲自来读！前方共有四个采样点，路上慢慢开。"
+      },
+      {
+        "who": "lrv",
+        "text": "万一我挑错了石头怎么办？"
+      },
+      {
+        "who": "cuoi",
+        "text": "再仔细端详一遍就好。一次猜错，从来不是探索的终点。"
+      }
     ],
     "afterCollect": [
-      {"who":"rabbit","text":"Four sites, four rocks. Your basket is heavy now!"},
-      {"who":"lrv","text":"I drove slowly this time. Every sample is still in one piece."},
-      {"who":"cuoi","text":"Good. Now comes the part you never got to do: reading them."}
+      {
+        "who": "rabbit",
+        "text": "四处站点，四块月岩！你的小车筐现在可沉甸甸啦！"
+      },
+      {
+        "who": "lrv",
+        "text": "这次我开得很稳当，每一块样本都完好无损呢。"
+      },
+      {
+        "who": "cuoi",
+        "text": "真棒。现在，轮到当年没来得及做完的功课——读懂它们的身世吧。"
+      }
     ],
     "afterSamples": [
-      {"who":"lrv","text":"Some were dark and smooth. Some were full of broken pieces."},
-      {"who":"cuoi","text":"Different rocks keep different stories. You sorted them like a field geologist."},
-      {"who":"rabbit","text":"I only sorted the snacks. Yours was harder."}
+      {
+        "who": "lrv",
+        "text": "有的乌黑温润，有的却布满了摔碎又压合的裂痕。"
+      },
+      {
+        "who": "cuoi",
+        "text": "不同的石头封存着截然不同的岁月底稿。你分类得像极了一位老练的地质学家！"
+      },
+      {
+        "who": "rabbit",
+        "text": "我就只管分类萝卜干和点心，你挑石头的活儿可深奥多了。"
+      }
     ],
     "outro": [
-      {"who":"lrv","text":"Six samples. I remember the weight of them."},
-      {"who":"cuoi","text":"Each one is a page of the Moon's history. Some are older than the oldest rock on Earth."},
-      {"who":"lrv","text":"The astronauts could only walk so far. I took them farther."},
-      {"who":"cuoi","text":"And because they went farther, we know more. That is not nothing."}
+      {
+        "who": "lrv",
+        "text": "一共六块样本。我又想起当年车斗里沉甸甸的踏实感了。"
+      },
+      {
+        "who": "cuoi",
+        "text": "每一块都是月亮编年史的一页，有些甚至比地球上最古老的磐石还要年长。"
+      },
+      {
+        "who": "lrv",
+        "text": "当年的宇航员步行走不到太远，是我把他们载进了群山深处。"
+      },
+      {
+        "who": "cuoi",
+        "text": "正因为走了那么远，人类才多读懂了一大片星空。这可绝不是一件小事。"
+      }
     ]
   },
   "m3": {
-    "title": "What the Moon Tells Us",
-    "tagline": "Craters are a record of everything that ever arrived.",
+    "title": "月亮悄悄说的话",
+    "tagline": "每一座陨石坑，都是一枚落尽繁星后的时光印记。",
     "intro": [
-      {"who":"rabbit","text":"Look at the craters. They are not all the same age."},
-      {"who":"lrv","text":"Big ones, small ones. I drove around them for three days."},
-      {"who":"rabbit","text":"Which patch looks older? What would you look for?"},
-      {"who":"lrv","text":"More craters. Softer edges. A surface that has been hit again and again."},
-      {"who":"rabbit","text":"Good. Observation is science too. Point, look, and write it down."}
+      {
+        "who": "rabbit",
+        "text": "看那些深浅不一的陨石坑，它们的年纪可不一样大哟。"
+      },
+      {
+        "who": "lrv",
+        "text": "大坑套着小坑，我当年绕着它们转了足足三天。"
+      },
+      {
+        "who": "rabbit",
+        "text": "要怎么看出哪片月面资历更老呢？你会看什么线索？"
+      },
+      {
+        "who": "lrv",
+        "text": "撞击坑密密麻麻、边缘被风化磨损得圆钝温柔——这片地面一定挨过无数回宇宙敲打。"
+      },
+      {
+        "who": "rabbit",
+        "text": "答对！睁大眼睛好好观察也是科学呀——发现、凝视，然后一笔一画记下来。"
+      }
     ],
     "afterCraters": [
-      {"who":"rabbit","text":"You found the older ground!"},
-      {"who":"lrv","text":"More craters, softer edges. I looked a little longer this time."},
-      {"who":"cuoi","text":"Then the map of time is clearer. Let us see what you remember."}
+      {
+        "who": "rabbit",
+        "text": "你认出那片更年长的月土啦！"
+      },
+      {
+        "who": "lrv",
+        "text": "更多的坑洞、更柔和的轮廓。这一次，我试着多凝望了一会儿。"
+      },
+      {
+        "who": "cuoi",
+        "text": "于是时间绘制的地图也越发清晰了。来看看你还记得哪些细节吧。"
+      }
     ],
     "outro": [
-      {"who":"cuoi","text":"You noticed something today."},
-      {"who":"lrv","text":"It was only looking."},
-      {"who":"cuoi","text":"That is how every discovery starts. Someone looks longer than everybody else."}
+      {
+        "who": "cuoi",
+        "text": "今天你亲手捕捉到了别人很容易错过的细节。"
+      },
+      {
+        "who": "lrv",
+        "text": "其实，也不过就是多看了一眼而已。"
+      },
+      {
+        "who": "cuoi",
+        "text": "天底下每一项了不起的发现，最初都源自于此：总有一个人，愿意比旁人多停留凝视一会儿。"
+      }
     ]
   },
   "m4": {
-    "title": "The Last Leaf",
-    "tagline": "One more signal, from an instrument nobody came back for.",
+    "title": "最后一片榕树叶",
+    "tagline": "又一道遥远的心跳信号，来自一台再无人返航接回的仪器。",
     "intro": [
-      {"who":"cuoi","text":"Do you hear that? A signal, very faint. Older than your wheels."},
-      {"who":"lrv","text":"It is not a voice. It is a heartbeat of instruments."},
-      {"who":"cuoi","text":"Something else was left here in 1969. It listened to the Moon, and then it went quiet."},
-      {"who":"lrv","text":"Can we help it?"},
-      {"who":"cuoi","text":"Not by fixing it. Nobody can do that. But we can find out what it did."},
-      {"who":"rabbit","text":"Follow the signal. We will bring a leaf."}
+      {
+        "who": "cuoi",
+        "text": "你听见了吗？有一道微弱的回响，比你的车轮诞生得还要早些。"
+      },
+      {
+        "who": "lrv",
+        "text": "这不是说话声……是科学仪器在月夜里的心跳。"
+      },
+      {
+        "who": "cuoi",
+        "text": "1969 年还有一件小装置留在了这里。它曾静静倾听月亮的呼吸，后来便睡着了。"
+      },
+      {
+        "who": "lrv",
+        "text": "我们能把它修好唤醒吗？"
+      },
+      {
+        "who": "cuoi",
+        "text": "谁也修不好几十年前的机器了。但我们可以读懂它当年完成的伟业。"
+      },
+      {
+        "who": "rabbit",
+        "text": "顺着电波寻过去吧！我带了一片金黄的榕树叶送给它。"
+      }
     ],
     "afterSignal": [
-      {"who":"lrv","text":"There it is. A small package, half buried in the dust."},
-      {"who":"rabbit","text":"It is so quiet. Can I put the leaf here?"},
-      {"who":"cuoi","text":"Yes. Now let us open the archive and learn what it listened to."}
+      {
+        "who": "lrv",
+        "text": "就在那儿，一座半埋在月尘里的小巧仪器箱。"
+      },
+      {
+        "who": "rabbit",
+        "text": "这儿好安静啊……我可以把树叶轻轻放在它身旁吗？"
+      },
+      {
+        "who": "cuoi",
+        "text": "当然好。现在打开记忆档案，去听听它当年究竟捕获了多少月下秘密吧。"
+      }
     ],
     "outro": [
-      {"who":"lrv","text":"It stopped sending after only a few weeks. I thought a mission like that would be a failure."},
-      {"who":"cuoi","text":"Its data is still being studied. A short mission can leave a long lesson."},
-      {"who":"lrv","text":"So it is not forgotten."},
-      {"who":"cuoi","text":"No. It is remembered by people who were not even born when it listened."}
+      {
+        "who": "lrv",
+        "text": "仅仅几周后它就失去了讯号。我曾经以为，这么短暂的任务算得上是一次失败。"
+      },
+      {
+        "who": "cuoi",
+        "text": "可直到今天，全世界的科学家依然在研读它寄回的图纸。哪怕只有一瞬的星光，也能照亮很长很长的课本。"
+      },
+      {
+        "who": "lrv",
+        "text": "这么说，它也从未被人类遗忘。"
+      },
+      {
+        "who": "cuoi",
+        "text": "从来没有。就连在它倾听月亮时还未出生的孩子们，今天都记住了它的名字。"
+      }
     ]
   },
   "m5": {
-    "title": "Find U in the Youniverse",
-    "tagline": "A message takes more than fifty years to reach a child's window.",
+    "title": "在宇宙中遇见你",
+    "tagline": "一封承载半个世纪梦想的信号，今夜终于飘到了一个孩子的窗前。",
     "intro": [
-      {"who":"rabbit","text":"The banyan leaf is glowing."},
-      {"who":"lrv","text":"There is a message in it. Not for me."},
-      {"who":"cuoi","text":"A last burst of data, drifting for more than fifty years. Tonight it reaches a window on Earth."},
-      {"who":"lrv","text":"A child is drawing a rover. I think I know that feeling."},
-      {"who":"rabbit","text":"What would you tell them?"},
-      {"who":"lrv","text":"That it was worth it. Even the quiet part."}
+      {
+        "who": "rabbit",
+        "text": "快看！那片榕树叶亮起来了！"
+      },
+      {
+        "who": "lrv",
+        "text": "光芒里裹着一封信……可收件人并不是我。"
+      },
+      {
+        "who": "cuoi",
+        "text": "那是穿越了五十多年星尘的最后一束微光。今晚，它落进地球上一扇明亮的窗子。"
+      },
+      {
+        "who": "lrv",
+        "text": "窗口坐着一个正在认真画月球车的孩子。我好像……能感受到他心底的那份欢喜。"
+      },
+      {
+        "who": "rabbit",
+        "text": "如果能说一句话，你想告诉那个孩子什么？"
+      },
+      {
+        "who": "lrv",
+        "text": "想告诉他，等待与坚持从来都是值得的——哪怕是在没有人说话的漫长黑夜里。"
+      }
     ],
     "outro": [
-      {"who":"echo","text":"The Moon keeps what we leave behind. The story keeps what it taught us."},
-      {"who":"cuoi","text":"Do not worry about the end of a mission. Worry about the end of the remembering."},
-      {"who":"lrv","text":"Then I will remember. To the end of the wheels."}
+      {
+        "who": "echo",
+        "text": "月亮小心保管着人类留下的足迹，而故事珍藏着它教给我们的温柔道理。"
+      },
+      {
+        "who": "cuoi",
+        "text": "不必为一程任务的谢幕而遗憾；真正值得担心的，是停下仰望与铭记的脚步。"
+      },
+      {
+        "who": "lrv",
+        "text": "那就交给我来记着吧——直到车轮再也滚不动的那一天为止。"
+      }
     ]
   }
 }

@@ -141,135 +141,135 @@
   ],
   "m2": [
     {
-      "q": "What did the lunar rover let the astronauts do?",
+      "q": "Xe tự hành Mặt Trăng giúp các phi hành gia làm được điều gì?",
       "options": [
-        "Fly over the craters",
-        "Travel farther from the lander",
-        "Sleep through the lunar night"
+        "Bay qua các hố va chạm",
+        "Đi xa hơn khỏi tàu hạ cánh",
+        "Ngủ xuyên qua đêm Mặt Trăng"
       ],
-      "why": "The rover carried astronauts, tools, and samples across several kilometres in a single drive."
+      "why": "Xe tự hành chở các phi hành gia, dụng cụ và mẫu đá đi qua nhiều kilômét chỉ trong một chuyến."
     },
     {
-      "q": "Who drove the lunar rover?",
+      "q": "Ai là người lái xe tự hành Mặt Trăng?",
       "options": [
-        "A robot controlled from Earth",
-        "The astronauts",
-        "Cuội"
+        "Một rô-bốt được điều khiển từ Trái Đất",
+        "Các phi hành gia",
+        "Chú Cuội"
       ],
-      "why": "The real rover was not autonomous. Astronauts sat in it and drove it."
+      "why": "Xe tự hành ngoài đời thật không tự lái. Các phi hành gia ngồi lên xe và trực tiếp điều khiển nó."
     }
   ],
   "m3": [
     {
-      "q": "Why are craters useful to scientists?",
+      "q": "Vì sao các hố va chạm lại hữu ích đối với các nhà khoa học?",
       "options": [
-        "They are holes full of water",
-        "They show what hit the Moon and roughly when",
-        "They move across the surface"
+        "Đó là những hố chứa đầy nước",
+        "Chúng cho biết vật gì đã va vào Mặt Trăng và vào khoảng thời gian nào",
+        "Chúng tự di chuyển trên bề mặt"
       ],
-      "why": "A crater is evidence of an impact. Older surfaces carry more craters and softer edges."
+      "why": "Mỗi hố là bằng chứng của một vụ va chạm. Bề mặt cổ hơn thường mang nhiều hố hơn và mép hố tròn mềm hơn."
     },
     {
-      "q": "Why do scientists compare many Moon rocks?",
+      "q": "Vì sao các nhà khoa học so sánh nhiều tảng đá Mặt Trăng với nhau?",
       "options": [
-        "To find the prettiest one",
-        "To learn the Moon's history",
-        "To measure its colour"
+        "Để tìm ra viên đẹp nhất",
+        "Để tìm hiểu lịch sử của Mặt Trăng",
+        "Để đo màu sắc của nó"
       ],
-      "why": "Different rocks formed in different ways, so comparing them reveals how the Moon changed."
+      "why": "Những loại đá khác nhau hình thành theo những cách khác nhau, nên việc so sánh chúng giúp hé lộ Mặt Trăng đã thay đổi thế nào."
     }
   ],
   "m5": [
     {
-      "q": "What did the Apollo 11 seismometer listen for?",
+      "q": "Địa chấn kế của Apollo 11 lắng nghe điều gì?",
       "options": [
-        "Wind",
-        "Radio from Earth",
-        "Moonquakes and impacts"
+        "Gió",
+        "Sóng phát thanh từ Trái Đất",
+        "Các trận động Mặt Trăng và va chạm"
       ],
-      "why": "It measured ground motion from meteoroid impacts and movements inside the Moon."
+      "why": "Nó đo chuyển động của mặt đất do thiên thạch va chạm và các dịch chuyển bên trong Mặt Trăng."
     },
     {
-      "q": "The seismometer stopped sending in 1969. Why does its data still matter?",
+      "q": "Địa chấn kế ngừng gửi tín hiệu từ năm 1969. Vì sao dữ liệu của nó vẫn quan trọng?",
       "options": [
-        "It is still sending today",
-        "It was never used",
-        "Scientists still study the record it made"
+        "Nó vẫn đang gửi dữ liệu hôm nay",
+        "Nó chưa từng được sử dụng",
+        "Các nhà khoa học vẫn nghiên cứu bản ghi mà nó tạo ra"
       ],
-      "why": "The instrument is silent, but the record it made is still used to understand the Moon."
+      "why": "Thiết bị đã im lặng, nhưng bản ghi nó để lại vẫn được dùng để hiểu về Mặt Trăng."
     }
   ],
   "a2": [
     {
-      "q": "Astronauts need to carry tools and rocks far from the lander. What should they take?",
+      "q": "Các phi hành gia cần mang dụng cụ và đá mẫu đi xa khỏi tàu hạ cánh. Họ nên dùng gì?",
       "options": [
-        "The lunar rover",
-        "A parachute",
-        "A larger flag"
+        "Xe tự hành Mặt Trăng",
+        "Một chiếc dù",
+        "Một lá cờ lớn hơn"
       ],
-      "why": "The rover was built to carry two astronauts, their tools, and their samples."
+      "why": "Xe tự hành được chế tạo để chở hai phi hành gia, dụng cụ và các mẫu đá của họ."
     }
   ],
   "a3": [
     {
-      "q": "You find a rock made of broken pieces pressed together. Which type is it?",
+      "q": "Bạn tìm thấy một tảng đá tạo thành từ nhiều mảnh vỡ ép dính lại với nhau. Đó là loại đá nào?",
       "options": [
-        "Breccia",
-        "Basalt",
-        "Anorthosite"
+        "Đá dăm kết (Breccia)",
+        "Đá bazan (Basalt)",
+        "Đá anorthosit (Anorthosite)"
       ],
-      "why": "Breccia forms when fragments are welded together by heat and pressure from impacts."
+      "why": "Đá dăm kết hình thành khi các mảnh vỡ bị hàn gắn với nhau bởi nhiệt độ và áp suất từ các vụ va chạm."
     }
   ],
   "a4": [
     {
-      "q": "A machine stops working. Which part can still help science?",
+      "q": "Một cỗ máy ngừng hoạt động. Phần nào của nó vẫn có thể giúp ích cho khoa học?",
       "options": [
-        "Its paint",
-        "The data it already sent",
-        "Its parking spot"
+        "Lớp sơn của nó",
+        "Những dữ liệu mà nó đã gửi về",
+        "Chỗ đậu của nó"
       ],
-      "why": "The measurements can outlive the machine that made them."
+      "why": "Những phép đo có thể tồn tại và có ích lâu dài hơn chính cỗ máy đã tạo ra chúng."
     }
   ],
   "a5": [
     {
-      "q": "Which sentence best explains why a stopped instrument still matters?",
+      "q": "Câu nào giải thích đúng nhất vì sao một thiết bị đã ngừng chạy vẫn còn ý nghĩa?",
       "options": [
-        "It will turn itself back on",
-        "It is only useful as a sculpture",
-        "Its data is still studied and can teach us new things"
+        "Nó sẽ tự bật trở lại",
+        "Nó chỉ có ích như một bức tượng",
+        "Dữ liệu của nó vẫn được nghiên cứu và có thể dạy chúng ta những điều mới"
       ],
-      "why": "The value lives in the record and what people learn from it, not in continued operation."
+      "why": "Giá trị nằm ở bản ghi dữ liệu và những gì con người học được từ đó, chứ không chỉ ở việc máy còn chạy hay không."
     }
   ],
   "moon": [
     {
-      "q": "Before we start: why might scientists want a rock from the Moon?",
+      "q": "Trước khi bắt đầu: vì sao các nhà khoa học lại muốn có một viên đá từ Mặt Trăng?",
       "options": [
-        "To study the Moon's history",
-        "To build houses there",
-        "To sell it"
+        "Để nghiên cứu lịch sử của Mặt Trăng",
+        "Để xây nhà ở đó",
+        "Để đem bán"
       ],
-      "why": "Moon rocks carry a record of how the Moon formed and changed."
+      "why": "Đá Mặt Trăng lưu giữ hồ sơ về cách Mặt Trăng hình thành và biến đổi."
     },
     {
-      "q": "Who drove the Apollo lunar rover?",
+      "q": "Ai là người đã lái xe tự hành Mặt Trăng Apollo?",
       "options": [
-        "A robot",
-        "The astronauts",
-        "Nobody"
+        "Một rô-bốt",
+        "Các phi hành gia",
+        "Không có ai cả"
       ],
-      "why": "The astronauts drove it. This story imagines the rover remembering, but that part is fiction."
+      "why": "Các phi hành gia đã lái nó. Câu chuyện này tưởng tượng chiếc xe có thể nhớ lại, nhưng phần đó là hư cấu."
     },
     {
-      "q": "If a machine stops working, can its data still be useful?",
+      "q": "Nếu một cỗ máy ngừng hoạt động, dữ liệu của nó có còn hữu ích không?",
       "options": [
-        "No, never",
-        "Yes, if people keep studying it",
-        "Only if it is repaired"
+        "Không, không bao giờ",
+        "Có, nếu con người vẫn tiếp tục nghiên cứu nó",
+        "Chỉ khi nào nó được sửa chữa"
       ],
-      "why": "Data can keep teaching long after the machine goes quiet."
+      "why": "Dữ liệu vẫn có thể tiếp tục dạy chúng ta rất lâu sau khi cỗ máy đã lặng im."
     }
   ]
 }

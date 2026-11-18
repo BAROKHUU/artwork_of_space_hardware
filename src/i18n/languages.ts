@@ -7,6 +7,8 @@ export const LANGUAGES = [
   { code: 'en', label: 'English', dir: 'ltr' },
   { code: 'vi', label: 'Tiếng Việt', dir: 'ltr' },
   { code: 'zh-CN', label: '简体中文', dir: 'ltr' },
+  { code: 'es', label: 'Español', dir: 'ltr' },
+  { code: 'ja', label: '日本語', dir: 'ltr' },
 ] as const;
 
 export const DEFAULT_LANGUAGE = 'en';

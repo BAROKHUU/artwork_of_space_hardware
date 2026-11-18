@@ -112,123 +112,123 @@
     "now": "Vẫn hoạt động và đang đi qua Vành đai Kuiper. Bức ảnh này là Sao Diêm Vương do New Horizons chụp."
   },
   "apollo12_descent": {
-    "name": "Apollo 12 Descent Stage",
-    "where": "Ocean of Storms, Moon",
-    "young": "The lower half of Intrepid carried the astronauts to the Moon. They left it behind when they flew home.",
-    "older": "Apollo 12 landed near Surveyor 3. Its descent stage stayed on the Moon while the ascent stage lifted the crew back to orbit.",
-    "learned": "The crew visited a robotic spacecraft and returned pieces of it to Earth, showing how long hardware can endure on the lunar surface.",
-    "now": "Still at the Apollo 12 landing site. The ascent stage, identified by the C designation, was deliberately sent into the Moon."
+    "name": "Tầng hạ cánh Apollo 12",
+    "where": "Đại dương Bão tố, Mặt Trăng",
+    "young": "Nửa dưới của tàu Intrepid đã chở các phi hành gia xuống Mặt Trăng. Họ để nó lại khi bay về nhà.",
+    "older": "Apollo 12 hạ cánh gần tàu Surveyor 3. Tầng hạ cánh của nó ở lại trên Mặt Trăng trong khi tầng cất cánh đưa phi hành đoàn trở lại quỹ đạo.",
+    "learned": "Phi hành đoàn đã đến thăm một tàu vũ trụ rô-bốt và mang vài bộ phận của nó về Trái Đất, cho thấy thiết bị có thể bền bỉ thế nào trên bề mặt Mặt Trăng.",
+    "now": "Vẫn ở lại tại bãi đáp Apollo 12. Tầng cất cánh, mang mã định danh C, đã được chủ động cho lao xuống Mặt Trăng."
   },
   "apollo15_descent": {
-    "name": "Apollo 15 Descent Stage",
-    "where": "Hadley-Apennine, Moon",
-    "young": "Falcon's lower stage stayed on the Moon after the astronauts launched home.",
-    "older": "Apollo 15's descent stage remained at Hadley-Apennine. NASA's mission record labels the ascent stage 1971-063C and the descent stage 1971-063E.",
-    "learned": "The landing site let astronauts explore mountains and a winding channel with the first lunar rover.",
-    "now": "Still on the Moon beside the tracks of Apollo 15's rover."
+    "name": "Tầng hạ cánh Apollo 15",
+    "where": "Hadley-Apennine, Mặt Trăng",
+    "young": "Tầng dưới của tàu Falcon ở lại trên Mặt Trăng sau khi các phi hành gia phóng lên trở về nhà.",
+    "older": "Tầng hạ cánh của Apollo 15 nằm lại tại Hadley-Apennine. Hồ sơ sứ mệnh của NASA ghi nhận tầng cất cánh là 1971-063C và tầng hạ cánh là 1971-063E.",
+    "learned": "Bãi đáp này giúp các phi hành gia khám phá những ngọn núi và một rãnh sâu uốn lượn bằng chiếc xe tự hành Mặt Trăng đầu tiên.",
+    "now": "Vẫn nằm trên Mặt Trăng bên cạnh dấu bánh xe của xe tự hành Apollo 15."
   },
   "lrv16": {
-    "name": "Apollo 16 Lunar Rover",
-    "where": "Descartes Highlands, Moon",
-    "young": "This moon buggy carried astronauts John Young and Charlie Duke across the lunar hills.",
-    "older": "Apollo 16's Lunar Roving Vehicle let the crew travel farther from the Orion lander to study the Descartes Highlands.",
-    "learned": "A lightweight electric rover let astronauts collect many more rock samples than they could reach on foot.",
-    "now": "Parked on the Moon near the Apollo 16 landing site."
+    "name": "Xe tự hành Mặt Trăng Apollo 16",
+    "where": "Cao nguyên Descartes, Mặt Trăng",
+    "young": "Chiếc xe Mặt Trăng này đã chở hai phi hành gia John Young và Charlie Duke băng qua các ngọn đồi trên Mặt Trăng.",
+    "older": "Xe tự hành Mặt Trăng của Apollo 16 giúp phi hành đoàn đi xa khỏi tàu hạ cánh Orion hơn để nghiên cứu vùng Cao nguyên Descartes.",
+    "learned": "Một chiếc xe điện nhẹ giúp các phi hành gia thu thập được nhiều mẫu đá hơn hẳn so với khi đi bộ.",
+    "now": "Đang đậu trên Mặt Trăng gần bãi đáp Apollo 16."
   },
   "lrv17": {
-    "name": "Apollo 17 Lunar Rover",
-    "where": "Taurus-Littrow, Moon",
-    "young": "The last Apollo moon buggy carried astronauts across a valley of mountains and orange soil.",
-    "older": "Apollo 17's Lunar Roving Vehicle travelled 30.5 kilometers during the final crewed lunar landing mission.",
-    "learned": "The rover helped the crew collect samples from widely separated geological sites.",
-    "now": "Left at Taurus-Littrow when the crew departed the Moon."
+    "name": "Xe tự hành Mặt Trăng Apollo 17",
+    "where": "Taurus-Littrow, Mặt Trăng",
+    "young": "Chiếc xe Mặt Trăng cuối cùng của Apollo đã chở các phi hành gia đi qua một thung lũng núi non và lớp đất màu cam.",
+    "older": "Xe tự hành Mặt Trăng của Apollo 17 đã đi được 30,5 kilômét trong sứ mệnh có người lái cuối cùng hạ cánh lên Mặt Trăng.",
+    "learned": "Chiếc xe giúp phi hành đoàn thu thập mẫu vật từ nhiều địa điểm địa chất nằm cách xa nhau.",
+    "now": "Được để lại tại Taurus-Littrow khi phi hành đoàn rời Mặt Trăng."
   },
   "alsep12": {
-    "name": "Apollo 12 ALSEP",
-    "where": "Ocean of Storms, Moon",
-    "young": "A team of instruments stayed behind to listen for moonquakes and measure the Moon after the astronauts left.",
-    "older": "Apollo 12's Apollo Lunar Surface Experiments Package included instruments such as a seismometer and solar-wind detector. It sent data until NASA switched off the network in 1977.",
-    "learned": "Experiments left on the surface kept doing science long after the crew returned home.",
-    "now": "The instruments are still at the Apollo 12 site, silent and exposed to lunar dust and temperature swings."
+    "name": "Trạm thí nghiệm ALSEP Apollo 12",
+    "where": "Đại dương Bão tố, Mặt Trăng",
+    "young": "Một nhóm thiết bị ở lại để lắng nghe các trận động Mặt Trăng và đo đạc Mặt Trăng sau khi phi hành gia rời đi.",
+    "older": "Gói Thí nghiệm Bề mặt Mặt Trăng Apollo (ALSEP) của Apollo 12 gồm các thiết bị như địa chấn kế và máy dò gió Mặt Trời. Nó gửi dữ liệu về cho đến khi NASA tắt mạng lưới vào năm 1977.",
+    "learned": "Các thí nghiệm để lại trên bề mặt vẫn tiếp tục làm khoa học rất lâu sau khi phi hành đoàn về nhà.",
+    "now": "Các thiết bị vẫn nằm tại bãi đáp Apollo 12, im lặng dưới lớp bụi Mặt Trăng và sự chênh lệch nhiệt độ khắc nghiệt."
   },
   "pathfinder": {
-    "name": "Mars Pathfinder Lander",
-    "where": "Ares Vallis, Mars",
-    "young": "Pathfinder used airbags to bounce safely onto Mars and delivered Sojourner, the first rover there.",
-    "older": "The 1997 Pathfinder mission demonstrated an airbag landing system and operated from Ares Vallis for nearly three months.",
-    "learned": "A lower-cost lander could deliver a working rover to Mars and return useful surface science.",
-    "now": "Silent at Ares Vallis since September 27, 1997. Sojourner rests nearby."
+    "name": "Tàu đổ bộ Mars Pathfinder",
+    "where": "Ares Vallis, Sao Hỏa",
+    "young": "Pathfinder dùng túi khí để nảy xuống Sao Hỏa an toàn và thả xuống Sojourner, chiếc xe tự hành đầu tiên tại đó.",
+    "older": "Sứ mệnh Pathfinder năm 1997 đã chứng minh hệ thống hạ cánh bằng túi khí và hoạt động tại Ares Vallis suốt gần ba tháng.",
+    "learned": "Một tàu đổ bộ chi phí thấp hơn vẫn có thể đưa xe tự hành hoạt động lên Sao Hỏa và gửi về dữ liệu bề mặt hữu ích.",
+    "now": "Im lặng tại Ares Vallis từ ngày 27 tháng 9 năm 1997. Sojourner nằm nghỉ ngay gần đó."
   },
   "spirit": {
     "name": "Spirit",
-    "where": "Gusev Crater, Mars",
-    "young": "Spirit was Opportunity's twin. It kept exploring Mars for years after its planned 90 days.",
-    "older": "Spirit landed in Gusev Crater in January 2004 and continued operating until communication ended in March 2010.",
-    "learned": "Spirit found evidence that water had changed rocks at several points in Mars's past.",
-    "now": "Parked in the Columbia Hills, where it became stuck in soft soil."
+    "where": "Hố Gusev, Sao Hỏa",
+    "young": "Spirit là anh em song sinh của Opportunity. Nó tiếp tục khám phá Sao Hỏa nhiều năm sau thời hạn 90 ngày dự kiến.",
+    "older": "Spirit hạ cánh xuống hố Gusev vào tháng 1 năm 2004 và tiếp tục hoạt động cho đến khi mất liên lạc vào tháng 3 năm 2010.",
+    "learned": "Spirit tìm thấy bằng chứng cho thấy nước từng làm biến đổi đá ở nhiều nơi trong quá khứ của Sao Hỏa.",
+    "now": "Đang đậu trong dãy đồi Columbia, nơi nó bị mắc kẹt trong lớp đất mềm."
   },
   "viking2": {
-    "name": "Viking 2 Lander",
-    "where": "Utopia Planitia, Mars",
-    "young": "Viking 2 landed near Mars's north polar region and sent pictures and weather readings back to Earth.",
-    "older": "Viking 2 touched down on September 3, 1976. Its lander operated until April 1980, while its orbiter had already stopped in 1978.",
-    "learned": "Two landers and two orbiters gave scientists the first long-running view of Mars from the ground and from above.",
-    "now": "Silent at Utopia Planitia since 1980."
+    "name": "Tàu đổ bộ Viking 2",
+    "where": "Utopia Planitia, Sao Hỏa",
+    "young": "Viking 2 hạ cánh gần vùng cực bắc Sao Hỏa và gửi ảnh cùng số đo thời tiết về Trái Đất.",
+    "older": "Viking 2 chạm đất ngày 3 tháng 9 năm 1976. Tàu đổ bộ của nó hoạt động đến tháng 4 năm 1980, còn tàu quỹ đạo đã ngừng từ năm 1978.",
+    "learned": "Hai tàu đổ bộ và hai tàu quỹ đạo đã mang lại cho các nhà khoa học cái nhìn dài hạn đầu tiên về Sao Hỏa cả từ mặt đất lẫn từ trên cao.",
+    "now": "Im lặng tại Utopia Planitia từ năm 1980."
   },
   "phoenix": {
-    "name": "Phoenix Lander",
-    "where": "Green Valley, Mars",
-    "young": "Phoenix dug into the Martian soil near the north pole and found water ice just beneath the surface.",
-    "older": "Phoenix landed in May 2008 and used a robotic arm to scoop icy soil into its onboard instruments. Contact ended as winter darkness arrived.",
-    "learned": "Water ice lies close to the surface in Mars's far north, where future explorers may need to learn how to use local resources.",
-    "now": "Silent at its northern landing site after its solar power faded in the Martian winter."
+    "name": "Tàu đổ bộ Phoenix",
+    "where": "Green Valley, Sao Hỏa",
+    "young": "Phoenix đào vào đất Sao Hỏa gần cực bắc và tìm thấy băng nước ngay bên dưới bề mặt.",
+    "older": "Phoenix hạ cánh vào tháng 5 năm 2008 và dùng cánh tay rô-bốt xúc đất lẫn băng đưa vào thiết bị phân tích trên tàu. Liên lạc chấm dứt khi bóng tối mùa đông ập đến.",
+    "learned": "Băng nước nằm rất gần bề mặt ở vùng cực bắc Sao Hỏa, nơi các nhà thám hiểm tương lai có thể cần học cách tận dụng tài nguyên tại chỗ.",
+    "now": "Im lặng tại bãi đáp phương bắc sau khi nguồn điện mặt trời cạn dần trong mùa đông Sao Hỏa."
   },
   "insight": {
-    "name": "InSight Lander",
-    "where": "Elysium Planitia, Mars",
-    "young": "InSight listened for marsquakes and measured heat coming from inside the planet.",
-    "older": "InSight placed a seismometer on the surface and recorded more than 1,300 marsquakes before dust covered its solar panels.",
-    "learned": "Quakes and heat flow revealed details about Mars's crust, mantle, and core.",
-    "now": "The mission ended in December 2022 after the lander could no longer generate enough power to communicate."
+    "name": "Tàu đổ bộ InSight",
+    "where": "Elysium Planitia, Sao Hỏa",
+    "young": "InSight lắng nghe các trận động Sao Hỏa và đo lượng nhiệt tỏa ra từ bên trong hành tinh.",
+    "older": "InSight đặt một địa chấn kế lên bề mặt và ghi lại hơn 1.300 trận động Sao Hỏa trước khi bụi phủ kín các tấm pin mặt trời.",
+    "learned": "Các trận rung chấn và dòng nhiệt đã hé lộ nhiều chi tiết về lớp vỏ, lớp phủ và lõi của Sao Hỏa.",
+    "now": "Sứ mệnh kết thúc vào tháng 12 năm 2022 sau khi tàu đổ bộ không còn tạo đủ điện để liên lạc."
   },
   "dawn": {
     "name": "Dawn",
-    "where": "Orbiting Ceres, asteroid belt",
-    "young": "Dawn visited two worlds in the asteroid belt: Vesta and the dwarf planet Ceres.",
-    "older": "Dawn used ion propulsion to orbit Vesta and then Ceres. It ran out of hydrazine in October 2018 and could no longer point its antenna toward Earth.",
-    "learned": "One spacecraft could orbit two distant worlds and compare their very different histories.",
-    "now": "An inert spacecraft in a planned, long-lived orbit around Ceres."
+    "where": "Quay quanh Ceres, vành đai tiểu hành tinh",
+    "young": "Dawn đã ghé thăm hai thế giới trong vành đai tiểu hành tinh: Vesta và hành tinh lùn Ceres.",
+    "older": "Dawn dùng động cơ đẩy ion để vào quỹ đạo quanh Vesta rồi sau đó đến Ceres. Nó hết nhiên liệu hydrazin vào tháng 10 năm 2018 và không thể hướng ăng-ten về Trái Đất được nữa.",
+    "learned": "Một tàu vũ trụ duy nhất có thể bay vào quỹ đạo quanh hai thiên thể xa xôi và so sánh lịch sử rất khác nhau của chúng.",
+    "now": "Một tàu vũ trụ đã ngừng hoạt động, nằm trên quỹ đạo ổn định lâu dài đã được tính toán trước quanh Ceres."
   },
   "near_shoemaker": {
     "name": "NEAR Shoemaker",
-    "where": "Eros, near-Earth asteroid",
-    "young": "NEAR became the first spacecraft to orbit an asteroid. Then it gently landed there, even though it was not built to land.",
-    "older": "After mapping asteroid Eros from orbit, NEAR Shoemaker touched down on February 12, 2001, and continued sending data for about two weeks.",
-    "learned": "A careful descent gave scientists close-up images and measurements from an asteroid's surface.",
-    "now": "Resting on Eros, silent since February 28, 2001."
+    "where": "Eros, tiểu hành tinh gần Trái Đất",
+    "young": "NEAR trở thành tàu vũ trụ đầu tiên quay quanh một tiểu hành tinh. Sau đó nó còn nhẹ nhàng đáp xuống đó, dù vốn không được chế tạo để hạ cánh.",
+    "older": "Sau khi lập bản đồ tiểu hành tinh Eros từ quỹ đạo, NEAR Shoemaker chạm bề mặt ngày 12 tháng 2 năm 2001 và tiếp tục gửi dữ liệu thêm khoảng hai tuần.",
+    "learned": "Một cú hạ cánh cẩn thận đã mang lại cho các nhà khoa học những hình ảnh và phép đo cận cảnh ngay trên bề mặt một tiểu hành tinh.",
+    "now": "Nằm yên trên Eros, im lặng từ ngày 28 tháng 2 năm 2001."
   },
   "pioneer11": {
     "name": "Pioneer 11",
-    "where": "Heading toward Aquila",
-    "young": "Pioneer 11 flew past Jupiter, then used its gravity to reach Saturn. It was the first spacecraft to visit Saturn.",
-    "older": "Launched in 1973, Pioneer 11 used a Jupiter gravity assist to reach Saturn in 1979. NASA received its last transmission in 1995.",
-    "learned": "A planet's gravity can redirect a spacecraft without the craft firing its engine during the flyby.",
-    "now": "Coasting out of the solar system on a trajectory toward the constellation Aquila."
+    "where": "Đang hướng về chòm sao Thiên Ưng",
+    "young": "Pioneer 11 bay ngang qua Sao Mộc, rồi dùng lực hấp dẫn của nó để tới Sao Thổ. Đây là tàu vũ trụ đầu tiên đến thăm Sao Thổ.",
+    "older": "Phóng năm 1973, Pioneer 11 dùng trợ lực hấp dẫn của Sao Mộc để tới Sao Thổ vào năm 1979. NASA nhận được tín hiệu cuối cùng của nó vào năm 1995.",
+    "learned": "Trọng lực của một hành tinh có thể bẻ hướng tàu vũ trụ mà không cần tàu phải đốt động cơ trong lúc bay qua.",
+    "now": "Đang trôi ra khỏi Hệ Mặt Trời theo quỹ đạo hướng về chòm sao Thiên Ưng (Aquila)."
   },
   "kepler": {
-    "name": "Kepler Space Telescope",
-    "where": "Earth-trailing orbit around the Sun",
-    "young": "Kepler watched thousands of stars for tiny dips in their light that could reveal planets passing in front.",
-    "older": "After its main mission and the K2 extension, Kepler ran out of fuel and was retired on October 30, 2018.",
-    "learned": "Repeated, tiny changes in starlight revealed that planets are common throughout our galaxy.",
-    "now": "Drifting in its safe orbit around the Sun, far behind Earth."
+    "name": "Kính thiên văn Không gian Kepler",
+    "where": "Quỹ đạo quanh Mặt Trời đi theo sau Trái Đất",
+    "young": "Kepler dõi theo hàng nghìn ngôi sao để tìm những độ sụt ánh sáng nhỏ xíu có thể hé lộ các hành tinh đi ngang qua phía trước.",
+    "older": "Sau sứ mệnh chính và giai đoạn mở rộng K2, Kepler cạn nhiên liệu và nghỉ hưu vào ngày 30 tháng 10 năm 2018.",
+    "learned": "Những thay đổi nhỏ lặp đi lặp lại trong ánh sao đã chứng minh rằng các hành tinh rất phổ biến khắp thiên hà của chúng ta.",
+    "now": "Đang trôi trên quỹ đạo an toàn quanh Mặt Trời, phía sau Trái Đất rất xa."
   },
   "apollo11_descent": {
-    "name": "Apollo 11 Descent Stage",
-    "where": "Sea of Tranquility, Moon",
-    "young": "This is the bottom half of the Eagle lander. When the astronauts left, it stayed behind and acted as their launch pad.",
-    "older": "The Lunar Module came in two parts. The descent stage landed the crew on 20 July 1969, then served as the launch platform for the ascent stage that carried them home.",
-    "learned": "It proved people could land on another world and leave again.",
-    "now": "Still on the Moon with a plaque on its leg that reads: 'We came in peace for all mankind.'"
+    "name": "Tầng hạ cánh Apollo 11",
+    "where": "Biển Tĩnh lặng, Mặt Trăng",
+    "young": "Đây là phần nửa dưới của tàu hạ cánh Eagle. Khi các phi hành gia rời đi, nó ở lại và làm bệ phóng cho họ.",
+    "older": "Mô-đun Mặt Trăng gồm hai phần. Tầng hạ cánh đưa phi hành đoàn đáp xuống ngày 20 tháng 7 năm 1969, rồi làm bệ phóng để tầng cất cánh đưa họ trở về nhà.",
+    "learned": "Nó chứng minh con người có thể hạ cánh lên một thế giới khác rồi rời đi an toàn.",
+    "now": "Vẫn nằm trên Mặt Trăng với tấm bảng gắn trên chân tàu ghi dòng chữ: 'Chúng tôi đến trong hòa bình vì toàn thể nhân loại.'"
   }
 }

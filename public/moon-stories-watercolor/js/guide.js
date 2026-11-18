@@ -15,10 +15,11 @@
  };
  function answerFor(question){
   const q=question.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-  const rules=[['feelings',/forgot|lonely|alone|sad|feel|buon/],['rover',/rover|robot|instrument|apollo/],['rabbit',/rabbit|bunny|tho/],['tree',/tree|banyan|root/],['cuoi',/cuoi|folklore/],['sound',/sound|tick|audio|hear/],['motion',/motion|animat|pause|movement/],['chapters',/chapter|scene|next part/],['story',/start|begin|story|read|help/]];
+  const rules=[...(globalThis.CuoiGuide?.extraRules||[]),['feelings',/forgot|lonely|alone|sad|feel|buon/],['rover',/rover|robot|instrument|apollo/],['rabbit',/rabbit|bunny|tho/],['tree',/tree|banyan|root/],['cuoi',/cuoi|folklore/],['sound',/sound|tick|audio|hear/],['motion',/motion|animat|pause|movement/],['chapters',/chapter|scene|next part/],['story',/start|begin|story|read|help/]];
   return answers[rules.find(([,pattern])=>pattern.test(q))?.[0]||'fallback'];
  }
- globalThis.CuoiGuide={answerFor,answers};
+ globalThis.CuoiGuide={answerFor,answers,extraRules:null};
+ if(globalThis.MoonStoryI18n)globalThis.MoonStoryI18n.applyLocale(globalThis.MoonStoryI18n.getLang());
  if(typeof document==='undefined')return;
  const dialog=document.getElementById('cuoi-guide');
  const launch=document.querySelector('.guide-launch');

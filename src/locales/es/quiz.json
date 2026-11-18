@@ -1,0 +1,275 @@
+{
+  "ch1": [
+    {
+      "q": "¿Por qué Ranger 7 siguió tomando fotos mientras se estrellaba?",
+      "options": [
+        "Sus frenos habían fallado",
+        "Cada foto estaba más cerca y mostraba más detalles",
+        "Estaba buscando astronautas"
+      ],
+      "why": "Ranger no tenía forma de aterrizar. Cuanto más se acercaba, más nítidas eran sus imágenes de la superficie."
+    },
+    {
+      "q": "¿Qué ayudó a demostrar la pala de Surveyor 3?",
+      "options": [
+        "Que la Luna tiene océanos",
+        "Que la Luna está hueca",
+        "Que el suelo podía sostener una nave de aterrizaje"
+      ],
+      "why": "Analizar el suelo demostró que la superficie era lo bastante firme para el programa Apollo."
+    }
+  ],
+  "ch2": [
+    {
+      "q": "¿Por qué el reflector láser del Apollo 11 sigue funcionando hoy?",
+      "options": [
+        "Los astronautas lo recargan",
+        "Tiene una batería nuclear",
+        "No necesita nada de energía"
+      ],
+      "why": "Solo refleja la luz directamente hacia atrás, así que no hay nada que pueda agotarse."
+    },
+    {
+      "q": "¿Hacia dónde se mueve lentamente la Luna?",
+      "options": [
+        "Alejándose de la Tierra",
+        "Acercándose a la Tierra",
+        "Nunca se mueve"
+      ],
+      "why": "La medición con láser muestra que la Luna se aleja unos 3.8 centímetros cada año."
+    }
+  ],
+  "ch3": [
+    {
+      "q": "¿Qué hace una asistencia gravitatoria?",
+      "options": [
+        "Usa el movimiento de un planeta para cambiar la velocidad de una nave",
+        "Rellena el tanque de combustible",
+        "Frena un planeta para poder estudiarlo"
+      ],
+      "why": "Una nave puede tomar prestada una pequeñísima parte del movimiento orbital de un planeta y salir con mayor velocidad."
+    },
+    {
+      "q": "¿Qué planetas ha visitado únicamente Voyager 2?",
+      "options": [
+        "Marte y Venus",
+        "Urano y Neptuno",
+        "Júpiter y Saturno"
+      ],
+      "why": "Ninguna otra nave espacial ha pasado cerca de Urano o Neptuno."
+    }
+  ],
+  "ch4": [
+    {
+      "q": "¿Qué necesitó Viking 1 para aterrizar en Marte?",
+      "options": [
+        "Solo un paracaídas",
+        "Un paracaídas y motores cohete",
+        "Solo alas"
+      ],
+      "why": "El aire tenue te frena, pero no lo suficiente. Los cohetes hicieron el resto."
+    },
+    {
+      "q": "¿Qué concluyeron las pruebas biológicas de Viking?",
+      "options": [
+        "Química extraña, pero sin pruebas claras de vida",
+        "Que Marte está lleno de microbios",
+        "Que los experimentos nunca se ejecutaron"
+      ],
+      "why": "El suelo reaccionó de maneras sorprendentes, pero no se encontró ninguna señal clara de seres vivos."
+    }
+  ],
+  "ch5": [
+    {
+      "q": "¿Cuánto tiempo estaba previsto que durara la misión de Opportunity?",
+      "options": [
+        "15 años",
+        "Un año marciano",
+        "Unos 90 días marcianos"
+      ],
+      "why": "Estaba planeada para unos 90 soles y funcionó durante más de 14 años."
+    },
+    {
+      "q": "¿Qué puso fin a la misión de Opportunity?",
+      "options": [
+        "Una rueda rota",
+        "Una tormenta de polvo global bloqueó el sol",
+        "Se le acabó el camino"
+      ],
+      "why": "Los paneles solares necesitan luz del sol. La tormenta de 2018 la bloqueó."
+    }
+  ],
+  "ch6": [
+    {
+      "q": "¿Cuántos vuelos estaba previsto que hiciera Ingenuity?",
+      "options": [
+        "Hasta 5",
+        "72",
+        "1,000"
+      ],
+      "why": "El plan era hasta cinco vuelos. Voló 72 veces."
+    },
+    {
+      "q": "¿Qué récord batió Perseverance en octubre de 2026?",
+      "options": [
+        "El vuelo más alto en Marte",
+        "El primer rover en Marte",
+        "La mayor distancia recorrida en otro mundo"
+      ],
+      "why": "Superó el récord de Opportunity el 11 de octubre de 2026."
+    }
+  ],
+  "ch7": [
+    {
+      "q": "¿Qué hace especial a Voyager 1?",
+      "options": [
+        "Es el rover más rápido de la historia",
+        "Es el objeto fabricado por humanos más lejano",
+        "Aterrizó en Plutón"
+      ],
+      "why": "Nada de lo que hemos construido ha llegado jamás más lejos."
+    },
+    {
+      "q": "¿Por qué se fabricó el Disco de Oro?",
+      "options": [
+        "Para contar a quien lo encuentre cómo es la vida en la Tierra",
+        "Para poner música a los astronautas",
+        "Para ayudar a dirigir la nave"
+      ],
+      "why": "Es un mensaje desde la Tierra, con sonidos, música, saludos e imágenes."
+    }
+  ],
+  "m2": [
+    {
+      "q": "¿Qué permitió hacer el rover lunar a los astronautas?",
+      "options": [
+        "Volar sobre los cráteres",
+        "Viajar más lejos del módulo de aterrizaje",
+        "Dormir durante la noche lunar"
+      ],
+      "why": "El rover transportaba a los astronautas, sus herramientas y sus muestras a lo largo de varios kilómetros en un solo recorrido."
+    },
+    {
+      "q": "¿Quién conducía el rover lunar?",
+      "options": [
+        "Un robot controlado desde la Tierra",
+        "Los astronautas",
+        "Cuội"
+      ],
+      "why": "El rover real no era autónomo. Los astronautas se sentaban en él y lo conducían."
+    }
+  ],
+  "m3": [
+    {
+      "q": "¿Por qué los cráteres son útiles para los científicos?",
+      "options": [
+        "Son hoyos llenos de agua",
+        "Muestran qué golpeó la Luna y aproximadamente cuándo",
+        "Se mueven por la superficie"
+      ],
+      "why": "Un cráter es prueba de un impacto. Las superficies más antiguas tienen más cráteres y bordes más suaves."
+    },
+    {
+      "q": "¿Por qué los científicos comparan muchas rocas lunares?",
+      "options": [
+        "Para encontrar la más bonita",
+        "Para conocer la historia de la Luna",
+        "Para medir su color"
+      ],
+      "why": "Distintas rocas se formaron de distintas maneras, así que compararlas revela cómo cambió la Luna."
+    }
+  ],
+  "m5": [
+    {
+      "q": "¿Qué escuchaba el sismómetro del Apollo 11?",
+      "options": [
+        "Viento",
+        "Radio desde la Tierra",
+        "Lunamotos e impactos"
+      ],
+      "why": "Medía el movimiento del suelo causado por impactos de meteoroides y movimientos en el interior de la Luna."
+    },
+    {
+      "q": "El sismómetro dejó de transmitir en 1969. ¿Por qué siguen importando sus datos?",
+      "options": [
+        "Sigue transmitiendo hoy en día",
+        "Nunca se utilizó",
+        "Los científicos siguen estudiando el registro que dejó"
+      ],
+      "why": "El instrumento está en silencio, pero el registro que creó todavía se usa para comprender la Luna."
+    }
+  ],
+  "a2": [
+    {
+      "q": "Los astronautas necesitan llevar herramientas y rocas lejos del módulo de aterrizaje. ¿Qué deberían llevar?",
+      "options": [
+        "El rover lunar",
+        "Un paracaídas",
+        "Una bandera más grande"
+      ],
+      "why": "El rover fue construido para transportar a dos astronautas, sus herramientas y sus muestras."
+    }
+  ],
+  "a3": [
+    {
+      "q": "Encuentras una roca formada por fragmentos rotos prensados juntos. ¿Qué tipo es?",
+      "options": [
+        "Brecha",
+        "Basalto",
+        "Anortosita"
+      ],
+      "why": "La brecha se forma cuando los fragmentos quedan soldados entre sí por el calor y la presión de los impactos."
+    }
+  ],
+  "a4": [
+    {
+      "q": "Una máquina deja de funcionar. ¿Qué parte puede seguir ayudando a la ciencia?",
+      "options": [
+        "Su pintura",
+        "Los datos que ya envió",
+        "El lugar donde está estacionada"
+      ],
+      "why": "Las mediciones pueden sobrevivir mucho más tiempo que la máquina que las realizó."
+    }
+  ],
+  "a5": [
+    {
+      "q": "¿Qué frase explica mejor por qué un instrumento detenido sigue importando?",
+      "options": [
+        "Se volverá a encender por sí solo",
+        "Solo sirve como escultura",
+        "Sus datos siguen estudiándose y pueden enseñarnos cosas nuevas"
+      ],
+      "why": "El valor vive en el registro y en lo que las personas aprenden de él, no en su funcionamiento continuo."
+    }
+  ],
+  "moon": [
+    {
+      "q": "Antes de empezar: ¿por qué querrían los científicos una roca de la Luna?",
+      "options": [
+        "Para estudiar la historia de la Luna",
+        "Para construir casas allí",
+        "Para venderla"
+      ],
+      "why": "Las rocas lunares guardan un registro de cómo se formó y cambió la Luna."
+    },
+    {
+      "q": "¿Quién conducía el rover lunar del Apollo?",
+      "options": [
+        "Un robot",
+        "Los astronautas",
+        "Nadie"
+      ],
+      "why": "Lo conducían los astronautas. Esta historia imagina al rover recordando, pero esa parte es ficción."
+    },
+    {
+      "q": "Si una máquina deja de funcionar, ¿pueden seguir siendo útiles sus datos?",
+      "options": [
+        "No, nunca",
+        "Sí, si la gente sigue estudiándolos",
+        "Solo si se repara"
+      ],
+      "why": "Los datos pueden seguir enseñando mucho después de que la máquina guarde silencio."
+    }
+  ]
+}

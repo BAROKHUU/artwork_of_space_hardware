@@ -396,9 +396,9 @@
   "m2_collect": {
     "title": "Four sample sites",
     "goal": "Drive to four sites and collect a rock from each while staying within walk-back range of the lander.",
-    "hint": "The red ring is your 78 m walk-back limit. Follow the arrow to each sample site.",
+    "hint": "The red ring is your 390 m walk-back limit. Follow the arrow to each sample site.",
     "success": "Four samples secured. Now let us find out what they are.",
-    "tether": "Walk-back limit! Stay within 78 m of the lander.",
+    "tether": "Walk-back limit! Stay within 390 m of the lander.",
     "targets": [
       {
         "name": "Dark patch",

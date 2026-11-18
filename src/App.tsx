@@ -41,7 +41,7 @@ function TopBar() {
     <header className="topbar">
       <NavLink to="/" className="brand" aria-label={t('nav.home')}>
         <img className="brand-logo" src={mediaUrl('moon-stories-watercolor/assets/images/ask-uncle-cuoi.png')} alt="" aria-hidden="true" />
-        <span>Moon Stories</span>
+        <span>{t('app.brand')}</span>
       </NavLink>
       <nav aria-label={t('nav.main')}>
         {links.map(([to, key]) => <NavLink key={to} to={to}>{t(key)}</NavLink>)}
