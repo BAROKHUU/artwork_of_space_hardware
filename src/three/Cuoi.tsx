@@ -90,8 +90,8 @@ function Foot() {
   </group>;
 }
 
-function Head() {
-  return <group name="head" position={[0, 2.07, 0]}>
+function Head({ headRef, tailRef }: { headRef?: RefObject<THREE.Group | null>; tailRef?: RefObject<THREE.Group | null> }) {
+  return <group ref={headRef} name="head" position={[0, 2.07, 0]}>
     <RoundedBox args={[0.51, 0.61, 0.43]} radius={0.14} smoothness={3} material={skin} castShadow />
     {[-1, 1].map((s) => <group key={s}>
       <mesh position={[s * 0.26, -0.02, 0]} scale={[0.055, 0.09, 0.05]} material={skin}><sphereGeometry args={[1, 10, 8]} /></mesh>
@@ -103,7 +103,9 @@ function Head() {
     <mesh position={[0, -0.14, 0.216]} scale={[0.075, 0.015, 0.012]} material={lip}><sphereGeometry args={[1, 12, 8]} /></mesh>
     <mesh name="hair" position={[0, 0.26, -0.015]} scale={[0.27, 0.16, 0.23]} material={hair}><sphereGeometry args={[1, 12, 8]} /></mesh>
     <RoundedBox name="headband" args={[0.54, 0.08, 0.46]} radius={0.035} position={[0, 0.18, 0]} material={dark} />
-    <mesh name="headband-tail" position={[0.15, 0.04, -0.24]} rotation={[0.2, 0, 0.25]} material={dark}><boxGeometry args={[0.09, 0.32, 0.025]} /></mesh>
+    <group ref={tailRef} position={[0.15, 0.16, -0.23]} rotation={[0.2, 0, 0.25]}>
+      <mesh name="headband-tail" position={[0, -0.12, 0]} material={dark}><boxGeometry args={[0.09, 0.32, 0.025]} /></mesh>
+    </group>
   </group>;
 }
 
@@ -115,15 +117,34 @@ function Axe() {
   </group>;
 }
 
-export function Cuoi({ movingRef, workingRef, runningRef, ...props }: ThreeElements['group'] & { movingRef?: RefObject<boolean>; workingRef?: RefObject<boolean>; runningRef?: RefObject<boolean> }) {
+export function Cuoi({
+  movingRef,
+  workingRef,
+  runningRef,
+  sprintingRef,
+  handRef,
+  ...props
+}: ThreeElements['group'] & {
+  movingRef?: RefObject<boolean>;
+  workingRef?: RefObject<boolean>;
+  runningRef?: RefObject<boolean>;
+  sprintingRef?: RefObject<boolean>;
+  handRef?: RefObject<THREE.Group | null>;
+}) {
   const body = useRef<THREE.Group>(null);
   const upper = useRef<THREE.Group>(null);
+  const head = useRef<THREE.Group>(null);
+  const tail = useRef<THREE.Group>(null);
+  const leftLeg = useRef<THREE.Group>(null);
+  const rightLeg = useRef<THREE.Group>(null);
   const leftFoot = useRef<THREE.Group>(null);
   const rightFoot = useRef<THREE.Group>(null);
+  const leftArm = useRef<THREE.Group>(null);
   const rightArm = useRef<THREE.Group>(null);
   const phaseRef = useRef(0);
   const moveBlend = useRef(0);
   const runBlend = useRef(0);
+  const flyBlend = useRef(0);
   const scarfTexture = useTexture(mediaUrl('assets/textures/khan-ran-weave.png'));
   scarfTexture.colorSpace = THREE.SRGBColorSpace;
   scarfTexture.wrapS = scarfTexture.wrapT = THREE.RepeatWrapping;
@@ -132,66 +153,124 @@ export function Cuoi({ movingRef, workingRef, runningRef, ...props }: ThreeEleme
     const dt = Math.min(rawDt, 0.05);
     const moving = movingRef?.current ?? false;
     const working = workingRef?.current ?? false;
-    const running = moving && (runningRef?.current ?? false);
+    const sprinting = !working && (sprintingRef?.current ?? false);
+    const running = moving && !sprinting && (runningRef?.current ?? false);
+    const reduced = prefersReducedMotion();
     const k = 1 - Math.exp(-10 * dt);
-    moveBlend.current += ((moving ? 1 : 0) - moveBlend.current) * k;
+    const flyRate = 1 - Math.exp(-8 * dt);
+    moveBlend.current += ((moving && !sprinting ? 1 : 0) - moveBlend.current) * k;
     runBlend.current += ((running ? 1 : 0) - runBlend.current) * k;
+    flyBlend.current += ((sprinting ? 1 : 0) - flyBlend.current) * flyRate;
     const m = moveBlend.current;
     const r = runBlend.current;
-    const rate = THREE.MathUtils.lerp(2.2, THREE.MathUtils.lerp(7.2, 13.5, r), m);
+    const fly = flyBlend.current;
+    const fast = Math.max(r, fly);
+    const rate = fly > 0.25 ? 7.5 : THREE.MathUtils.lerp(2.2, THREE.MathUtils.lerp(7.5, 14.8, r), m);
     phaseRef.current += dt * rate;
     const phase = phaseRef.current;
-    const stride = THREE.MathUtils.lerp(0.42, 0.85, r) * m;
-    const armSwing = THREE.MathUtils.lerp(0.24, 0.78, r) * m;
-    if (!prefersReducedMotion()) {
-      const stepBounce = Math.abs(Math.sin(phase)) * (0.055 * m + 0.065 * r);
-      if (body.current) body.current.position.y = stepBounce;
+
+    const stride = THREE.MathUtils.lerp(0.42, 0.94, r) * m;
+    const armSwing = THREE.MathUtils.lerp(0.26, 0.88, r) * m;
+    const walkLeftHip = Math.sin(phase) * stride;
+    const walkRightHip = Math.sin(phase + Math.PI) * stride;
+    const walkLeftAnkle = Math.sin(phase - 0.5) * (0.16 * m + 0.34 * r);
+    const walkRightAnkle = Math.sin(phase + Math.PI - 0.5) * (0.16 * m + 0.34 * r);
+    const walkRightArmX = Math.sin(phase) * armSwing - 0.14 * r * m;
+    const walkLeftArmX = Math.sin(phase + Math.PI) * (0.08 * m + 0.14 * r);
+
+    const flutter = reduced ? 0 : Math.sin(phase * 1.15);
+    const flyLeftHip = 0.64 + flutter * 0.16;
+    const flyRightHip = 0.64 - flutter * 0.16;
+    const flyLeftAnkle = 0.28 + flutter * 0.14;
+    const flyRightAnkle = 0.28 - flutter * 0.14;
+
+    if (!reduced) {
+      const stepBounce = Math.abs(Math.sin(phase)) * (0.055 * m + 0.08 * r) * (1 - fly);
+      if (body.current) {
+        body.current.position.y = stepBounce;
+        body.current.rotation.z = -0.06 * fly;
+      }
       if (upper.current) {
-        upper.current.position.y = Math.sin(phase) * 0.008 * (1 - m);
-        upper.current.rotation.x = 0.22 * r;
-        upper.current.rotation.y = Math.sin(phase) * 0.09 * r;
-        upper.current.rotation.z = working ? Math.sin(clock.elapsedTime * 5) * 0.035 : 0;
+        upper.current.position.y = Math.sin(phase) * 0.008 * (1 - Math.max(m, fly));
+        upper.current.rotation.x = 0.26 * r * (1 - fly) + 0.46 * fly;
+        upper.current.rotation.y = Math.sin(phase) * 0.12 * r * (1 - fly) + 0.04 * fly;
+        upper.current.rotation.z = working ? Math.sin(clock.elapsedTime * 5) * 0.035 : -0.05 * fly;
+      }
+      if (head.current) {
+        head.current.rotation.x = -0.18 * r * (1 - fly) - 0.38 * fly;
+        head.current.rotation.y = 0.14 * fly + Math.sin(clock.elapsedTime * 2.5) * 0.04 * fly;
+        head.current.rotation.z = -0.05 * fly;
+      }
+      if (tail.current) {
+        const wave = fast > 0.08 ? Math.sin(clock.elapsedTime * (fly > 0.4 ? 19 : 14)) * 0.24 * fast : 0;
+        tail.current.rotation.x = 0.2 + 0.25 * m + 0.55 * fast + wave;
+      }
+    } else {
+      if (body.current) body.current.rotation.z = -0.04 * fly;
+      if (upper.current) {
+        upper.current.rotation.x = 0.46 * fly;
+        upper.current.rotation.y = 0;
+        upper.current.rotation.z = 0;
+      }
+      if (head.current) {
+        head.current.rotation.x = -0.38 * fly;
+        head.current.rotation.y = 0.12 * fly;
+        head.current.rotation.z = 0;
       }
     }
-    if (leftFoot.current) leftFoot.current.rotation.x = Math.sin(phase) * stride;
-    if (rightFoot.current) rightFoot.current.rotation.x = Math.sin(phase + Math.PI) * stride;
-    if (rightArm.current) rightArm.current.rotation.x = Math.sin(phase) * armSwing;
+
+    if (leftLeg.current) leftLeg.current.rotation.x = THREE.MathUtils.lerp(walkLeftHip, flyLeftHip, fly);
+    if (rightLeg.current) rightLeg.current.rotation.x = THREE.MathUtils.lerp(walkRightHip, flyRightHip, fly);
+    if (leftFoot.current) leftFoot.current.rotation.x = THREE.MathUtils.lerp(walkLeftAnkle, flyLeftAnkle, fly);
+    if (rightFoot.current) rightFoot.current.rotation.x = THREE.MathUtils.lerp(walkRightAnkle, flyRightAnkle, fly);
+    if (rightArm.current) {
+      rightArm.current.rotation.x = THREE.MathUtils.lerp(walkRightArmX, -0.16, fly);
+      rightArm.current.rotation.y = THREE.MathUtils.lerp(0, 0.12, fly);
+      rightArm.current.rotation.z = THREE.MathUtils.lerp(0.08 * r * m, 1.38, fly);
+    }
+    if (leftArm.current) {
+      leftArm.current.rotation.x = THREE.MathUtils.lerp(walkLeftArmX, -0.14, fly);
+      leftArm.current.rotation.z = THREE.MathUtils.lerp(0.06 * r * m, 0.22, fly);
+    }
   });
   return <group name="Cuoi" {...props}>
     <group ref={body}>
       <group name="trousers">
-        {[-1, 1].map((s) => <group key={s}>
-          <RoundedBox args={[0.34, 0.83, 0.34]} radius={0.1} position={[s * 0.19, 0.65, 0]} material={pants} castShadow />
-          <group ref={s < 0 ? leftFoot : rightFoot} position={[s * 0.19, 0.28, 0]}>
+        {[-1, 1].map((s) => <group key={s} ref={s < 0 ? leftLeg : rightLeg} position={[s * 0.19, 0.96, 0]}>
+          <RoundedBox args={[0.34, 0.83, 0.34]} radius={0.1} position={[0, -0.31, 0]} material={pants} castShadow />
+          {s < 0 && <mesh position={[0, -0.31, 0.176]} rotation={[0, 0, 0.08]} material={patch}><boxGeometry args={[0.20, 0.21, 0.01]} /></mesh>}
+          <group ref={s < 0 ? leftFoot : rightFoot} position={[0, -0.68, 0]}>
             <mesh position={[0, -0.07, 0]} material={skin}><cylinderGeometry args={[0.09, 0.08, 0.17, 8]} /></mesh>
             <Foot />
           </group>
         </group>)}
-        <mesh position={[-0.19, 0.65, 0.176]} rotation={[0, 0, 0.08]} material={patch}><boxGeometry args={[0.20, 0.21, 0.01]} /></mesh>
       </group>
       <group ref={upper} name="upper-body">
-      <RoundedBox name="tunic" args={[0.75, 0.85, 0.43]} radius={0.1} position={[0, 1.32, 0]} material={shirt} castShadow />
-      <Limb from={[-0.20, 1.72, 0.22]} to={[0.18, 1.30, 0.23]} radius={0.022} surface={dark} />
-      <Limb from={[0.20, 1.72, 0.22]} to={[0.02, 1.52, 0.24]} radius={0.022} surface={dark} />
-      <RoundedBox name="waist-sash" args={[0.77, 0.14, 0.46]} radius={0.035} position={[0, 1.03, 0]} material={sash} />
-      <RoundedBox args={[0.13, 0.40, 0.05]} radius={0.02} position={[-0.25, 0.85, 0.24]} rotation={[0, 0, -0.12]} material={sash} />
-      <mesh position={[0, 1.78, 0]} material={skin}><cylinderGeometry args={[0.12, 0.13, 0.19, 10]} /></mesh>
-      <Head />
-      <group name="arms">
-        <Limb from={[-0.37, 1.62, 0]} to={[-0.57, 1.35, 0.02]} radius={0.14} surface={shirt} />
-        <Limb from={[-0.57, 1.35, 0.02]} to={[-0.55, 1.68, 0.25]} radius={0.085} surface={skin} />
-        <mesh position={[-0.55, 1.68, 0.25]} material={skin}><sphereGeometry args={[0.105, 10, 8]} /></mesh>
-        <group ref={rightArm} position={[0.37, 1.62, 0]}>
-          <Limb from={[0, 0, 0]} to={[0.15, -0.37, 0]} radius={0.14} surface={shirt} />
-          <Limb from={[0.15, -0.37, 0]} to={[0.09, -0.60, 0.13]} radius={0.085} surface={skin} />
-          <mesh position={[0.09, -0.62, 0.13]} material={skin}><sphereGeometry args={[0.10, 10, 8]} /></mesh>
+        <RoundedBox name="tunic" args={[0.75, 0.85, 0.43]} radius={0.1} position={[0, 1.32, 0]} material={shirt} castShadow />
+        <Limb from={[-0.20, 1.72, 0.22]} to={[0.18, 1.30, 0.23]} radius={0.022} surface={dark} />
+        <Limb from={[0.20, 1.72, 0.22]} to={[0.02, 1.52, 0.24]} radius={0.022} surface={dark} />
+        <RoundedBox name="waist-sash" args={[0.77, 0.14, 0.46]} radius={0.035} position={[0, 1.03, 0]} material={sash} />
+        <RoundedBox args={[0.13, 0.40, 0.05]} radius={0.02} position={[-0.25, 0.85, 0.24]} rotation={[0, 0, -0.12]} material={sash} />
+        <mesh position={[0, 1.78, 0]} material={skin}><cylinderGeometry args={[0.12, 0.13, 0.19, 10]} /></mesh>
+        <Head headRef={head} tailRef={tail} />
+        <group name="arms">
+          <group ref={leftArm} position={[-0.37, 1.62, 0]}>
+            <Limb from={[0, 0, 0]} to={[-0.20, -0.27, 0.02]} radius={0.14} surface={shirt} />
+            <Limb from={[-0.20, -0.27, 0.02]} to={[-0.18, 0.06, 0.25]} radius={0.085} surface={skin} />
+            <mesh position={[-0.18, 0.06, 0.25]} material={skin}><sphereGeometry args={[0.105, 10, 8]} /></mesh>
+            <group position={[0.37, -1.62, 0]}><Axe /></group>
+          </group>
+          <group ref={rightArm} position={[0.37, 1.62, 0]}>
+            <Limb from={[0, 0, 0]} to={[0.15, -0.37, 0]} radius={0.14} surface={shirt} />
+            <Limb from={[0.15, -0.37, 0]} to={[0.09, -0.60, 0.13]} radius={0.085} surface={skin} />
+            <mesh position={[0.09, -0.62, 0.13]} material={skin}><sphereGeometry args={[0.10, 10, 8]} /></mesh>
+            <group ref={handRef} position={[0.09, -0.62, 0.13]} />
+          </group>
         </group>
+        <mesh name="khan-ran" geometry={scarfGeometry} castShadow receiveShadow>
+          <meshStandardMaterial map={scarfTexture} roughness={1} side={THREE.DoubleSide} />
+        </mesh>
       </group>
-      <mesh name="khan-ran" geometry={scarfGeometry} castShadow receiveShadow>
-        <meshStandardMaterial map={scarfTexture} roughness={1} side={THREE.DoubleSide} />
-      </mesh>
-      <Axe />
-    </group>
     </group>
   </group>;
 }

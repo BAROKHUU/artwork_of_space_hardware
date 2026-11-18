@@ -256,7 +256,7 @@ export function StoryBook({ chapter, sections, mode, activeSectionId, onContinue
 
   return <section className={`story-book-shell${inPlace ? ' in-place' : ''}`} onKeyDown={onKeyDown} aria-label={t('book.reading')} tabIndex={0}>
     {!inPlace && <header className="story-cinematic-header">
-      <div><p className="story-kicker">{t('book.section')}</p><h2>{current.section.title}</h2></div>
+      <div><p className="story-kicker">{t('book.section')}</p><h2>{t(`story:${chapter.id}.title`)}</h2></div>
     </header>}
     <div className="story-cinematic-scene" ref={sceneRef} style={inPlace ? undefined : { backgroundImage: `linear-gradient(180deg, rgb(13 22 29 / 8%), rgb(13 22 29 / 62%)), url("${image}")` }}>
       {!inPlace && <><div className="story-cinematic-credit">{current.page.image?.credit ?? t('logbook.credit', { credit: hardware?.credit ?? backdrop.credit, id: hardware?.nasaId ?? backdrop.nasaId })}</div>

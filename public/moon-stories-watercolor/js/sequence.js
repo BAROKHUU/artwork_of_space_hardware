@@ -4,6 +4,19 @@
  const clamp=(n,a=0,b=1)=>Math.max(a,Math.min(b,Number.isFinite(n)?n:a));
  const ease=t=>t*t*(3-2*t);
  function splitCaption(text,limit=38){
+  const hasCjk=/[\u3040-\u30ff\u4e00-\u9fff]/.test(text);
+  if(hasCjk){
+   const cjkLimit=Math.min(limit,22),parts=[];let line='';
+   for(const ch of Array.from(text)){
+    if(line&&line.length>=cjkLimit){
+     const lastBreak=Math.max(line.lastIndexOf('。'),line.lastIndexOf('，'),line.lastIndexOf('、'),line.lastIndexOf('！'),line.lastIndexOf('？'));
+     if(lastBreak>=8){parts.push(line.slice(0,lastBreak+1));line=line.slice(lastBreak+1)+ch;}
+     else{parts.push(line);line=ch;}
+    }else line+=ch;
+   }
+   if(line)parts.push(line);
+   return parts;
+  }
   const words=text.split(/\s+/),parts=[];let line='';
   for(const word of words){if(line&&(line+' '+word).length>limit){parts.push(line);line=word;}else line+=(line?' ':'')+word;}
   if(line)parts.push(line);
@@ -17,7 +30,8 @@
    add({type:'image',shot:index,previous:index-1,duration:slow?.95:.65});
    shot.captions.forEach((caption,captionIndex)=>{
     const parts=splitCaption(caption.text);beat++;
-    parts.forEach((text,part)=>add({type:'caption',shot:index,speaker:caption.speaker,text,beat,part,parts:parts.length,emphasis:caption.text==='FIND U IN THE YOUNIVERSE!'||caption.text==='Or maybe... YOU!',final:index===shots.length-1&&captionIndex===shot.captions.length-1&&part===parts.length-1,duration:slow?1.35:hopeful?.95:1.12}));
+    const isEm=Boolean(caption.emphasis)||caption.text==='FIND U IN THE YOUNIVERSE!'||caption.text==='Or maybe... YOU!';
+    parts.forEach((text,part)=>add({type:'caption',shot:index,speaker:caption.speaker,text,beat,part,parts:parts.length,emphasis:isEm,final:index===shots.length-1&&captionIndex===shot.captions.length-1&&part===parts.length-1,duration:slow?1.35:hopeful?.95:1.12}));
    });
   });
   // A quiet ending with the final words held; never auto-return to the cover.
@@ -37,7 +51,7 @@
  }
  globalThis.MoonTimeline={splitCaption,buildTimeline,stateAt};
  if(typeof document==='undefined')return;
- const shots=globalThis.MoonStoryData,timeline=buildTimeline(shots);
+ const shots=globalThis.MoonStoryData;let timeline=buildTimeline(shots);
  const section=document.getElementById('story-sequence'),stage=section.querySelector('.sticky-stage');
  const slots=[...section.querySelectorAll('.story-image')];
  const caption=document.getElementById('caption'),speaker=document.getElementById('speaker');
@@ -63,7 +77,12 @@
  function fitCaption(){
   caption.style.fontSize='';if(!ctx||!lastText)return;
   const style=getComputedStyle(caption),width=caption.clientWidth;let size=parseFloat(style.fontSize);
-  function linesAt(px){ctx.font=`700 ${px}px "Cabin Sketch", Georgia`;let lines=1,line='';for(const word of lastText.split(' ')){const next=line?line+' '+word:word;if(line&&ctx.measureText(next).width>width){lines++;line=word;}else line=next;}return lines;}
+  function linesAt(px){
+   ctx.font=`700 ${px}px "Cabin Sketch", "Grandstander", "Noto Sans SC", "Noto Sans JP", Georgia, sans-serif`;
+   const tokens=/[\u3040-\u30ff\u4e00-\u9fff]/.test(lastText)?Array.from(lastText):lastText.split(' ');
+   const joiner=/[\u3040-\u30ff\u4e00-\u9fff]/.test(lastText)?'':' ';
+   let lines=1,line='';for(const word of tokens){const next=line?line+joiner+word:word;if(line&&ctx.measureText(next).width>width){lines++;line=word;}else line=next;}return lines;
+  }
   while(size>22&&linesAt(size)>2)size-=.5;
   caption.style.fontSize=size+'px';
  }
@@ -95,6 +114,9 @@
  addEventListener('scroll',requestRender,{passive:true});addEventListener('resize',measure,{passive:true});addEventListener('pageshow',measure);
  reduced.addEventListener('change',requestRender);
  if(document.fonts)document.fonts.ready.then(()=>{fitCaption();requestRender();});
- globalThis.MoonStory={open(){section.scrollIntoView({behavior:'auto'});}};
+ globalThis.MoonStory={
+  open(){section.scrollIntoView({behavior:'auto'});},
+  refresh(){timeline=buildTimeline(shots);lastText='';lastShot=-1;lastSpeaker='';measure();render();},
+ };
  measure();render();
 })();

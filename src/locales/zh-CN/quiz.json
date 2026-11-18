@@ -1,17 +1,275 @@
 {
-  "ch1": [{"q":"徘徊者 7 号为什么在坠落时仍不停拍照？","options":["刹车失灵了","每张照片都更近、细节更多","它在寻找宇航员"],"why":"徘徊者号无法着陆。距离越近，拍到的表面就越清晰。"},{"q":"勘测者 3 号的铲子帮助证明了什么？","options":["月球有海洋","月球内部是空的","地面能够支撑着陆器"],"why":"土壤测试表明月面足够坚固，可以支撑阿波罗飞船。"}],
-  "ch2": [{"q":"为什么阿波罗 11 号激光反射器今天仍能工作？","options":["宇航员会给它充电","它有核电池","它完全不需要电"],"why":"它只是把光原路反射，因此没有会耗尽的能源。"},{"q":"月球正在慢慢向哪个方向移动？","options":["远离地球","靠近地球","它从不移动"],"why":"激光计时显示，月球每年远离地球约 3.8 厘米。"}],
-  "ch3": [{"q":"引力助推有什么作用？","options":["利用行星运动改变航天器速度","加满燃料箱","让行星减速以便研究"],"why":"航天器能借用行星轨道运动中极小的一部分，以更快速度离开。"},{"q":"只有旅行者 2 号访问过哪些行星？","options":["火星和金星","天王星和海王星","木星和土星"],"why":"没有其他航天器飞越过天王星或海王星。"}],
-  "ch4": [{"q":"海盗 1 号在火星着陆需要什么？","options":["只有降落伞","降落伞和火箭发动机","只有机翼"],"why":"稀薄大气能减速，但还不够，剩下的由火箭完成。"},{"q":"海盗号生物实验得出了什么结论？","options":["化学现象奇特，但没有明确生命证据","火星到处是微生物","实验根本没有运行"],"why":"土壤反应令人意外，但没有发现明确的生命迹象。"}],
-  "ch5": [{"q":"机遇号任务原计划持续多久？","options":["15 年","一个火星年","约 90 个火星日"],"why":"原计划约 90 个火星日，实际工作了 14 年多。"},{"q":"什么结束了机遇号的任务？","options":["车轮损坏","全球沙尘暴挡住阳光","前方无路可走"],"why":"太阳能板需要阳光，2018 年的风暴挡住了阳光。"}],
-  "ch6": [{"q":"机智号原计划飞行多少次？","options":["最多 5 次","72 次","1,000 次"],"why":"计划最多五次，结果它飞了 72 次。"},{"q":"毅力号在 2026 年 10 月创造了什么纪录？","options":["火星最高飞行","第一辆火星车","另一世界上的最长行驶距离"],"why":"它在 2026 年 10 月 11 日超过了机遇号的纪录。"}],
-  "ch7": [{"q":"旅行者 1 号有什么特别之处？","options":["它是速度最快的火星车","它是最遥远的人造物体","它已在冥王星着陆"],"why":"人类制造的任何物体都没有比它走得更远。"},{"q":"为什么制作金唱片？","options":["向发现它的人介绍地球生命","给宇航员播放音乐","帮助航天器转向"],"why":"这是来自地球的信息，包含声音、音乐、问候和图片。"}],
-  "m2": [{"q":"What did the lunar rover let the astronauts do?","options":["Fly over the craters","Travel farther from the lander","Sleep through the lunar night"],"why":"The rover carried astronauts, tools, and samples across several kilometres in a single drive."},{"q":"Who drove the lunar rover?","options":["A robot controlled from Earth","The astronauts","Cuội"],"why":"The real rover was not autonomous. Astronauts sat in it and drove it."}],
-  "m3": [{"q":"Why are craters useful to scientists?","options":["They are holes full of water","They show what hit the Moon and roughly when","They move across the surface"],"why":"A crater is evidence of an impact. Older surfaces carry more craters and softer edges."},{"q":"Why do scientists compare many Moon rocks?","options":["To find the prettiest one","To learn the Moon's history","To measure its colour"],"why":"Different rocks formed in different ways, so comparing them reveals how the Moon changed."}],
-  "m5": [{"q":"What did the Apollo 11 seismometer listen for?","options":["Wind","Radio from Earth","Moonquakes and impacts"],"why":"It measured ground motion from meteoroid impacts and movements inside the Moon."},{"q":"The seismometer stopped sending in 1969. Why does its data still matter?","options":["It is still sending today","It was never used","Scientists still study the record it made"],"why":"The instrument is silent, but the record it made is still used to understand the Moon."}],
-  "a2": [{"q":"Astronauts need to carry tools and rocks far from the lander. What should they take?","options":["The lunar rover","A parachute","A larger flag"],"why":"The rover was built to carry two astronauts, their tools, and their samples."}],
-  "a3": [{"q":"You find a rock made of broken pieces pressed together. Which type is it?","options":["Breccia","Basalt","Anorthosite"],"why":"Breccia forms when fragments are welded together by heat and pressure from impacts."}],
-  "a4": [{"q":"A machine stops working. Which part can still help science?","options":["Its paint","The data it already sent","Its parking spot"],"why":"The measurements can outlive the machine that made them."}],
-  "a5": [{"q":"Which sentence best explains why a stopped instrument still matters?","options":["It will turn itself back on","It is only useful as a sculpture","Its data is still studied and can teach us new things"],"why":"The value lives in the record and what people learn from it, not in continued operation."}],
-  "moon": [{"q":"Before we start: why might scientists want a rock from the Moon?","options":["To study the Moon's history","To build houses there","To sell it"],"why":"Moon rocks carry a record of how the Moon formed and changed."},{"q":"Who drove the Apollo lunar rover?","options":["A robot","The astronauts","Nobody"],"why":"The astronauts drove it. This story imagines the rover remembering, but that part is fiction."},{"q":"If a machine stops working, can its data still be useful?","options":["No, never","Yes, if people keep studying it","Only if it is repaired"],"why":"Data can keep teaching long after the machine goes quiet."}]
+  "ch1": [
+    {
+      "q": "徘徊者 7 号为什么在坠落时仍不停拍照？",
+      "options": [
+        "刹车失灵了",
+        "每张照片都更近、细节更多",
+        "它在寻找宇航员"
+      ],
+      "why": "徘徊者号无法着陆。距离越近，拍到的表面就越清晰。"
+    },
+    {
+      "q": "勘测者 3 号的铲子帮助证明了什么？",
+      "options": [
+        "月球有海洋",
+        "月球内部是空的",
+        "地面能够支撑着陆器"
+      ],
+      "why": "土壤测试表明月面足够坚固，可以支撑阿波罗飞船。"
+    }
+  ],
+  "ch2": [
+    {
+      "q": "为什么阿波罗 11 号激光反射器今天仍能工作？",
+      "options": [
+        "宇航员会给它充电",
+        "它有核电池",
+        "它完全不需要电"
+      ],
+      "why": "它只是把光原路反射，因此没有会耗尽的能源。"
+    },
+    {
+      "q": "月球正在慢慢向哪个方向移动？",
+      "options": [
+        "远离地球",
+        "靠近地球",
+        "它从不移动"
+      ],
+      "why": "激光计时显示，月球每年远离地球约 3.8 厘米。"
+    }
+  ],
+  "ch3": [
+    {
+      "q": "引力助推有什么作用？",
+      "options": [
+        "利用行星运动改变航天器速度",
+        "加满燃料箱",
+        "让行星减速以便研究"
+      ],
+      "why": "航天器能借用行星轨道运动中极小的一部分，以更快速度离开。"
+    },
+    {
+      "q": "只有旅行者 2 号访问过哪些行星？",
+      "options": [
+        "火星和金星",
+        "天王星和海王星",
+        "木星和土星"
+      ],
+      "why": "没有其他航天器飞越过天王星或海王星。"
+    }
+  ],
+  "ch4": [
+    {
+      "q": "海盗 1 号在火星着陆需要什么？",
+      "options": [
+        "只有降落伞",
+        "降落伞和火箭发动机",
+        "只有机翼"
+      ],
+      "why": "稀薄大气能减速，但还不够，剩下的由火箭完成。"
+    },
+    {
+      "q": "海盗号生物实验得出了什么结论？",
+      "options": [
+        "化学现象奇特，但没有明确生命证据",
+        "火星到处是微生物",
+        "实验根本没有运行"
+      ],
+      "why": "土壤反应令人意外，但没有发现明确的生命迹象。"
+    }
+  ],
+  "ch5": [
+    {
+      "q": "机遇号任务原计划持续多久？",
+      "options": [
+        "15 年",
+        "一个火星年",
+        "约 90 个火星日"
+      ],
+      "why": "原计划约 90 个火星日，实际工作了 14 年多。"
+    },
+    {
+      "q": "什么结束了机遇号的任务？",
+      "options": [
+        "车轮损坏",
+        "全球沙尘暴挡住阳光",
+        "前方无路可走"
+      ],
+      "why": "太阳能板需要阳光，2018 年的风暴挡住了阳光。"
+    }
+  ],
+  "ch6": [
+    {
+      "q": "机智号原计划飞行多少次？",
+      "options": [
+        "最多 5 次",
+        "72 次",
+        "1,000 次"
+      ],
+      "why": "计划最多五次，结果它飞了 72 次。"
+    },
+    {
+      "q": "毅力号在 2026 年 10 月创造了什么纪录？",
+      "options": [
+        "火星最高飞行",
+        "第一辆火星车",
+        "另一世界上的最长行驶距离"
+      ],
+      "why": "它在 2026 年 10 月 11 日超过了机遇号的纪录。"
+    }
+  ],
+  "ch7": [
+    {
+      "q": "旅行者 1 号有什么特别之处？",
+      "options": [
+        "它是速度最快的火星车",
+        "它是最遥远的人造物体",
+        "它已在冥王星着陆"
+      ],
+      "why": "人类制造的任何物体都没有比它走得更远。"
+    },
+    {
+      "q": "为什么制作金唱片？",
+      "options": [
+        "向发现它的人介绍地球生命",
+        "给宇航员播放音乐",
+        "帮助航天器转向"
+      ],
+      "why": "这是来自地球的信息，包含声音、音乐、问候和图片。"
+    }
+  ],
+  "m2": [
+    {
+      "q": "月球车究竟帮了阿波罗宇航员什么大忙？",
+      "options": [
+        "带着宇航员飞跃陨石坑",
+        "能走离登月舱更远去探索更多区域",
+        "能在漫长月夜里供人睡觉保暖"
+      ],
+      "why": "月球车稳稳搭载两名宇航员、全套工具和几十公斤样本，在一趟行程中行驶数公里甚至数十公里。"
+    },
+    {
+      "q": "真实的阿波罗月球车是谁开动的？",
+      "options": [
+        "地球上的遥控机器人",
+        "坐上驾驶座的宇航员自己",
+        "月宫里的 Cuội 叔叔"
+      ],
+      "why": "那辆月球车并不能自动巡航，而是宇航员穿戴航天服、亲手握着操控杆驾驶的。"
+    }
+  ],
+  "m3": [
+    {
+      "q": "为什么科学家对月亮上的陨石坑这么感兴趣？",
+      "options": [
+        "因为坑里蓄满了地下水",
+        "它们像年轮一样忠实记录了撞击历史与地表年龄",
+        "陨石坑会在月面自己四处搬家"
+      ],
+      "why": "每座陨石坑都是一次撞击的刻痕；越古老的月面，留下的坑洞越多、边缘也越圆缓。"
+    },
+    {
+      "q": "为什么要收集并比较许多不同的月岩？",
+      "options": [
+        "只为了挑选最漂亮的作收藏",
+        "拼出月亮亿万年的演化故事",
+        "只用来当尺子量颜色深浅"
+      ],
+      "why": "玄武岩、斜长岩、角砾岩各在不同地质时期和环境下形成，把它们并排解读，就能拼出月球的成长史。"
+    }
+  ],
+  "m5": [
+    {
+      "q": "阿波罗 11 号留下的地震仪当年在月亮上“听”什么？",
+      "options": [
+        "大风呼啸的声音",
+        "来自地球的广播电台",
+        "月震微颤和陨石撞击月面的震动"
+      ],
+      "why": "没有大气也就没有风声；它贴着月岩，专注捕捉陨石敲击与月球深处释放的震波。"
+    },
+    {
+      "q": "这台地震仪 1969 年就已经不再发送新讯号了，为什么今天的科学界还视它为珍宝？",
+      "options": [
+        "因为它明天会自己重启复活",
+        "因为除了当摆设外没别的作用",
+        "因为当年忠实录下的原始科学档案至今仍在帮助人类研究月球"
+      ],
+      "why": "机器会有谢幕之时，但它亲眼目睹、一笔笔录下的珍贵数据记录会永远流传下来继续教导后人。"
+    }
+  ],
+  "a2": [
+    {
+      "q": "宇航员需要携带笨重工具与许多月岩，走离登月舱几公里远——他们最需要带什么？",
+      "options": [
+        "一辆月球车",
+        "一顶降落伞",
+        "一面更大的旗帜"
+      ],
+      "why": "月球没有空气，降落伞派不上用场；只有电动月球车能够轻松载人载货穿梭在山脊与月尘之间。"
+    }
+  ],
+  "a3": [
+    {
+      "q": "如果你拾起一块看上去像由许多碎石渣经过猛烈挤压粘在一起的月岩，它属于哪种？",
+      "options": [
+        "角砾岩（Breccia）",
+        "玄武岩（Basalt）",
+        "斜长岩（Anorthosite）"
+      ],
+      "why": "陨石轰击产生的极高热与压力，会把四散碎岩重新焊接压实成“角砾岩”。"
+    }
+  ],
+  "a4": [
+    {
+      "q": "一台探测仪器停止运行了，但它留下来的哪样东西能继续为人类造福？",
+      "options": [
+        "外壳的涂漆颜色",
+        "早已发回地球并保存下来的宝贵科学数据",
+        "当年停车占据的那一块地面"
+      ],
+      "why": "仪器收集并传回的科学测量档案，往往比机器本身的寿命还要长久得多。"
+    }
+  ],
+  "a5": [
+    {
+      "q": "哪句话最能说明为什么一台“已经沉睡的仪器”依然闪耀意义？",
+      "options": [
+        "它只是暂歇，随时会偷偷开机",
+        "人们只是把它当成漂亮的雕塑纪念品",
+        "它留下的探索数据至今还在被不断破译，持续教会我们新的宇宙知识"
+      ],
+      "why": "真正的价值藏在被记录下的发现里——只要还有人在倾听与阅读，它就没有停止讲故事。"
+    }
+  ],
+  "moon": [
+    {
+      "q": "出发前先猜猜：为什么科学家几十年来始终渴望研究月亮上的石头？",
+      "options": [
+        "为了揭开月球诞生与演变的奥秘",
+        "为了运回来盖房子",
+        "拿去店里标价出售"
+      ],
+      "why": "月岩没有地球那样剧烈的风化与板块更新，完美封存着早期太阳系的岁月记忆。"
+    },
+    {
+      "q": "当年真正驾驶阿波罗月球车驰骋月面的是谁？",
+      "options": [
+        "全自动机器人",
+        "亲自坐进驾驶位的宇航员",
+        "没有任何人开，全靠惯性滚动"
+      ],
+      "why": "当然是宇航员亲手操控驾驶的！至于车斗回忆过去的温馨画面，是月夜绘本送给我们的诗意想象。"
+    },
+    {
+      "q": "当一台深空机器彻底断联之后，它曾经发回的科学记录还有用吗？",
+      "options": [
+        "毫无用处了",
+        "大有用处——只要人类持续用更先进的眼光去阅读它",
+        "除非派飞船把机器修好"
+      ],
+      "why": "哪怕硬件沉默，数据档案仍可以在一代代年轻研究者手里绽放出全新发现！"
+    }
+  ]
 }

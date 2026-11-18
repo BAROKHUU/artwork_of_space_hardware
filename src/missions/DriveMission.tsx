@@ -12,7 +12,7 @@ import { Tracks, WheelDust } from '../three/RoverFx';
 import { GameCanvas } from '../three/GameCanvas';
 import { HardwareModel } from '../three/models';
 import { MoonCuoi, MoonRabbit } from '../three/MoonCharacters';
-import { Lights, SHADOW_TEXEL, SUN_OFFSET, Sky } from '../three/Scenery';
+import { DARK_SIDE_SUN_OFFSET, Lights, SHADOW_TEXEL, SUN_OFFSET, Sky } from '../three/Scenery';
 import { StreamedTerrain } from '../three/StreamedTerrain';
 import { TILE } from '../three/terrainTiles';
 import { useDialogueCue, type Speaker } from '../state/dialogueCue';
@@ -22,6 +22,15 @@ import { Gauge, HoldButton, Readout, useKeys, type HudChannel, type MissionProps
 
 const SCAN_SECONDS = 1.65;
 const WAKE_LEVEL = 12;
+const SPRINT_MULT = 1.75;
+const CUOI_FLIGHT_MULT = 1.95;
+const MOON_MISSION_LIMIT = 86;
+const MARS_MISSION_LIMIT = 112;
+
+function missionMapLimit(config: DriveConfig, lab: boolean): number {
+  if (lab) return Infinity;
+  return config.tether ?? (config.world === 'moon' ? MOON_MISSION_LIMIT : MARS_MISSION_LIMIT);
+}
 
 export type LabVehicle = 'sojourner' | 'mer' | 'curiosity' | 'lrv';
 export type LabCamera = 'chase' | 'high' | 'cockpit' | 'inspect';
@@ -134,6 +143,158 @@ function Beacon({ x, z, y, state, kind = 'beacon', quiet = false, scanning = fal
   );
 }
 
+const STREAK_OFFSETS: readonly [number, number, number][] = [
+  [-1.15, 1.05, 0.25],
+  [-0.72, 1.42, 0.55],
+  [-0.22, 0.72, 0.1],
+  [0.32, 1.25, 0.75],
+];
+
+function SprintCompanion({
+  cuoiHandRef,
+  cuoiRef,
+  flightBlendRef,
+  sprintingRef,
+  popTimeRef,
+  headingRef,
+}: {
+  cuoiHandRef: RefObject<THREE.Group | null>;
+  cuoiRef: RefObject<THREE.Group | null>;
+  flightBlendRef: RefObject<number>;
+  sprintingRef: RefObject<boolean>;
+  popTimeRef: RefObject<number>;
+  headingRef: RefObject<{ heading: number; speed: number }>;
+}) {
+  const rabbitGroup = useRef<THREE.Group>(null);
+  const rabbitPawRef = useRef<THREE.Group>(null);
+  const sparkleGroup = useRef<THREE.Group>(null);
+  const popRing = useRef<THREE.Mesh>(null);
+  const popRingMat = useRef<THREE.MeshBasicMaterial>(null);
+  const streakGroup = useRef<THREE.Group>(null);
+  const scratch = useRef({
+    hand: new THREE.Vector3(),
+    paw: new THREE.Vector3(),
+    delta: new THREE.Vector3(),
+    cuoiPos: new THREE.Vector3(),
+  });
+
+  useFrame(({ clock }) => {
+    const fly = flightBlendRef.current;
+    const rg = rabbitGroup.current;
+    const sg = sparkleGroup.current;
+    const pr = popRing.current;
+    const st = streakGroup.current;
+    if (fly <= 0.015 || !cuoiHandRef.current || !cuoiRef.current || !rg) {
+      if (rg) rg.visible = false;
+      if (sg) sg.visible = false;
+      if (pr) pr.visible = false;
+      if (st) st.visible = false;
+      return;
+    }
+
+    const sprinting = sprintingRef.current;
+    const popT = Math.min(1, popTimeRef.current);
+    const inv = popT - 1;
+    const easeBack = 1 + 2.70158 * inv * inv * inv + 1.70158 * inv * inv;
+    const scaleFactor = sprinting ? Math.max(0.02, easeBack) : Math.min(1, fly * 1.45);
+    const t = clock.elapsedTime;
+    const heading = headingRef.current.heading;
+
+    // 1. Place Thỏ Ngọc at current heading/scale, then snap her outstretched paw onto Cuội's live hand world position.
+    cuoiHandRef.current.updateWorldMatrix(true, false);
+    cuoiHandRef.current.getWorldPosition(scratch.current.hand);
+
+    rg.visible = true;
+    rg.rotation.set(0, heading, 0);
+    rg.scale.setScalar(0.64 * scaleFactor);
+    rg.updateWorldMatrix(true, true);
+
+    if (rabbitPawRef.current) {
+      rabbitPawRef.current.getWorldPosition(scratch.current.paw);
+      scratch.current.delta.subVectors(scratch.current.hand, scratch.current.paw);
+      rg.position.add(scratch.current.delta);
+    } else {
+      rg.position.copy(scratch.current.hand);
+    }
+
+    const popDrop = sprinting && popT < 1 ? Math.pow(1 - popT, 2) * 0.92 : 0;
+    if (popDrop > 0.002) rg.position.y -= popDrop;
+
+    // 2. Pop-up golden moon ring as Thỏ Ngọc materializes beside Cuội.
+    if (pr && popRingMat.current) {
+      const showRing = sprinting && popT > 0.02 && popT < 0.98;
+      pr.visible = showRing;
+      if (showRing) {
+        pr.position.set(scratch.current.hand.x + 0.15, scratch.current.hand.y - 0.55, scratch.current.hand.z);
+        pr.scale.setScalar(0.45 + popT * 1.55);
+        popRingMat.current.opacity = Math.max(0, (1 - popT) * 0.82);
+      }
+    }
+
+    // 3. Soft golden hand-clasp sparkle aura.
+    if (sg) {
+      sg.visible = fly > 0.15;
+      sg.position.copy(scratch.current.hand);
+      sg.rotation.set(t * 1.6, t * 2.8, t * 1.1);
+      const pulse = (0.85 + Math.sin(t * 9) * 0.18) * fly;
+      sg.scale.setScalar(pulse);
+    }
+
+    // 4. Lunar slipstream streaks trailing behind Cuội and Thỏ Ngọc.
+    if (st) {
+      st.visible = fly > 0.28;
+      if (st.visible) {
+        cuoiRef.current.getWorldPosition(scratch.current.cuoiPos);
+        st.position.copy(scratch.current.cuoiPos);
+        st.rotation.set(0, heading, 0);
+        st.scale.setScalar(Math.min(1, (fly - 0.28) * 1.45));
+        for (let i = 0; i < st.children.length; i++) {
+          const streak = st.children[i];
+          const [ox, oy, phase] = STREAK_OFFSETS[i];
+          const cycle = (t * 3.8 + phase) % 1;
+          streak.position.set(ox, oy, 0.4 + cycle * 2.4);
+          streak.scale.z = 0.7 + Math.sin(cycle * Math.PI) * 0.9;
+        }
+      }
+    }
+  });
+
+  return (
+    <>
+      <group ref={rabbitGroup} visible={false}>
+        <MoonRabbit flyingRef={sprintingRef} pawRef={rabbitPawRef} />
+      </group>
+      <mesh ref={popRing} visible={false} rotation={[-Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[0.38, 0.56, 28]} />
+        <meshBasicMaterial ref={popRingMat} color="#ffe28a" transparent opacity={0.8} side={THREE.DoubleSide} depthWrite={false} toneMapped={false} fog={false} />
+      </mesh>
+      <group ref={sparkleGroup} visible={false}>
+        <mesh>
+          <sphereGeometry args={[0.095, 12, 10]} />
+          <meshBasicMaterial color="#ffe596" transparent opacity={0.68} depthWrite={false} toneMapped={false} fog={false} />
+        </mesh>
+        {[0, 1, 2].map((i) => {
+          const a = (i * Math.PI * 2) / 3;
+          return (
+            <mesh key={i} position={[Math.cos(a) * 0.21, Math.sin(a * 2) * 0.11, Math.sin(a) * 0.21]}>
+              <octahedronGeometry args={[0.042, 0]} />
+              <meshBasicMaterial color={i % 2 ? '#a5f0ff' : '#fff0b3'} toneMapped={false} fog={false} />
+            </mesh>
+          );
+        })}
+      </group>
+      <group ref={streakGroup} visible={false}>
+        {STREAK_OFFSETS.map((_, i) => (
+          <mesh key={i}>
+            <boxGeometry args={[0.032, 0.032, 0.9]} />
+            <meshBasicMaterial color={i % 2 ? '#9ceeff' : '#ffe399'} transparent opacity={0.48} depthWrite={false} toneMapped={false} fog={false} />
+          </mesh>
+        ))}
+      </group>
+    </>
+  );
+}
+
 interface RoverProps {
   missionId: string;
   config: DriveConfig;
@@ -211,6 +372,11 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
   const cuoiWorking = useRef(false);
   const cuoiMoving = useRef(false);
   const cuoiRunning = useRef(false);
+  const cuoiSprinting = useRef(false);
+  const cuoiFlightBlend = useRef(0);
+  const sprintPopTime = useRef(0);
+  const prevSprintFlight = useRef(false);
+  const cuoiHandRef = useRef<THREE.Group>(null);
   const cuoiRef = useRef<THREE.Group>(null);
   const cheerRabbitRef = useRef<THREE.Group>(null);
   const cheerRingMat = useRef<THREE.MeshBasicMaterial>(null);
@@ -263,13 +429,6 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
     roverLoop.current?.set(activeMovement > 0.03 ? 0.22 + activeMovement * 0.78 : 0, ROVER_PITCH[vehicle] * (0.76 + activeMovement * 0.48));
     scanLoop.current?.set(!lab && !frozen && !s.done && scanActive.current ? 0.85 : 0, 0.9 + (s.scan / SCAN_SECONDS) * 0.45);
     cuoiWorking.current = withCuoi && s.scan > 0;
-    if (!friendsCome) {
-      const speed = Math.abs(s.speed);
-      cuoiMoving.current = withCuoi && !frozen && !cuoiWorking.current && speed > 0.3;
-      cuoiRunning.current = cuoiMoving.current && speed >= maxSpeed * 0.5;
-    } else {
-      cuoiRunning.current = false;
-    }
     const k = keys.current;
     const p = pad.current;
     const scanHeld = !lab && (k.has('Space') || k.has('KeyE') || p.scan);
@@ -277,16 +436,20 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
     prevScanHeld.current = scanHeld;
     const activeTarget = config.targets[s.index];
     const inActiveNow = Boolean(activeTarget && Math.hypot(activeTarget.x - s.x, activeTarget.z - s.z) < config.radius);
+    let sprintActive = false;
+    let cuoiFlightNow = false;
     if (!frozen && !s.done) {
       s.t += dt;
       const forward = k.has('ArrowUp') || k.has('KeyW') || p.forward;
       const back = k.has('ArrowDown') || k.has('KeyS') || p.back;
       const left = k.has('ArrowLeft') || k.has('KeyA') || p.left;
       const right = k.has('ArrowRight') || k.has('KeyD') || p.right;
+      const sprint = !s.asleep && (forward || back) && (k.has('ShiftLeft') || k.has('ShiftRight'));
+      sprintActive = sprint;
 
       if (config.battery) {
         const moving = Math.abs(s.speed) > 0.2;
-        s.battery = stepBattery(s.battery, moving, s.t, config.battery, dt);
+        s.battery = stepBattery(s.battery, moving, s.t, config.battery, dt * (sprint && moving ? 1.35 : 1));
         if (s.battery <= 0) s.asleep = true;
         else if (s.asleep && s.battery >= WAKE_LEVEL) s.asleep = false;
         const dust = dustLevel(s.t, config.battery.stormAt);
@@ -304,8 +467,13 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
       const tgt = config.targets[s.index];
       const inTargetZone = Boolean(tgt && Math.hypot(tgt.x - s.x, tgt.z - s.z) < config.radius);
       const atSample = missionId === 'm2_collect' && inTargetZone && scanHeld;
+      sprintActive = sprint && !atSample;
+      cuoiFlightNow = withCuoi && !friendsCome && !cuoiWorking.current && sprintActive;
+      const boostMult = sprintActive ? (cuoiFlightNow ? CUOI_FLIGHT_MULT : SPRINT_MULT) : 1;
+      const topSpeed = maxSpeed * boostMult;
       const drive = s.asleep || atSample ? 0 : forward ? 1 : back ? -0.55 : 0;
-      s.speed = atSample ? 0 : s.speed + (drive * maxSpeed - s.speed) * damp(missionId === 'm2_collect' ? 3.4 : 2.6, dt);
+      const accelRate = (missionId === 'm2_collect' ? 3.4 : 2.6) + (sprintActive ? (cuoiFlightNow ? 2.1 : 1.4) : 0);
+      s.speed = atSample ? 0 : s.speed + (drive * topSpeed - s.speed) * damp(accelRate, dt);
       s.odometer += Math.abs(s.speed) * dt;
       if (!s.asleep) s.heading += ((left ? 1 : 0) - (right ? 1 : 0)) * dt * (1.9 - Math.min(0.7, Math.abs(s.speed) * 0.05));
 
@@ -328,11 +496,11 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
       let nx = contact.x;
       let nz = contact.z;
 
-      const limit = config.tether ?? Infinity;
+      const limit = missionMapLimit(config, lab);
       const cx = nx - config.start.x;
       const cz = nz - config.start.z;
       const r = Math.hypot(cx, cz);
-      s.tethered = r > limit - 6;
+      s.tethered = Number.isFinite(limit) && r > limit - 6;
       if (r > limit) {
         nx = config.start.x + (cx / r) * limit;
         nz = config.start.z + (cz / r) * limit;
@@ -398,6 +566,23 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
       }
     }
 
+    if (cuoiFlightNow && !prevSprintFlight.current) {
+      play('boost');
+      if (cuoiFlightBlend.current < 0.15) sprintPopTime.current = 0;
+    }
+    prevSprintFlight.current = cuoiFlightNow;
+    cuoiFlightBlend.current = THREE.MathUtils.damp(cuoiFlightBlend.current, cuoiFlightNow ? 1 : 0, cuoiFlightNow ? 7.5 : 5.5, dt);
+    if (cuoiFlightNow) sprintPopTime.current = Math.min(1, sprintPopTime.current + dt * 2.6);
+    cuoiSprinting.current = cuoiFlightNow || cuoiFlightBlend.current > 0.28;
+    if (!friendsCome) {
+      const speed = Math.abs(s.speed);
+      cuoiMoving.current = withCuoi && !frozen && !cuoiWorking.current && speed > 0.3;
+      cuoiRunning.current = cuoiMoving.current && !cuoiFlightNow && speed >= maxSpeed * 0.45;
+    } else {
+      cuoiRunning.current = false;
+      cuoiSprinting.current = false;
+    }
+
     const { y, pitch, roll } = roverGroundPose(terrain.heightAt, s.x, s.z, s.heading, specs.track, specs.wheelbase / 2, specs.wheelRadius, scratch.current.pose);
     const fx = -Math.sin(s.heading);
     const fz = -Math.cos(s.heading);
@@ -414,14 +599,18 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
       spot(7, -11, rabbitPosition.current);
       rabbitRotation.current = s.heading;
     }
-    const cuoiGoal = friendsCome ? spot(2.4, -0.1, scratch.current.look) : spot(specs.radius + 1.1, 0, scratch.current.look);
+    const flyB = friendsCome ? 0 : cuoiFlightBlend.current;
+    const cuoiGoal = friendsCome
+      ? spot(2.4, -0.1, scratch.current.look)
+      : spot(specs.radius + 1.1 + flyB * 0.55, flyB * 0.45, scratch.current.look);
     const goalX = cuoiGoal.x;
     const goalZ = cuoiGoal.z;
-    const walkRate = friendsCome ? 1.4 : 2.7;
-    // Delay only the horizontal follow; feet stay planted on the terrain instead of floating.
+    const walkRate = friendsCome ? 1.4 : flyB > 0.1 ? 6.5 : 2.7;
+    // Delay only the horizontal follow; keep feet planted when walking, or lift into hand-in-hand lunar flight when sprinting.
     cuoiPosition.current.x = THREE.MathUtils.damp(cuoiPosition.current.x, goalX, walkRate, dt);
     cuoiPosition.current.z = THREE.MathUtils.damp(cuoiPosition.current.z, goalZ, walkRate, dt);
-    cuoiPosition.current.y = terrain.heightAt(cuoiPosition.current.x, cuoiPosition.current.z);
+    const flyLift = flyB > 0.01 ? flyB * (0.76 + Math.sin(state.clock.elapsedTime * 5.2) * 0.13) : 0;
+    cuoiPosition.current.y = terrain.heightAt(cuoiPosition.current.x, cuoiPosition.current.z) + flyLift;
     const cuoiLeft = Math.hypot(goalX - cuoiPosition.current.x, goalZ - cuoiPosition.current.z);
     // Characters face local +Z. Walking, they face their path; standing, they face the camera.
     const camera = state.camera.position;
@@ -458,7 +647,7 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
     if (cheerRabbitRef.current) {
       const warnPop = rabbitWarnTimer.current > 0;
       const timer = warnPop ? rabbitWarnTimer.current : cheerTimer.current;
-      if (timer > 0 && !friendsCome && config.world === 'moon') {
+      if (timer > 0 && !friendsCome && flyB < 0.2 && config.world === 'moon') {
         if (!warnPop) cheerTimer.current = Math.max(0, cheerTimer.current - dt);
         const age = (warnPop ? 4.2 : 4.0) - timer;
         const pop = Math.min(1, age * 6) * Math.min(1, timer * 3);
@@ -555,6 +744,14 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
     } else {
       state.camera.position.copy(camPos.current);
       state.camera.lookAt(camLook.current);
+      const persp = state.camera as THREE.PerspectiveCamera;
+      if ('fov' in persp) {
+        const targetFov = sprintActive && !friendsCome ? (cuoiFlightNow ? 62.5 : 61) : 55;
+        if (Math.abs(persp.fov - targetFov) > 0.05) {
+          persp.fov = THREE.MathUtils.damp(persp.fov, targetFov, 5, dt);
+          persp.updateProjectionMatrix();
+        }
+      }
     }
 
     const tgt = config.targets[Math.min(s.index, config.targets.length - 1)];
@@ -610,8 +807,25 @@ function Rover({ missionId, config, terrain, fixed, field, keys, pad, light, arr
       {cameraMode === 'inspect' && !friendsCome && <OrbitControls ref={orbit} makeDefault enablePan={false} enableDamping minDistance={2.2} maxDistance={26} maxPolarAngle={Math.PI * 0.48} />}
       <group ref={ref}>
         <HardwareModel id={vehicle} />
+        {!lab && config.world === 'moon' && (
+          <pointLight position={[0, 1.35, -1.75]} color="#fff3d6" intensity={2.8} distance={26} decay={1.7} />
+        )}
       </group>
-      {(withCuoi || friendsCome) && <group ref={cuoiRef}><MoonCuoi scale={0.72} workingRef={cuoiWorking} movingRef={cuoiMoving} runningRef={cuoiRunning} /></group>}
+      {(withCuoi || friendsCome) && (
+        <group ref={cuoiRef}>
+          <MoonCuoi scale={0.72} workingRef={cuoiWorking} movingRef={cuoiMoving} runningRef={cuoiRunning} sprintingRef={cuoiSprinting} handRef={cuoiHandRef} />
+        </group>
+      )}
+      {withCuoi && !friendsCome && (
+        <SprintCompanion
+          cuoiHandRef={cuoiHandRef}
+          cuoiRef={cuoiRef}
+          flightBlendRef={cuoiFlightBlend}
+          sprintingRef={cuoiSprinting}
+          popTimeRef={sprintPopTime}
+          headingRef={sim}
+        />
+      )}
       {friendsCome && <group ref={rabbitRef} position={rabbitPosition.current}><MoonRabbit scale={0.62} /></group>}
       {config.world === 'moon' && (
         <group ref={cheerRabbitRef} visible={false}>
@@ -719,8 +933,59 @@ function ScanHologram({ kind, name, progress }: { kind: ScanKind; name?: string;
   );
 }
 
+function SectorBoundary({ cx, cz, radius, terrain, moon }: { cx: number; cz: number; radius: number; terrain: Terrain; moon: boolean }) {
+  const { strip, beacons } = useMemo(() => {
+    const segs = 96;
+    const pos = new Float32Array((segs + 1) * 2 * 3);
+    const indices: number[] = [];
+    for (let i = 0; i <= segs; i++) {
+      const a = (i / segs) * Math.PI * 2;
+      const x = cx + Math.cos(a) * radius;
+      const z = cz + Math.sin(a) * radius;
+      const y = terrain.heightAt(x, z);
+      pos[i * 6] = x;
+      pos[i * 6 + 1] = y + 0.02;
+      pos[i * 6 + 2] = z;
+      pos[i * 6 + 3] = x;
+      pos[i * 6 + 4] = y + 0.55;
+      pos[i * 6 + 5] = z;
+      if (i < segs) {
+        const b = i * 2;
+        indices.push(b, b + 2, b + 1, b + 1, b + 2, b + 3);
+      }
+    }
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    geo.setIndex(indices);
+    geo.computeVertexNormals();
+    const posts = Array.from({ length: 16 }, (_, i) => {
+      const a = (i / 16) * Math.PI * 2;
+      const x = cx + Math.cos(a) * radius;
+      const z = cz + Math.sin(a) * radius;
+      return [x, terrain.heightAt(x, z), z] as [number, number, number];
+    });
+    return { strip: geo, beacons: posts };
+  }, [cx, cz, radius, terrain]);
+
+  useEffect(() => () => strip.dispose(), [strip]);
+  const tint = moon ? '#79adff' : '#ffb25a';
+  return (
+    <group>
+      <mesh geometry={strip}>
+        <meshBasicMaterial color={tint} transparent opacity={0.22} side={THREE.DoubleSide} depthWrite={false} toneMapped={false} fog={false} />
+      </mesh>
+      {beacons.map(([x, y, z], i) => (
+        <mesh key={i} position={[x, y + 0.45, z]}>
+          <octahedronGeometry args={[0.16, 0]} />
+          <meshBasicMaterial color={tint} toneMapped={false} fog={false} />
+        </mesh>
+      ))}
+    </group>
+  );
+}
+
 /** Holds its own state so readout updates never re-render the 3D scene. */
-function DriveHud({ id, config, lab, channel, arrow, edge, onScanHold }: { id: string; config: DriveConfig; lab?: boolean; channel: HudChannel<Hud>; arrow: RefObject<HTMLSpanElement | null>; edge: RefObject<HTMLDivElement | null>; onScanHold: (held: boolean) => void }) {
+function DriveHud({ id, config, lab, mapLimit, channel, arrow, edge, onScanHold }: { id: string; config: DriveConfig; lab?: boolean; mapLimit: number; channel: HudChannel<Hud>; arrow: RefObject<HTMLSpanElement | null>; edge: RefObject<HTMLDivElement | null>; onScanHold: (held: boolean) => void }) {
   const { t } = useTranslation();
   const [hud, setHud] = useState<Hud | null>(null);
   useEffect(() => {
@@ -755,6 +1020,9 @@ function DriveHud({ id, config, lab, channel, arrow, edge, onScanHold }: { id: s
               </div>
             </div>
           </div>
+          {config.world === 'moon' && Number.isFinite(mapLimit) && (
+            <div className="sector-badge">{t('hud.darkSideSector', { r: mapLimit })}</div>
+          )}
           {config.battery && (
             <div className="gauges">
               <Gauge label={t('hud.battery')} value={hud.battery} max={100} warn={hud.battery < 20} />
@@ -833,7 +1101,11 @@ function DriveHud({ id, config, lab, channel, arrow, edge, onScanHold }: { id: s
           </HoldButton>
         </div>
       )}
-      {hud?.tethered && config.tether && <div className="alert" role="alert">{t(`missions:${id}.tether`)}</div>}
+      {hud?.tethered && Number.isFinite(mapLimit) && (
+        <div className="alert" role="alert">
+          {config.tether ? t(`missions:${id}.tether`) : t(config.world === 'moon' ? 'hud.darkSideBoundary' : 'hud.marsBoundary', { r: mapLimit })}
+        </div>
+      )}
       {hud?.asleep && <div className="alert" role="alert">{t(`missions:${id}.low`)}</div>}
     </>
   );
@@ -877,7 +1149,12 @@ export function DriveMission({ id, config, onResult, lab, vehicle = 'lrv', sun, 
   const edge = useRef<HTMLDivElement>(null);
   const [finished, setFinished] = useState<'win' | 'storm' | null>(null);
   const sunLight = useRef<THREE.DirectionalLight>(null);
-  const sunVector = useMemo(() => sun ?? (config.dusk ? DUSK_SUN_OFFSET : SUN_OFFSET), [sun, config.dusk]);
+  const darkSide = !lab && config.world === 'moon';
+  const mapLimit = useMemo(() => missionMapLimit(config, Boolean(lab)), [config, lab]);
+  const sunVector = useMemo(
+    () => sun ?? (config.dusk ? DUSK_SUN_OFFSET : darkSide ? DARK_SIDE_SUN_OFFSET : SUN_OFFSET),
+    [sun, config.dusk, darkSide],
+  );
   const clear = useMemo(() => [{ x: config.start.x, z: config.start.z, r: 5 }, ...config.targets.map((p) => ({ x: p.x, z: p.z, r: 6 })), ...(config.prop ? [{ x: config.prop.x, z: config.prop.z, r: 5 }] : [])], [config]);
   const terrain = useMemo(() => makeTerrain({ seed: config.seed, size: 260, amplitude: config.world === 'moon' ? 5.5 : 8, craterCount: config.world === 'moon' ? 58 : 14, sharpCraters: config.world === 'moon', flat: clear, endless: true }), [config, clear]);
   const groundTerrain = useMemo(() => ({ ...terrain, heightAt: meshHeightAt(terrain.heightAt, terrainSegments(quality === 'low')) }), [terrain, quality]);
@@ -901,14 +1178,17 @@ export function DriveMission({ id, config, onResult, lab, vehicle = 'lrv', sun, 
   return (
     <div className={`stage${finished === 'win' ? ' is-celebrating' : ''}`} {...lookHandlers}>
       <GameCanvas camera={{ position: [0, 8, 14], fov: 55, far: 520 }}>
-        <Sky world={config.world} sun={sunVector} />
-        <Lights world={config.world} sunRef={sunLight} sun={sunVector} />
-        <Environment frames={1} resolution={64} environmentIntensity={0.32}>
-          <Lightformer form="rect" intensity={3.4} position={[6, 7, 4]} scale={[9, 9, 1]} color="#fff6e6" />
+        <Sky world={config.world} sun={sunVector} darkSide={darkSide} />
+        <Lights world={config.world} sunRef={sunLight} sun={sunVector} darkSide={darkSide} />
+        <Environment frames={1} resolution={64} environmentIntensity={darkSide ? 0.16 : 0.32}>
+          <Lightformer form="rect" intensity={3.4} position={[6, 7, 4]} scale={[9, 9, 1]} color={darkSide ? '#d4e2ff' : '#fff6e6'} />
           <Lightformer form="rect" intensity={1.0} position={[-7, 2, -3]} scale={[6, 5, 1]} color="#8fa8d8" />
           <Lightformer form="rect" intensity={0.7} position={[0, -5, 0]} rotation={[Math.PI / 2, 0, 0]} scale={[12, 12, 1]} color={config.world === 'mars' ? '#b06b42' : '#8a8a8a'} />
         </Environment>
         <StreamedTerrain terrain={terrain} world={config.world} rocks={field} />
+        {!lab && Number.isFinite(mapLimit) && (
+          <SectorBoundary cx={config.start.x} cz={config.start.z} radius={mapLimit} terrain={groundTerrain} moon={config.world === 'moon'} />
+        )}
         {config.prop && (
           <group position={[config.prop.x, groundTerrain.heightAt(config.prop.x, config.prop.z), config.prop.z]}>
             <HardwareModel id={config.prop.model} />
@@ -917,9 +1197,9 @@ export function DriveMission({ id, config, onResult, lab, vehicle = 'lrv', sun, 
         <Rover missionId={id} config={config} terrain={groundTerrain} fixed={fixed} field={field} keys={keys} pad={pad} light={sunLight} arrow={arrow} edge={edge} hud={channel} onFinish={finish} frozen={finished !== null} celebrate={finished === 'win' && !lab} vehicle={vehicle} sun={sunVector} cameraMode={cameraMode} look={lookOffset} lab={lab} />
       </GameCanvas>
 
-      <DriveHud id={id} config={config} lab={lab} channel={channel} arrow={arrow} edge={edge} onScanHold={(held) => { pad.current.scan = held; }} />
+      <DriveHud id={id} config={config} lab={lab} mapLimit={mapLimit} channel={channel} arrow={arrow} edge={edge} onScanHold={(held) => { pad.current.scan = held; }} />
 
-      <p className="keys-hint">{t('hud.keys')}{!lab ? ` · ${t('hud.scanKeys')}` : ''}{lab ? ` · ${cameraMode === 'inspect' ? t('hud.inspectKeys') : t('hud.lookKeys')}` : ''}</p>
+      <p className="keys-hint">{t('hud.keys')} · {t('hud.sprintKeys')}{!lab ? ` · ${t('hud.scanKeys')}` : ''}{lab ? ` · ${cameraMode === 'inspect' ? t('hud.inspectKeys') : t('hud.lookKeys')}` : ''}</p>
       <div className="dpad">
         {hold('left', t('hud.left'), '◀')}
         <div className="dpad-mid">

@@ -1,0 +1,234 @@
+{
+  "ranger7": {
+    "name": "Ranger 7",
+    "where": "Mare Cognitum, Luna",
+    "young": "¡Ranger 7 fue construida para estrellarse! Tomó fotos durante todo el descenso y luego chocó contra la Luna a propósito.",
+    "older": "Ranger 7 no tenía tren de aterrizaje. Sus seis cámaras enviaron más de 4,300 imágenes en los últimos minutos antes de impactar deliberadamente contra la Luna.",
+    "learned": "Las primeras imágenes de cerca de la Luna tomadas por una nave estadounidense mostraron que incluso las zonas pequeñas estaban cubiertas de cráteres.",
+    "now": "Restos fragmentados en el fondo de un pequeño cráter que ella misma creó. Su labor terminó en el instante en que llegó."
+  },
+  "surveyor3": {
+    "name": "Surveyor 3",
+    "where": "Océano de las Tormentas, Luna",
+    "young": "Surveyor 3 aterrizó suavemente y excavó en la tierra con una pequeña pala. Más tarde, ¡los astronautas fueron a visitarla!",
+    "older": "Surveyor 3 rebotó dos veces al aterrizar y luego usó una pala para comprobar si el suelo podía sostener una nave pesada. Apollo 12 aterrizó a distancia de caminata unos dos años y medio después.",
+    "learned": "El suelo lunar podía sostener una nave de aterrizaje. Las piezas que los astronautas trajeron a la Tierra también mostraron cómo envejecen el metal y las cámaras en la Luna.",
+    "now": "Sigue en pie donde aterrizó, sin su cámara ni su pala. La cámara se exhibe en el Smithsonian."
+  },
+  "apollo11_descent": {
+    "name": "Etapa de descenso del Apollo 11",
+    "where": "Mar de la Tranquilidad, Luna",
+    "young": "Esta es la mitad inferior del módulo Eagle. Cuando los astronautas se fueron, se quedó atrás y sirvió como su plataforma de despegue.",
+    "older": "El Módulo Lunar constaba de dos partes. La etapa de descenso posó a la tripulación el 20 de julio de 1969 y luego sirvió como plataforma de lanzamiento para la etapa de ascenso que los llevó de vuelta a casa.",
+    "learned": "Demostró que las personas podían aterrizar en otro mundo y volver a despegar.",
+    "now": "Sigue en la Luna con una placa en una pata que dice: «Vinimos en son de paz para toda la humanidad»."
+  },
+  "lrrr": {
+    "name": "Reflector láser del Apollo 11",
+    "where": "Mar de la Tranquilidad, Luna",
+    "young": "Un panel de 100 espejos especiales. Apunta un láser hacia él y la luz vuelve directo hacia ti. No necesita electricidad, ¡así que sigue funcionando!",
+    "older": "Los observatorios disparan pulsos láser a sus 100 prismas de esquina cúbica y miden el tiempo de ida y vuelta, determinando la distancia Tierra-Luna con precisión de centímetros. No usa electricidad.",
+    "learned": "La Luna se aleja de la Tierra unos 3.8 centímetros cada año. Los datos también ponen a prueba la teoría de la gravedad de Einstein.",
+    "now": "Sigue en uso más de 55 años después. Los astronautas lo dejaron atrás, pero los científicos nunca dejaron de usarlo."
+  },
+  "lrv": {
+    "name": "Rover Lunar del Apollo 15",
+    "where": "Hadley-Apennine, Luna",
+    "young": "¡Un verdadero auto eléctrico en la Luna! Los astronautas lo condujeron para explorar mucho más lejos de lo que podían caminar.",
+    "older": "El rover alimentado por baterías del Apollo 15 recorrió 27.8 km en unas tres horas de conducción, permitiendo a la tripulación llegar a muchos más sitios geológicos que las misiones anteriores a pie.",
+    "learned": "Conducir permitió a los astronautas recoger muestras de muchos lugares distintos, lo que ayudó a los científicos a leer la historia de la Luna.",
+    "now": "Estacionado en la Luna donde lo dejó la tripulación, con sus baterías agotadas hace mucho tiempo."
+  },
+  "pioneer10": {
+    "name": "Pioneer 10",
+    "where": "Rumbo a la constelación de Tauro",
+    "young": "Pioneer 10 fue la primera sonda en pasar junto a Júpiter. Lleva un mensaje ilustrado en metal, por si alguien llega a encontrarla.",
+    "older": "Diseñada para 21 meses, Pioneer 10 siguió funcionando más de 30 años. Cruzó el cinturón de asteroides, sobrevoló Júpiter y lleva una placa que muestra de dónde y cuándo partió.",
+    "learned": "Que el cinturón de asteroides podía cruzarse sin peligro, y nos dio la primera mirada cercana a Júpiter y su intensa radiación.",
+    "now": "En silencio desde enero de 2003, cuando su energía bajó demasiado para enviar señal. Sigue avanzando a la deriva hacia afuera."
+  },
+  "voyager2": {
+    "name": "Voyager 2",
+    "where": "Espacio interestelar",
+    "young": "La única nave espacial que ha visitado Urano y Neptuno. Salió de la burbuja de nuestro Sol en 2018 y todavía envía mensajes.",
+    "older": "Voyager 2 aprovechó una rara alineación planetaria para pasar junto a Júpiter, Saturno, Urano y Neptuno. Entró en el espacio interestelar en 2018 y tres de sus instrumentos científicos seguían funcionando en 2026.",
+    "learned": "Nuestras únicas vistas de cerca de Urano y Neptuno, además de mediciones directas de la frontera de la influencia del Sol.",
+    "now": "Sigue funcionando, pero pierde unos 4 vatios de potencia al año. En 2026 los ingenieros conmutaron a dispositivos de menor consumo para mantener su ciencia en marcha."
+  },
+  "viking1": {
+    "name": "Módulo de aterrizaje Viking 1",
+    "where": "Chryse Planitia, Marte",
+    "young": "La primera nave estadounidense en aterrizar a salvo en Marte. Tomó las primeras fotos desde el suelo y analizó la tierra en busca de señales de vida.",
+    "older": "Viking 1 aterrizó el 20 de julio de 1976 y funcionó durante más de seis años. Sus experimentos biológicos hallaron una actividad química inesperada en el suelo, pero ninguna prueba clara de seres vivos.",
+    "learned": "Marte tiene un suelo rico en hierro con una química muy reactiva. Esos resultados desconcertantes moldearon cómo buscamos vida hoy en día.",
+    "now": "En silencio desde noviembre de 1982. Los controladores intentaron durante meses volver a comunicarse con él."
+  },
+  "sojourner": {
+    "name": "Sojourner",
+    "where": "Ares Vallis, Marte",
+    "young": "El primer rover en Marte. Tenía más o menos el tamaño de un horno microondas y estaba pensado para durar solo una semana.",
+    "older": "Sojourner rodó fuera del módulo Pathfinder en julio de 1997 y se convirtió en el primer vehículo con ruedas en otro planeta. Planeado para unos siete días, trabajó durante 83.",
+    "learned": "Que los rovers pequeños y de bajo costo funcionaban de verdad en Marte, abriendo camino a todos los rovers posteriores.",
+    "now": "En silencio desde el 27 de septiembre de 1997, cuando terminó el contacto con su módulo de aterrizaje. Descansa cerca del módulo."
+  },
+  "opportunity": {
+    "name": "Opportunity",
+    "where": "Valle Perseverance, Marte",
+    "young": "¡Construido para durar 90 días marcianos, Opportunity siguió adelante casi 15 años y condujo más que un maratón!",
+    "older": "Diseñado para unos 90 soles, Opportunity trabajó de 2004 a 2018 y recorrió más de 45 km. Una tormenta de polvo global bloqueó la luz solar que necesitaban sus paneles.",
+    "learned": "Encontró hematita, un mineral que suele formarse con agua, demostrando que esta parte de Marte estuvo húmeda alguna vez.",
+    "now": "En silencio desde el 10 de junio de 2018. Su récord de distancia fuera de la Tierra se mantuvo hasta que Perseverance lo superó en octubre de 2026."
+  },
+  "curiosity": {
+    "name": "Curiosity",
+    "where": "Monte Sharp, cráter Gale, Marte",
+    "young": "Un rover tan grande como un auto con un láser y un taladro. Lleva años escalando una montaña en Marte.",
+    "older": "Con energía nuclear, Curiosity ha recorrido más de 38 km desde 2012. En agosto de 2026 alcanzó un ascenso de un kilómetro por el monte Sharp, leyendo capas de roca como páginas de un libro de historia.",
+    "learned": "El antiguo cráter Gale tuvo condiciones que pudieron haber albergado vida microscópica hace mucho tiempo.",
+    "now": "Sigue conduciendo y sigue haciendo ciencia."
+  },
+  "perseverance": {
+    "name": "Perseverance",
+    "where": "Borde del cráter Jezero, Marte",
+    "young": "Este rover busca señales de vida antigua y guarda muestras de roca en tubos. ¡Ahora es el vehículo que más lejos ha conducido en otro mundo!",
+    "older": "Explorando un antiguo delta fluvial y el borde del cráter desde 2021, Perseverance recoge muestras de roca selladas. El 11 de octubre de 2026 superó el récord de distancia de Opportunity con 45.22 km.",
+    "learned": "Jezero fue alguna vez un lago alimentado por un río, uno de los mejores lugares de Marte para buscar señales de vida pasada.",
+    "now": "Trabajando en una misión extendida prevista aproximadamente hasta 2028."
+  },
+  "ingenuity": {
+    "name": "Ingenuity",
+    "where": "Neretva Vallis, Marte",
+    "young": "Un diminuto helicóptero que viajó sujeto a Perseverance. Se suponía que volaría 5 veces. ¡Voló 72 veces!",
+    "older": "Ingenuity era una prueba tecnológica planeada para hasta cinco vuelos en 30 días. En cambio, la primera aeronave en otro mundo voló 72 veces en casi tres años, hasta que sus palas se rompieron en enero de 2024.",
+    "learned": "Que el vuelo propulsado funciona en el aire tenue de Marte, abriendo la puerta a futuras aeronaves en otros mundos.",
+    "now": "En tierra para siempre. La NASA estudió su último vuelo en la primera investigación de accidente aéreo en otro mundo."
+  },
+  "voyager1": {
+    "name": "Voyager 1",
+    "where": "Espacio interestelar",
+    "young": "El objeto fabricado por humanos más lejano que existe. Lleva un Disco de Oro con sonidos e imágenes de la Tierra.",
+    "older": "Tras sobrevolar Júpiter y Saturno, Voyager 1 se convirtió en la primera nave en el espacio interestelar en 2012. La NASA indica que alcanza un día luz de distancia desde la Tierra el 18 de noviembre de 2026.",
+    "learned": "Descubrió volcanes activos en Ío, luna de Júpiter, y midió por primera vez el espacio entre las estrellas.",
+    "now": "Sigue hablándonos, con dos instrumentos científicos activos después de que la NASA apagara otro en abril de 2026 para ahorrar energía."
+  },
+  "new_horizons": {
+    "name": "New Horizons",
+    "where": "El Cinturón de Kuiper",
+    "young": "La primera nave espacial en visitar Plutón. ¡Encontró una gigantesca llanura de hielo con forma de corazón!",
+    "older": "New Horizons sobrevoló Plutón en 2015 y el lejano objeto Arrokoth en 2019. En junio de 2026 despertó sana de su hibernación más larga, a unos 9.5 mil millones de km de la Tierra.",
+    "learned": "Plutón es un mundo sorprendentemente activo con montañas de hielo y glaciares de nitrógeno congelado.",
+    "now": "Sigue funcionando y adentrándose en el Cinturón de Kuiper. Esta foto muestra a Plutón tal como lo vio New Horizons."
+  },
+  "apollo12_descent": {
+    "name": "Etapa de descenso del Apollo 12",
+    "where": "Océano de las Tormentas, Luna",
+    "young": "La mitad inferior de Intrepid llevó a los astronautas a la Luna. La dejaron atrás cuando volaron de regreso a casa.",
+    "older": "Apollo 12 aterrizó cerca de Surveyor 3. Su etapa de descenso permaneció en la Luna mientras la etapa de ascenso llevó de nuevo a la tripulación a la órbita.",
+    "learned": "La tripulación visitó una nave robótica y trajo piezas de ella a la Tierra, mostrando cuánto tiempo resiste el equipo en la superficie lunar.",
+    "now": "Sigue en el sitio de aterrizaje del Apollo 12. La etapa de ascenso, identificada con la designación C, fue enviada deliberadamente contra la Luna."
+  },
+  "apollo15_descent": {
+    "name": "Etapa de descenso del Apollo 15",
+    "where": "Hadley-Apennine, Luna",
+    "young": "La etapa inferior de Falcon permaneció en la Luna después de que los astronautas despegaran hacia casa.",
+    "older": "La etapa de descenso del Apollo 15 quedó en Hadley-Apennine. El registro de misión de la NASA etiqueta la etapa de ascenso como 1971-063C y la de descenso como 1971-063E.",
+    "learned": "El sitio de aterrizaje permitió a los astronautas explorar montañas y un canal sinuoso con el primer rover lunar.",
+    "now": "Sigue en la Luna junto a las huellas del rover del Apollo 15."
+  },
+  "lrv16": {
+    "name": "Rover Lunar del Apollo 16",
+    "where": "Tierras altas de Descartes, Luna",
+    "young": "Este vehículo lunar llevó a los astronautas John Young y Charlie Duke por las colinas de la Luna.",
+    "older": "El Vehículo Explorador Lunar del Apollo 16 permitió a la tripulación alejarse más del módulo Orion para estudiar las tierras altas de Descartes.",
+    "learned": "Un rover eléctrico ligero permitió a los astronautas recoger muchas más muestras de roca de las que habrían alcanzado a pie.",
+    "now": "Estacionado en la Luna cerca del sitio de aterrizaje del Apollo 16."
+  },
+  "lrv17": {
+    "name": "Rover Lunar del Apollo 17",
+    "where": "Taurus-Littrow, Luna",
+    "young": "El último vehículo lunar del Apollo llevó a los astronautas por un valle de montañas y suelo anaranjado.",
+    "older": "El Vehículo Explorador Lunar del Apollo 17 recorrió 30.5 kilómetros durante la última misión tripulada de aterrizaje lunar.",
+    "learned": "El rover ayudó a la tripulación a recoger muestras de sitios geológicos muy separados entre sí.",
+    "now": "Dejado en Taurus-Littrow cuando la tripulación partió de la Luna."
+  },
+  "alsep12": {
+    "name": "ALSEP del Apollo 12",
+    "where": "Océano de las Tormentas, Luna",
+    "young": "Un equipo de instrumentos se quedó atrás para escuchar lunamotos y medir la Luna después de que los astronautas se marcharan.",
+    "older": "El Paquete de Experimentos Científicos de la Superficie Lunar del Apollo 12 incluía instrumentos como un sismómetro y un detector de viento solar. Envió datos hasta que la NASA apagó la red en 1977.",
+    "learned": "Los experimentos dejados en la superficie siguieron haciendo ciencia mucho tiempo después de que la tripulación regresara a casa.",
+    "now": "Los instrumentos siguen en el sitio del Apollo 12, en silencio y expuestos al polvo lunar y a cambios extremos de temperatura."
+  },
+  "pathfinder": {
+    "name": "Módulo de aterrizaje Mars Pathfinder",
+    "where": "Ares Vallis, Marte",
+    "young": "Pathfinder usó bolsas de aire para rebotar con seguridad sobre Marte y llevó a Sojourner, el primer rover allí.",
+    "older": "La misión Pathfinder de 1997 demostró un sistema de aterrizaje con bolsas de aire y operó desde Ares Vallis durante casi tres meses.",
+    "learned": "Un módulo de aterrizaje de menor costo podía depositar un rover operativo en Marte y devolver valiosa ciencia desde la superficie.",
+    "now": "En silencio en Ares Vallis desde el 27 de septiembre de 1997. Sojourner descansa muy cerca."
+  },
+  "spirit": {
+    "name": "Spirit",
+    "where": "Cráter Gusev, Marte",
+    "young": "Spirit era el gemelo de Opportunity. Siguió explorando Marte durante años después de sus 90 días previstos.",
+    "older": "Spirit aterrizó en el cráter Gusev en enero de 2004 y siguió operando hasta que terminó la comunicación en marzo de 2010.",
+    "learned": "Spirit encontró pruebas de que el agua había transformado las rocas en varios momentos del pasado de Marte.",
+    "now": "Detenido en las colinas Columbia, donde quedó atrapado en suelo blando."
+  },
+  "viking2": {
+    "name": "Módulo de aterrizaje Viking 2",
+    "where": "Utopia Planitia, Marte",
+    "young": "Viking 2 aterrizó cerca de la región polar norte de Marte y envió fotos y lecturas del clima a la Tierra.",
+    "older": "Viking 2 aterrizó el 3 de septiembre de 1976. Su módulo de superficie operó hasta abril de 1980, mientras que su orbitador ya se había detenido en 1978.",
+    "learned": "Dos módulos de aterrizaje y dos orbitadores dieron a los científicos la primera visión prolongada de Marte desde el suelo y desde arriba.",
+    "now": "En silencio en Utopia Planitia desde 1980."
+  },
+  "phoenix": {
+    "name": "Módulo de aterrizaje Phoenix",
+    "where": "Valle Verde, Marte",
+    "young": "Phoenix excavó en el suelo marciano cerca del polo norte y encontró hielo de agua justo bajo la superficie.",
+    "older": "Phoenix aterrizó en mayo de 2008 y usó un brazo robótico para depositar suelo helado en sus instrumentos a bordo. El contacto terminó al llegar la oscuridad invernal.",
+    "learned": "El hielo de agua se encuentra cerca de la superficie en el lejano norte de Marte, donde futuros exploradores quizá tengan que aprender a usar recursos locales.",
+    "now": "En silencio en su sitio de aterrizaje del norte tras agotarse su energía solar en el invierno marciano."
+  },
+  "insight": {
+    "name": "Módulo de aterrizaje InSight",
+    "where": "Elysium Planitia, Marte",
+    "young": "InSight escuchaba martemotos y medía el calor que salía del interior del planeta.",
+    "older": "InSight colocó un sismómetro sobre la superficie y registró más de 1,300 martemotos antes de que el polvo cubriera sus paneles solares.",
+    "learned": "Los sismos y el flujo de calor revelaron detalles sobre la corteza, el manto y el núcleo de Marte.",
+    "now": "La misión terminó en diciembre de 2022 cuando el módulo ya no pudo generar suficiente energía para comunicarse."
+  },
+  "dawn": {
+    "name": "Dawn",
+    "where": "Orbitando Ceres, cinturón de asteroides",
+    "young": "Dawn visitó dos mundos en el cinturón de asteroides: Vesta y el planeta enano Ceres.",
+    "older": "Dawn usó propulsión iónica para orbitar Vesta y luego Ceres. Se quedó sin hidracina en octubre de 2018 y ya no pudo apuntar su antena hacia la Tierra.",
+    "learned": "Que una sola nave podía orbitar dos mundos lejanos y comparar sus historias tan distintas.",
+    "now": "Una nave inerte en una órbita planificada de larga duración alrededor de Ceres."
+  },
+  "near_shoemaker": {
+    "name": "NEAR Shoemaker",
+    "where": "Eros, asteroide cercano a la Tierra",
+    "young": "NEAR se convirtió en la primera nave en orbitar un asteroide. Luego aterrizó suavemente allí, aunque no estaba construida para aterrizar.",
+    "older": "Tras cartografiar el asteroide Eros desde órbita, NEAR Shoemaker se posó el 12 de febrero de 2001 y siguió enviando datos durante unas dos semanas.",
+    "learned": "Un descenso cuidadoso dio a los científicos imágenes cercanas y mediciones desde la superficie de un asteroide.",
+    "now": "Descansando sobre Eros, en silencio desde el 28 de febrero de 2001."
+  },
+  "pioneer11": {
+    "name": "Pioneer 11",
+    "where": "Rumbo a Aquila",
+    "young": "Pioneer 11 sobrevoló Júpiter y luego usó su gravedad para llegar a Saturno. Fue la primera nave en visitar Saturno.",
+    "older": "Lanzada en 1973, Pioneer 11 usó una asistencia gravitatoria de Júpiter para alcanzar Saturno en 1979. La NASA recibió su última transmisión en 1995.",
+    "learned": "Que la gravedad de un planeta puede desviar una nave sin que esta encienda su motor durante el sobrevuelo.",
+    "now": "Saliendo del sistema solar a la deriva en una trayectoria hacia la constelación de Aquila."
+  },
+  "kepler": {
+    "name": "Telescopio Espacial Kepler",
+    "where": "Órbita alrededor del Sol detrás de la Tierra",
+    "young": "Kepler observó miles de estrellas buscando diminutas caídas en su luz que pudieran revelar planetas pasando por delante.",
+    "older": "Tras su misión principal y la extensión K2, Kepler se quedó sin combustible y fue retirado el 30 de octubre de 2018.",
+    "learned": "Pequeños cambios repetidos en la luz estelar revelaron que los planetas son comunes en toda nuestra galaxia.",
+    "now": "A la deriva en su órbita segura alrededor del Sol, muy por detrás de la Tierra."
+  }
+}

@@ -1,5 +1,6 @@
 {
   "app": {
+    "brand": "Moon Stories",
     "title": "The Moon Remembers",
     "subtitle": "A Lunar Journey with Cuội and the Forgotten Rover",
     "hook": "When a mission ends, the story does not. A small rover, a woodcutter from a very old story, and a message that took fifty years to arrive.",
@@ -65,10 +66,6 @@
     "exit": "Exit story",
     "musicOn": "Play reading music",
     "musicOff": "Mute reading music"
-  },
-  "introStory": {
-    "exit": "Exit story",
-    "exitLabel": "Exit the story and go to the main page"
   },
   "cuoiPreview": {
 
@@ -199,6 +196,10 @@
     "scanHoldBtn": "Hold Scan",
     "scanPrompt": "Inside target ring — HOLD [Space / E] or Hold Scan",
     "scanKeys": "Space / E: hold to scan",
+    "sprintKeys": "Shift: sprint",
+    "darkSideSector": "Dark Side of the Moon · {{r}} m sector",
+    "darkSideBoundary": "Dark Side sector limit — stay inside the beacon zone.",
+    "marsBoundary": "Mission sector limit — head back toward the beacon zone.",
     "rabbitWarnTitle": "Moon Rabbit",
     "rabbitWrongLater": "Hold on! This spot can't be scanned yet — follow the orange beacon first!",
     "rabbitWrongDone": "We already scanned this spot! Head toward the orange beacon next!",
@@ -701,5 +702,52 @@
       "play": "Open chapter",
       "back": "Back to the Moon journey"
     }
+  },
+  "introStory": {
+    "exit": "Exit story",
+    "exitLabel": "Exit the story and go to the main page",
+    "kicker": "A story of NASA’s forgotten machines",
+    "heroEm": "IN THE YOUNIVERSE",
+    "chooseHow": "Choose how to read",
+    "quote": "“Old roots hold tight; new dreams take flight”",
+    "copy": "A Vietnamese-inspired journey through NASA's forgotten machines, scientific discoveries, and the dreams of tomorrow's explorers.",
+    "closeModal": "Close introduction",
+    "legendKicker": "Before the moon story begins",
+    "legendTitle": "The Legend of Cuội on the Moon",
+    "legendP1": "Once upon a time, there was a woodcutter named Cuội. One day, while walking through the forest, he suddenly encountered a tiger cub charging towards him. With no time to escape, he bravely raised his axe and fought the tiger. Since the tiger cub was still young and weaker than a human, Cuội struck it with his axe, and it fell to the ground.",
+    "legendP2": "Just then, the mother tiger returned. Cuội quickly threw down his axe and climbed up a nearby tree. From above, he saw the mother tiger run to a bush nearby, pick some leaves, and chew them before feeding them to her cub. After a short while, the tiger cub began to move, wagged its tail, and miraculously came back to life.",
+    "legendP3": "After the mother tiger had carried her cub away, Cuội went to the bush, dug up the plant by its roots, and took it home.",
+    "legendHint": "A Vietnamese legend about memory, wonder, and the roots that reach all the way to the Moon.",
+    "keepExploring": "Keep exploring",
+    "scenes": [
+      {
+        "title": "SCENE 1. OPENING",
+        "text": "In The Moon. Dark. A tiny sound.\n\nNARRATOR: Every night, Uncle Cuội sits under his banyan tree. Everyone knows two things about him: he loves telling stories, and he appears every full moon.\n\nOn the night of the Mid-Autumn Festival, the Moon shone brighter than ever.\n\nBeneath his ancient Banyan Tree, Uncle Cuội was telling the Moon Rabbit an old story.\n\nSuddenly, a tiny sound broke the silence.\n\nMOON RABBIT: Uncle! What’s that sound?\n\nUNCLE CUỘI: (whispering) Tick... tick... Rabbit, I think something is alive out there.\n\nMOON RABBIT: Is this another one of your tall tales?\n\nUNCLE CUỘI: Not this time. Come on!"
+      },
+      {
+        "title": "SCENE 2. THE LITTLE ONE IN THE DUST",
+        "text": "Sea of Tranquillity. A small metal package sits half-buried in grey dust.\n\nNARRATOR: In 1969, two astronauts walked here: Neil Armstrong and Buzz Aldrin. A third, Michael, waited in orbit. Before they left, they set down a small package of instruments.\n\nROVER: Hello? Are you... real?\n\nMOON RABBIT: (jumping back) It talks!\n\nROVER: I’m ROVER. I had a job. I had an ear for listening to the Moon shake, and a little mirror. And then everyone left. Did they forget me?\n\nUNCLE CUỘI: Why would they leave you?\n\nNARRATOR: The astronauts collected Moon rocks and deployed scientific instruments designed to remain on the lunar surface, sending their discoveries back to Earth."
+      },
+      {
+        "title": "SCENE 3. THE ROVER THAT WENT QUIET",
+        "text": "Under the banyan tree. The roots glow softly.\n\nBANYAN TREE: Tell me, ROVER. What did your ear hear?\n\nROVER:\n\n“I listened for moonquakes and space rocks hitting the Moon. I worked for about three weeks. Then, one day, my signals stopped.”\n\nMOON RABBIT:\n\n“Only three weeks? Was that all?”\n\nBANYAN TREE:\n\n“Three weeks was enough to begin something extraordinary. Your discoveries helped scientists build better instruments for future missions.”\n\n(Pause. ROVER’s light flickers.)\n\nROVER: But now everything is silent. Nobody calls, nobody answers. I think I’ve been forgotten."
+      },
+      {
+        "title": "SCENE 4. THE COLDEST NIGHT (climax)",
+        "text": "The Moon’s long night. Stars are sharp. Cuội and Rabbit huddle by ROVER.\n\nMOON RABBIT: (softly) ROVER... is the mirror still working?\n\nROVER: It’s just glass. It has no battery and no wires. It can’t call anyone. It can only wait.\n\nUNCLE CUỘI: (quietly, for the first time without a joke) I know that feeling. I tell the truth and nobody believes me. Maybe we’re all just waiting.\n\nSilence. ROVER’s light dims almost to nothing."
+      },
+      {
+        "title": "SCENE 5. THE TWIST: A THIN LINE OF LIGHT",
+        "text": "A faint green beam streaks up from Earth and strikes ROVER’s mirror. It flashes back.\n\nMOON RABBIT:\n\n“Look! A light from Earth!”\n\nBANYAN TREE:\n\n\"That's a laser! Scientists are sending light toward your little mirror.\"\n\nROVER:\n\n\"My mirror? After all these years?\"\n\nBANYAN TREE:\n\n\"Yes! It reflects the light to Earth, helping scientists measure the distance to the Moon.\"\n\nROVER:\n\n\"So... I'm still helping them discover something?\"\n\nBANYAN TREE:\n\n\"Of course. You were never forgotten, little one.\"\n\nROVER:\n\n\"Then my story isn't over!\""
+      },
+      {
+        "title": "SCENE 6. FIND YOU",
+        "text": "BANYAN TREE: \"Look, little one. Your discoveries have reached further than you can imagine.\"\n\nThe golden leaf reveals a child in Vietnam drawing a picture of the Moon.\n\nEASEP: \"Someone is dreaming about exploring the Moon?\"\n\nUNCLE CUỘI: \"Yes. And perhaps one day, that child will discover something we have never imagined.\"\n\nMOON RABBIT: \"Maybe the next great explorer is right there!\"\n\nThe child slowly turns toward the audience.\n\nCHILD: \"Maybe that explorer could be me...\"\n\n(Pause)\n\n\"Or maybe... YOU!\"\n\nNARRATOR: \"Every great discovery begins with a curious mind. And every dream begins with someone who dares to imagine.\"\n\nALL CHARACTERS:\n\n\"FIND U IN THE YOUNIVERSE!\""
+      },
+      {
+        "title": "CLOSING SCENE",
+        "text": "Your roots remind you where you come from. Your dreams decide how far you can go."
+      }
+    ]
   }
 }

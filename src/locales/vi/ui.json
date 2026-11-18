@@ -1,11 +1,58 @@
 {
-  "introStory": {"exit": "Thoát truyện", "exitLabel": "Thoát truyện và về trang chính"},
+  "introStory": {
+    "exit": "Thoát truyện",
+    "exitLabel": "Thoát phần đọc truyện và quay về trang chính",
+    "kicker": "Câu chuyện về những cỗ máy bị lãng quên của NASA",
+    "heroEm": "TRONG VŨ TRỤ CỦA BẠN",
+    "chooseHow": "Chọn cách đọc truyện",
+    "quote": "“Rễ xưa níu đất cội nguồn, ước mơ chắp cánh bay muôn dặm trời”",
+    "copy": "Hành trình kể theo chất thơ Việt Nam, đi qua những cỗ máy ngủ yên của NASA, dấu ấn khoa học và khát vọng của các nhà thám hiểm mai sau.",
+    "closeModal": "Đóng phần mở đầu",
+    "legendKicker": "Trước khi trăng lên",
+    "legendTitle": "Sự tích chú Cuội cung trăng",
+    "legendP1": "Ngày xửa ngày xưa, có chàng tiều phu tên Cuội. Một hôm vào rừng đốn củi, chàng bất ngờ chạm trán một chú hổ con hung hãn lao tới. Giữa lúc cấp bách, Cuội vội giơ rìu tự vệ; chú hổ còn non yếu nên chẳng may ngã gục xuống đất.",
+    "legendP2": "Đúng lúc ấy, hổ mẹ quay về. Cuội vội vứt rìu, thoăn thoắt trèo tót lên ngọn cây gần đó. Từ trên cao nhìn xuống, chàng thấy hổ mẹ chạy tới bụi cây bên cạnh, bứt mấy chiếc lá, nhai nhỏ rồi mớm cho con. Chỉ lát sau, hổ con đã cựa quậy, vẫy đuôi rồi vùng dậy sống lại như phép màu.",
+    "legendP3": "Chờ hổ mẹ tha con đi khuất, Cuội tụt xuống đất, tìm đến bụi cây lạ đào cả gốc lẫn rễ đem về nhà trồng.",
+    "legendHint": "Một truyền thuyết Việt Nam về ký ức, phép màu và những chùm rễ vươn tận lên cung trăng.",
+    "keepExploring": "Tiếp tục khám phá",
+    "scenes": [
+      {
+        "title": "CẢNH 1. MỞ ĐẦU",
+        "text": "Trên Mặt Trăng. Tối thẫm. Một âm thanh khe khẽ.\n\nNGƯỜI KỂ CHUYỆN: Đêm nào cũng vậy, chú Cuội vẫn ngồi tựa gốc đa. Ai ở trần gian cũng nhớ hai điều về chú: chú mê kể chuyện, và cứ đêm trăng tròn là lại thấy bóng chú trên cung trăng.\n\nĐêm hội Trung Thu ấy, vầng trăng sáng vằng vặc hơn bao giờ hết.\n\nDưới tán đa cổ thụ, chú Cuội đang thủ thỉ kể cho Thỏ Ngọc nghe một tích xưa.\n\nBỗng nhiên, một âm thanh nhỏ xíu khẽ lay động bầu trời tĩnh mịch.\n\nTHỎ NGỌC: Chú ơi! Tiếng gì thế ạ?\n\nCHÚ CUỘI: (thì thầm) Tích... tắc... Thỏ ơi, hình như ngoài kia có ai vừa thức giấc.\n\nTHỎ NGỌC: Lại chuyện chú Cuội bày ra trêu cháu đúng không?\n\nCHÚ CUỘI: Lần này thật đấy. Đi theo chú nào!"
+      },
+      {
+        "title": "CẢNH 2. BẠN NHỎ GIỮA LỚP BỤI",
+        "text": "Biển Tĩnh lặng. Một hộp kim loại nhỏ nằm vùi một nửa trong lớp bụi xám.\n\nNGƯỜI KỂ CHUYỆN: Năm 1969, hai phi hành gia từng đặt chân tới đây là Neil Armstrong và Buzz Aldrin, trong khi Michael đợi trên quỹ đạo. Trước giờ trở về Trái Đất, họ đặt lại một bộ thiết bị nhỏ.\n\nROVER: Xin chào? Các bạn... là thật ư?\n\nTHỎ NGỌC: (giật mình nhảy lùi) Á! Nó biết nói kìa!\n\nROVER: Mình là ROVER. Mình từng có một sứ mệnh — có đôi tai để lắng nghe Mặt Trăng khẽ rung mình, cùng một tấm gương nhỏ. Thế rồi ai nấy đều bay về nhà. Họ quên mất mình rồi sao?\n\nCHÚ CUỘI: Sao họ lại đành lòng bỏ quên bạn được chứ?\n\nNGƯỜI KỂ CHUYỆN: Các phi hành gia mang đá Mặt Trăng về Trái Đất, còn những thiết bị khoa học ở lại mặt trăng lặng thầm gửi tri thức về nhà."
+      },
+      {
+        "title": "CẢNH 3. CỖ XE LẶNG IM",
+        "text": "Dưới gốc cây đa. Những chùm rễ phát sáng dịu dàng.\n\nCỤ ĐA: Kể ta nghe xem nào, ROVER bé nhỏ. Đôi tai cháu đã nghe thấy những chi?\n\nROVER:\n\n“Cháu lắng nghe những trận động đất trên Mặt Trăng và tiếng đá vũ trụ rơi khẽ xuống bụi xám. Cháu làm việc chừng ba tuần lễ. Rồi một ngày, mọi tín hiệu bỗng lịm tắt.”\n\nTHỎ NGỌC:\n\n“Chỉ vỏn vẹn ba tuần thôi ư? Thế là hết rồi sao?”\n\nCỤ ĐA:\n\n“Ba tuần là quá đủ để gieo mầm cho điều phi thường. Từng nhịp đo của cháu đã giúp loài người chế tạo những cỗ máy tinh xảo hơn cho muôn chuyến bay sau.”\n\n(Khoảng lặng. Ánh đèn của ROVER chớp nhẹ.)\n\nROVER: Nhưng giờ đây bốn bề im ắng quá. Chẳng ai gọi tên, chẳng ai đáp lời. Chắc cháu đã bị lãng quên thật rồi."
+      },
+      {
+        "title": "CẢNH 4. ĐÊM LẠNH NHẤT",
+        "text": "Đêm dài trên Mặt Trăng. Muôn sao sắc lạnh. Cuội và Thỏ Ngọc ngồi sát bên ROVER.\n\nTHỎ NGỌC: (khẽ hỏi) ROVER ơi... tấm gương nhỏ vẫn còn dùng được chứ?\n\nROVER: Nó chỉ là thủy tinh thôi. Không pin, chẳng có lấy một sợi dây điện. Nó chẳng thể cất tiếng gọi ai — chỉ biết lặng im chờ đợi.\n\nCHÚ CUỘI: (trầm giọng, lần đầu tiên chẳng nói đùa) Chú hiểu nỗi lòng ấy chứ. Bao lần nói lời thật thà mà chẳng một ai tin. Có lẽ tất cả chúng mình ở đây đều đang chờ một lời hồi âm.\n\nIm lặng. Ánh đèn của ROVER mờ dần đến gần như tắt hẳn."
+      },
+      {
+        "title": "CẢNH 5. TIA SÁNG MẢNH MAI",
+        "text": "Một tia sáng xanh lục mảnh mai vút lên từ Trái Đất và rọi trúng gương của ROVER. Ánh sáng lóe lên phản chiếu trở về.\n\nTHỎ NGỌC:\n\n“Kìa chú! Một luồng sáng từ Trái Đất!”\n\nCỤ ĐA:\n\n“Đó là tia laser đấy! Các nhà khoa học vẫn đang gửi ánh sáng tới chiếc gương nhỏ của cháu.”\n\nROVER:\n\n“Tấm gương của cháu ư? Sau chừng ấy năm tháng đằng đẵng?”\n\nCỤ ĐA:\n\n“Phải rồi! Nó hắt ánh sáng về Trái Đất, giúp con người đo từng tấc khoảng cách tới Mặt Trăng.”\n\nROVER:\n\n“Vậy ra... cháu vẫn đang góp chút sức cho hành trình khám phá này sao?”\n\nCỤ ĐA:\n\n“Dĩ nhiên rồi, bạn nhỏ. Cháu chưa bao giờ bị lãng quên cả.”\n\nROVER:\n\n“Thế thì câu chuyện của cháu vẫn còn viết tiếp!”"
+      },
+      {
+        "title": "CẢNH 6. TÌM THẤY BẠN",
+        "text": "CỤ ĐA: “Nhìn xem nào, bạn nhỏ. Ánh sáng từ việc cháu làm đã chạm tới nơi xa xôi hơn mọi tưởng tượng.”\n\nChiếc lá vàng hé mở khung cửa sổ của một em nhỏ ở Việt Nam đang nắn nót vẽ bức tranh Mặt Trăng.\n\nROVER: “Có ai đó tận dưới kia đang mơ về vầng trăng này sao?”\n\nCHÚ CUỘI: “Ừ đấy. Biết đâu một ngày không xa, đứa trẻ ấy sẽ chạm tới những chân trời ta chưa từng dám mơ.”\n\nTHỎ NGỌC: “Biết đâu nhà thám hiểm vĩ đại tiếp theo đang ngồi ngay trước mắt chúng mình kìa!”\n\nEm nhỏ khẽ ngẩng đầu nhìn về phía ánh trăng.\n\nEM NHỎ: “Biết đâu người thám hiểm Mặt Trăng mai sau sẽ là mình...”\n\n(Khoảng lặng)\n\n“Hoặc biết đâu... chính là BẠN!”\n\nNGƯỜI KỂ CHUYỆN: “Mọi khám phá diệu kỳ đều nảy mầm từ một ánh mắt biết tò mò. Và mọi ước mơ lớn lao đều bắt đầu từ một trái tim dám nghĩ suy bay bổng.”\n\nTẤT CẢ NHÂN VẬT:\n\n“FIND U IN THE YOUNIVERSE!”"
+      },
+      {
+        "title": "CẢNH KẾT",
+        "text": "Cội rễ nhắc bạn nhớ mình đến từ đâu. Còn ước mơ sẽ mở lối xem bạn đi được bao xa."
+      }
+    ]
+  },
   "app": {
-    "title": "Echo",
-    "subtitle": "Bị bỏ lại nhưng không bị lãng quên",
-    "hook": "Chúng ta đã để lại những cỗ máy trên Mặt Trăng, Sao Hỏa và xa hơn các hành tinh. Một số vẫn đang gửi tín hiệu.",
-    "begin": "Bắt đầu nhiệm vụ",
-    "continue": "Tiếp tục",
+    "brand": "Ký Ức Cung Trăng",
+    "title": "Vầng Trăng Còn Nhớ",
+    "subtitle": "Hành trình cung trăng cùng Chú Cuội và chiếc xe tự hành bị lãng quên",
+    "hook": "Khi một sứ mệnh khép lại, câu chuyện vẫn chưa chấm hết. Một chú xe nhỏ, bác tiều phu bước ra từ cổ tích, và lời nhắn mất nửa thế kỷ mới tìm được đường về.",
+    "begin": "Mở đầu hành trình Mặt Trăng",
+    "continue": "Viết tiếp hành trình",
     "challenge": "Dự án NASA Space Apps Challenge"
   },
   "book": {
@@ -44,8 +91,8 @@
     "home": "Trang chủ",
     "main": "Điều hướng chính",
     "more": "Các trang khác",
-    "progress": "Learning",
-    "archive": "Archive"
+    "progress": "Học tập",
+    "archive": "Kho lưu trữ"
   },
   "roverMail": {
     "open": "Mở hộp thư Mặt Trăng của ROVER",
@@ -93,8 +140,8 @@
     "musicOff": "Tắt nhạc nền"
   },
   "map": {
-    "heading": "Lần theo tín hiệu",
-    "sub": "Tám điểm dừng trong sáu thập kỷ khám phá của NASA.",
+    "heading": "Vầng trăng còn nhớ",
+    "sub": "Tám chặng đường qua hành trình Mặt Trăng.",
     "locked": "Hoàn thành chương trước",
     "play": "Chơi",
     "replay": "Chơi lại",
@@ -113,16 +160,16 @@
     "tabExpansions": "Phần mở rộng",
     "tabCompleted": "Đã hoàn thành",
     "expansionsHeading": "Phần mở rộng",
-    "expansionsSub": "Các bản đồ thưởng ngoài Mặt Trăng — Sao Hỏa & Không gian sâu.",
-    "completedHeading": "Bản đồ đã hoàn thành",
+    "expansionsSub": "Những bản đồ ngoài Mặt Trăng — Sao Hỏa & Không gian sâu.",
+    "completedHeading": "Chặng đường đã qua",
     "completedSub": "Đã hoàn thành {{done}} / {{total}} chương trên mọi hành trình.",
-    "emptyCompleted": "Chưa có bản đồ nào hoàn thành. Hãy chinh phục một chương ở Mặt Trăng hoặc Phần mở rộng.",
+    "emptyCompleted": "Chưa có chương nào hoàn thành. Hãy chọn một điểm dừng trên Mặt Trăng hoặc Phần mở rộng nhé!",
     "backToMoon": "Khám phá Mặt Trăng",
     "tagBonus": "Mở rộng",
-    "eyebrowWorld": "{{world}} · Trạm {{n}} / {{total}}",
-    "prevPlanet": "Bản đồ trước",
-    "nextPlanet": "Bản đồ tiếp",
-    "keyHint": "A / D hoặc ← / → để đổi map · Space hoặc Enter để vào"
+    "eyebrowWorld": "{{world}} · Chặng {{n}} / {{total}}",
+    "prevPlanet": "Chặng trước",
+    "nextPlanet": "Chặng sau",
+    "keyHint": "A / D hoặc ← / → để đổi chặng · Space hoặc Enter để bắt đầu"
   },
   "dialogue": {
     "next": "Tiếp",
@@ -176,23 +223,28 @@
     "right": "Phải",
     "forward": "Tiến",
     "backward": "Lùi",
-    "toTarget": "{{name}}: {{d}} m", "backToTarget": "Mục tiêu {{d}} m",
+    "toTarget": "{{name}}: {{d}} m",
+    "backToTarget": "Mục tiêu {{d}} m",
     "slope": "Độ dốc",
     "lookKeys": "Giữ chuột phải và kéo để nhìn quanh",
     "inspectKeys": "Kéo để xoay · Cuộn để thu phóng",
     "scanHoldBtn": "Giữ Quét",
     "scanPrompt": "Đã vào vòng mục tiêu — Nhấn GIỮ [Space / E] hoặc nút Quét",
     "scanKeys": "Phím cách / E: giữ để quét",
+    "sprintKeys": "Shift: tăng tốc",
+    "darkSideSector": "Vùng Tối Mặt Trăng · phạm vi {{r}} m",
+    "darkSideBoundary": "Đã tới ranh giới Vùng Tối Mặt Trăng — hãy vòng lại theo hướng đèn hiệu!",
+    "marsBoundary": "Đã tới ranh giới khu vực sứ mệnh — hãy quay lại hướng đèn hiệu!",
     "rabbitWarnTitle": "Thỏ Ngọc",
-    "rabbitWrongLater": "Khoan đã! Chỗ này chưa được phép quét đâu — hãy tới điểm màu cam trước nhé!",
-    "rabbitWrongDone": "Điểm này đã quét rồi mà! Hãy đi về phía điểm cam tiếp theo nhé!",
-    "rabbitWrongEmpty": "Chỗ này chưa có mục tiêu quét — hãy lái vào vòng tròn cam rồi nhấn giữ Quét!",
+    "rabbitWrongLater": "Đừng vội nhé! Điểm này chưa quét được đâu — cứ men theo đèn hiệu cam trước đã!",
+    "rabbitWrongDone": "Mình quét xong điểm này rồi mà! Hướng về phía đèn hiệu cam kế tiếp thôi!",
+    "rabbitWrongEmpty": "Chỗ này trống trơn à — lái vào vòng tròn cam rồi nhấn giữ nút Quét nhé!",
     "rabbitCheerTitle": "Thỏ Ngọc",
     "rabbitCheers": [
-      "Hay quá! Quét chuẩn lắm!",
+      "Hay quá! Quét chuẩn không cần chỉnh!",
       "Tuyệt vời Echo ơi!",
-      "Làm tốt lắm! Tiếp tục nào!",
-      "Ồ! Phát hiện thú vị quá!"
+      "Đỉnh lắm! Lăn bánh tiếp nào!",
+      "Ồ, phát hiện thú vị thật đấy!"
     ]
   },
   "memory": {
@@ -458,8 +510,8 @@
     "on": "Bật",
     "off2": "Tắt",
     "privacy": "Tiến trình chỉ lưu trên thiết bị này. Nếu bạn gửi lời nhắn cho ROVER, lời nhắn sẽ được gửi qua email đến nhóm Echo; không có thông tin nào khác về bạn được gửi đi.",
-    "narration": "Read aloud",
-    "narrationNote": "Uses your device's voice. It is off by default."
+    "narration": "Đọc thành tiếng",
+    "narrationNote": "Sử dụng giọng đọc của thiết bị. Mặc định đang tắt."
   },
   "common": {
     "loading": "Đang nhận tín hiệu…",
@@ -530,11 +582,11 @@
     "waiting": "Quan sát tín hiệu và chọn đúng thời điểm."
   },
   "cuoiPreview": {
-    "link": "Meet Cuội",
-    "title": "Cuoi · character draft",
-    "description": "Drag to rotate and scroll or pinch to zoom. This is an early stylized character study.",
-    "face": "Face",
-    "full": "Full body",
+    "link": "Gặp gỡ chú Cuội",
+    "title": "Chú Cuội",
+    "description": "Kéo để xoay và cuộn hoặc chụm hai ngón để thu phóng. Đây là bản phác thảo tạo hình nhân vật ban đầu.",
+    "face": "Khuôn mặt",
+    "full": "Toàn thân",
     "scrollCue": "Cuộn xuống để đọc truyền thuyết",
     "legend": {
       "eyebrow": "Truyện dân gian Việt Nam",
@@ -542,164 +594,164 @@
       "p1": "Ngày xửa ngày xưa, có một tiều phu tốt bụng tên Cuội tìm thấy cây đa thần trong rừng sâu. Cuội biết được điều kỳ diệu ấy khi thấy hổ mẹ nhai lá cây để chữa lành cho hổ con bị thương. Cuội đào cây về trồng trong vườn và dùng lá cứu nhiều người, nhiều con vật bị bệnh, trong đó có một cô gái hiền lành sau này trở thành vợ Cuội.",
       "p2": "Cây thần chỉ có một điều cần nhớ: cây chỉ được tưới bằng nước giếng trong. Nếu nước bẩn chạm vào rễ, cây sẽ bay thẳng lên trời!",
       "p3": "Sau này, vợ Cuội gặp tai nạn nghiêm trọng. Cuội cứu sống nàng bằng lá thuốc và một chút đất sét. Nàng khỏe lại nhưng trở nên rất hay quên. Một hôm Cuội đi kiếm củi, nàng quên mất điều cấm kỵ và đổ nước bẩn vào gốc cây.",
-      "p4": "Vù một cái! Mặt đất rung chuyển, cây bật rễ khỏi đất và bay lên mây. Cuội chạy về vừa kịp lúc, túm lấy rễ cây để kéo xuống nhưng cây quá khỏe, đưa Cuội lên tận Mặt Trăng. Vì thế, mỗi khi nhìn trăng rằm sáng, ta vẫn thấy bóng Cuội ngồi dưới gốc cây đa thần."
+      "p4": "Chợt một tiếng ầm rung chuyển mặt đất, cây đa bật gốc bay vút lên mây xanh. Cuội chạy về vừa kịp lúc, vội vã níu chặt lấy chùm rễ định kéo cây xuống, nhưng phép màu quá mạnh đã nhấc bổng chàng lên tận cung trăng. Bởi vậy mỗi độ trăng rằm vằng vặc, người ta vẫn trông thấy bóng chú Cuội ngồi bên gốc đa thần."
     }
   },
   "learn": {
     "precheck": {
-      "heading": "Before we begin",
-      "sub": "Three quick guesses. They are not marked. They only help us see what you learn.",
-      "start": "Start",
-      "skip": "Skip the guesses",
-      "done": "Thank you. Now the story can begin."
+      "heading": "Trước khi bắt đầu",
+      "sub": "Ba câu đoán nhanh nhé. Không chấm điểm đâu, chỉ giúp chúng ta thấy bạn đã học được gì thôi.",
+      "start": "Bắt đầu",
+      "skip": "Bỏ qua phần đoán",
+      "done": "Cảm ơn bạn. Giờ câu chuyện có thể bắt đầu rồi."
     },
     "interlude": {
-      "kicker": "Cuội's story",
-      "title": "The first time I climbed the tree",
-      "line1": "When I was young, I tried to climb the banyan tree every morning. For a long time, I fell at the same branch.",
-      "line2": "I thought the tree was telling me to stop. Then my mother said: the tree is telling you where to put your hands.",
-      "line3": "The third time I fell, I looked at the branch instead of the ground. The next morning, I climbed past it.",
-      "line4": "You are not failing. You are learning where the branch is. Let us look again together.",
-      "hint": "A hint is on now. The Moon is patient, and so are we.",
-      "continue": "Let us try again"
+      "kicker": "Câu chuyện của chú Cuội",
+      "title": "Lần đầu chú trèo cây",
+      "line1": "Hồi nhỏ, sáng nào chú cũng thử trèo lên cây đa. Suốt một thời gian dài, cứ đến đúng cành ấy là chú lại ngã.",
+      "line2": "Chú tưởng cây đang bảo mình dừng lại. Rồi mẹ chú nói: cây đang chỉ cho con biết phải đặt tay vào đâu đấy.",
+      "line3": "Lần thứ ba ngã xuống, chú nhìn lên cành cây thay vì nhìn xuống đất. Sáng hôm sau, chú đã trèo qua được cành đó.",
+      "line4": "Cháu không hề thất bại đâu. Cháu chỉ đang học xem cành cây ở chỗ nào thôi. Nào, mình cùng nhìn lại nhé.",
+      "hint": "Gợi ý đã bật rồi. Mặt Trăng rất kiên nhẫn, và chúng ta cũng vậy.",
+      "continue": "Thử lại nào"
     },
-    "assist": "Cuội's hint is on. Take your time.",
+    "assist": "Gợi ý của chú Cuội đang bật. Cứ từ từ nhé.",
     "reflect": {
-      "heading": "Think about it",
-      "submit": "Send my answer",
-      "thinking": "Cuội is thinking about your answer…",
-      "skip": "Skip and keep going",
-      "continue": "Continue",
-      "ai": "Cuội read your answer.",
-      "fallback": "Cuội checked your answer on this device.",
-      "unavailable": "The thinking helper is offline, so your answer is saved for later. You can keep going.",
-      "pending": "Saved for later.",
-      "missing": "One thing to add",
-      "followUp": "Try this next",
-      "wordBank": "Words you can use",
-      "minLength": "A few words are enough. Write what you think.",
-      "score": "{{score}} of {{max}}",
+      "heading": "Cùng suy nghĩ nhé",
+      "submit": "Gửi câu trả lời",
+      "thinking": "Chú Cuội đang suy nghĩ về câu trả lời của bạn…",
+      "skip": "Bỏ qua và đi tiếp",
+      "continue": "Tiếp tục",
+      "ai": "Chú Cuội đã đọc câu trả lời của bạn.",
+      "fallback": "Chú Cuội đã xem câu trả lời trên thiết bị này.",
+      "unavailable": "Trợ lý suy nghĩ đang ngoại tuyến nên câu trả lời của bạn được lưu lại để xem sau. Bạn vẫn có thể đi tiếp.",
+      "pending": "Đã lưu để xem sau.",
+      "missing": "Một ý có thể bổ sung",
+      "followUp": "Thử nghĩ thêm nhé",
+      "wordBank": "Từ gợi ý bạn có thể dùng",
+      "minLength": "Chỉ cần vài từ thôi. Hãy viết điều bạn nghĩ nhé.",
+      "score": "{{score}} / {{max}}",
       "prompts": {
         "r1": {
-          "question": "If the lunar rover had never been there, what would have been harder for the astronauts?",
-          "context": "Think about distance, tools, and rocks. There is no single right answer.",
+          "question": "Nếu không có xe tự hành Mặt Trăng, điều gì sẽ khó khăn hơn cho các phi hành gia?",
+          "context": "Hãy nghĩ về quãng đường, dụng cụ và các mẫu đá. Không có một đáp án đúng duy nhất đâu.",
           "starters": [
-            "Without the rover, astronauts would have…",
-            "The rover helped because…",
-            "One thing that would be harder is…"
+            "Nếu không có xe tự hành, các phi hành gia sẽ phải…",
+            "Xe tự hành đã giúp ích vì…",
+            "Một điều sẽ khó khăn hơn là…"
           ],
-          "placeholder": "Write your idea in your own words…",
+          "placeholder": "Viết ý kiến của bạn bằng lời của riêng mình…",
           "words": [
-            "farther",
-            "carry",
-            "samples",
-            "tools",
-            "walk",
-            "explore"
+            "xa hơn",
+            "mang theo",
+            "mẫu đá",
+            "dụng cụ",
+            "đi bộ",
+            "khám phá"
           ]
         },
         "r2": {
-          "question": "The seismometer stopped working in 1969. Why can it still matter today?",
-          "context": "Think about what it recorded, and who might use that record.",
+          "question": "Địa chấn kế đã ngừng hoạt động từ năm 1969. Vì sao nó vẫn còn ý nghĩa đến ngày nay?",
+          "context": "Hãy nghĩ xem nó đã ghi lại điều gì và ai có thể sử dụng những dữ liệu đó.",
           "starters": [
-            "Even though it stopped…",
-            "Scientists can still…",
-            "Its data helps us…"
+            "Dù thiết bị đã ngừng hoạt động…",
+            "Các nhà khoa học vẫn có thể…",
+            "Dữ liệu của nó giúp chúng ta…"
           ],
-          "placeholder": "Write your idea in your own words…",
+          "placeholder": "Viết ý kiến của bạn bằng lời của riêng mình…",
           "words": [
-            "data",
-            "record",
-            "learn",
-            "moonquakes",
-            "study",
-            "remember"
+            "dữ liệu",
+            "ghi chép",
+            "học hỏi",
+            "động Mặt Trăng",
+            "nghiên cứu",
+            "ghi nhớ"
           ]
         }
       }
     },
     "progress": {
-      "heading": "Your Moon journey",
-      "sub": "This page shows what you have learned. It is not a grade, and nobody is ranked.",
-      "overall": "Moon Mission Learning Score",
-      "empty": "Play a chapter to start collecting ideas.",
+      "heading": "Hành trình Mặt Trăng của bạn",
+      "sub": "Trang này ghi lại những điều bạn đã học. Đây không phải điểm số và không xếp hạng ai cả.",
+      "overall": "Chỉ số Học tập Nhiệm vụ Mặt Trăng",
+      "empty": "Hãy chơi một chương để bắt đầu thu thập các ý tưởng nhé.",
       "components": {
-        "quiz": "Moon facts",
-        "open": "Explaining ideas",
-        "apply": "Using what you know"
+        "quiz": "Kiến thức Mặt Trăng",
+        "open": "Giải thích ý tưởng",
+        "apply": "Vận dụng điều đã biết"
       },
-      "chapters": "Chapter by chapter",
-      "concepts": "Ideas you have met",
-      "understood": "You can explain this",
-      "practice": "Worth another look",
-      "pending": "Waiting for review",
-      "grownups": "For grown-ups",
+      "chapters": "Từng chương một",
+      "concepts": "Những ý tưởng bạn đã gặp",
+      "understood": "Bạn có thể giải thích điều này",
+      "practice": "Đáng để xem lại thêm",
+      "pending": "Đang chờ xem xét",
+      "grownups": "Dành cho người lớn",
       "bands": {
-        "starting": "Just beginning",
-        "exploring": "Exploring",
-        "steady": "Finding your way",
-        "strong": "Confident",
-        "keeper": "Keeper of the story"
+        "starting": "Mới khởi đầu",
+        "exploring": "Đang khám phá",
+        "steady": "Đang tìm thấy hướng đi",
+        "strong": "Vững vàng tự tin",
+        "keeper": "Người giữ gìn câu chuyện"
       }
     },
     "grownups": {
-      "heading": "Learning record",
-      "sub": "Local, anonymous, and never ranked.",
-      "mmls": "Moon Mission Learning Score",
-      "quiz": "Quiz knowledge (40%)",
-      "open": "Open-ended understanding (40%)",
-      "apply": "Knowledge application (20%)",
-      "gain": "Learning gain (post − pre)",
-      "pre": "Pre-check",
-      "post": "Post-check",
-      "responses": "Open answers and rubrics",
-      "none": "No answers yet.",
+      "heading": "Hồ sơ học tập",
+      "sub": "Lưu trên máy, ẩn danh và không bao giờ xếp hạng.",
+      "mmls": "Chỉ số Học tập Nhiệm vụ Mặt Trăng",
+      "quiz": "Kiến thức trắc nghiệm (40%)",
+      "open": "Hiểu sâu qua câu hỏi mở (40%)",
+      "apply": "Vận dụng kiến thức (20%)",
+      "gain": "Mức tiến bộ (sau − trước)",
+      "pre": "Kiểm tra trước",
+      "post": "Kiểm tra sau",
+      "responses": "Câu trả lời mở và tiêu chí đánh giá",
+      "none": "Chưa có câu trả lời nào.",
       "score": "{{score}} / {{max}}",
       "source": {
-        "ai": "Gemini-reviewed",
-        "fallback": "Local rubric",
-        "pending": "Pending",
-        "unavailable": "Service unavailable"
+        "ai": "Gemini đánh giá",
+        "fallback": "Tiêu chí tại máy",
+        "pending": "Đang chờ",
+        "unavailable": "Dịch vụ không khả dụng"
       },
-      "weights": "Weights are configurable design parameters, not validated constants.",
-      "privacy": "No names, no accounts, no server storage. Progress stays in this browser.",
-      "reset": "Reset all progress",
-      "back": "Back to the story",
-      "missing": "Missing or unclear",
-      "understood": "Understood"
+      "weights": "Các trọng số là tham số thiết kế có thể cấu hình, không phải hằng số chuẩn hóa.",
+      "privacy": "Không tên, không tài khoản, không lưu trên máy chủ. Tiến trình chỉ nằm trong trình duyệt này.",
+      "reset": "Đặt lại toàn bộ tiến trình",
+      "back": "Quay lại câu chuyện",
+      "missing": "Còn thiếu hoặc chưa rõ",
+      "understood": "Đã hiểu"
     },
     "archive": {
-      "kicker": "Memory archive",
-      "title": "The instrument that listened",
-      "intro": "Cuội places the banyan leaf beside the silent package. The leaf glows, and the dust begins to remember.",
-      "disclaimer": "This memory archive is imagined. The leaf is a story symbol: it did not repair or restart anything.",
-      "next": "Uncover the next memory",
-      "finish": "Carry the story forward",
-      "source": "Facts checked against NASA and LPI sources.",
+      "kicker": "Kho lưu trữ ký ức",
+      "title": "Thiết bị đã từng lắng nghe",
+      "intro": "Chú Cuội đặt chiếc lá đa bên cạnh hộp thiết bị lặng im. Chiếc lá khẽ phát sáng, và lớp bụi Mặt Trăng bắt đầu nhớ lại.",
+      "disclaimer": "Kho lưu trữ ký ức này là chi tiết hư cấu. Chiếc lá chỉ là biểu tượng trong truyện: nó không sửa chữa hay khởi động lại thiết bị nào cả.",
+      "next": "Mở ký ức tiếp theo",
+      "finish": "Mang câu chuyện đi tiếp",
+      "source": "Dữ kiện đã được đối chiếu với nguồn của NASA và LPI.",
       "cards": [
         {
-          "title": "A small package",
-          "body": "Apollo 11 left the Early Apollo Scientific Experiments Package, EASEP, in 1969. Its seismic package, PSEP, was one part of it. A laser reflector was deployed at the same site, though it was not attached to EASEP."
+          "title": "Một hộp thiết bị nhỏ",
+          "body": "Apollo 11 đã để lại Bộ Thí nghiệm Khoa học Apollo Sớm (EASEP) vào năm 1969. Bộ phận đo địa chấn PSEP là một phần trong đó. Một gương phản xạ laser cũng được đặt tại cùng địa điểm, dù không gắn vào EASEP."
         },
         {
-          "title": "What it heard",
-          "body": "PSEP carried long-period and short-period seismometers. It listened for moonquakes, meteoroid impacts, and movements inside the Moon."
+          "title": "Những gì nó nghe thấy",
+          "body": "PSEP mang theo các địa chấn kế chu kỳ dài và chu kỳ ngắn. Nó lắng nghe những trận động Mặt Trăng, thiên thạch va chạm và các chuyển động sâu bên trong Mặt Trăng."
         },
         {
-          "title": "Three weeks of listening",
-          "body": "It was switched on by ground command on 21 July 1969. It returned data for about three weeks of lunar daytime, then lost its command link in late August 1969. It was formally terminated on 27 August 1969, before its planned support phase was over."
+          "title": "Ba tuần lắng nghe",
+          "body": "Thiết bị được bật bằng lệnh từ mặt đất ngày 21 tháng 7 năm 1969. Nó gửi dữ liệu về suốt khoảng ba tuần ban ngày Mặt Trăng, rồi mất đường truyền lệnh vào cuối tháng 8 năm 1969. Nhiệm vụ chính thức kết thúc ngày 27 tháng 8 năm 1969, trước khi giai đoạn hỗ trợ dự kiến khép lại."
         },
         {
-          "title": "The data stayed",
-          "body": "The instrument is silent, but its record is still used. A machine can stop operating while what it measured keeps teaching."
+          "title": "Dữ liệu vẫn ở lại",
+          "body": "Thiết bị đã lặng im, nhưng bản ghi của nó vẫn tiếp tục được sử dụng. Một cỗ máy có thể ngừng chạy, còn những gì nó đo được vẫn tiếp tục dạy cho chúng ta."
         }
       ]
     },
     "archiveScreen": {
-      "heading": "The Archive",
-      "sub": "Các chương mở rộng tùy chọn về Sao Hỏa và không gian sâu (tách biệt với hành trình Mặt Trăng; một số nội dung dùng tiếng Anh).",
-      "play": "Open chapter",
-      "back": "Back to the Moon journey"
+      "heading": "Kho lưu trữ",
+      "sub": "Các chương mở rộng tùy chọn về Sao Hỏa và không gian sâu (tách biệt với hành trình Mặt Trăng).",
+      "play": "Mở chương",
+      "back": "Quay lại hành trình Mặt Trăng"
     }
   }
 }

@@ -7,7 +7,7 @@ import type { Plugin } from 'vite';
  */
 
 export const MOON_MESSAGE_MAX = 500;
-const LANGS = new Set(['en', 'vi', 'zh-CN']);
+const LANGS = new Set(['en', 'vi', 'zh-CN', 'es', 'ja']);
 const MODES = new Set(['watercolor', 'lantern']);
 
 export interface MoonMessage { message: string; lang: string; mode: string }

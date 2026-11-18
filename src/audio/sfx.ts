@@ -206,18 +206,20 @@ const SOUNDS: Record<string, [number, number, number, OscillatorType, number][]>
   fail: [[196, 0, 0.3, 'sawtooth', 0.05], [147, 0.18, 0.4, 'sawtooth', 0.05]],
   page: [[380, 0, 0.08, 'triangle', 0.025], [240, 0.035, 0.1, 'sine', 0.018]],
   type: [[720, 0, 0.018, 'square', 0.018]],
+  boost: [[659, 0, 0.08, 'sine', 0.038], [988, 0.055, 0.11, 'triangle', 0.038], [1318, 0.11, 0.18, 'sine', 0.032]],
   storm: [],
 };
 
 const HAPTICS: Partial<Record<SoundName, number | number[]>> = {
   ping: 15,
+  boost: 18,
   warn: 25,
   storm: [30, 40, 30],
   win: [20, 30, 35],
   fail: [45, 35, 55],
 };
 
-export type SoundName = 'blip' | 'ping' | 'beacon' | 'warn' | 'win' | 'fail' | 'page' | 'type' | 'storm';
+export type SoundName = 'blip' | 'ping' | 'beacon' | 'warn' | 'win' | 'fail' | 'page' | 'type' | 'boost' | 'storm';
 
 export function play(name: SoundName, haptic = name === 'warn' || name === 'fail' || name === 'win' || name === 'storm') {
   const { sound, volume } = useGame.getState();

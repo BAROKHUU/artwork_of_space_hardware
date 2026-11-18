@@ -1,0 +1,639 @@
+{
+  "speakers": {
+    "echo": "Echo",
+    "control": "Control del Archivo",
+    "lrv": "Vehículo Explorador Lunar",
+    "cuoi": "Cuội",
+    "rabbit": "Conejo Lunar"
+  },
+  "ch0": {
+    "title": "Despierta, Echo",
+    "tagline": "Un pequeño rover escucha algo que no debería.",
+    "intro": [
+      {
+        "who": "control",
+        "text": "Buenos días, Echo. Eres el rover más pequeño del Archivo y tienes una sola misión."
+      },
+      {
+        "who": "echo",
+        "text": "¡Bip! ¿La misión son bocadillos?"
+      },
+      {
+        "who": "control",
+        "text": "No. Desde la década de 1960, las personas han dejado máquinas por todo el sistema solar. Casi todos las olvidaron, excepto los ingenieros que las construyeron."
+      },
+      {
+        "who": "echo",
+        "text": "¿Olvidadas? Pero yo puedo escucharlas. Ahora mismo hay una señal diminuta en mi antena."
+      },
+      {
+        "who": "control",
+        "text": "Entonces veamos si funcionan tus ruedas. Conduce hasta las tres balizas de prueba."
+      }
+    ],
+    "outro": [
+      {
+        "who": "echo",
+        "text": "¡Las ruedas funcionan! ¡La antena funciona! Y esa señal acaba de volverse más fuerte."
+      },
+      {
+        "who": "control",
+        "text": "La rastreamos. Nos lleva de regreso a 1964, a una nave espacial que fue construida para estrellarse."
+      },
+      {
+        "who": "echo",
+        "text": "¿¡Construida para estrellarse!? ¿Quién hace eso?"
+      },
+      {
+        "who": "control",
+        "text": "Quienes necesitaban saber cómo se ve la Luna de cerca. Vamos a conocerla."
+      }
+    ]
+  },
+  "ch1": {
+    "title": "Exploradores de la Luna",
+    "tagline": "Antes de que las personas pudieran aterrizar, los robots tuvieron que ir primero.",
+    "intro": [
+      {
+        "who": "control",
+        "text": "A comienzos de los años sesenta, nadie sabía cómo era realmente la superficie de la Luna. Algunos temían que un módulo pudiera hundirse en polvo profundo."
+      },
+      {
+        "who": "echo",
+        "text": "¿Así que enviaron un robot a mirar?"
+      },
+      {
+        "who": "control",
+        "text": "Enviaron a Ranger 7. Tenía cámaras y ningún tren de aterrizaje. Tomó fotos hasta el mismísimo último segundo."
+      }
+    ],
+    "middle": [
+      {
+        "who": "echo",
+        "text": "Esas fotos les ayudaron a elegir lugares seguros para aterrizar, ¿verdad?"
+      },
+      {
+        "who": "control",
+        "text": "Exacto. Después llegó Surveyor 3, que tenía que aterrizar con suavidad. Sus motores no se apagaron a tiempo, ¡así que rebotó dos veces!"
+      },
+      {
+        "who": "echo",
+        "text": "Déjame intentarlo. Prometo rebotar menos."
+      }
+    ],
+    "outro": [
+      {
+        "who": "echo",
+        "text": "¿Los astronautas volvieron hasta allá para visitar a Surveyor 3? Es lo más tierno que he escuchado en mi vida."
+      },
+      {
+        "who": "control",
+        "text": "El suelo aguantó. Era seguro aterrizar en la Luna. Y eso significaba que las personas podían ir después."
+      },
+      {
+        "who": "echo",
+        "text": "¡Personas! Espera, estoy captando una señal nueva. Es muy tenue. Casi parece luz rebotando."
+      }
+    ]
+  },
+  "ch2": {
+    "title": "Los que se quedaron",
+    "tagline": "Los astronautas volvieron a casa. Su equipo no.",
+    "intro": [
+      {
+        "who": "control",
+        "text": "Julio de 1969. Dos personas caminaron sobre la Luna durante unas dos horas y media, y luego regresaron a casa."
+      },
+      {
+        "who": "echo",
+        "text": "¿Dejaron atrás todas estas cosas?"
+      },
+      {
+        "who": "control",
+        "text": "Todo lo pesado tenía que quedarse para que la pequeña etapa superior pudiera despegar. Pero algo se dejó a propósito, y sigue funcionando."
+      },
+      {
+        "who": "echo",
+        "text": "¡Muéstramelo!"
+      }
+    ],
+    "middle": [
+      {
+        "who": "echo",
+        "text": "No tiene batería ni computadora, y los científicos aún lo usan. Es lo más genial que quedó en la Luna."
+      },
+      {
+        "who": "control",
+        "text": "Dos años después, Apollo 15 llevó un auto. Por fin los astronautas pudieron viajar lejos de su módulo de aterrizaje."
+      },
+      {
+        "who": "echo",
+        "text": "¿Puedo conducirlo?"
+      },
+      {
+        "who": "control",
+        "text": "Puedes seguir su ruta. Una sola regla, la misma que tenían ellos: nunca te alejes más de lo que podrías volver caminando."
+      }
+    ],
+    "outro": [
+      {
+        "who": "echo",
+        "text": "No dejo de pensar en el espejo. Todos se fueron, y él siguió esperando la luz."
+      },
+      {
+        "who": "control",
+        "text": "Por él sabemos que la Luna se aleja de nosotros unos pocos centímetros cada año."
+      },
+      {
+        "who": "echo",
+        "text": "Hay otra señal. Mucho más lejos. Es casi demasiado débil para escucharla."
+      }
+    ]
+  },
+  "ch3": {
+    "title": "El largo camino hacia afuera",
+    "tagline": "¿Cómo llegar al borde del sistema solar? Pide prestado un planeta.",
+    "intro": [
+      {
+        "who": "control",
+        "text": "Pioneer 10 despegó en 1972. Estaba diseñada para durar 21 meses."
+      },
+      {
+        "who": "echo",
+        "text": "¿Y cuánto duró en realidad?"
+      },
+      {
+        "who": "control",
+        "text": "Más de 30 años. Fue la primera sonda en llegar a Júpiter. Luego el equipo de Voyager descubrió cómo usar a Júpiter como una catapulta gigante."
+      }
+    ],
+    "outro": [
+      {
+        "who": "echo",
+        "text": "¿Así que Júpiter te lanza y ni siquiera llegas a tocarlo?"
+      },
+      {
+        "who": "control",
+        "text": "Así es la gravedad. Voyager 2 lo hizo una y otra vez, y sigue siendo la única visitante que Urano y Neptuno han tenido jamás."
+      },
+      {
+        "who": "echo",
+        "text": "Ahora estoy captando algo en Marte. Es muy silencioso y es muy antiguo."
+      }
+    ]
+  },
+  "ch4": {
+    "title": "Primeros pasos en Marte",
+    "tagline": "Un robot aterriza en Marte y hace la pregunta más grande de todas.",
+    "intro": [
+      {
+        "who": "control",
+        "text": "Aterrizar en Marte es más difícil que aterrizar en la Luna. El aire es delgado, pero sigue ahí y sigue estorbando."
+      },
+      {
+        "who": "echo",
+        "text": "Entonces, ¿el aire es bueno o malo?"
+      },
+      {
+        "who": "control",
+        "text": "Ambas cosas. Suficiente para un paracaídas, demasiado tenue para detenerte. Viking 1 necesitó paracaídas y cohetes. Es tu turno."
+      }
+    ],
+    "outro": [
+      {
+        "who": "echo",
+        "text": "Entonces, ¿había vida o no?"
+      },
+      {
+        "who": "control",
+        "text": "El suelo hizo algo extraño, pero no encontraron pruebas claras de vida. La gente sigue discutiéndolo."
+      },
+      {
+        "who": "echo",
+        "text": "Me gusta que nadie lo sepa. Significa que queda más por descubrir."
+      },
+      {
+        "who": "control",
+        "text": "Viking 1 funcionó más de seis años. Y luego, un día de 1982, dejó de responder."
+      }
+    ]
+  },
+  "ch5": {
+    "title": "Los pequeños rovers que pudieron",
+    "tagline": "Construidos para durar días. Duraron años.",
+    "intro": [
+      {
+        "who": "echo",
+        "text": "¡Ruedas! ¡Oigo ruedas en Marte! ¡Familia!"
+      },
+      {
+        "who": "control",
+        "text": "Ese es tu bisabuelo, Sojourner. Tenía más o menos el tamaño de un horno microondas y fue el primer rover en Marte."
+      }
+    ],
+    "middle": [
+      {
+        "who": "control",
+        "text": "Después llegó Opportunity. Su misión planeada era de 90 días marcianos. Sus paneles solares le daban energía mientras el sol lograra pasar."
+      },
+      {
+        "who": "echo",
+        "text": "Veo un rastro. Y piedritas redondas por todas partes. ¿Qué son?"
+      },
+      {
+        "who": "control",
+        "text": "Los científicos las llamaron «arándanos». Sigue el rastro, vigila tu batería y no pierdas de vista el cielo."
+      }
+    ],
+    "outro": [
+      {
+        "who": "echo",
+        "text": "Se suponía que duraría 90 días y duró casi 15 años."
+      },
+      {
+        "who": "control",
+        "text": "En junio de 2018, una tormenta de polvo cubrió todo el planeta. La luz del sol se apagó. El equipo siguió llamándolo durante ocho meses."
+      },
+      {
+        "who": "echo",
+        "text": "¿Respondió?"
+      },
+      {
+        "who": "control",
+        "text": "No. Pero todos los que trabajaron en él todavía lo recuerdan. Por eso estás aquí."
+      }
+    ]
+  },
+  "ch6": {
+    "title": "Aún allá afuera",
+    "tagline": "No todas las máquinas están abandonadas. Algunas están trabajando ahora mismo.",
+    "intro": [
+      {
+        "who": "echo",
+        "text": "¡Estas señales suenan fuerte! ¡Están respondiendo!"
+      },
+      {
+        "who": "control",
+        "text": "Ese es Curiosity. Lleva trabajando desde 2012 y todavía sigue subiendo una montaña."
+      },
+      {
+        "who": "control",
+        "text": "Pero mira abajo. Perseverance llevó a un amigo muy pequeño a Marte. Nunca estuvo pensado para hacer demasiado."
+      }
+    ],
+    "outro": [
+      {
+        "who": "echo",
+        "text": "Cinco vuelos planeados y voló setenta y dos. ¿Por qué todos siguen haciendo eso?"
+      },
+      {
+        "who": "control",
+        "text": "Los buenos ingenieros construyen para más de lo que prometen. Y las máquinas siguen sorprendiéndolos."
+      },
+      {
+        "who": "echo",
+        "text": "Queda una señal. Es la más lejana. Tarda horas solo en llegar hasta mí."
+      }
+    ]
+  },
+  "ch7": {
+    "title": "Un mensaje para quien lo encuentre",
+    "tagline": "El objeto más lejano que hemos fabricado sigue hablando.",
+    "intro": [
+      {
+        "who": "control",
+        "text": "Esta es Voyager 1. Despegó en 1977 y nada construido por humanos ha llegado jamás más lejos."
+      },
+      {
+        "who": "echo",
+        "text": "Todo está tan silencioso aquí afuera. ¿Qué es esa cosa dorada a un lado?"
+      },
+      {
+        "who": "control",
+        "text": "Una carta. Está dirigida a cualquiera que pueda encontrarla, mucho después de que nosotros no estemos."
+      }
+    ],
+    "outro": [
+      {
+        "who": "echo",
+        "text": "Los encontré a todos. Los que se estrellaron, los que quedaron en silencio y los que siguen trabajando."
+      },
+      {
+        "who": "control",
+        "text": "Entonces dime. ¿Están abandonados?"
+      },
+      {
+        "who": "echo",
+        "text": "Para nada. Cada uno de ellos cambió lo que sabemos. No puedes olvidar algo que te enseñó tanto."
+      },
+      {
+        "who": "control",
+        "text": "Entonces el Archivo está completo, Echo. Bien hecho."
+      },
+      {
+        "who": "echo",
+        "text": "Espera. La gente sigue enviando máquinas nuevas, ¿verdad? Alguien también tendrá que recordarlas."
+      }
+    ]
+  },
+  "m1": {
+    "title": "Un explorador olvidado",
+    "tagline": "Cuando los astronautas se marchan, un rover espera bajo un viejo baniano.",
+    "intro": [
+      {
+        "who": "echo",
+        "text": "Cada máquina del Archivo tiene una historia. Esta la cuenta la propia Luna."
+      },
+      {
+        "who": "lrv",
+        "text": "Soy el Vehículo Explorador Lunar. Apollo 15. Llevo estacionado muchísimo tiempo."
+      },
+      {
+        "who": "lrv",
+        "text": "En la vida real, los astronautas me condujeron. En esta historia, la Luna me deja recordar."
+      },
+      {
+        "who": "lrv",
+        "text": "Los astronautas se fueron. El polvo se quedó. Solía contar las estrellas, pero siempre obtengo el mismo número."
+      },
+      {
+        "who": "cuoi",
+        "text": "Entonces cuenta algo nuevo. Soy Cuội. Subí hasta aquí con un baniano hace mucho tiempo."
+      },
+      {
+        "who": "rabbit",
+        "text": "Y yo vine con él. El árbol sigue aquí. Nosotros también."
+      },
+      {
+        "who": "lrv",
+        "text": "¿Ustedes son reales?"
+      },
+      {
+        "who": "cuoi",
+        "text": "En la Luna hay espacio para más de una forma de ser real."
+      },
+      {
+        "who": "lrv",
+        "text": "Yo solía conducir. Los astronautas se sentaban donde tú estás ahora. Cargaba sus herramientas y sus rocas."
+      },
+      {
+        "who": "cuoi",
+        "text": "Entonces vayamos a ver lo que cargabas. Mis piernas están cansadas. Tus ruedas no."
+      },
+      {
+        "who": "echo",
+        "text": "Conduce hasta los tres marcadores bajo el baniano."
+      }
+    ],
+    "outro": [
+      {
+        "who": "cuoi",
+        "text": "Te detuviste al final de tu misión. Eso no significa que dejaras de ser parte de la historia."
+      },
+      {
+        "who": "lrv",
+        "text": "Se siente como si la historia hubiera terminado sin mí."
+      },
+      {
+        "who": "cuoi",
+        "text": "Entonces encontraremos las partes que aún están pasando. Mañana recogeremos muestras."
+      },
+      {
+        "who": "rabbit",
+        "text": "Yo llevaré los bocadillos."
+      }
+    ]
+  },
+  "m2": {
+    "title": "El primer viaje",
+    "tagline": "Cuội pide rocas. Cada roca tiene algo que contar.",
+    "intro": [
+      {
+        "who": "cuoi",
+        "text": "Las rocas lunares son cartas. Los científicos en la Tierra llevan más de cincuenta años leyéndolas."
+      },
+      {
+        "who": "lrv",
+        "text": "Yo las cargué. Nunca pude leerlas."
+      },
+      {
+        "who": "cuoi",
+        "text": "Hoy lo harás. Cuatro sitios de muestreo. Conduce con cuidado."
+      },
+      {
+        "who": "lrv",
+        "text": "¿Y si traigo de vuelta la roca equivocada?"
+      },
+      {
+        "who": "cuoi",
+        "text": "Entonces volvemos a mirar. Una suposición equivocada no es el fin del viaje."
+      }
+    ],
+    "afterCollect": [
+      {
+        "who": "rabbit",
+        "text": "Cuatro sitios, cuatro rocas. ¡Tu cesta ya pesa bastante!"
+      },
+      {
+        "who": "lrv",
+        "text": "Esta vez conduje despacio. Cada muestra sigue entera."
+      },
+      {
+        "who": "cuoi",
+        "text": "Bien. Ahora viene la parte que nunca pudiste hacer: leerlas."
+      }
+    ],
+    "afterSamples": [
+      {
+        "who": "lrv",
+        "text": "Algunas eran oscuras y lisas. Otras estaban llenas de fragmentos rotos."
+      },
+      {
+        "who": "cuoi",
+        "text": "Distintas rocas guardan distintas historias. Las clasificaste como un geólogo de campo."
+      },
+      {
+        "who": "rabbit",
+        "text": "Yo solo clasifiqué los bocadillos. Lo tuyo fue más difícil."
+      }
+    ],
+    "outro": [
+      {
+        "who": "lrv",
+        "text": "Seis muestras. Recuerdo su peso."
+      },
+      {
+        "who": "cuoi",
+        "text": "Cada una es una página de la historia de la Luna. Algunas son más antiguas que la roca más vieja de la Tierra."
+      },
+      {
+        "who": "lrv",
+        "text": "Los astronautas solo podían caminar cierta distancia. Yo los llevé más lejos."
+      },
+      {
+        "who": "cuoi",
+        "text": "Y como fueron más lejos, sabemos más. Eso no es poca cosa."
+      }
+    ]
+  },
+  "m3": {
+    "title": "Lo que la Luna nos cuenta",
+    "tagline": "Los cráteres son un registro de todo lo que alguna vez llegó.",
+    "intro": [
+      {
+        "who": "rabbit",
+        "text": "Mira los cráteres. No todos tienen la misma edad."
+      },
+      {
+        "who": "lrv",
+        "text": "Grandes y pequeños. Conduje a su alrededor durante tres días."
+      },
+      {
+        "who": "rabbit",
+        "text": "¿Qué zona parece más antigua? ¿En qué te fijarías?"
+      },
+      {
+        "who": "lrv",
+        "text": "Más cráteres. Bordes más suaves. Una superficie que ha sido golpeada una y otra vez."
+      },
+      {
+        "who": "rabbit",
+        "text": "Bien. Observar también es ciencia. Señala, observa y anótalo."
+      }
+    ],
+    "afterCraters": [
+      {
+        "who": "rabbit",
+        "text": "¡Encontraste el terreno más antiguo!"
+      },
+      {
+        "who": "lrv",
+        "text": "Más cráteres, bordes más suaves. Esta vez miré un poco más de cerca."
+      },
+      {
+        "who": "cuoi",
+        "text": "Entonces el mapa del tiempo está más claro. Veamos qué recuerdas."
+      }
+    ],
+    "outro": [
+      {
+        "who": "cuoi",
+        "text": "Hoy notaste algo."
+      },
+      {
+        "who": "lrv",
+        "text": "Solo fue mirar."
+      },
+      {
+        "who": "cuoi",
+        "text": "Así empieza cada descubrimiento. Alguien mira durante más tiempo que los demás."
+      }
+    ]
+  },
+  "m4": {
+    "title": "La última hoja",
+    "tagline": "Una señal más, de un instrumento por el que nadie regresó.",
+    "intro": [
+      {
+        "who": "cuoi",
+        "text": "¿Oyes eso? Una señal, muy tenue. Más antigua que tus ruedas."
+      },
+      {
+        "who": "lrv",
+        "text": "No es una voz. Es el latido de unos instrumentos."
+      },
+      {
+        "who": "cuoi",
+        "text": "Algo más se quedó aquí en 1969. Escuchó a la Luna y luego guardó silencio."
+      },
+      {
+        "who": "lrv",
+        "text": "¿Podemos ayudarlo?"
+      },
+      {
+        "who": "cuoi",
+        "text": "No reparándolo. Nadie puede hacerlo. Pero podemos descubrir qué hizo."
+      },
+      {
+        "who": "rabbit",
+        "text": "Sigue la señal. Llevaremos una hoja."
+      }
+    ],
+    "afterSignal": [
+      {
+        "who": "lrv",
+        "text": "Ahí está. Un paquete pequeño, semienterrado en el polvo."
+      },
+      {
+        "who": "rabbit",
+        "text": "Está tan silencioso. ¿Puedo poner la hoja aquí?"
+      },
+      {
+        "who": "cuoi",
+        "text": "Sí. Ahora abramos el archivo y descubramos qué estuvo escuchando."
+      }
+    ],
+    "outro": [
+      {
+        "who": "lrv",
+        "text": "Dejó de transmitir después de solo unas semanas. Pensé que una misión así sería un fracaso."
+      },
+      {
+        "who": "cuoi",
+        "text": "Sus datos siguen estudiándose. Una misión corta puede dejar una lección larga."
+      },
+      {
+        "who": "lrv",
+        "text": "Entonces no ha sido olvidada."
+      },
+      {
+        "who": "cuoi",
+        "text": "No. La recuerdan personas que ni siquiera habían nacido cuando escuchaba."
+      }
+    ]
+  },
+  "m5": {
+    "title": "Encuéntrate en el Youniverse",
+    "tagline": "Un mensaje tarda más de cincuenta años en llegar a la ventana de un niño.",
+    "intro": [
+      {
+        "who": "rabbit",
+        "text": "La hoja de baniano está brillando."
+      },
+      {
+        "who": "lrv",
+        "text": "Hay un mensaje en ella. No es para mí."
+      },
+      {
+        "who": "cuoi",
+        "text": "Un último pulso de datos, viajando durante más de cincuenta años. Esta noche llega a una ventana en la Tierra."
+      },
+      {
+        "who": "lrv",
+        "text": "Un niño está dibujando un rover. Creo que conozco ese sentimiento."
+      },
+      {
+        "who": "rabbit",
+        "text": "¿Qué le dirías?"
+      },
+      {
+        "who": "lrv",
+        "text": "Que valió la pena. Incluso la parte silenciosa."
+      }
+    ],
+    "outro": [
+      {
+        "who": "echo",
+        "text": "La Luna guarda lo que dejamos atrás. La historia guarda lo que nos enseñó."
+      },
+      {
+        "who": "cuoi",
+        "text": "No te preocupes por el final de una misión. Preocúpate por el final del recuerdo."
+      },
+      {
+        "who": "lrv",
+        "text": "Entonces recordaré. Hasta el final de mis ruedas."
+      }
+    ]
+  }
+}

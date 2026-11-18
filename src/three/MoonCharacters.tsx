@@ -4,6 +4,8 @@ import * as THREE from 'three';
 import type { ThreeElements } from '@react-three/fiber';
 import { Cuoi } from './Cuoi';
 
+import { prefersReducedMotion } from './GameCanvas';
+
 const fur = new THREE.MeshStandardMaterial({ color: '#d7d2c7', roughness: 0.92, flatShading: true });
 const furLight = new THREE.MeshStandardMaterial({ color: '#f0e9db', roughness: 0.9, flatShading: true });
 const earInner = new THREE.MeshStandardMaterial({ color: '#b77f78', roughness: 0.9, flatShading: true });
@@ -41,41 +43,132 @@ function Branch({ from, to, radius, material = bark }: { from: [number, number, 
   </mesh>;
 }
 
-export function MoonRabbit(props: ThreeElements['group']) {
+export function MoonRabbit({
+  flyingRef,
+  pawRef,
+  ...props
+}: ThreeElements['group'] & {
+  flyingRef?: RefObject<boolean>;
+  pawRef?: RefObject<THREE.Group | null>;
+}) {
+  const body = useRef<THREE.Group>(null);
+  const head = useRef<THREE.Group>(null);
+  const leftEar = useRef<THREE.Group>(null);
+  const rightEar = useRef<THREE.Group>(null);
+  const reachPaw = useRef<THREE.Group>(null);
+  const carrotPaw = useRef<THREE.Group>(null);
+  const leftFoot = useRef<THREE.Group>(null);
+  const rightFoot = useRef<THREE.Group>(null);
+  const flyBlend = useRef(0);
+
+  useFrame(({ clock }, rawDt) => {
+    const dt = Math.min(rawDt, 0.05);
+    const flying = flyingRef?.current ?? false;
+    flyBlend.current += ((flying ? 1 : 0) - flyBlend.current) * (1 - Math.exp(-10 * dt));
+    const fly = flyBlend.current;
+    if (fly < 0.005 && !flying) {
+      if (body.current) body.current.rotation.set(0, 0, 0);
+      if (head.current) head.current.rotation.set(0, 0, 0);
+      if (reachPaw.current) reachPaw.current.rotation.set(0, 0, 0);
+      if (carrotPaw.current) carrotPaw.current.rotation.set(0, 0, 0);
+      if (leftEar.current) leftEar.current.rotation.set(0, 0, 0.18);
+      if (rightEar.current) rightEar.current.rotation.set(0, 0, -0.18);
+      if (leftFoot.current) leftFoot.current.rotation.set(0, 0, 0);
+      if (rightFoot.current) rightFoot.current.rotation.set(0, 0, 0);
+      return;
+    }
+    const reduced = prefersReducedMotion();
+    const t = clock.elapsedTime;
+    const earFlutter = reduced ? 0 : Math.sin(t * 15) * 0.14;
+    const kick = reduced ? 0 : Math.sin(t * 13) * 0.22;
+    if (body.current) {
+      body.current.rotation.x = 0.36 * fly;
+      body.current.rotation.z = 0.10 * fly;
+    }
+    if (head.current) {
+      head.current.rotation.x = -0.24 * fly;
+    }
+    if (reachPaw.current) {
+      reachPaw.current.rotation.z = -1.42 * fly;
+      reachPaw.current.rotation.x = -0.18 * fly;
+    }
+    if (carrotPaw.current) {
+      carrotPaw.current.rotation.z = 0.22 * fly;
+    }
+    if (leftEar.current) {
+      leftEar.current.rotation.x = (-0.68 + earFlutter) * fly;
+      leftEar.current.rotation.z = 0.18 + 0.14 * fly;
+    }
+    if (rightEar.current) {
+      rightEar.current.rotation.x = (-0.68 - earFlutter) * fly;
+      rightEar.current.rotation.z = -0.18 - 0.14 * fly;
+    }
+    if (leftFoot.current) leftFoot.current.rotation.x = (0.52 + kick) * fly;
+    if (rightFoot.current) rightFoot.current.rotation.x = (0.52 - kick) * fly;
+  });
+
   // Character faces local +Z; the rover's forward direction is local -Z.
   // Keep the rabbit aligned with the rover convoy by turning it toward -Z.
   return <group name="Moon Rabbit" rotation={[0, Math.PI, 0]} {...props}>
-    <mesh position={[0, 0.45, 0]} scale={[0.32, 0.39, 0.27]} material={fur} castShadow><sphereGeometry args={[1, 18, 14]} /></mesh>
-    <mesh position={[0, 0.42, 0.19]} scale={[0.22, 0.28, 0.12]} material={furLight}><sphereGeometry args={[1, 16, 12]} /></mesh>
-    <mesh position={[0, 0.23, 0.02]} scale={[0.23, 0.11, 0.24]} material={furLight} castShadow><sphereGeometry args={[1, 14, 10]} /></mesh>
-    <mesh position={[0, 0.91, 0.05]} scale={[0.27, 0.25, 0.24]} material={furLight} castShadow><sphereGeometry args={[1, 18, 14]} /></mesh>
-    {[-1, 1].map((side) => <group key={side} position={[side * 0.15, 1.13, 0.02]} rotation={[0, 0, side * -0.18]}>
-      <mesh scale={[0.09, 0.28, 0.075]} material={furLight} castShadow><sphereGeometry args={[1, 14, 12]} /></mesh>
-      <mesh position={[0, 0.01, 0.064]} scale={[0.047, 0.21, 0.018]} material={earInner}><sphereGeometry args={[1, 12, 10]} /></mesh>
-    </group>)}
-    {[-1, 1].map((side) => <group key={`face-${side}`}>
-      <mesh position={[side * 0.105, 0.94, 0.252]} scale={[0.043, 0.055, 0.024]} material={eye}><sphereGeometry args={[1, 12, 10]} /></mesh>
-      <mesh position={[side * 0.18, 0.82, 0.22]} scale={[0.08, 0.05, 0.04]} material={earInner}><sphereGeometry args={[1, 12, 8]} /></mesh>
-      <mesh position={[side * 0.20, 0.19, 0.12]} scale={[0.13, 0.1, 0.19]} material={furLight} castShadow><sphereGeometry args={[1, 12, 10]} /></mesh>
-    </group>)}
-    <mesh position={[0, 0.87, 0.278]} scale={[0.045, 0.032, 0.025]} material={nose}><sphereGeometry args={[1, 12, 10]} /></mesh>
-    <mesh position={[0, 0.80, 0.265]} scale={[0.018, 0.06, 0.012]} material={fur}><boxGeometry args={[1, 1, 1]} /></mesh>
-    <mesh position={[-0.14, 0.86, 0.238]} scale={[0.048, 0.026, 0.012]} material={cheek}><sphereGeometry args={[1, 12, 8]} /></mesh>
-    <mesh position={[0.14, 0.86, 0.238]} scale={[0.048, 0.026, 0.012]} material={cheek}><sphereGeometry args={[1, 12, 8]} /></mesh>
-    <mesh position={[-0.105, 0.955, 0.264]} scale={[0.014, 0.014, 0.008]} material={eyeHighlight}><sphereGeometry args={[1, 8, 6]} /></mesh>
-    <mesh position={[0.105, 0.955, 0.264]} scale={[0.014, 0.014, 0.008]} material={eyeHighlight}><sphereGeometry args={[1, 8, 6]} /></mesh>
-    <mesh position={[0, 0.69, -0.25]} scale={[0.14, 0.14, 0.14]} material={furLight} castShadow><sphereGeometry args={[1, 12, 10]} /></mesh>
-    <group position={[0.24, 0.58, 0.12]} rotation={[0, 0, -0.35]}>
-      <mesh position={[0, -0.16, 0]} scale={[0.065, 0.16, 0.065]} material={carrot} castShadow><coneGeometry args={[1, 1, 8]} /></mesh>
-      <mesh position={[-0.035, 0.02, 0]} rotation={[0, 0, -0.45]} scale={[0.025, 0.09, 0.02]} material={carrotLeaf}><coneGeometry args={[1, 1, 6]} /></mesh>
-      <mesh position={[0.035, 0.02, 0]} rotation={[0, 0, 0.45]} scale={[0.025, 0.09, 0.02]} material={carrotLeaf}><coneGeometry args={[1, 1, 6]} /></mesh>
+    <group ref={body}>
+      <mesh position={[0, 0.45, 0]} scale={[0.32, 0.39, 0.27]} material={fur} castShadow><sphereGeometry args={[1, 18, 14]} /></mesh>
+      <mesh position={[0, 0.42, 0.19]} scale={[0.22, 0.28, 0.12]} material={furLight}><sphereGeometry args={[1, 16, 12]} /></mesh>
+      <mesh position={[0, 0.23, 0.02]} scale={[0.23, 0.11, 0.24]} material={furLight} castShadow><sphereGeometry args={[1, 14, 10]} /></mesh>
+      <group ref={head} position={[0, 0.91, 0.05]}>
+        <mesh scale={[0.27, 0.25, 0.24]} material={furLight} castShadow><sphereGeometry args={[1, 18, 14]} /></mesh>
+        {[-1, 1].map((side) => <group key={side} ref={side < 0 ? leftEar : rightEar} position={[side * 0.15, 0.22, -0.03]} rotation={[0, 0, side * -0.18]}>
+          <mesh scale={[0.09, 0.28, 0.075]} material={furLight} castShadow><sphereGeometry args={[1, 14, 12]} /></mesh>
+          <mesh position={[0, 0.01, 0.064]} scale={[0.047, 0.21, 0.018]} material={earInner}><sphereGeometry args={[1, 12, 10]} /></mesh>
+        </group>)}
+        {[-1, 1].map((side) => <group key={`face-${side}`}>
+          <mesh position={[side * 0.105, 0.03, 0.202]} scale={[0.043, 0.055, 0.024]} material={eye}><sphereGeometry args={[1, 12, 10]} /></mesh>
+          <mesh position={[side * 0.18, -0.09, 0.17]} scale={[0.08, 0.05, 0.04]} material={earInner}><sphereGeometry args={[1, 12, 8]} /></mesh>
+        </group>)}
+        <mesh position={[0, -0.04, 0.228]} scale={[0.045, 0.032, 0.025]} material={nose}><sphereGeometry args={[1, 12, 10]} /></mesh>
+        <mesh position={[0, -0.11, 0.215]} scale={[0.018, 0.06, 0.012]} material={fur}><boxGeometry args={[1, 1, 1]} /></mesh>
+        <mesh position={[-0.14, -0.05, 0.188]} scale={[0.048, 0.026, 0.012]} material={cheek}><sphereGeometry args={[1, 12, 8]} /></mesh>
+        <mesh position={[0.14, -0.05, 0.188]} scale={[0.048, 0.026, 0.012]} material={cheek}><sphereGeometry args={[1, 12, 8]} /></mesh>
+        <mesh position={[-0.105, 0.045, 0.214]} scale={[0.014, 0.014, 0.008]} material={eyeHighlight}><sphereGeometry args={[1, 8, 6]} /></mesh>
+        <mesh position={[0.105, 0.045, 0.214]} scale={[0.014, 0.014, 0.008]} material={eyeHighlight}><sphereGeometry args={[1, 8, 6]} /></mesh>
+      </group>
+      {[-1, 1].map((side) => <group key={`foot-${side}`} ref={side < 0 ? leftFoot : rightFoot} position={[side * 0.20, 0.19, 0.12]}>
+        <mesh scale={[0.13, 0.1, 0.19]} material={furLight} castShadow><sphereGeometry args={[1, 12, 10]} /></mesh>
+      </group>)}
+      <group ref={reachPaw} position={[-0.24, 0.56, 0.10]}>
+        <mesh position={[0, -0.09, 0.03]} rotation={[0.24, 0, -0.18]} scale={[0.072, 0.135, 0.072]} material={furLight} castShadow><sphereGeometry args={[1, 12, 10]} /></mesh>
+        <mesh position={[0, -0.20, 0.06]} scale={[0.082, 0.078, 0.085]} material={furLight} castShadow><sphereGeometry args={[1, 12, 10]} /></mesh>
+        <group ref={pawRef} position={[0, -0.20, 0.06]} />
+      </group>
+      <group ref={carrotPaw} position={[0.23, 0.56, 0.12]}>
+        <mesh position={[0, -0.08, 0.03]} rotation={[0.2, 0, 0.18]} scale={[0.072, 0.13, 0.072]} material={furLight} castShadow><sphereGeometry args={[1, 12, 10]} /></mesh>
+        <mesh position={[0, -0.17, 0.06]} scale={[0.074, 0.07, 0.078]} material={furLight} castShadow><sphereGeometry args={[1, 12, 10]} /></mesh>
+      </group>
+      <mesh position={[0, 0.69, -0.25]} scale={[0.14, 0.14, 0.14]} material={furLight} castShadow><sphereGeometry args={[1, 12, 10]} /></mesh>
+      <group position={[0.24, 0.58, 0.12]} rotation={[0, 0, -0.35]}>
+        <mesh position={[0, -0.16, 0]} scale={[0.065, 0.16, 0.065]} material={carrot} castShadow><coneGeometry args={[1, 1, 8]} /></mesh>
+        <mesh position={[-0.035, 0.02, 0]} rotation={[0, 0, -0.45]} scale={[0.025, 0.09, 0.02]} material={carrotLeaf}><coneGeometry args={[1, 1, 6]} /></mesh>
+        <mesh position={[0.035, 0.02, 0]} rotation={[0, 0, 0.45]} scale={[0.025, 0.09, 0.02]} material={carrotLeaf}><coneGeometry args={[1, 1, 6]} /></mesh>
+      </group>
     </group>
   </group>;
 }
 
-export function MoonCuoi({ workingRef, movingRef, runningRef, ...props }: ThreeElements['group'] & { workingRef?: RefObject<boolean>; movingRef?: RefObject<boolean>; runningRef?: RefObject<boolean> }) {
+export function MoonCuoi({
+  workingRef,
+  movingRef,
+  runningRef,
+  sprintingRef,
+  handRef,
+  ...props
+}: ThreeElements['group'] & {
+  workingRef?: RefObject<boolean>;
+  movingRef?: RefObject<boolean>;
+  runningRef?: RefObject<boolean>;
+  sprintingRef?: RefObject<boolean>;
+  handRef?: RefObject<THREE.Group | null>;
+}) {
   return <group name="Uncle Cuoi" {...props}>
-    <Cuoi movingRef={movingRef} workingRef={workingRef} runningRef={runningRef} />
+    <Cuoi movingRef={movingRef} workingRef={workingRef} runningRef={runningRef} sprintingRef={sprintingRef} handRef={handRef} />
   </group>;
 }
 
